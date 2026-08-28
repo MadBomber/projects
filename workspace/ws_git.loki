@@ -32,6 +32,14 @@ class Tasks
     end
   end
 
+ desc "each_gem CMD", "Run a shell command in every gem repo (e.g. asgard each 'rake install')"
+  def each_gem(cmd)
+    @@gems.each do |repo|
+      puts "\n\e[1;32m── #{repo}\e[0m"
+      system("cd \"#{repo}\" && #{cmd}")
+    end
+  end
+
   desc "Show current branch in all repos"
   def branches
     @@repos.each do |repo|

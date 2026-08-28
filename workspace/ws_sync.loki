@@ -73,10 +73,9 @@ class Tasks
   end
 
   desc "bump_versions [VERSION]", "Bump all version.rb files. Omit VERSION to sync extensions to core."
-  option :version, aliases: "-v", type: :string, default: "", desc: "Target version e.g. 1.2.3 or 1.2.3.1"
-  option :yes,     aliases: "-y", type: :boolean, default: false, desc: "Skip confirmation prompt"
-  def bump_versions
-    target = options[:version]
+  option :yes, aliases: "-y", type: :boolean, default: false, desc: "Skip confirmation prompt"
+  def bump_versions(target_version = nil)
+    target = target_version.to_s
 
     if target.empty?
       target = read_version_file(@@core)
