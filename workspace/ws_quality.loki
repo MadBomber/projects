@@ -5,7 +5,7 @@ class Tasks
 
   desc "Run tests in all repos (parallel, output buffered)"
   def test_all
-    run_across_repos("rake test", label: "Tests")
+    run_across_repos("asgard test_check", label: "Tests")
   end
 
   desc "Run RuboCop in all repos (parallel)"
@@ -32,16 +32,19 @@ class Tasks
 
     threads = @@gems.map do |repo|
       Thread.new do
+        # Every gate is the repo's own asgard *_check task (from dev/quality.loki),
+        # which writes its <gate>_output.txt itself and exits nonzero on :fail —
+        # so stdout goes to /dev/null rather than clobbering that file.
         gate_threads = {
-          test:    Thread.new { system("cd \"#{repo}\" && bundle exec rake test         > /dev/null 2>&1") },
-          flay:    Thread.new { system("cd \"#{repo}\" && asgard flay_check             > flay_output.txt 2>&1") },
-          flog:    Thread.new { system("cd \"#{repo}\" && asgard flog_check             > flog_output.txt 2>&1") },
-          rubocop: Thread.new { system("cd \"#{repo}\" && bundle exec rubocop           > rubocop_output.txt 2>&1") },
-          reek:    Thread.new { system("cd \"#{repo}\" && asgard reek_check             > reek_output.txt 2>&1") }
+          test:    Thread.new { system("cd \"#{repo}\" && asgard test_check    > /dev/null 2>&1") },
+          flay:    Thread.new { system("cd \"#{repo}\" && asgard flay_check    > /dev/null 2>&1") },
+          flog:    Thread.new { system("cd \"#{repo}\" && asgard flog_check    > /dev/null 2>&1") },
+          rubocop: Thread.new { system("cd \"#{repo}\" && asgard rubocop_check > /dev/null 2>&1") },
+          reek:    Thread.new { system("cd \"#{repo}\" && asgard reek_check    > /dev/null 2>&1") }
         }
 
         if File.exist?(repo+"/Archspec.rb")
-          gate_threads[:archspec] = Thread.new { system("cd \"#{repo}\" && bundle exec archspec check > archspec_output.txt 2>&1") }
+          gate_threads[:archspec] = Thread.new { system("cd \"#{repo}\" && asgard archspec_check > /dev/null 2>&1") }
         end
 
         gates   = gate_threads.transform_values(&:value)
@@ -101,8 +104,10 @@ class Tasks
 
       # A bare `bundle` command (install/update) must NOT go through
       # `bundle exec` — exec refuses to start when the lockfile is stale,
-      # which is exactly the state an update is meant to fix.
-      full_cmd = cmd.start_with?("bundle ") ? cmd : "bundle exec #{cmd}"
+      # which is exactly the state an update is meant to fix. An `asgard`
+      # command must not either: asgard runs from its own gem environment,
+      # not the repo's bundle.
+      full_cmd = cmd.start_with?("bundle ", "asgard ") ? cmd : "bundle exec #{cmd}"
 
       threads = @@gems.map do |repo|
         Thread.new do

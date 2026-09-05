@@ -184,14 +184,15 @@ name. Always imported first so the other modules can reference the lists.
 
 | Task | What it does |
 |------|--------------|
-| `test_all` | Run `rake test` in all gem repos in parallel, output buffered per repo |
+| `test_all` | Run each repo's `asgard test_check` in all gem repos in parallel, output buffered per repo |
 | `rubocop_all` | Run RuboCop in all gem repos in parallel |
 | `rubocop_fix_all` | Run `rubocop -a` auto-fix sequentially in each gem repo |
 | `quality_all` | The big one: bundle-update everything, then run every gate in parallel per repo — Test, Flay, Flog, RuboCop, Reek (plus Archspec when a repo has an `Archspec.rb`) — and print a per-gate PASS/FAIL status table |
 
-The individual gate checks (`flay_check`, `flog_check`, `reek_check`) are
-component-level tasks from `dev/quality.loki` — a concrete example of the
-workspace layer orchestrating the dev layer.
+Every gate is the repo's own `asgard *_check` task from `dev/quality.loki`
+(`test_check`, `flay_check`, `flog_check`, `rubocop_check`, `reek_check`,
+`archspec_check`) — a concrete example of the workspace layer orchestrating
+the dev layer, with no `rake` in the loop.
 
 ### `workspace/ws_gems.loki` — gem lifecycle across all repos
 
@@ -199,8 +200,8 @@ workspace layer orchestrating the dev layer.
 |------|--------------|
 | `bundle_update_all` | `bundle update` in every gem repo, continuing past failures and summarizing |
 | `bundle_install_all` | `bundle install` in every gem repo |
-| `build_all` | `rake build` in every gem repo |
-| `install_all` | `rake install` everywhere — core first, then extensions, respecting the dependency order |
+| `build_all` | Each gem repo's `asgard build` |
+| `install_all` | `asgard install` everywhere — core first, then extensions, respecting the dependency order |
 | `wire_local` | Rewrite each extension's Gemfile to use `path: "../<core>"` for cross-gem development against the local core |
 | `unwire_local` | Restore each extension's Gemfile to the released core gem |
 
@@ -214,6 +215,33 @@ workspace layer orchestrating the dev layer.
 | `sync_rakefiles` | Copy the project's `Rakefile.common` into each extension repo |
 | `sync_rubocop` | Copy `.rubocop.yml.common` to every family repo (no-op in projects that use inherited RuboCop config instead) |
 | `bump_versions [VERSION]` | Bump every family `version.rb` to VERSION (with confirmation, `-y` to skip); omit VERSION to sync extensions to the core's current version |
+
+## The Day-to-Day Payoff
+
+The point of all this layering shows up in ordinary development on a
+multi-component project like `robot_lab_project`, where a "small" change can
+touch a core gem plus a dozen extensions. Standing at the project root, one
+command fans out across every component — no cd-ing into fourteen repos, no
+forgetting one:
+
+```bash
+asgard each 'bundle update'       # any shell command, in every component repo
+asgard each_gem 'asgard install'  # same, limited to the gem repos
+```
+
+`each` and `each_gem` are the escape hatches: whatever one-off command you
+would have typed repo by repo, they run everywhere. For the recurring
+operations, the curated tasks go further than a plain fan-out —
+`asgard install_all` installs the core gem *first* and then the extensions
+(which depend on it), `asgard quality_all` runs every gate in parallel and
+summarizes them in one table, and `asgard check` answers "what state is this
+whole project in?" before you start typing.
+
+The same muscle memory works in every project workspace: `asgard check`,
+`asgard test_all`, `asgard each '...'` mean the same thing in
+`robot_lab_project` and `sqa_project`, because they are literally the same
+code — parameterized by each workspace's auto-detected repo lists rather than
+copied and drifted.
 
 ## Versioning Convention
 

@@ -17,7 +17,7 @@ class Tasks
   def build_all
     @@gems.each do |repo|
       printf "\e[1;32m%-32s\e[0m building...\n", repo
-      sh "cd \"#{repo}\" && bundle exec rake build"
+      sh "cd \"#{repo}\" && asgard build"
     end
     puts "\nAll gems built."
   end
@@ -25,11 +25,11 @@ class Tasks
   desc "Install all gems locally (core first, then extensions)"
   def install_all
     printf "\e[1;32m%-32s\e[0m installing...\n", @@core
-    sh "cd #{@@core} && bundle exec rake install"
+    sh "cd #{@@core} && asgard install"
 
     @@extensions.each do |repo|
       printf "\e[1;32m%-32s\e[0m installing...\n", repo
-      sh "cd \"#{repo}\" && bundle exec rake install"
+      sh "cd \"#{repo}\" && asgard install"
     end
     puts "\nAll gems installed locally."
   end
