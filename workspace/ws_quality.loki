@@ -65,7 +65,7 @@ class Tasks
       c_br  = 10
       c_ver = 10
 
-      header = "  #{"Library".ljust(c_lib)} #{"Branch".ljust(c_br)} #{"Version".ljust(c_ver)} Test   Flay   Flog   RuboCop   Reek"
+      header = "  #{"Library".ljust(c_lib)} #{"Branch".ljust(c_br)} #{"Version".ljust(c_ver)} Test   Flay   Flog   RuboCop   Reek   ArchSpec"
       bar    = "  " + "─" * (header.length - 2)
 
       puts ""
@@ -80,7 +80,11 @@ class Tasks
         gates   = data[:gates]
         all_pass = false if gates.values.any?(&:!)
 
-        cells = %i[test flay flog rubocop reek].map { |g| gate_badge(gates[g]) }.join("   ")
+        # :archspec only runs where an Archspec.rb exists — show n/a elsewhere
+        # so a real ArchSpec failure is visible in the table, not just the tally.
+        cells = %i[test flay flog rubocop reek archspec]
+                .map { |g| gates.key?(g) ? gate_badge(gates[g]) : "\e[2m n/a\e[0m" }
+                .join("   ")
         puts "  #{repo.ljust(c_lib)} #{branch} #{version} #{cells}"
       end
 

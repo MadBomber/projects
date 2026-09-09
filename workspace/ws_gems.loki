@@ -40,7 +40,9 @@ class Tasks
       gemfile = "#{repo}/Gemfile"
       next unless File.exist?(gemfile)
       content = File.read(gemfile)
-      if content.include?("path:")
+      # Only the core gem's own line counts as wired — an unrelated path:
+      # dependency elsewhere in the Gemfile must not block the rewrite.
+      if content.match?(/^gem ["']#{Regexp.escape(@@core)}["'],.*path:/)
         printf "\e[1;33m%-32s\e[0m already wired\n", repo
       else
         updated = content.sub(
