@@ -1,31 +1,42 @@
 # frozen_string_literal: true
-# Sync shared files and bump versions across repos.
+# Sync shared files and bump versions across repos, and switch the bundle
+# mode (dev/prod) for the whole workspace.
 
 class Tasks
 
-  desc "set_env [ENV]", "Switch gems between local (path:) and released. ENV: local|real (omit to toggle)"
+  # Bundle-mode switching requires the project root .envrc to follow the
+  # .bundle_mode pattern (see robot_lab_project/.envrc): the tasks write
+  # .bundle_mode, the .envrc reads it via watch_file to export BUNDLE_GEMFILE,
+  # and every component inherits it through source_up — component .envrc files
+  # must NOT re-export BUNDLE_GEMFILE. A project still on the legacy single
+  # `export BUNDLE_GEMFILE=...` .envrc line must migrate before these tasks
+  # have any effect there (robot_lab_project and sqa_project both follow the
+  # new pattern).
+
+  desc "dev", "Switch every component to Gemfile.local (local path: deps)"
+  def dev
+    set_bundle_mode("dev", "Gemfile.local")
+  end
+
+  desc "prod", "Switch every component to Gemfile (released gems)"
+  def prod
+    set_bundle_mode("prod", "Gemfile")
+  end
+
+  desc "local", "Alias for dev (Gemfile.local)"
+  def local = dev
+
+  desc "real", "Alias for prod (Gemfile)"
+  def real = prod
+
+  desc "set_env [ENV]", "Switch bundle mode. ENV: dev|prod (local|real also accepted; omit to toggle)"
   def set_env(env = nil)
-    envrc   = File.read(".envrc")
-    current = envrc[/BUNDLE_GEMFILE=(\S+)/, 1]
-    abort "BUNDLE_GEMFILE not found in .envrc" unless current
-
-    target = case env
-             when "local" then "Gemfile.local"
-             when "real"  then "Gemfile"
-             when nil     then current == "Gemfile.local" ? "Gemfile" : "Gemfile.local"
-             else abort "Unknown env '#{env}' — use 'local' or 'real'"
-             end
-
-    if current == target
-      puts "Already using \e[1m#{target}\e[0m — no change."
-      return
+    case env
+    when "dev", "local" then dev
+    when "prod", "real" then prod
+    when nil            then current_bundle_mode == "dev" ? prod : dev
+    else abort "Unknown env '#{env}' — use 'dev' or 'prod'"
     end
-
-    File.write(".envrc", envrc.sub(/BUNDLE_GEMFILE=\S+/, "BUNDLE_GEMFILE=#{target}"))
-
-    label = target == "Gemfile.local" ? "\e[32mlocal (path: ../#{@@core})\e[0m" : "\e[33mreleased gems\e[0m"
-    puts "Switched to #{label}"
-    system("direnv allow")
   end
 
   desc "Sync Rakefile, .rubocop.yml, and version to all repos in parallel"
@@ -105,6 +116,31 @@ class Tasks
   end
 
   no_commands do
+    def current_bundle_mode
+      File.exist?(".bundle_mode") ? File.read(".bundle_mode").strip : "dev"
+    end
+
+    # Writes .bundle_mode, which the project root .envrc reads (via watch_file)
+    # to set BUNDLE_GEMFILE for every component through source_up inheritance.
+    # Warns about any component .envrc that still overrides BUNDLE_GEMFILE,
+    # since an override would silently beat the project-wide setting.
+    def set_bundle_mode(mode, gemfile)
+      File.write(".bundle_mode", "#{mode}\n")
+      puts "Bundle mode: #{mode} — BUNDLE_GEMFILE=#{gemfile} for all components"
+      puts "direnv reloads at the next shell prompt; new shells inherit automatically."
+      offenders = @@repos.select do |repo|
+        envrc = File.join(repo, ".envrc")
+        File.file?(envrc) && File.read(envrc).match?(/^\s*export BUNDLE_GEMFILE=/)
+      end
+      return if offenders.empty?
+
+      puts <<~WARNING
+        \e[33mWarning:\e[0m these components still export BUNDLE_GEMFILE in their own
+        .envrc, which overrides the project-wide setting — remove the export line:
+          #{offenders.join("\n  ")}
+      WARNING
+    end
+
     def read_version_file(repo)
       file = Dir.glob("#{repo}/lib/**/version.rb").first
       return "(not found)" unless file

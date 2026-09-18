@@ -5,7 +5,7 @@ class Tasks
 
   desc "Run `bundle update` in all repos (refresh locked dependencies to newest allowed)"
   def bundle_update_all
-    bundle_across_repos("bundle update")
+    bundle_across_repos("bundle update --all") # as of bundler v4 got to add the --all
   end
 
   desc "Run `bundle install` in all repos (install the locked dependencies)"
