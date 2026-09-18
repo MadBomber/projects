@@ -32,9 +32,34 @@ class Tasks
     end
   end
 
- desc "each_gem CMD", "Run a shell command in every gem repo (e.g. asgard each_gem 'asgard install')"
+  desc "list gems"
+  def list_gems = puts @@gems.join("\n")
+
+  desc "list libraries"
+  def list_libs = puts @@libs.join("\n")
+
+  desc "list applications"
+  def list_apps = puts @@apps.join("\n")
+
+  desc "each_gem CMD", "Run a shell command in every gem repo (e.g. asgard each_gem 'asgard install')"
   def each_gem(cmd)
     @@gems.each do |repo|
+      puts "\n\e[1;32m── #{repo}\e[0m"
+      system("cd \"#{repo}\" && #{cmd}")
+    end
+  end
+
+  desc "each_lib CMD", "Run a shell command in every library repo (e.g. asgard each_lib 'asgard install')"
+  def each_lib(cmd)
+    @@libs.each do |repo|
+      puts "\n\e[1;32m── #{repo}\e[0m"
+      system("cd \"#{repo}\" && #{cmd}")
+    end
+  end
+
+  desc "each_app CMD", "Run a shell command in every app repo (e.g. asgard each_app 'git push')"
+  def each_app(cmd)
+    @@apps.each do |repo|
       puts "\n\e[1;32m── #{repo}\e[0m"
       system("cd \"#{repo}\" && #{cmd}")
     end
