@@ -10,7 +10,7 @@
 
 ## Later
 
-- Decide whether this repo should be private.
+- (none yet)
 
 ## Monitored repos, in priority order
 
