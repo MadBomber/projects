@@ -9,6 +9,7 @@ particular) read it before choosing work and update it after doing work.
 - `dewayne.md` lists steps only Dewayne can do, each linked to a PR. Remove a step when it is verifiably done.
 - `bomberbot/` is the bot's own state: `taste.md`, `runs.md`, `findings/<repo>.md`, `plans/`.
 - `workspace/` and `*_project/` are the Asgard workspace toolkit and are not part of the brain. Do not edit them.
+- Monitored repos use `main` (default, released) and `develop` (integration). Bot PRs target `develop`. This brain repo itself has only `main`.
 - Mark a PR as **PR open** next to its item. Nothing is "complete" until Dewayne merges it.
 - Commit only the files you changed, by explicit path, with a short title line under 60 characters.
 - No secrets, tokens, or vulnerability details for public repos beyond what `bomberbot/findings/` allows.
