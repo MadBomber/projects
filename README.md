@@ -267,3 +267,9 @@ enforces this; `bump_versions` and `sync_versions` maintain it.
    must bootstrap a fresh workspace needs an explicit repo list — see
    `sqa_project/.loki` for the pattern.)
 6. `asgard check` to confirm the dashboard sees everything.
+
+## Brain
+
+This repo also serves as the working list ("brain") that bomberbot reads and
+updates: `priorities.md`, `repos/*.md`, `inbox.md`, `dewayne.md`, and the
+bot's own state under `bomberbot/`. See `AGENTS.md` for the conventions.
