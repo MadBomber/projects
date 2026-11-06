@@ -14,4 +14,4 @@ Short rules distilled from Dewayne's merges, rejections, and review comments. Ne
 
 ## Learned from PRs
 
-- (none yet)
+- (proposed) When the `/code-review` loop hits its 3-round cap and the reviewers are contradicting earlier rounds rather than finding defects, fix the trivial real items and open the PR with the overrun spelled out, instead of giving up. Dewayne chose this for [ragdoll#5](https://github.com/MadBomber/ragdoll/pull/5).
