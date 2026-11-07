@@ -9,18 +9,18 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | never | |
-| dead code | 2026-11-06 | Quick scan only. lib is about 105 lines and every method and option is reachable. |
+| dead code | 2026-11-07 | Quick scan of 9e0f9be..3055a9f (the #8 merge); nothing removable. |
 | dependencies | never | |
 | adoption | 2026-11-06 | First audit. README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. gem-skill and llms.txt not checked. |
 | quality | never | |
 
-Dead-code scan last covered commit: 9e0f9be (develop, 2026-11-06)
+Dead-code scan last covered commit: 3055a9f (develop, 2026-11-07)
 
 ## Findings
 
 ### 2026-11-06 adoption audit
 
-1. **A String tag followed by other options raises ArgumentError.** `debug_me('INFO', levels: 2)` appears in getting-started, configuration (x3), and api-reference. Status: PR'd ([#8](https://github.com/MadBomber/debug_me/pull/8)).
+1. **A String tag followed by other options raises ArgumentError.** `debug_me('INFO', levels: 2)` appears in getting-started, configuration (x3), and api-reference. Status: merged ([#8](https://github.com/MadBomber/debug_me/pull/8), 2026-11-07).
 2. **The docs say `DebugMe.debug_me(...)` works without `include`, but it raises NoMethodError.** This is in docs/configuration.md "Without Including". There is no `module_function` or `extend self`. Fix the docs, or add `extend self` (which adds public API). Status: open. Fixing the docs is the obvious-yes version.
 3. **api-reference names `DebugMe::VERSION`, which doesn't exist.** The real constant is `DebugMe::DEBUG_ME_VERSION`. Status: open.
 4. **api-reference says `DEBUG_ME_MAX_BACKTRACE` defaults to 15.** The real value is 10000. Status: open.
@@ -37,7 +37,13 @@ Dead-code scan last covered commit: 9e0f9be (develop, 2026-11-06)
    - The `test_files` glob looks for `test/`, but the tests live in `tests/`.
    - The Rakefile has no `test` task, and there is no test CI workflow.
 
-   Status: open. Adding a `rake test` task plus a minimal CI workflow would be a good next PR.
+   Status: PR'd ([#9](https://github.com/MadBomber/debug_me/pull/9)) for the rake task and CI, plus a new gap found 2026-11-07: the suite requires `logger`, which is not a default gem on Ruby 4, so `bundle exec` runs failed until #9 added it as a dev dependency. Still open: the `test_files` glob (`test/` vs `tests/`) and the `minitest ~> 5.0` constraint.
 9. **The gem package includes the docs site.** `spec.files` is `git ls-files`, so it ships docs/ (about 2000 lines plus a 127 KB jpg) and mkdocs.yml. Status: open (size not measured).
 10. **The `.rultor.yml` release config and `rubygems.yml.asc` look dead.** The release script's sed looks for `1.0.snapshot`, which is no longer in version.rb. Status: needs Dewayne's decision (remove, or keep for rultor).
 11. **A `safe_debug`-style wrapper reports its own file and line in the header, not the caller's.** There is no option to skip a frame. Status: open idea. Adding something like a `caller_offset:` option needs Dewayne's decision, since it is new public API.
+
+### 2026-11-07 re-check (no audit; 5 verified open findings)
+
+- Findings 2, 3, 4 and 6 confirmed still present on develop 3055a9f. Each is a small docs fix and a good next PR.
+
+12. **`tests/env_test.rb` restores `ENV["DEBUG_ME"]` only if its assertion passes (no `ensure`), and shells out to a bare `ruby` from PATH instead of `RbConfig.ruby`.** Raised by `/code-review` on #9. Status: open (low value).
