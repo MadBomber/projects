@@ -5,6 +5,7 @@ Newest first. One entry per run; add each repo as it finishes.
 ## 2026-11-06 (full run, three lanes)
 
 - Tended: ragdoll #4 and #5 were merged 2026-11-06 with no comments.
+- **prompt_manager**: new PR [#19](https://github.com/MadBomber/prompt_manager/pull/19) (source: security; neutral title). Audit: security (first run; bundle-audit clean). Dead-code scan up to 240b105 found nothing removable. Tended PRs: none. aia suite unchanged against the 1.2.0 baseline (1975 tests, 0 failures, 38 errors, all environmental). Review hit the 3-round cap; fixed the trivial items and opened per the ragdoll#5 precedent, overrun explained in the PR. The repo has no PR CI, so there are no checks to go green (finding F-3). Dependabot alerts are disabled.
 
 ## 2026-11-05 (single repo: ragdoll, one lane, run by hand)
 

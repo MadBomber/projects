@@ -10,7 +10,7 @@ Prompt file management gem used by aia.
 
 ## Status
 
-_Updated 2026-11-05._ Not yet visited by bomberbot.
+_Updated 2026-11-06._ First bomberbot pass: security audit run; opened [#19](https://github.com/MadBomber/prompt_manager/pull/19) (env var and expansion output render as literal text in templates), **PR open**.
 
 ## Backlog
 
@@ -20,4 +20,4 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- (none)
+- [#19](https://github.com/MadBomber/prompt_manager/pull/19) fix(shell): treat env var and expansion output as literal text in templates (**PR open**, targets develop; repo has no PR CI)

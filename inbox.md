@@ -6,3 +6,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 
 - Two untracked notes already sit at the repo root (`target_1k_monthly.md`, `starter_rails_app_foundations.md`). Decide whether they live here, in a `notes/` directory, or elsewhere.
 - ragdoll: CI starts a pgvector Postgres service but sets `RAGDOLL_SKIP_DATABASE_TESTS=true`, so no database test runs in CI (361 skips once #5 lands). Pointing the suite at that service (create `ragdoll_test`, drop the flag, stop treating `CI=true` as "no database" in `ci_environment?`) would give real DB coverage. Locally every DB test passes against pgvector except finding F-3. Needs your call; it changes what CI enforces.
+
+## 2026-11-06
+
+- prompt_manager: add a test CI workflow (`test.yml`: setup-ruby 4.0.x, `bundle exec rake test`). `test_helper` already gates 100% coverage "in CI", but no workflow runs the tests, so bomberbot PRs show no checks. Which Ruby versions? (findings F-3)
+- prompt_manager: the docs deploy also runs on `develop` pushes (c5e7d62), so the public site shows unreleased docs. Keep it, or deploy from `main` only? (F-4)
+- prompt_manager: issue #17 targets the 0.x FileSystemAdapter, which was removed in 1.0. It looks closable as obsolete. (F-5)
+- prompt_manager: security-related design item S-2 needs a decision. Details are in local notes only.
+- Environment: `bundle install` with bundler 4.0.5 on Ruby 4.1.0-preview1 fails for path/gemspec sources (NameError `Pathname::SEPARATOR_PAT` in `Bundler::Source::Path#generate_bin`). Suites still run from already-installed gems. Upgrade bundler or wait for a fix.
