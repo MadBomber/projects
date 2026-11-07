@@ -10,14 +10,16 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-06._ The suite runs green on Ruby 4.0.9 once [#14](https://github.com/MadBomber/htm/pull/14) is in; the gem doesn't install on Ruby 4.1.0-preview1 (upstream tiktoken_ruby/magnus).
+_Updated 2026-11-07._ The suite is green on Ruby 4.0.9 (633 runs); [#15](https://github.com/MadBomber/htm/pull/15) removes two dead `.bak` test files, and the first full dead-code audit found unreachable RRF helpers and a broken `ontology_structure` method, both waiting on Dewayne's decision.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- (none yet)
+- F-11: add a test for `LongTermMemory#topic_relationships` (no running test covers it). See [findings](../bomberbot/findings/htm.md).
+- F-6: one autocorrectable rubocop offense in `hybrid_search.rb:324`.
 
 ## Open bomberbot PRs
 
-- [#14](https://github.com/MadBomber/htm/pull/14) fix(test): suite passes with a custom HTM_SERVICE__NAME. **PR open**
+- [#15](https://github.com/MadBomber/htm/pull/15) chore(test): remove stale .bak test files. **PR open**
+- [#14](https://github.com/MadBomber/htm/pull/14) fix(test): suite passes with a custom HTM_SERVICE__NAME. Merged 2026-11-07.
