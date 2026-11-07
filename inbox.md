@@ -58,3 +58,4 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - dev: decide F-12. A merged, idle branch appears in both of `branch_report`'s summary lists ("merged more than N days ago" and "no activity for N days"). Make the lists disjoint, or is the overlap intended? (added 2026-11-07)
 - Environment: the gh token lacks the `workflow` scope, so HTTPS pushes that change `.github/workflows/` are rejected (ragdoll#8 had to push over SSH). Add it with `gh auth refresh -s workflow`, or keep pushing those over SSH? (added 2026-11-07)
 - scripts: the README's one-line script descriptions may be guesses from file names; imbibler's said "Drinking game or beverage tracker" (fixed in #15). Worth an accuracy pass over the README table? (added 2026-11-07)
+- kbs: decide F-12. The gemspec requires Ruby >= 3.2.0, and 3.2 reached end of life on 2026-03-31. Keep it, or raise the floor and the CI matrix (#8) together? (added 2026-11-07)
