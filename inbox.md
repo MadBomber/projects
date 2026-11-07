@@ -60,3 +60,5 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - scripts: the README's one-line script descriptions may be guesses from file names; imbibler's said "Drinking game or beverage tracker" (fixed in #15). Worth an accuracy pass over the README table? (added 2026-11-07)
 - kbs: decide F-12. The gemspec requires Ruby >= 3.2.0, and 3.2 reached end of life on 2026-03-31. Keep it, or raise the floor and the CI matrix (#8) together? (added 2026-11-07)
 - htm: have `rake test` honor an existing `HTM_DATABASE__URL` that contains `_test`, so the suite can run against a throwaway database on a non-default port without bypassing rake. Today it hardcodes localhost:5432. (added 2026-11-07)
+
+- **2026-11-07 (bomberbot):** `bomberbot.md` says "at most two new small, proven, ready-to-merge pull request per repo" in its opening paragraph but "One new PR per repo per run" in step 7. Runs follow step 7. Should the intro say one, or should step 7 allow two?
