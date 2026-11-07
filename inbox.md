@@ -21,6 +21,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - debug_me: a wrapper around `debug_me` reports the wrapper's own line. Add a `caller_offset:` option (new API), or document `levels: 1`? (findings #11)
 - dev: add a tiny CI workflow that installs asgard and load-checks every `.loki`. After dev#1 there's no `test/`, so the load check is the whole suite. (findings F-2)
 - dev: the README Contents table lists neither `branch_report.loki` nor `db_doc.loki` (F-4). A small docs PR for a later run.
+- gem-skill: add a minimal test CI workflow (Ruby 3.4 and 4.x, `bundle exec rake test`). Today only the Pages deploy runs, so bomberbot PRs have no checks. (findings F-11)
+- gem-skill: `GEMSKIL_MAX_TOKENS` is spelled with one L, unlike every other `GEMSKILL_*` variable. Also read the corrected name and keep the old one as a fallback, or leave it? (F-6)
+- gem-skill: provider-prefixed ids split on any registered provider, so `openai/gpt-oss-20b` goes to OpenAI rather than OpenRouter. Document the `openrouter/...` form, or only split on an allowlist (`lms`, `apfel`)? (F-9)
+- gem-skill: the CHANGELOG has no 0.2.1 or 0.2.2 sections, and 0.2.2's changes (ruby_llm 2.0, lms/apfel, the 900 s timeout, the Ruby 3.4 floor) aren't recorded. Will you add the headings, or should bomberbot write the entries under a heading you name? (F-5)
 - prompt_manager: add a test CI workflow (`test.yml`: setup-ruby 4.0.x, `bundle exec rake test`). `test_helper` already gates 100% coverage "in CI", but no workflow runs the tests, so bomberbot PRs show no checks. Which Ruby versions? (findings F-3)
 - prompt_manager: the docs deploy also runs on `develop` pushes (c5e7d62), so the public site shows unreleased docs. Keep it, or deploy from `main` only? (F-4)
 - prompt_manager: issue #17 targets the 0.x FileSystemAdapter, which was removed in 1.0. It looks closable as obsolete. (F-5)
