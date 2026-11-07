@@ -10,7 +10,7 @@ Everyday scripts kept in sync across machines.
 
 ## Status
 
-_Updated 2026-11-06._ The first bomberbot pass opened [#13](https://github.com/MadBomber/scripts/pull/13) (**PR open**), which makes the sinatra_app template resolve current gems. Ruby-compat findings are queued in findings/scripts.md.
+_Updated 2026-11-07._ #13 (sinatra_app template) was merged; bomberbot opened [#14](https://github.com/MadBomber/scripts/pull/14) (**PR open**), which replaces the `Fixnum` and `File.exists?` calls that Ruby 3.2 removed (F-2, F-3). F-4 (imbibler.rb) is the next Ruby-compat item.
 
 ## Backlog
 
@@ -20,4 +20,8 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#13](https://github.com/MadBomber/scripts/pull/13) fix(templates): let sinatra_app resolve current gems (opened 2026-11-06), **PR open**
+- [#14](https://github.com/MadBomber/scripts/pull/14) fix: replace Fixnum and File.exists? removed in Ruby 3.2 (opened 2026-11-07), **PR open**
+
+## Merged bomberbot PRs
+
+- [#13](https://github.com/MadBomber/scripts/pull/13) fix(templates): let sinatra_app resolve current gems (merged 2026-11-07)
