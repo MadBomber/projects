@@ -6,6 +6,7 @@ Newest first. One entry per run; add each repo as it finishes.
 
 - Tended: ragdoll #4 and #5 were merged 2026-11-06 with no comments.
 - **prompt_manager**: new PR [#19](https://github.com/MadBomber/prompt_manager/pull/19) (source: security; neutral title). Audit: security (first run; bundle-audit clean). Dead-code scan up to 240b105 found nothing removable. Tended PRs: none. aia suite unchanged against the 1.2.0 baseline (1975 tests, 0 failures, 38 errors, all environmental). Review hit the 3-round cap; fixed the trivial items and opened per the ragdoll#5 precedent, overrun explained in the PR. The repo has no PR CI, so there are no checks to go green (finding F-3). Dependabot alerts are disabled.
+- **shared_tools**: new PR [#5](https://github.com/MadBomber/shared_tools/pull/5) (source: issue #3). Audit: dependencies. Dead-code scan up to 4ca4469. Tended PRs: none. aia suite matches the 0.7.1 baseline. `/code-review` hit the 3-round cap; opened per the ragdoll#5 rule. Round 2 reverted two round-1 "robustness" additions that caused regressions. The repo has no test CI, so there are no checks.
 
 ## 2026-11-05 (single repo: ragdoll, one lane, run by hand)
 
