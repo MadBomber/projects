@@ -50,3 +50,4 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - gem-skill: decide F-15. Should `GEMSKILL_TEMPERATURE=none` / `--temperature none` stop sending temperature to local models whose metadata does not mark it unsupported, or wait until someone reports a rejection? (added 2026-11-07)
 - gem-skill: decide F-14. `Gem::Skill::Frontmatter.present?` has no callers but is public; remove it in a minor release or keep it? (added 2026-11-07)
 - htm: decide the hybrid search direction (F-4); it settles F-9, whether the ~180 lines of unreachable Ruby-side RRF helpers get removed. Also F-10: does `LongTermMemory#ontology_structure` get its database view back in a migration, or a deprecation? (added 2026-11-07)
+- ragdoll: the rest of S-1 (held locally) waits on the F-11 question above: it needs the ruby_llm 2.x move. (added 2026-11-07)

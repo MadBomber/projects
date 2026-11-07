@@ -10,7 +10,7 @@ RAG library; most-starred repo, idle since early 2026.
 
 ## Status
 
-_Updated 2026-11-06._ #4 and #5 merged, so the `develop` suite is green in CI; this run's dependencies audit opened [#6](https://github.com/MadBomber/ragdoll/pull/6), a `Database.disconnect!` fix (finding F-2). **PR open**.
+_Updated 2026-11-07._ #6 merged; this run opened [#7](https://github.com/MadBomber/ragdoll/pull/7), a conservative lockfile update within current majors (finding S-1, part 1), **PR open**, CI green.
 
 ## Backlog
 
@@ -25,9 +25,10 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#6](https://github.com/MadBomber/ragdoll/pull/6) fix: Database.disconnect! works on ActiveRecord 7.2+ (finding F-2). **PR open**, CI green.
+- [#7](https://github.com/MadBomber/ragdoll/pull/7) chore(deps): update locked gems within current majors (finding S-1, part 1). **PR open**, CI green.
 
 ## Merged bomberbot PRs
 
+- [#6](https://github.com/MadBomber/ragdoll/pull/6) fix: Database.disconnect! works on ActiveRecord 7.2+. Merged 2026-11-07.
 - [#5](https://github.com/MadBomber/ragdoll/pull/5) test: skip database tests when database tests are off. Merged 2026-11-06.
 - [#4](https://github.com/MadBomber/ragdoll/pull/4) fix: connected? returns boolean; batch fallback honors filter. Merged 2026-11-06.
