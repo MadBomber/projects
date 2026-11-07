@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | never | |
-| dead code | 2026-11-07 | Quick scans of 9e0f9be..3055a9f (the #8 merge) and 3055a9f..98b8d47 (the #9 merge: CI workflow, Rakefile, gemspec); nothing removable. |
+| dead code | 2026-11-07 | Quick scans of 9e0f9be..3055a9f (the #8 merge), 3055a9f..98b8d47 (the #9 merge: CI workflow, Rakefile, gemspec) and 98b8d47..3c1bd45 (the #10 merge: docs and CHANGELOG only); nothing removable. |
 | dependencies | never | |
 | adoption | 2026-11-06 | First audit. README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. gem-skill and llms.txt not checked. |
 | quality | never | |
 
-Dead-code scan last covered commit: 98b8d47 (develop, 2026-11-07)
+Dead-code scan last covered commit: 3c1bd45 (develop, 2026-11-07)
 
 ## Findings
 
@@ -52,8 +52,14 @@ Dead-code scan last covered commit: 98b8d47 (develop, 2026-11-07)
 
 - Findings 5 and 6 confirmed still present on develop 98b8d47. Finding 5's "With Backtrace" sample is wrong too: real output is `TAG backtrace -=> [[0, "file:line:in ..."], ...]`, not `caller(0) -=>` with one frame per line.
 
-13. **`debug_me(levels: 1) { :backtrace }` prints the backtrace twice.** With `levels > 0`, lib/debug_me.rb adds `'backtrace'` to the output list itself, then evaluates the block's own `:backtrace` again. Confirmed at runtime on develop 98b8d47. README.md says `levels` replaces `:backtrace`. Status: open. A small code fix with a failing test; good next PR.
+13. **`debug_me(levels: 1) { :backtrace }` prints the backtrace twice.** With `levels > 0`, lib/debug_me.rb adds `'backtrace'` to the output list itself, then evaluates the block's own `:backtrace` again. Confirmed at runtime on develop 98b8d47. README.md says `levels` replaces `:backtrace`. Status: PR'd ([#11](https://github.com/MadBomber/debug_me/pull/11)).
 14. **`levels:` is silently ignored with `header: false`, and a String `levels:` raises.** The `levels` backtrace is collected only inside `if options[:header]`, and `options[:levels] > 0` runs before `.to_i`, so `debug_me(levels: '2')` raises NoMethodError. Status: open.
 15. **configuration.md's "Include at Kernel Level" heading and its "includes into Object/Kernel" comment are wrong.** A top-level `include` adds the module to Object, not Kernel. Status: open (docs; the heading anchor may be linked).
 16. **api-reference's signature line still reads `debug_me(options = {}, &block)` and leaves out `**keyword_options`** (added in #8). Status: open (docs).
 17. **On Ruby 2.7, passing a Hash variable to `debug_me` may print the "last argument as keyword parameters" deprecation warning** since #8 added `**keyword_options`. Status: unverified (needs a Ruby 2.7 run; CI covers 2.3 and 4.0 only).
+
+### 2026-11-07 third run (no audit; found by `/code-review` on #11)
+
+- Findings 5, 6, 12, 14, 15 and 16 still open on develop 3c1bd45 (not re-verified one by one; the #10 merge touched only docs, and none of these were in its scope).
+
+18. **With `levels > 0`, an empty block or one returning `nil` no longer dumps local, instance and class variables.** `levels` puts `backtrace` in the list before the `block_value.empty?` fallback runs, so `debug_me(levels: 2) { }` shows only the backtrace, while `debug_me { }` dumps the variables. Status: open (behaviour choice; small, but confirm that the dump is wanted alongside `levels`).
