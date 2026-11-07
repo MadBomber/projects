@@ -17,6 +17,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - debug_me: the CHANGELOG has no 1.1.3 entry, the 1.1.2 and 1.1.1 dates don't match RubyGems, and `docs/changelog.md` has drifted from `CHANGELOG.md`. Should bomberbot fix the entries, or should the docs page include `CHANGELOG.md`? (findings #7)
 - debug_me: `.rultor.yml` and `rubygems.yml.asc` look dead. Remove them? (findings #10)
 - debug_me: a wrapper around `debug_me` reports the wrapper's own line. Add a `caller_offset:` option (new API), or document `levels: 1`? (findings #11)
+- dev: add a tiny CI workflow that installs asgard and load-checks every `.loki`. After dev#1 there's no `test/`, so the load check is the whole suite. (findings F-2)
+- dev: the README Contents table lists neither `branch_report.loki` nor `db_doc.loki` (F-4). A small docs PR for a later run.
+- dev: security finding S-1 needs a decision. Details are in local notes only.
 - prompt_manager: add a test CI workflow (`test.yml`: setup-ruby 4.0.x, `bundle exec rake test`). `test_helper` already gates 100% coverage "in CI", but no workflow runs the tests, so bomberbot PRs show no checks. Which Ruby versions? (findings F-3)
 - prompt_manager: the docs deploy also runs on `develop` pushes (c5e7d62), so the public site shows unreleased docs. Keep it, or deploy from `main` only? (F-4)
 - prompt_manager: issue #17 targets the 0.x FileSystemAdapter, which was removed in 1.0. It looks closable as obsolete. (F-5)
