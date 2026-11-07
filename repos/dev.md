@@ -10,18 +10,17 @@ Shared Asgard task libraries (.loki) for madbomber repos.
 
 ## Status
 
-_Updated 2026-11-07 (second run)._ dev#2 merged; opened dev#3 keeping `origin/<default>` out of branch_report's idle lists (F-7); first quality audit.
+_Updated 2026-11-07 (third run)._ dev#3 merged; opened dev#4 so branch_report compares against `origin/<default>` when it exists (F-11).
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
 - F-5: drop the header comments copied from the vbr project (after F-6 is decided).
-- F-7: keep `origin/<default>` out of branch_report's stale and merged lists. **PR open** ([dev#3](https://github.com/MadBomber/dev/pull/3))
-- F-11: compare branch_report's remote rows against `origin/<default>`, so branches merged on the server show as merged before a pull.
+- F-11: compare branch_report's remote rows against `origin/<default>`, so branches merged on the server show as merged before a pull. **PR open** ([dev#4](https://github.com/MadBomber/dev/pull/4))
 
 ## Open bomberbot PRs
 
-- [dev#3](https://github.com/MadBomber/dev/pull/3): fix(branch_report): keep origin/<default> out of idle lists (F-7). **PR open**
+- [dev#4](https://github.com/MadBomber/dev/pull/4): fix(branch_report): compare against origin/<default> when it exists (F-11). **PR open**
 
-Merged: [dev#2](https://github.com/MadBomber/dev/pull/2) README Contents (2026-11-07), [dev#1](https://github.com/MadBomber/dev/pull/1) remove schedule.loki (2026-11-07).
+Merged: [dev#3](https://github.com/MadBomber/dev/pull/3) branch_report skips origin/<default> (2026-11-07), [dev#2](https://github.com/MadBomber/dev/pull/2) README Contents (2026-11-07), [dev#1](https://github.com/MadBomber/dev/pull/1) remove schedule.loki (2026-11-07).
