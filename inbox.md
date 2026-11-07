@@ -29,6 +29,8 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - prompt_manager: the docs deploy also runs on `develop` pushes (c5e7d62), so the public site shows unreleased docs. Keep it, or deploy from `main` only? (F-4)
 - prompt_manager: issue #17 targets the 0.x FileSystemAdapter, which was removed in 1.0. It looks closable as obsolete. (F-5)
 - Environment: `bundle install` with bundler 4.0.5 on Ruby 4.1.0-preview1 fails for path/gemspec sources (NameError `Pathname::SEPARATOR_PAT` in `Bundler::Source::Path#generate_bin`). Suites still run from already-installed gems. Upgrade bundler or wait for a fix.
+- scripts: `templates/sinatra_app` is stale beyond #13: thin/eventmachine fails on Ruby 4.1 preview, sass is EOL, there's no rake gem, and there's an `APP_BIND` bug. Modernize it (puma only, drop sass, add rake) or retire it? (findings F-6 to F-8)
+- scripts: `repos/scripts.md` links a RubyGems page, but scripts isn't a gem. Drop the link?
 - shared_tools: add a GitHub Actions test workflow (`rake test` on Ruby 3.3/3.4/4.x with `LANG=C.UTF-8`). Today PRs get no checks at all; the only workflow is the docs deploy. (findings F-6)
 - shared_tools: browser tools raise `LoadError` (a ScriptError) when no driver gem is present, and RubyLLM's tool loop doesn't rescue it. Switch to a StandardError subclass, or return an `{error:}` result? (findings F-4)
 - shared_tools: the gemspec's `if RUBY_VERSION >= "4.0"` bigdecimal pin is evaluated at build time, so 0.7.1 requires bigdecimal >= 4.0 everywhere. Make it unconditional, or move it to the Gemfile? (findings F-8)
