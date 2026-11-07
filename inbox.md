@@ -9,6 +9,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 
 ## 2026-11-06
 
+- aia: no workflow runs the test suite; the only workflow deploys docs. Add a minimal `rake test` workflow on Ruby 4.0.x for PRs to `develop`? Once #157 lands, the suite passes without API keys, so it can run on a stock runner. (findings F-6)
+- aia: Dependabot alerts are disabled on MadBomber/aia. Enable them, or rely on bomberbot's bundle-audit pass? (F-7)
+- aia: `.rubocop.yml` inherits `../.rubocop-base.yml`, which exists only in `robot_lab_project`, so rubocop fails in a fresh clone or CI. Vendor the base file into the repo, or make the inherit optional? (F-8)
 - prompt_manager: add a test CI workflow (`test.yml`: setup-ruby 4.0.x, `bundle exec rake test`). `test_helper` already gates 100% coverage "in CI", but no workflow runs the tests, so bomberbot PRs show no checks. Which Ruby versions? (findings F-3)
 - prompt_manager: the docs deploy also runs on `develop` pushes (c5e7d62), so the public site shows unreleased docs. Keep it, or deploy from `main` only? (F-4)
 - prompt_manager: issue #17 targets the 0.x FileSystemAdapter, which was removed in 1.0. It looks closable as obsolete. (F-5)
