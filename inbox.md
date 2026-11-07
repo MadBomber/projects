@@ -47,3 +47,5 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - scripts: merge the 7 copies of `get_next_parameter` into one helper in `lib/`, next to `find_repo_dir.rb`? A design choice, so no PR. (findings F-11, added 2026-11-07)
 - dev: decide F-6. `db_doc.loki` and `.irbrc` are specific to one project, which breaks the README rule that tasks here stay universal. Make them generic, move them back to that project, or keep them and document `.irbrc`? (added 2026-11-07)
 - dev: decide F-3 (`shell_history_collect` never matches on bash 5.3) together with held finding S-1; details are in the final report of the 2026-11-07 run. (added 2026-11-07)
+- gem-skill: decide F-15. Should `GEMSKILL_TEMPERATURE=none` / `--temperature none` stop sending temperature to local models whose metadata does not mark it unsupported, or wait until someone reports a rejection? (added 2026-11-07)
+- gem-skill: decide F-14. `Gem::Skill::Frontmatter.present?` has no callers but is public; remove it in a minor release or keep it? (added 2026-11-07)
