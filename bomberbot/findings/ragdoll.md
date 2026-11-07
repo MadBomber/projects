@@ -14,7 +14,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | adoption | never | |
 | quality | never | |
 
-Dead-code scan last covered commit: 19bde2b (2026-11-07 quick scan of 66a9237..19bde2b; nothing removable)
+Dead-code scan last covered commit: 8979006 (2026-11-07 second-run quick scan of 19bde2b..8979006, lockfile and CHANGELOG only; nothing removable)
 
 ## Findings
 
@@ -35,7 +35,7 @@ Dead-code scan last covered commit: 19bde2b (2026-11-07 quick scan of 66a9237..1
 Status check of earlier findings on 66a9237: F-1, F-7, F-8, F-9 still present and open. F-3 still the only failure in the full database suite (1294 runs). The develop suite merged via #4 and #5 is green in CI.
 
 - **S-1** part 1 PR'd ([#7](https://github.com/MadBomber/ragdoll/pull/7), 2026-11-07); remainder needs Dewayne's decision. Security finding, details held locally. Most of it is an obvious-yes lockfile update within existing constraints; one part needs a major dependency bump and Dewayne's decision.
-- **F-10** open. CI matrix (`.github/workflows/ruby.yml`) tests Ruby 3.2, 3.3, 3.4 only. The suite is green locally on Ruby 4.0.9 in CI mode and against a database (except F-3). Adding `"4.0"` to the matrix is a small obvious-yes PR candidate.
+- **F-10** PR'd ([#8](https://github.com/MadBomber/ragdoll/pull/8), 2026-11-07). CI matrix (`.github/workflows/ruby.yml`) tests Ruby 3.2, 3.3, 3.4 only. The suite is green locally on Ruby 4.0.9 in CI mode and against a database (except F-3). Adding `"4.0"` to the matrix is a small obvious-yes PR candidate.
 - **F-11** needs Dewayne's decision. Major versions available for runtime dependencies locked well behind: ruby_llm 1.9.1 to 2.1.1, neighbor 0.6.0 to 1.2.0, rmagick 6.1.5 to 7.2.0, marcel 1.1.0 to 2.1.0 (transitive), json 2.18 to 3.1. The gemspec doesn't bound them, so users already resolve to the new majors; the lockfile, and so CI, still tests the old ones. Decide whether to move the lockfile to the current majors (testing what users actually get) or to add upper bounds.
 - **F-12** open (environment, not repo). Ruby 4.1.0-preview1 with Bundler 2.7.2 crashes on this gemspec (`uninitialized constant Pathname::SEPARATOR_PAT`); work under Ruby 4.0.9. Revisit when Bundler ships a 4.1 fix.
 
@@ -44,3 +44,10 @@ Status check of earlier findings on 66a9237: F-1, F-7, F-8, F-9 still present an
 Checked on develop 19bde2b: F-1, F-7, F-8, F-9, F-10 still present and open. F-3 is still the only failure in the full database suite (1294 runs). F-2 merged in #6. S-1 part 1 PR'd as #7; the remaining part needs a major bump, so it waits on F-11.
 
 - **F-13** open (low). `Gemfile.lock` lists only precompiled nokogiri platforms; their gems cap Ruby below 4.1, and there is no `ruby` platform entry, so `bundle install` on 4.1 would re-resolve the lock. Moot until F-12 (Bundler on 4.1) is fixed. Raised by `/code-review` on #7 and kept out of it.
+
+### 2026-11-07, second run: status check (no audit run; 4 verified open findings, last audit 1 day old)
+
+Checked on develop 8979006: F-1, F-7, F-8 and F-9 are still present and open. F-10 PR'd as #8, where the new Ruby 4.0 job passed (4.0.9 x86_64-linux, 1294 runs, 0 failures, 362 skips). Both new findings came up in `/code-review` on #8 and were kept out of it.
+
+- **F-14** open. Every CI job sets `RAGDOLL_SKIP_DATABASE_TESTS: true` while starting a pgvector Postgres service, so CI never runs the database tests (362 skips) and the service container goes unused. The full database suite fails only on F-3 locally, so turning DB tests on in CI depends on F-3.
+- **F-15** open (low). `Rakefile` line 4 sets `$VERBOSE = nil`, which hides every Ruby warning in `rake` runs, CI included, deprecation warnings for future Ruby versions among them.
