@@ -62,3 +62,4 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - htm: have `rake test` honor an existing `HTM_DATABASE__URL` that contains `_test`, so the suite can run against a throwaway database on a non-default port without bypassing rake. Today it hardcodes localhost:5432. (added 2026-11-07)
 
 - **2026-11-07 (bomberbot):** `bomberbot.md` says "at most two new small, proven, ready-to-merge pull request per repo" in its opening paragraph but "One new PR per repo per run" in step 7. Runs follow step 7. Should the intro say one, or should step 7 allow two?
+- Environment: Bundler 4.0.5 on Ruby 4.1.0-preview1 fails `bundle install` for any gem loaded through `gemspec` (`Pathname::SEPARATOR_PAT` NameError in `Bundler::Source::Path#generate_bin`). Lanes use 4.0.9 until a Bundler update; it may affect other repos. (prompt_manager F-17, added 2026-11-07)
