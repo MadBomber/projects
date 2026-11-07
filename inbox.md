@@ -51,3 +51,5 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - gem-skill: decide F-14. `Gem::Skill::Frontmatter.present?` has no callers but is public; remove it in a minor release or keep it? (added 2026-11-07)
 - htm: decide the hybrid search direction (F-4); it settles F-9, whether the ~180 lines of unreachable Ruby-side RRF helpers get removed. Also F-10: does `LongTermMemory#ontology_structure` get its database view back in a migration, or a deprecation? (added 2026-11-07)
 - ragdoll: the rest of S-1 (held locally) waits on the F-11 question above: it needs the ruby_llm 2.x move. (added 2026-11-07)
+- prompt_manager: Material for MkDocs reaches end of life 2027-05-05 (the build prints the notice). Zensical is the successor and claims mkdocs.yml compatibility. Try a migration before then? It affects every repo with a mkdocs site. (findings F-13, added 2026-11-07)
+- prompt_manager: since #19, an env var value inside the author's own ERB tag is escaped and stays changed (`<%= "$V".upcase %>` with V=`a<%b` renders `A<%%B`). Fold this into the S-2 redesign, or just document it? (findings F-14, added 2026-11-07)
