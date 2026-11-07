@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | never | |
-| dead code | 2026-11-07 (quick scan, second run) | lib/ changes 39a14c8..36fcf74 (#2) checked by hand; nothing removable |
+| dead code | 2026-11-07 (quick scan, third run) | 36fcf74..5552441 (#3) touched no code under lib/, bin/ or scripts/; nothing removable |
 | dependencies | never | |
 | adoption | 2026-11-06 | first run; README/docs vs 0.2.2 API, CHANGELOG, local-model path exercised without network |
 | quality | never | |
 
-Dead-code scan last covered commit: 36fcf74 (2026-11-07 second run, quick scan of the #2 changes)
+Dead-code scan last covered commit: 5552441 (2026-11-07 third run; #3 changed only docs and tests)
 
 ## Findings
 
@@ -37,7 +37,7 @@ Dead-code scan last covered commit: 36fcf74 (2026-11-07 second run, quick scan o
 - **F-1 update:** fixed in [#2](https://github.com/MadBomber/gem-skill/pull/2). The fix uses the model `RubyLLM.chat` already resolved (`chat.model`) instead of a second strict `RubyLLM.models.find` lookup; for local providers RubyLLM falls back to a default model with no `:temperature` metadata. Seen running against a local LM Studio model not in the registry.
 - **F-2 decision (taken by rule, recorded here):** don't open a second PR this run. After #2 merges, rebase [bomber/document-local-models](https://github.com/MadBomber/gem-skill/tree/bomber/document-local-models) onto `develop`, add the two missing Apfel notes from F-2 (4,096-token window versus the 32767 default; Apple Intelligence must be enabled), re-run `/simplify` and `/code-review`, and open it as the next gem-skill PR. Rebasing is better than starting over: the branch's `test/docs_test.rb` env-var guard and the Ruby floor fix are still valid.
 - **F-12 (open, verified, small):** `test/gem/skill/gem_command_test.rb` leaves a `.claude/skills/my_gem` symlink in the current working directory (the repo root) on every `rake test`, pointing into a deleted tmpdir. Some install test links into the default project dir instead of a tmpdir. Fix: stub `Linker`'s project dir (or `GEMSKILL_PROJECT_DIR`) to a tmpdir in that test's setup.
-- **F-13 (open, verified):** `bundle install` on Ruby 4.0.9 and 4.1.0-preview1 prints `Error loading RubyGems plugin ".../plugins/gem-skill_plugin.rb": uninitialized constant Gem::CommandManager (NameError)` with gem-skill 0.2.2 installed. `lib/rubygems_plugin.rb` line 4 calls `Gem::CommandManager.instance` without requiring `rubygems/command_manager`, which isn't loaded when Bundler loads plugins. Likely fix: `require "rubygems/command_manager"` first; reproduce in a test before fixing.
+- **F-13 (PR'd: [#4](https://github.com/MadBomber/gem-skill/pull/4)):** `bundle install` on Ruby 4.0.9 and 4.1.0-preview1 prints `Error loading RubyGems plugin ".../plugins/gem-skill_plugin.rb": uninitialized constant Gem::CommandManager (NameError)` with gem-skill 0.2.2 installed. `lib/rubygems_plugin.rb` line 4 calls `Gem::CommandManager.instance` without requiring `rubygems/command_manager`, which isn't loaded when Bundler loads plugins. Likely fix: `require "rubygems/command_manager"` first; reproduce in a test before fixing.
 - **F-14 (needs Dewayne's decision):** `Gem::Skill::Frontmatter.present?` has no callers in lib/, test/, scripts/ or bin/ (debride plus grep). It's a public module method, so removing it needs a deprecation decision. Options: (a) remove it in a minor release; (b) keep it.
 - **F-15 (needs Dewayne's decision):** there's no way to turn temperature off for a model whose metadata doesn't say it is unsupported, such as an unregistered local reasoning model. `DEFAULT_TEMPERATURE` is never nil, and the absent-metadata rule sends it. Options: (a) let `GEMSKILL_TEMPERATURE=none` (or `--temperature none`) mean "don't send"; (b) leave it as is until someone reports a rejection.
 - **F-10 still open:** recheck on the next run; this run's suite ran with `GEMSKILL_DIR` unset.
@@ -51,3 +51,11 @@ Dead-code scan last covered commit: 36fcf74 (2026-11-07 second run, quick scan o
 - **F-17 (open, verified, small):** `Verifier#build_chat` sets no output-token cap (`with_max_output_tokens`), unlike `Generator`. So `GEMSKIL_MAX_TOKENS` / `--max-tokens` have no effect on `--verify` or `gem skill verify`. Found in #3's review; #3 documents it (skip `--verify` on Apfel) instead of changing code.
 - **F-18 (unverified):** `ENV_KEY_MAP` doesn't include `OLLAMA_API_BASE`, so an `ollama/...` model is split to the Ollama provider but RubyLLM has no api_base for it. Check whether RubyLLM raises a configuration error, and whether adding the mapping is an obvious-yes PR.
 - **F-19 (open, small):** the repo's CLAUDE.md list of key env vars leaves out `GEMSKILL_REQUEST_TIMEOUT` and the `LMS_*`/`APFEL_*` variables.
+
+### 2026-11-07, third run (F-13 fix pass, develop at 5552441; no audit, the backlog was workable)
+
+- **F-13 update:** fixed in [#4](https://github.com/MadBomber/gem-skill/pull/4): `lib/rubygems_plugin.rb` requires `rubygems/command_manager`. A new fresh-process test fails on develop and passes on the branch. A branch build in a temp `GEM_HOME` removes the `bundle install` warning. With the plugin fully loaded under Bundler, its post_install and at_exit hooks run inside `bundle install`; a traced install of a native gem showed them as no-ops (exit 0).
+- **F-12 still open, rechecked:** `rake test` still leaves `.claude/` in the repo root.
+- **F-16 still open, rechecked:** `docs/commands/gem-skill.md:75` still links `cache.md#metadatajson`.
+- **F-20 (open, unverified idea, not obvious-yes):** the plugin eagerly loads all of gem-skill (ruby_llm, async, tty-spinner) just to register `gem skill`. It took about 356 ms in #4's review, and every `gem` and `bundle install` call pays that. RubyGems can load a command lazily from `lib/rubygems/commands/skill_command.rb`, leaving the plugin with only `register_command` plus the install hooks. It's a restructure, so measure it before proposing.
+- **F-21 (open, small):** the `test_generate_one_skill_calls_*_on_spinner` tests redefine `success`/`error` on `null_spinner`, which gives "method redefined" warnings under `ruby -w` (rubygems_plugin_test.rb:110 and :120).
