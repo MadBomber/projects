@@ -28,6 +28,8 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - htm: issue #13 (hybrid search should merge independent searches) is still open, but 4993548 deliberately switched to retrieve-then-rerank. Restore an independent vector search, or keep the rerank, fix the HybridSearch docstring/docs, and close #13? (findings F-4)
 - htm: add a test CI workflow with a pgvector Postgres service; today nothing runs the suite or rubocop on PRs. (F-7)
 - htm: Ruby 4.1 readiness is blocked by tiktoken_ruby/magnus. Make tiktoken optional with a fallback token counter, or wait for upstream (recommended; re-check in December)? (F-2)
+- kbs: the 35% SimpleCov minimum fails single-file and filtered runs, and result merging makes it nondeterministic. Keep it, enforce it only on full rake runs, or drop it? (findings F-7)
+- kbs: the Redis tests `flushdb` DB 15 on `localhost:6379`. Once #6 merges, a plain `rake` on your Mac flushes it every run. Making the URL configurable and skipping by default (F-2/F-3) is the next PR.
 - prompt_manager: add a test CI workflow (`test.yml`: setup-ruby 4.0.x, `bundle exec rake test`). `test_helper` already gates 100% coverage "in CI", but no workflow runs the tests, so bomberbot PRs show no checks. Which Ruby versions? (findings F-3)
 - prompt_manager: the docs deploy also runs on `develop` pushes (c5e7d62), so the public site shows unreleased docs. Keep it, or deploy from `main` only? (F-4)
 - prompt_manager: issue #17 targets the 0.x FileSystemAdapter, which was removed in 1.0. It looks closable as obsolete. (F-5)
