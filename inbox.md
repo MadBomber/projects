@@ -59,3 +59,4 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - Environment: the gh token lacks the `workflow` scope, so HTTPS pushes that change `.github/workflows/` are rejected (ragdoll#8 had to push over SSH). Add it with `gh auth refresh -s workflow`, or keep pushing those over SSH? (added 2026-11-07)
 - scripts: the README's one-line script descriptions may be guesses from file names; imbibler's said "Drinking game or beverage tracker" (fixed in #15). Worth an accuracy pass over the README table? (added 2026-11-07)
 - kbs: decide F-12. The gemspec requires Ruby >= 3.2.0, and 3.2 reached end of life on 2026-03-31. Keep it, or raise the floor and the CI matrix (#8) together? (added 2026-11-07)
+- htm: have `rake test` honor an existing `HTM_DATABASE__URL` that contains `_test`, so the suite can run against a throwaway database on a non-default port without bypassing rake. Today it hardcodes localhost:5432. (added 2026-11-07)
