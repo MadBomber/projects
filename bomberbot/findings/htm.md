@@ -12,9 +12,9 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | dead code | 2026-11-07 | first full run: debride over lib and bin, tracked-file sweep, hand-checked each candidate |
 | dependencies | 2026-11-06 | first run: Ruby 4.1/4.0.9 boot, bundle outdated, bundle-audit, gemspec constraints |
 | adoption | never | |
-| quality | never | |
+| quality | 2026-11-07 | first run (third run today): rubocop over lib (only F-6), `rake flog_check` (nothing over 50; top is `RelevanceScorer#calculate_relevance` at 49.1), flay over lib; concrete local duplication only |
 
-Dead-code scan last covered commit: 8d3a03f (2026-11-07 second run; 6626985..8d3a03f only removed the .bak files, nothing new)
+Dead-code scan last covered commit: cf7ec39 (2026-11-07 third run; 8d3a03f..cf7ec39 is #16's SQL and tests only, no new methods)
 
 ## Findings
 
@@ -43,8 +43,20 @@ F-11 is PR'd in [#16](https://github.com/MadBomber/htm/pull/16). F-6 and F-7 are
 
 - **F-12: `topic_relationships` counted soft-deleted data.** Its raw SQL ignored `deleted_at`, so memories removed with `forget` or `unload_file`, and soft-deleted tags, still added to `shared_nodes`. Found while writing the F-11 test. Status: PR'd ([#16](https://github.com/MadBomber/htm/pull/16)).
 - **F-13: other tag queries also skip soft-delete filters.** `popular_tags` (`base_popular_tags_query` joins `node_tags` and `nodes` with no `deleted_at` checks), and `get_node_tags`, `node_topics` and `batch_load_node_tags` (they join the raw `node_tags` table through `Tag`, so only the tags scope applies). So forgotten memories still count toward popular tags, which also feed `TagService.extract` as the existing ontology. Status: unverified (found by `/code-review` on #16; needs a failing test like the ones in #16).
-- **F-14: `FileSource#soft_delete_chunks!` does not cascade.** `htm.unload_file` runs `nodes_dataset.update(deleted_at: ...)`, which skips `Node#soft_delete!`, so the chunks' `node_tags` and `robot_nodes` rows stay active. Any query that trusts `node_tags.deleted_at` alone sees unloaded chunks. Status: open (a small fix: soft-delete each node, or cascade in one update per table, plus a test).
+- **F-14: `FileSource#soft_delete_chunks!` does not cascade.** `htm.unload_file` runs `nodes_dataset.update(deleted_at: ...)`, which skips `Node#soft_delete!`, so the chunks' `node_tags` and `robot_nodes` rows stay active. Any query that trusts `node_tags.deleted_at` alone sees unloaded chunks. Status: PR'd ([#17](https://github.com/MadBomber/htm/pull/17)).
 - **F-15: `add_tag` does not revive a soft-deleted link.** `NodeTag.find_or_create` cannot see a soft-deleted row, so its INSERT hits the unique index, which is rescued and ignored, and the link stays deleted. Re-adding a tag to a node whose link was soft-deleted does nothing. Status: unverified.
 - **F-16: S-2, security finding, details held locally.** Low. Status: open.
 - **F-17: S-3, security finding, details held locally.** Low, dev-only rake task. Status: open.
 - Note for the next lane: `rake test` hardcodes `localhost:5432` in `set_test_env`, so a throwaway DB on another port has to be run with `ruby -Ilib -Itest -rtest_helper` over the same file list.
+
+### 2026-11-07, third run (quality audit, first run, develop cf7ec39)
+
+F-14 is PR'd in [#17](https://github.com/MadBomber/htm/pull/17). F-6 is still open and unchanged (the only rubocop offense in `lib`). F-7 is still open. F-13 and F-15 are still unverified. Flog shows nothing over 50, and the worst methods are 40 to 49 points with no single obvious split, so none of them is listed. Items 21 to 24 came from `/code-review` on #17. They are existing behaviour outside that diff.
+
+- **F-18: the working-memory eviction block is duplicated.** `HTM#store_in_working_memory` (`lib/htm.rb:563`) and `HTM#add_to_working_memory` (`lib/htm.rb:616`) each run the same `has_space?` / `evict_to_make_space` / `mark_evicted` sequence (flay: IDENTICAL, mass 108). Extracting a private `make_working_memory_space(token_count)` is a small, local refactor. Status: open.
+- **F-19: `check_database_config!` is defined twice.** The bodies in `lib/htm/mcp/cli.rb:140` and `lib/htm/mcp/server.rb:30` are identical (flay mass 76). Both are live: `bin/htm_mcp` calls `Server.start`, and the CLI calls its own copy. One shared module method would remove the copy. Status: open (check how `bin/htm_mcp` loads the CLI before moving it).
+- **F-20: manual-tag linking re-implements `Node#add_tags`.** `HTM#enqueue_tags_job` (`lib/htm.rb:587`) and `RememberWorkflow#generate_tags_step` (`lib/htm/workflows/remember_workflow.rb:142`) both loop `Tag.find_or_create_with_ancestors` + `NodeTag.find_or_create`, which is exactly `Node#add_tags` (`lib/htm/models/node.rb:276`), and `handle_existing_node_tags` already uses it. Status: open (a small change; the htm.rb copy keeps a node lookup off the hot path, so measure or pass the id through a class-level helper).
+- **F-21: `unload_file` leaves unloaded chunks in working memory.** `forget` calls `@working_memory.remove(node_id)`, and `unload_file` doesn't. So the HTM instance keeps serving those chunks in context until they are evicted. Status: unverified (needs a failing test).
+- **F-22: `Node#restore!` revives every link, including ones that were deleted on their own.** It clears `deleted_at` on all of the node's `node_tags` and `robot_nodes`, so a tag removed by `rake htm:tags:cleanup` (or a soft-deleted robot link) comes back when the same content is remembered again. Matching on the node's own `deleted_at` timestamp (the cascade stamps one `now`) would restore only the rows from that deletion. Status: unverified. It touches restore semantics, so it may need Dewayne's call.
+- **F-23: `unload_file` deletes the source outside the cascade transaction.** `soft_delete_chunks!` commits, then `source.delete` runs on its own. If the delete fails, the chunks are gone but the FileSource survives, and a later `load_file` without `force` skips the file as unchanged. Wrapping both in one `HTM.db.transaction` fixes it. Status: open (small).
+- **F-24: `MarkdownLoader#update_existing_chunk` revives a chunk with a bare `deleted_at: nil` update.** It doesn't use `Node#restore!`, so a chunk that `soft_delete_removed_chunks` deleted and that later reappears in the file comes back without its tag and robot links. Related to F-15. Status: unverified.
