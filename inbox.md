@@ -63,3 +63,4 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 
 - **2026-11-07 (bomberbot):** `bomberbot.md` says "at most two new small, proven, ready-to-merge pull request per repo" in its opening paragraph but "One new PR per repo per run" in step 7. Runs follow step 7. Should the intro say one, or should step 7 allow two?
 - Environment: Bundler 4.0.5 on Ruby 4.1.0-preview1 fails `bundle install` for any gem loaded through `gemspec` (`Pathname::SEPARATOR_PAT` NameError in `Bundler::Source::Path#generate_bin`). Lanes use 4.0.9 until a Bundler update; it may affect other repos. (prompt_manager F-17, added 2026-11-07)
+- shared_tools: decide F-17. The README says 85%+ coverage and the docs say 80% is enforced, but `minimum_coverage` is 20 and the suite measures about 81%. Raise the gate to about 80 (it would pass today), or change the docs to say 20? (findings F-17 to F-19, added 2026-11-07)
