@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-05._ Not yet visited by bomberbot.
+_Updated 2026-11-06._ The suite runs green on Ruby 4.0.9 once [#14](https://github.com/MadBomber/htm/pull/14) is in; the gem doesn't install on Ruby 4.1.0-preview1 (upstream tiktoken_ruby/magnus).
 
 ## Backlog
 
@@ -20,4 +20,4 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- (none)
+- [#14](https://github.com/MadBomber/htm/pull/14) fix(test): suite passes with a custom HTM_SERVICE__NAME. **PR open**
