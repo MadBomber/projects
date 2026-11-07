@@ -5,6 +5,7 @@ Newest first. One entry per run; add each repo as it finishes.
 ## 2026-11-07 (full run, three lanes)
 
 - Tended: all 10 PRs from the 2026-11-06 run were merged 2026-11-07 (aia#157, prompt_manager#19, shared_tools#5, debug_me#8, dev#1, asgard#6, scripts#13, ragdoll#6, htm#14, kbs#6), none with comments. Nothing was open to tend at the start.
+- **prompt_manager**: new PR [#20](https://github.com/MadBomber/prompt_manager/pull/20), ci: run the test suite on pushes and pull requests (source: saved finding F-3, dependencies audit). Audit: dependencies (first run; bundle-audit clean, lockfile-only updates). Dead-code scan up to 5e24e0c, nothing removable. Tended PRs: none open; #19 merged without comments. Review: `/simplify` plus 3 `/code-review` rounds; opened at the cap per the ragdoll#5 rule. CI green on the PR, the repo's first test check.
 
 ## 2026-11-06 (full run, three lanes)
 

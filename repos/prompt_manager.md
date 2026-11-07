@@ -10,14 +10,16 @@ Prompt file management gem used by aia.
 
 ## Status
 
-_Updated 2026-11-06._ First bomberbot pass: security audit run; opened [#19](https://github.com/MadBomber/prompt_manager/pull/19) (env var and expansion output render as literal text in templates), **PR open**.
+_Updated 2026-11-07._ #19 merged; dependencies audit was clean, and [#20](https://github.com/MadBomber/prompt_manager/pull/20) adds the repo's first test CI (green on its own run), **PR open**.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- (none yet)
+- Replace the deprecated `SimpleCov.add_filter` with `SimpleCov.skip` in `test/test_helper.rb` (findings F-6).
 
 ## Open bomberbot PRs
 
-- [#19](https://github.com/MadBomber/prompt_manager/pull/19) fix(shell): treat env var and expansion output as literal text in templates (**PR open**, targets develop; repo has no PR CI)
+- [#20](https://github.com/MadBomber/prompt_manager/pull/20) ci: run the test suite on pushes and pull requests (**PR open**, targets develop; its Test check is green)
+
+Merged: [#19](https://github.com/MadBomber/prompt_manager/pull/19) (2026-11-07, no comments).
