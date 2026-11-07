@@ -10,19 +10,19 @@ Local tool definitions for Ruby AI frameworks, used by aia.
 
 ## Status
 
-_Updated 2026-11-07._ #5 (issue #3) merged; ComputerTool now loads the macos gem under aia, and its hold_key/scroll actions stop raising NameError; PR open.
+_Updated 2026-11-07 (second run)._ #6 merged; #7 makes the DSL guard test pass with no locale set and on Ruby 3.3; PR open.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- Make `tool_classes_test.rb` locale-independent (findings F-2).
-- ComputerTool: require `macos` on demand, the same fix as #5 (findings F-3). **PR open:** [#6](https://github.com/MadBomber/shared_tools/pull/6)
+- Make `tool_classes_test.rb` locale-independent (findings F-2, with F-9). **PR open:** [#7](https://github.com/MadBomber/shared_tools/pull/7)
 
 ## Merged
 
+- [#6](https://github.com/MadBomber/shared_tools/pull/6): fix(computer): require macos on demand when picking a driver (merged 2026-11-07, no comments)
 - [#5](https://github.com/MadBomber/shared_tools/pull/5): fix(browser): require ferrum or watir when picking a driver (merged 2026-11-07, no comments)
 
 ## Open bomberbot PRs
 
-- [#6](https://github.com/MadBomber/shared_tools/pull/6): fix(computer): require macos on demand when picking a driver (opened 2026-11-07)
+- [#7](https://github.com/MadBomber/shared_tools/pull/7): fix(test): read lib files as UTF-8 in the DSL guard test (opened 2026-11-07)

@@ -2,6 +2,11 @@
 
 Newest first. One entry per run; add each repo as it finishes.
 
+## 2026-11-07, second run (full run, three lanes)
+
+- Tended at start: of the 11 PRs from this morning, 9 were merged 2026-11-07 without comments (prompt_manager#20, shared_tools#6, debug_me#9, asgard#7, gem-skill#2, scripts#14, ragdoll#7, htm#15, kbs#7). aia#158 and dev#2 are still open. No bomberbot PR was closed without merging.
+- **shared_tools**: new PR [#7](https://github.com/MadBomber/shared_tools/pull/7), fix(test): read lib files as UTF-8 in the DSL guard test (source: brain backlog F-2, folding in F-9). Audit: none (the backlog was workable). Dead-code scan up to 188422d, nothing new. Tended PRs: none open; #6 merged without comments. Proof: with no locale, develop had 964 runs, 1 error (`invalid byte sequence in US-ASCII`) and the branch 0 errors; also green with LANG=en_US.UTF-8. No public method changed, so aia's suite was not run. Review: `/simplify` found nothing; `/code-review` round 1 had 4 findings: the commit wording was fixed, 2 were recorded as F-15 and F-16, and 1 was rejected. With no code change, it converged in one round. No test CI, so no checks.
+
 ## 2026-11-07 (full run, three lanes)
 
 - Tended: all 10 PRs from the 2026-11-06 run were merged 2026-11-07 (aia#157, prompt_manager#19, shared_tools#5, debug_me#8, dev#1, asgard#6, scripts#13, ragdoll#6, htm#14, kbs#6), none with comments. Nothing was open to tend at the start.
