@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-06 | Dependabot alert review plus a grep for removed Ruby APIs; no Gemfile at repo root, so no bundle-audit. |
-| dead code | 2026-11-07 (quick scan only) | Quick scans of 73d6c82..968704b and 968704b..af11b69 (only #13's and #14's one-line fixes); nothing removable. No full dead-code audit yet. |
+| dead code | 2026-11-07 (quick scan only) | Quick scans of 73d6c82..968704b, 968704b..af11b69 and af11b69..5fbd330 (only #13 to #15, all small fixes); nothing removable. No full dead-code audit yet. |
 | dependencies | 2026-11-06 (partial) | `ruby -wc` sweep of all 225 tracked Ruby files, plus a grep for APIs removed in Ruby 3.x and 4.x. |
 | adoption | n/a | Skipped for this repo by rule. |
 | quality | never | |
 
-Dead-code scan last covered commit: af11b69 (develop, 2026-11-07)
+Dead-code scan last covered commit: 5fbd330 (develop, 2026-11-07, third run)
 
 ## Findings
 
@@ -29,7 +29,7 @@ Dead-code scan last covered commit: af11b69 (develop, 2026-11-07)
 - F-6: `templates/sinatra_app/app.rb:15` has `raise APP_BIND, ...`, which raises NameError. It should be `raise MissingSystemEnvironmentVariable`. Status: open, verified by the #13 code review.
 - F-7: `templates/sinatra_app/Gemfile` has no `rake` gem, so `bundle exec rake` in a generated app fails. Status: open.
 - F-8: `templates/sinatra_app` uses thin, whose eventmachine dependency doesn't compile on Ruby 4.1.0-preview1, and the template also uses the end-of-life `sass` gem. Status: needs Dewayne's decision (switch `:server` to puma and drop thin; drop sass or move to sass-embedded; or wait for upstream).
-- F-9: `new.rb:152` copies directory templates with an unquoted `system "cp -R #{...}"`, which breaks when the cwd contains spaces. `FileUtils.cp_r` would fix it. Status: open.
+- F-9: `new.rb:152` copies directory templates with an unquoted `system "cp -R #{...}"`, which breaks when the cwd contains spaces. `FileUtils.cp_r` would fix it. Status: PR'd ([#16](https://github.com/MadBomber/scripts/pull/16)).
 - F-10: `s3_uploader.rb` is a self-described "TODO: complete this stub". It could be removed, but nobody has checked whether anything uses it. Status: unverified.
 
 ### 2026-11-07
@@ -59,3 +59,21 @@ No audit ran: the backlog still had 3 or more verified open findings (F-4, F-9, 
 
   Whether the site's current markup still matches is unknown. Status: open (low; each is small, but none is worth a PR until someone actually wants to run the scraper again).
 - Correction: Dependabot PRs #10 to #12 (opened 2021 to 2023) were closed on 2026-11-07, during the second run. GitHub reports 30 open Dependabot alerts on the default branch (`main`); they most likely come from the old `templates/sinatra_app/Gemfile.lock` that #13 removed on develop, and should clear when develop is merged into main. Status: unverified until that merge.
+
+### 2026-11-07, third run
+
+No audit ran. Verified open findings that aren't held were F-9 plus the new F-15; F-6 and F-7 are held behind F-8, and the audits are 1 day old. A quick dead-code scan of af11b69..5fbd330 (#15's imbibler fix) found nothing removable.
+
+- F-9: Status: PR'd ([#16](https://github.com/MadBomber/scripts/pull/16)). Reproduced on develop: from a cwd with a space, `cp` prints `Not a directory` and the script exits 0.
+- F-14: Other scripts also build shell commands with unquoted paths: `create_working_directory.rb:121`, `copy_missing_files.rb:121`, `schema_diff.rb:61,80,81,101` and `change_git_repos_to_ssh_access.rb:25,34`. `my_docx_style_fixer.rb:107-124` single-quotes its paths, which still breaks on a `'`. Found by the #16 altitude review. Status: unverified (each needs its own reproduction).
+- F-15: In `new.rb:112-123`, the existence check runs before the `.erb` fallback. A template that exists only as `<name>.erb` is always rejected, so `new Gemfile` (listed in the usage) exits 1 with "no such template file: Gemfile". Status: open, verified on 2026-11-07. A small, good next PR.
+- F-16: Other older `new.rb` issues that the #16 code review raised:
+  - `-v` does nothing: `debug_me` always runs and `verbose?` is never used.
+  - The `-v`/`--verbose` loop clears only the first copy of each flag.
+  - `STDIN.gets.chomp` crashes when STDIN is at EOF.
+  - `gsub!` with a String replacement treats `\0` and `\&` in user input as back-references.
+  - `PH_REGEX` merges or misses placeholders that touch other characters.
+  - Directory templates get no placeholder filling.
+  - `templates_path + f` accepts absolute paths and `..`.
+
+  Status: open (low; unverified apart from the code read).
