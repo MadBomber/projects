@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files.
 
 ## Status
 
-_Updated 2026-11-05._ Not yet visited by bomberbot.
+_Updated 2026-11-06._ First bomberbot pass: security audit; PR #6 makes schedule log directories owner-only, CI on develop/main green.
 
 ## Backlog
 
@@ -20,4 +20,4 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- (none)
+- [#6](https://github.com/MadBomber/asgard/pull/6) Create schedule log directories owner-only (0700) (**PR open**, 2026-11-06)
