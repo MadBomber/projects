@@ -2,6 +2,14 @@
 
 Newest first. One entry per run; add each repo as it finishes.
 
+## 2026-11-08 13:05 kbs
+
+- New PR [#13](https://github.com/MadBomber/kbs/pull/13), fix: bind variables correctly after a negated condition (source: judgment, finding F-23, found independently by triage and improver; the brain backlog had no workable item). `Rule#extract_bindings` and the blackboard audit log indexed `Token#facts` by the all-conditions position, so a `without` before positive conditions shifted or dropped bindings. One new public `Rule#bindings_for` now serves both. Proof: 3 new tests fail on develop (`{x?: "A", y?: "C"}` instead of A/B/C) and pass on the branch; suite 229 runs, 0 failures, 22 Redis skips; RuboCop 123 offenses on the changed files vs 125 on develop, with 2 new Metrics offenses in test code explained in the PR; before/after docs screenshots attached. Review: `/simplify` plus 3 `/code-review` rounds (round 3 was doc wording only), opened at the cap per the ragdoll#5 rule. CI green on 3.2, 3.3, 3.4, 4.0.
+- Audit: none (F-5, F-6, F-9, F-10 verified open; latest audit 1 day old). Triage and improver ran; the improver's read of lib/ at c9a2948 is the dead-code scan (F-22, `examples/temp_dsl.txt`).
+- Tended PRs: none open. #9 merged 2026-11-07 without comments; nothing closed unmerged. develop green at c9a2948.
+- Issues filed: [#10](https://github.com/MadBomber/kbs/issues/10) (F-15, `knowledge_base(engine:)`), [#11](https://github.com/MadBomber/kbs/issues/11) (F-16, leading `without` never fires), [#12](https://github.com/MadBomber/kbs/issues/12) (F-17, stale README sections).
+- New findings F-15 to F-25 and S-1 (held locally). Inbox: F-18 to F-21 decisions, adoption ideas, a 0.2.2 release question, builder tooling notes.
+
 ## 2026-11-08 12:18 debug_me
 
 - New PR [#19](https://github.com/MadBomber/debug_me/pull/19), chore: drop unused amazing_print and a 1.8.6 branch (source: dead code, issue #17 / findings #21; brain backlog empty). A removal: it won a close call over issue #14 (a test-infra fix) because all six earlier bomberbot PRs here were fixes or docs. Proof: every reference searched (commands in the PR); suite 50 runs, 134 assertions, 0 failures before and after; `ruby -w` require clean; `gem build` OK; RuboCop 302 offenses before and after on the changed files; CI green on 2.3 and 4.0. Review: `/simplify` trimmed nothing; one `/code-review medium` round, no defects in the diff.
