@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | never | |
-| dead code | 2026-11-07 | Quick scans of 9e0f9be..3055a9f (the #8 merge), 3055a9f..98b8d47 (the #9 merge: CI workflow, Rakefile, gemspec) and 98b8d47..3c1bd45 (the #10 merge: docs and CHANGELOG only); nothing removable. |
+| dead code | 2026-11-08 | Quick scans through 3c1bd45; on 2026-11-08 the improver read 3c1bd45..77b8c25 (#11, #15) and the whole tree: an unused `amazing_print` test dependency and a dead Ruby 1.8.6 branch (findings #21, issue #17). |
 | dependencies | never | |
 | adoption | 2026-11-06 | First audit. README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. gem-skill and llms.txt not checked. |
 | quality | never | |
 
-Dead-code scan last covered commit: 3c1bd45 (develop, 2026-11-07)
+Dead-code scan last covered commit: 77b8c25 (develop, 2026-11-08)
 
 ## Findings
 
@@ -25,7 +25,7 @@ Dead-code scan last covered commit: 3c1bd45 (develop, 2026-11-07)
 3. **api-reference names `DebugMe::VERSION`, which doesn't exist.** The real constant is `DebugMe::DEBUG_ME_VERSION`. Status: PR'd ([#10](https://github.com/MadBomber/debug_me/pull/10)).
 4. **api-reference says `DEBUG_ME_MAX_BACKTRACE` defaults to 15.** The real value is 10000. Status: PR'd ([#10](https://github.com/MadBomber/debug_me/pull/10)).
 5. **The api-reference "Output Format" section doesn't match real output.** Real output is `TIMESTAMP TAG Source:  file:line:in 'meth'`, then `TIMESTAMP TAG var -=> value`. Status: open (unverified on every sample).
-6. **The README `log_me` Rails initializer example breaks when called with a block.** It passes the block positionally (`debug_me(options, block)`), which raises ArgumentError, and it overwrites its own `options` argument. Status: open.
+6. **The README `log_me` Rails initializer example breaks when called with a block.** It passes the block positionally (`debug_me(options, block)`), which raises ArgumentError, and it overwrites its own `options` argument. Status: issue [#12](https://github.com/MadBomber/debug_me/issues/12) (with two README syntax errors).
 7. **The CHANGELOG has gaps and wrong dates.**
    - CHANGELOG.md has no entry for 1.1.3 (released 2025-11-21; `$DEBUG_ME` keeps a pre-set value).
    - Its dates for 1.1.2 (2025-01-13) and 1.1.1 (2020-04-27) don't match RubyGems (2025-11-13 and 2023-11-02).
@@ -53,7 +53,7 @@ Dead-code scan last covered commit: 3c1bd45 (develop, 2026-11-07)
 - Findings 5 and 6 confirmed still present on develop 98b8d47. Finding 5's "With Backtrace" sample is wrong too: real output is `TAG backtrace -=> [[0, "file:line:in ..."], ...]`, not `caller(0) -=>` with one frame per line.
 
 13. **`debug_me(levels: 1) { :backtrace }` prints the backtrace twice.** With `levels > 0`, lib/debug_me.rb adds `'backtrace'` to the output list itself, then evaluates the block's own `:backtrace` again. Confirmed at runtime on develop 98b8d47. README.md says `levels` replaces `:backtrace`. Status: PR'd ([#11](https://github.com/MadBomber/debug_me/pull/11)).
-14. **`levels:` is silently ignored with `header: false`, and a String `levels:` raises.** The `levels` backtrace is collected only inside `if options[:header]`, and `options[:levels] > 0` runs before `.to_i`, so `debug_me(levels: '2')` raises NoMethodError. Status: open.
+14. **`levels:` is silently ignored with `header: false`, and a String `levels:` raises.** The `levels` backtrace is collected only inside `if options[:header]`, and `options[:levels] > 0` runs before `.to_i`, so `debug_me(levels: '2')` raises (ArgumentError on Ruby 4, not NoMethodError). Status: String half is issue [#13](https://github.com/MadBomber/debug_me/issues/13), PR'd ([#18](https://github.com/MadBomber/debug_me/pull/18)); whether `levels:` should work with `header: false` needs Dewayne's decision.
 15. **configuration.md's "Include at Kernel Level" heading and its "includes into Object/Kernel" comment are wrong.** A top-level `include` adds the module to Object, not Kernel. Status: open (docs; the heading anchor may be linked).
 16. **api-reference's signature line still reads `debug_me(options = {}, &block)` and leaves out `**keyword_options`** (added in #8). Status: open (docs).
 17. **On Ruby 2.7, passing a Hash variable to `debug_me` may print the "last argument as keyword parameters" deprecation warning** since #8 added `**keyword_options`. Status: unverified (needs a Ruby 2.7 run; CI covers 2.3 and 4.0 only).
@@ -62,4 +62,15 @@ Dead-code scan last covered commit: 3c1bd45 (develop, 2026-11-07)
 
 - Findings 5, 6, 12, 14, 15 and 16 still open on develop 3c1bd45 (not re-verified one by one; the #10 merge touched only docs, and none of these were in its scope).
 
-18. **With `levels > 0`, an empty block or one returning `nil` no longer dumps local, instance and class variables.** `levels` puts `backtrace` in the list before the `block_value.empty?` fallback runs, so `debug_me(levels: 2) { }` shows only the backtrace, while `debug_me { }` dumps the variables. Status: open (behaviour choice; small, but confirm that the dump is wanted alongside `levels`).
+18. **With `levels > 0`, an empty block or one returning `nil` no longer dumps local, instance and class variables.** `levels` puts `backtrace` in the list before the `block_value.empty?` fallback runs, so `debug_me(levels: 2) { }` shows only the backtrace, while `debug_me { }` dumps the variables. Status: open needs Dewayne's decision (is the variable dump wanted alongside `levels`?). Re-confirmed on f7041aa.
+
+### 2026-11-08 (no audit; triage and improver)
+
+- Issues #12, #13 and #14 re-verified on develop 77b8c25. #12 and #14 still reproduce.
+- The 2026-11-07 late visit (cut off, no run entry) opened issues #12, #13 and #14 and PR #15 (merged 2026-11-08). Finding 19 records #14, which had no finding.
+
+19. **The test suite fails with `DEBUG_ME=false` in the shell and leaves `logger_class_output.txt` behind, which keeps later runs red.** Status: issue [#14](https://github.com/MadBomber/debug_me/issues/14).
+20. **`debug_me {}` in a class method, module method or class body shows no class variables or constants.** `cvar`/`cconst` read `self.class`, which is `Class` there. Verified on 77b8c25. Status: issue [#16](https://github.com/MadBomber/debug_me/issues/16).
+21. **The test suite requires `amazing_print` (and the gemspec lists it) but nothing uses it; `lib/debug_me.rb` keeps a Ruby 1.8.6 `caller` branch that can't run on Ruby >= 2.3.** Verified on 77b8c25: the suite counts are unchanged without it. Status: issue [#17](https://github.com/MadBomber/debug_me/issues/17).
+22. **A top-level `debug_me {}` dumps every top-level constant** (`self.class` is Object; 429 lines in one probe for one local). Status: needs Dewayne's decision (skip constants for Object, default `cconst` off at top level, or document it). In `inbox.md`.
+23. **The 11 subprocess tests in `tests/env_test.rb` fail outside a git checkout under `bundle exec`.** They inherit `-rbundler/setup`, the gemspec's `git ls-files` writes `fatal: not a git repository` to stderr, and the tests merge stderr into what they check. Harmless in CI. Fix: clear `RUBYOPT` as #15 did. Status: open (fold into a fix for #14 or findings #12).

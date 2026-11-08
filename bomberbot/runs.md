@@ -2,6 +2,15 @@
 
 Newest first. One entry per run; add each repo as it finishes.
 
+## 2026-11-08 09:02 debug_me
+
+- New PR [#18](https://github.com/MadBomber/debug_me/pull/18), fix: accept a String levels: value (source: issue #13 / findings #14, from a bomberbot issue; brain backlog empty). Proof: new test raises ArgumentError on develop and passes on the branch; suite 50 runs, 134 assertions, 0 failures on 4.1.0-preview1 and 4.0.9; `ruby -w` clean; CI green on 2.3 and 4.0. Review: `/simplify` nothing to trim; one `/code-review medium` round, 8 findings, none needing a change (reasons in the PR).
+- Audit: none (3 or more verified open findings, latest audit 1 day old). Triage and improver ran; the improver's read of 3c1bd45..77b8c25 serves as the dead-code scan.
+- Tended PRs: none open. #11 (2026-11-07) and #15 (2026-11-08) merged without comments or squashing.
+- Issues filed: [#16](https://github.com/MadBomber/debug_me/issues/16) (class-method `debug_me {}` shows no class variables or constants, findings #20), [#17](https://github.com/MadBomber/debug_me/issues/17) (unused amazing_print test dependency and Ruby 1.8.6 branch, findings #21).
+- Reconciled: the 2026-11-07 late visit (its directory was set aside at 23:10 to `~/sandbox/bomberbot-interrupted/debug_me-20261107-2310`) opened issues #12-#14 and PR #15 but left no run entry and left its findings edits uncommitted in brain. Those edits are committed with this visit's.
+- Inbox: findings #22 (top-level constant dump), `levels: "two"` handling, `llms.txt`.
+
 ## 2026-11-07, third run (full run, three lanes)
 
 - Tended at start: all 11 PRs from the second run were merged 2026-11-07 without comments (aia#159, prompt_manager#21, shared_tools#7, debug_me#10, asgard#8, dev#3, gem-skill#3, scripts#15, ragdoll#8, htm#16, kbs#8). Nothing was open; no bomberbot PR was closed without merging.
