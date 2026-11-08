@@ -2,6 +2,14 @@
 
 Newest first. One entry per run; add each repo as it finishes.
 
+## 2026-11-08 12:18 debug_me
+
+- New PR [#19](https://github.com/MadBomber/debug_me/pull/19), chore: drop unused amazing_print and a 1.8.6 branch (source: dead code, issue #17 / findings #21; brain backlog empty). A removal: it won a close call over issue #14 (a test-infra fix) because all six earlier bomberbot PRs here were fixes or docs. Proof: every reference searched (commands in the PR); suite 50 runs, 134 assertions, 0 failures before and after; `ruby -w` require clean; `gem build` OK; RuboCop 302 offenses before and after on the changed files; CI green on 2.3 and 4.0. Review: `/simplify` trimmed nothing; one `/code-review medium` round, no defects in the diff.
+- Audit: none (4 verified open bomberbot issues; latest audit 2 days old). Triage and improver ran; the improver's read of 77b8c25..7e12714 is the dead-code scan (nothing removable).
+- Tended PRs: none open. #18 merged 2026-11-08 without comments; nothing closed unmerged. develop green at 7e12714.
+- Issues filed: [#20](https://github.com/MadBomber/debug_me/issues/20) (README says `DebugMe::debug_me(){}` works, findings #24).
+- New findings #24 to #27. Inbox: release question (develop holds #8 to #18 unreleased; issue #13 stays open until then).
+
 ## 2026-11-08 09:22 ragdoll
 
 - New PR [#10](https://github.com/MadBomber/ragdoll/pull/10), fix: pass converter options to media services (source: judgment, improver finding F-17; the brain backlog had no workable item). `DocumentConverter` passed its options positionally to the keyword-only image and audio services (ArgumentError), and `core.rb` never required `audio_to_text_service` (NameError). Both were rescued, so image and audio documents were stored as filename placeholders. Proof on Ruby 4.0.9: the 3 new tests fail on develop's code (placeholder text and the missing constant) and pass on the branch; with only the require reverted the probe fails again; CI-mode suite 1297 runs, 0 failures, 394 skips (was 1294/0/394); a seen-running script with stubbed LLM calls shows develop returns placeholders and the branch reaches both services. Review: `/simplify` trimmed nothing; 3 `/code-review medium` rounds (4 small fixes, rejections explained in the PR; round 3 reversed a round-2 change), opened at the cap per the ragdoll#5 rule. CI green on 3.2, 3.3, 3.4, 4.0.

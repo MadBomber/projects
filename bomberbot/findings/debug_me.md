@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | never | |
-| dead code | 2026-11-08 | Quick scans through 3c1bd45; on 2026-11-08 the improver read 3c1bd45..77b8c25 (#11, #15) and the whole tree: an unused `amazing_print` test dependency and a dead Ruby 1.8.6 branch (findings #21, issue #17). |
+| dead code | 2026-11-08 | Quick scans through 3c1bd45; on 2026-11-08 the improver read 3c1bd45..77b8c25 (#11, #15) and the whole tree: an unused `amazing_print` test dependency and a dead Ruby 1.8.6 branch (findings #21, issue #17). A second 2026-11-08 read of 77b8c25..7e12714 (#18) found nothing removable. |
 | dependencies | never | |
 | adoption | 2026-11-06 | First audit. README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. gem-skill and llms.txt not checked. |
 | quality | never | |
 
-Dead-code scan last covered commit: 77b8c25 (develop, 2026-11-08)
+Dead-code scan last covered commit: 7e12714 (develop, 2026-11-08)
 
 ## Findings
 
@@ -53,7 +53,7 @@ Dead-code scan last covered commit: 77b8c25 (develop, 2026-11-08)
 - Findings 5 and 6 confirmed still present on develop 98b8d47. Finding 5's "With Backtrace" sample is wrong too: real output is `TAG backtrace -=> [[0, "file:line:in ..."], ...]`, not `caller(0) -=>` with one frame per line.
 
 13. **`debug_me(levels: 1) { :backtrace }` prints the backtrace twice.** With `levels > 0`, lib/debug_me.rb adds `'backtrace'` to the output list itself, then evaluates the block's own `:backtrace` again. Confirmed at runtime on develop 98b8d47. README.md says `levels` replaces `:backtrace`. Status: PR'd ([#11](https://github.com/MadBomber/debug_me/pull/11)).
-14. **`levels:` is silently ignored with `header: false`, and a String `levels:` raises.** The `levels` backtrace is collected only inside `if options[:header]`, and `options[:levels] > 0` runs before `.to_i`, so `debug_me(levels: '2')` raises (ArgumentError on Ruby 4, not NoMethodError). Status: String half is issue [#13](https://github.com/MadBomber/debug_me/issues/13), PR'd ([#18](https://github.com/MadBomber/debug_me/pull/18)); whether `levels:` should work with `header: false` needs Dewayne's decision.
+14. **`levels:` is silently ignored with `header: false`, and a String `levels:` raises.** The `levels` backtrace is collected only inside `if options[:header]`, and `options[:levels] > 0` runs before `.to_i`, so `debug_me(levels: '2')` raises (ArgumentError on Ruby 4, not NoMethodError). Status: String half is issue [#13](https://github.com/MadBomber/debug_me/issues/13), merged ([#18](https://github.com/MadBomber/debug_me/pull/18), 2026-11-08); whether `levels:` should work with `header: false` needs Dewayne's decision.
 15. **configuration.md's "Include at Kernel Level" heading and its "includes into Object/Kernel" comment are wrong.** A top-level `include` adds the module to Object, not Kernel. Status: open (docs; the heading anchor may be linked).
 16. **api-reference's signature line still reads `debug_me(options = {}, &block)` and leaves out `**keyword_options`** (added in #8). Status: open (docs).
 17. **On Ruby 2.7, passing a Hash variable to `debug_me` may print the "last argument as keyword parameters" deprecation warning** since #8 added `**keyword_options`. Status: unverified (needs a Ruby 2.7 run; CI covers 2.3 and 4.0 only).
@@ -71,6 +71,15 @@ Dead-code scan last covered commit: 77b8c25 (develop, 2026-11-08)
 
 19. **The test suite fails with `DEBUG_ME=false` in the shell and leaves `logger_class_output.txt` behind, which keeps later runs red.** Status: issue [#14](https://github.com/MadBomber/debug_me/issues/14).
 20. **`debug_me {}` in a class method, module method or class body shows no class variables or constants.** `cvar`/`cconst` read `self.class`, which is `Class` there. Verified on 77b8c25. Status: issue [#16](https://github.com/MadBomber/debug_me/issues/16).
-21. **The test suite requires `amazing_print` (and the gemspec lists it) but nothing uses it; `lib/debug_me.rb` keeps a Ruby 1.8.6 `caller` branch that can't run on Ruby >= 2.3.** Verified on 77b8c25: the suite counts are unchanged without it. Status: issue [#17](https://github.com/MadBomber/debug_me/issues/17).
+21. **The test suite requires `amazing_print` (and the gemspec lists it) but nothing uses it; `lib/debug_me.rb` keeps a Ruby 1.8.6 `caller` branch that can't run on Ruby >= 2.3.** Verified on 77b8c25: the suite counts are unchanged without it. Status: issue [#17](https://github.com/MadBomber/debug_me/issues/17), PR'd ([#19](https://github.com/MadBomber/debug_me/pull/19)).
 22. **A top-level `debug_me {}` dumps every top-level constant** (`self.class` is Object; 429 lines in one probe for one local). Status: needs Dewayne's decision (skip constants for Object, default `cconst` off at top level, or document it). In `inbox.md`.
 23. **The 11 subprocess tests in `tests/env_test.rb` fail outside a git checkout under `bundle exec`.** They inherit `-rbundler/setup`, the gemspec's `git ls-files` writes `fatal: not a git repository` to stderr, and the tests merge stderr into what they check. Harmless in CI. Fix: clear `RUBYOPT` as #15 did. Status: open (fold into a fix for #14 or findings #12).
+
+### 2026-11-08 second visit (no audit; triage, improver, builder)
+
+- Issues #12, #14, #16 and #17 re-verified on develop 7e12714; all still reproduce. Findings 2, 7, 10, 11, 14, 18 and 22 still present and still need Dewayne's decision.
+
+24. **README.md:38 says `DebugMe::debug_me(){}` works with local, instance and class variables, but it raises NoMethodError.** PR #10 fixed the same claim in docs/ only. Status: issue [#20](https://github.com/MadBomber/debug_me/issues/20).
+25. **`ruby -w` on tests/debug_me_test.rb prints 15 warnings** (unused locals at lines 115, 121, 132, 358-381 and 414; constants A, B, C redefined at 244/251). Many of those locals exist so `debug_me` has something to show, so a fix must keep them (for example by referencing them or using distinct constant names). Status: open (low value).
+26. **`bt = caller` in lib/debug_me.rb builds the whole stack on every call even when only `bt[0]` is used.** `caller(1, 1)` for the header, plus a bounded `caller` only when `levels` or `:backtrace` needs it, would avoid that. Status: unverified (not measured).
+27. **The gemspec's dev dependencies are not in alphabetical order** (`logger` after `rake`), which RuboCop's `Gemspec/OrderedDependencies` flags. Status: open (trivial; could ride along with a gemspec PR).
