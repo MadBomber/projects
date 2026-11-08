@@ -8,13 +8,13 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | never | |
+| security | 2026-11-08 | First run, develop at 27b1689. `bundle-audit check` against a lock resolved in scratch: no vulnerabilities (sqlite3 2.10.2, redis 5.4.1). No Marshal/YAML/shell-outs in lib; JSON.parse only; SQL bound except one raw-WHERE API. Findings: F-26, S-2 to S-4. |
 | dead code | 2026-11-07 | Quick scan only (debride over lib/ at 7381f82): every candidate is public API (attr readers, DSL helpers, Blackboard aliases), so nothing removable without a deprecation decision. Not the full audit. |
 | dependencies | 2026-11-06 | First run. `bundle outdated`: only major bumps are available (minitest 6, simplecov 1.x, redis 6), so none was taken. Ruby 4 readiness greps were clean. Suite green on 4.1.0-preview1 and 4.0.9. |
 | adoption | never | |
 | quality | never | |
 
-Dead-code scan last covered commit: c9a2948 (2026-11-08; the improver read lib/ at c9a2948: nothing non-public is unused in lib/; `examples/temp_dsl.txt` is F-22)
+Dead-code scan last covered commit: 27b1689 (2026-11-08; the improver scanned c9a2948..27b1689: only #13 touched lib/, and the private methods it removed have no remaining callers; nothing new to remove)
 
 ## Findings
 
@@ -46,15 +46,23 @@ Dead-code scan last covered commit: c9a2948 (2026-11-08; the improver read lib/ 
 
 ### 2026-11-08 (no audit; triage and improver ran; backlog empty)
 
-- **F-15: `KBS.knowledge_base(engine:)` raises ArgumentError, yet the README and docs call it 22 times.** `lib/kbs/dsl.rb:15` takes no arguments and `lib/kbs/dsl/knowledge_base.rb:8` hard-codes `Engine.new`. The README "Blackboard with SQLite Persistence" block fails on its first call. Fix: an optional `engine:` keyword defaulting to nil. Status: issue [#10](https://github.com/MadBomber/kbs/issues/10).
+- **F-15: `KBS.knowledge_base(engine:)` raises ArgumentError, yet the README and docs call it 22 times.** `lib/kbs/dsl.rb:15` takes no arguments and `lib/kbs/dsl/knowledge_base.rb:8` hard-codes `Engine.new`. The README "Blackboard with SQLite Persistence" block fails on its first call. Fix: an optional `engine:` keyword defaulting to nil. Status: issue [#10](https://github.com/MadBomber/kbs/issues/10); PR open (see repos/kbs.md).
 - **F-16: A rule whose first condition is `without` never fires.** `NegationNode` only emits on `left_activate`, and the root dummy token predates the node. Documented at `docs/guides/dsl.md:744-747`. Status: issue [#11](https://github.com/MadBomber/kbs/issues/11).
 - **F-17: README Testing and Documentation sections are stale.** Nonexistent test files, a "100% with 199 tests" claim, `KBS::ReteEngine`, an incomplete helper list, and a wrong example filename in CHANGELOG.md:14. Status: issue [#12](https://github.com/MadBomber/kbs/issues/12).
 - **F-18: Shared `?variables` don't constrain joins.** `Engine#build_network_for_rule` only builds a `:type` join test, so `on :order, id: :oid?; on :item, order_id: :oid?` fires on non-matching ids. `docs/guides/variable-binding.md` promises join constraints; `git log -S variable_bindings` shows it was never built. Fixing it changes which rules fire. Status: needs Dewayne's decision (implement joins, document bind-only, or opt-in).
 - **F-19: The documented predicate query `query(:temperature, value: greater_than(80))` (`docs/what-is-a-rule.md:508`) doesn't work.** `greater_than` is undefined in `KnowledgeBase`, and `query` compares with `==` only, so a lambda returns `[]`. Status: needs Dewayne's decision (teach `query` predicates, adding API, or fix the doc example).
 - **F-20: `Fact#matches?` rejects `false`/`nil` attribute values before calling a Proc** (`lib/kbs/fact.rb:26`), so `satisfies { |v| v == false }` can never match. Status: needs Dewayne's decision (behavior change for predicate rules).
 - **F-21: `BlackboardMemory`, `BlackboardEngine` and `PersistedFact` are commented "deprecated - will be removed in v1.0" but never warn** (`lib/kbs/blackboard.rb:18-23`). Status: needs Dewayne's decision (warn now or leave until 1.0).
-- **F-22: `examples/temp_dsl.txt` is 273 KB of captured example output, referenced nowhere, and ships in the gem** (largest file in the package). Status: open (clean removal candidate for a later visit).
+- **F-22: `examples/temp_dsl.txt` is 273 KB of captured example output, referenced nowhere, and ships in the gem** (largest file in the package). Status: issue [#15](https://github.com/MadBomber/kbs/issues/15).
 - **F-23: Bindings after a `without` come from the wrong fact.** `Rule#extract_bindings` and `Blackboard::Engine#extract_bindings_from_token` index `Token#facts` by the all-conditions index, but negations add no fact. Status: PR'd ([#13](https://github.com/MadBomber/kbs/pull/13)); adds public `Rule#bindings_for`, shared by `Rule#fire` and the blackboard audit log.
 - **F-24: Join tests after a `without` index the wrong fact.** `Engine#build_network_for_rule` sets `token_field_index` from the all-conditions position, but `token.facts` skips negations. Same mismatch as F-23, inside the F-18 join work; noticed by the #13 builder. Status: open (part of F-18).
-- **F-25: `Rule#fire` passes two arguments to a zero-argument lambda action, which raises ArgumentError.** Noticed by the #13 builder; not reproduced yet. Status: unverified.
+- **F-25: `Rule#fire` passes two arguments to a zero-argument lambda action, which raises ArgumentError.** Noticed by the #13 builder. Reproduced 2026-11-08: `-> {}` and a zero-arity `Method` raise `ArgumentError (given 2, expected 0)`; procs are fine, so DSL `perform` blocks are unaffected. Status: issue [#14](https://github.com/MadBomber/kbs/issues/14).
 - **S-1: security finding, details held locally.** Status: open.
+
+### 2026-11-08, second visit (security audit, develop at 27b1689)
+
+- **F-26: `RedisStore#query_facts` ignores its conditions and returns every active fact.** `redis_store.rb:119-124` drops `conditions` and `params`; `HybridStore#query_facts` delegates to it; `docs/api/blackboard.md:279-302` says Redis raises NotImplementedError. Found by code reading. Status: issue [#16](https://github.com/MadBomber/kbs/issues/16).
+- **F-27: `Decompiler` emits `/* getlocal_WC_1 */` for values captured by the condition helpers.** `lib/kbs/decompiler.rb:65` handles `getlocal_WC_0` only, so `rule_source` for a rule without a source file prints `->(v) { v > /* getlocal_WC_1 */ }` for `greater_than(80)`. Reproduced by the responder. Relevant to issue #3 (`to_s` in DSL form). Status: open (small PR candidate).
+- **S-2: security finding, details held locally.** Status: open.
+- **S-3: security finding, details held locally.** Status: duplicate of S-1.
+- **S-4: security finding, details held locally.** Status: open.
