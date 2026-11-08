@@ -10,7 +10,7 @@ RAG library; most-starred repo, idle since early 2026.
 
 ## Status
 
-_Updated 2026-11-07 (third run)._ #8 merged; this run opened [#9](https://github.com/MadBomber/ragdoll/pull/9), which reports 32 database-only client tests as skips instead of passes (finding F-8), **PR open**, CI green on 3.2/3.3/3.4/4.0. New finding F-16: 43 tests in four files never run because they are private.
+_Updated 2026-11-08 09:22 visit._ #9 merged; this visit opened [#10](https://github.com/MadBomber/ragdoll/pull/10), which makes image and audio files reach their converters instead of being stored as filename placeholders (finding F-17), **PR open**, CI green on 3.2/3.3/3.4/4.0. Filed issues #11 (README Quick Start config fails), #12 (43 private search tests, F-16) and #13 (activerecord floor, F-9).
 
 ## Backlog
 
@@ -25,10 +25,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#9](https://github.com/MadBomber/ragdoll/pull/9) test: report database-only client tests as skips (finding F-8). **PR open**, CI green.
+- [#10](https://github.com/MadBomber/ragdoll/pull/10) fix: pass converter options to media services (finding F-17). **PR open**, CI green.
 
 ## Merged bomberbot PRs
 
+- [#9](https://github.com/MadBomber/ragdoll/pull/9) test: report database-only client tests as skips. Merged 2026-11-07.
 - [#8](https://github.com/MadBomber/ragdoll/pull/8) ci: add Ruby 4.0 to the test matrix. Merged 2026-11-07.
 - [#7](https://github.com/MadBomber/ragdoll/pull/7) chore(deps): update locked gems within current majors. Merged 2026-11-07.
 - [#6](https://github.com/MadBomber/ragdoll/pull/6) fix: Database.disconnect! works on ActiveRecord 7.2+. Merged 2026-11-07.

@@ -2,6 +2,15 @@
 
 Newest first. One entry per run; add each repo as it finishes.
 
+## 2026-11-08 09:22 ragdoll
+
+- New PR [#10](https://github.com/MadBomber/ragdoll/pull/10), fix: pass converter options to media services (source: judgment, improver finding F-17; the brain backlog had no workable item). `DocumentConverter` passed its options positionally to the keyword-only image and audio services (ArgumentError), and `core.rb` never required `audio_to_text_service` (NameError). Both were rescued, so image and audio documents were stored as filename placeholders. Proof on Ruby 4.0.9: the 3 new tests fail on develop's code (placeholder text and the missing constant) and pass on the branch; with only the require reverted the probe fails again; CI-mode suite 1297 runs, 0 failures, 394 skips (was 1294/0/394); a seen-running script with stubbed LLM calls shows develop returns placeholders and the branch reaches both services. Review: `/simplify` trimmed nothing; 3 `/code-review medium` rounds (4 small fixes, rejections explained in the PR; round 3 reversed a round-2 change), opened at the cap per the ragdoll#5 rule. CI green on 3.2, 3.3, 3.4, 4.0.
+- Audit: none (5 verified open findings; last audit, dependencies, 2 days old). Triage and improver ran; the improver's scan of a412813..c4d2b4d is the dead-code scan (nothing removable; `examples/temp.rb` noted as F-23).
+- Tended PRs: none open. #9 merged 2026-11-07 without comments; nothing closed unmerged. develop green at c4d2b4d.
+- Issues filed: [#11](https://github.com/MadBomber/ragdoll/issues/11) (F-18, README Quick Start config raises NoMethodError), [#12](https://github.com/MadBomber/ragdoll/issues/12) (F-16, 43 private search tests never run), [#13](https://github.com/MadBomber/ragdoll/issues/13) (F-9, activerecord floor).
+- New findings F-17 to F-27 and S-2 (held locally). F-1 corrected: its rescue skips the whole RubyLLM configure block. Inbox: F-24 (unreferenced public methods), F-25 (host globals), F-26 (logging convention), examples and docs-site pass before 0.2.0.
+- Bundler under the rbenv shim kept picking 4.1.0-preview1 even with `RBENV_VERSION=4.0.9`; putting `~/.rbenv/versions/4.0.9/bin` first on PATH worked.
+
 ## 2026-11-08 09:10 htm
 
 - New PR [#20](https://github.com/MadBomber/htm/pull/20), fix(files): unload_file removes chunks and source together (source: brain backlog F-23). A new `FileSource#unload!` runs the chunk cascade and the source delete in one transaction, and `unload_file` clears the cache after the commit. Proof: a rollback test fails on develop (chunks deleted while the source survived) and passes on the branch; it fails again when the transaction is replaced by `begin`. Full suite 644 runs, 0 failures, on Ruby 4.0.9 against a throwaway DB. Rubocop clean on the changed files. Review: `/simplify` plus 3 `/code-review` rounds (the transaction moved into the model in round 1; 7 round-2 items rejected as existing behaviour, reasons in the PR), opened at the cap per the ragdoll#5 rule. No test CI in the repo.
