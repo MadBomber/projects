@@ -2,6 +2,14 @@
 
 Newest first. One entry per run; add each repo as it finishes.
 
+## 2026-11-08 09:10 htm
+
+- New PR [#20](https://github.com/MadBomber/htm/pull/20), fix(files): unload_file removes chunks and source together (source: brain backlog F-23). A new `FileSource#unload!` runs the chunk cascade and the source delete in one transaction, and `unload_file` clears the cache after the commit. Proof: a rollback test fails on develop (chunks deleted while the source survived) and passes on the branch; it fails again when the transaction is replaced by `begin`. Full suite 644 runs, 0 failures, on Ruby 4.0.9 against a throwaway DB. Rubocop clean on the changed files. Review: `/simplify` plus 3 `/code-review` rounds (the transaction moved into the model in round 1; 7 round-2 items rejected as existing behaviour, reasons in the PR), opened at the cap per the ragdoll#5 rule. No test CI in the repo.
+- Audit: none (F-6, F-18, F-19, F-20 and F-23 verified open; latest audit 1 day old). Improver skipped (the backlog was workable). Triage reproduced F-15 and F-21.
+- Tended PRs: none open. #14 to #17 merged without comments; nothing closed unmerged.
+- Issues filed: [#18](https://github.com/MadBomber/htm/issues/18) (F-21, unloaded chunks stay in working memory), [#19](https://github.com/MadBomber/htm/issues/19) (F-15, re-adding a soft-deleted tag link raises or is ignored), [#21](https://github.com/MadBomber/htm/issues/21) (F-25, `htm:files:unload` reports success for unknown files).
+- New findings F-25 to F-28. Inbox: an htm release and an adoption audit; whether to delete merged bomber branches.
+
 ## 2026-11-08 09:02 debug_me
 
 - New PR [#18](https://github.com/MadBomber/debug_me/pull/18), fix: accept a String levels: value (source: issue #13 / findings #14, from a bomberbot issue; brain backlog empty). Proof: new test raises ArgumentError on develop and passes on the branch; suite 50 runs, 134 assertions, 0 failures on 4.1.0-preview1 and 4.0.9; `ruby -w` clean; CI green on 2.3 and 4.0. Review: `/simplify` nothing to trim; one `/code-review medium` round, 8 findings, none needing a change (reasons in the PR).
