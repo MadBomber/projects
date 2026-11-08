@@ -8,13 +8,13 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | never | |
-| dead code | 2026-11-08 | Quick scans through 3c1bd45; on 2026-11-08 the improver read 3c1bd45..77b8c25 (#11, #15) and the whole tree: an unused `amazing_print` test dependency and a dead Ruby 1.8.6 branch (findings #21, issue #17). A second 2026-11-08 read of 77b8c25..7e12714 (#18) found nothing removable. |
+| security | 2026-11-08 | First audit, develop 6a9ec45 (diffed against main 15bd90b). bundler-audit clean. Every eval, ENV read, shell-out, file write, gemspec, CI workflow, rultor config and the published 1.1.3 package. Findings 28-30, S-31 to S-35. |
+| dead code | 2026-11-08 | Quick scans through 3c1bd45; on 2026-11-08 the improver read 3c1bd45..77b8c25 (#11, #15) and the whole tree: an unused `amazing_print` test dependency and a dead Ruby 1.8.6 branch (findings #21, issue #17). A second 2026-11-08 read of 77b8c25..7e12714 (#18) found nothing removable. A third 2026-11-08 read of 7e12714..6a9ec45 (#19) found nothing removable. |
 | dependencies | never | |
 | adoption | 2026-11-06 | First audit. README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. gem-skill and llms.txt not checked. |
 | quality | never | |
 
-Dead-code scan last covered commit: 7e12714 (develop, 2026-11-08)
+Dead-code scan last covered commit: 6a9ec45 (develop, 2026-11-08)
 
 ## Findings
 
@@ -38,7 +38,7 @@ Dead-code scan last covered commit: 7e12714 (develop, 2026-11-08)
    - The Rakefile has no `test` task, and there is no test CI workflow.
 
    Status: rake task and CI merged ([#9](https://github.com/MadBomber/debug_me/pull/9), 2026-11-07), plus a new gap found 2026-11-07: the suite requires `logger`, which is not a default gem on Ruby 4, so `bundle exec` runs failed until #9 added it as a dev dependency. Still open: the `test_files` glob (`test/` vs `tests/`) and the `minitest ~> 5.0` constraint.
-9. **The gem package includes the docs site.** `spec.files` is `git ls-files`, so it ships docs/ (about 2000 lines plus a 127 KB jpg) and mkdocs.yml. Status: open (size not measured).
+9. **The gem package includes the docs site.** `spec.files` is `git ls-files`, so it ships docs/ (about 2000 lines plus a 127 KB jpg) and mkdocs.yml. Status: issue [#25](https://github.com/MadBomber/debug_me/issues/25) (measured 2026-11-08: 158,208 bytes, 11,776 trimmed).
 10. **The `.rultor.yml` release config and `rubygems.yml.asc` look dead.** The release script's sed looks for `1.0.snapshot`, which is no longer in version.rb. Status: needs Dewayne's decision (remove, or keep for rultor).
 11. **A `safe_debug`-style wrapper reports its own file and line in the header, not the caller's.** There is no option to skip a frame. Status: open idea. Adding something like a `caller_offset:` option needs Dewayne's decision, since it is new public API.
 
@@ -54,9 +54,9 @@ Dead-code scan last covered commit: 7e12714 (develop, 2026-11-08)
 
 13. **`debug_me(levels: 1) { :backtrace }` prints the backtrace twice.** With `levels > 0`, lib/debug_me.rb adds `'backtrace'` to the output list itself, then evaluates the block's own `:backtrace` again. Confirmed at runtime on develop 98b8d47. README.md says `levels` replaces `:backtrace`. Status: PR'd ([#11](https://github.com/MadBomber/debug_me/pull/11)).
 14. **`levels:` is silently ignored with `header: false`, and a String `levels:` raises.** The `levels` backtrace is collected only inside `if options[:header]`, and `options[:levels] > 0` runs before `.to_i`, so `debug_me(levels: '2')` raises (ArgumentError on Ruby 4, not NoMethodError). Status: String half is issue [#13](https://github.com/MadBomber/debug_me/issues/13), merged ([#18](https://github.com/MadBomber/debug_me/pull/18), 2026-11-08); whether `levels:` should work with `header: false` needs Dewayne's decision.
-15. **configuration.md's "Include at Kernel Level" heading and its "includes into Object/Kernel" comment are wrong.** A top-level `include` adds the module to Object, not Kernel. Status: open (docs; the heading anchor may be linked).
-16. **api-reference's signature line still reads `debug_me(options = {}, &block)` and leaves out `**keyword_options`** (added in #8). Status: open (docs).
-17. **On Ruby 2.7, passing a Hash variable to `debug_me` may print the "last argument as keyword parameters" deprecation warning** since #8 added `**keyword_options`. Status: unverified (needs a Ruby 2.7 run; CI covers 2.3 and 4.0 only).
+15. **configuration.md's "Include at Kernel Level" heading and its "includes into Object/Kernel" comment are wrong.** A top-level `include` adds the module to Object, not Kernel. Status: issue [#27](https://github.com/MadBomber/debug_me/issues/27).
+16. **api-reference's signature line still reads `debug_me(options = {}, &block)` and leaves out `**keyword_options`** (added in #8). Status: issue [#27](https://github.com/MadBomber/debug_me/issues/27).
+17. **On Ruby 2.7, passing a Hash variable to `debug_me` may print the "last argument as keyword parameters" deprecation warning** since #8 added `**keyword_options`. Status: moot once [#23](https://github.com/MadBomber/debug_me/pull/23) raises the floor to 3.2.
 
 ### 2026-11-07 third run (no audit; found by `/code-review` on #11)
 
@@ -69,17 +69,34 @@ Dead-code scan last covered commit: 7e12714 (develop, 2026-11-08)
 - Issues #12, #13 and #14 re-verified on develop 77b8c25. #12 and #14 still reproduce.
 - The 2026-11-07 late visit (cut off, no run entry) opened issues #12, #13 and #14 and PR #15 (merged 2026-11-08). Finding 19 records #14, which had no finding.
 
-19. **The test suite fails with `DEBUG_ME=false` in the shell and leaves `logger_class_output.txt` behind, which keeps later runs red.** Status: issue [#14](https://github.com/MadBomber/debug_me/issues/14).
+19. **The test suite fails with `DEBUG_ME=false` in the shell and leaves `logger_class_output.txt` behind, which keeps later runs red.** Status: issue [#14](https://github.com/MadBomber/debug_me/issues/14), PR'd ([#24](https://github.com/MadBomber/debug_me/pull/24)).
 20. **`debug_me {}` in a class method, module method or class body shows no class variables or constants.** `cvar`/`cconst` read `self.class`, which is `Class` there. Verified on 77b8c25. Status: issue [#16](https://github.com/MadBomber/debug_me/issues/16).
-21. **The test suite requires `amazing_print` (and the gemspec lists it) but nothing uses it; `lib/debug_me.rb` keeps a Ruby 1.8.6 `caller` branch that can't run on Ruby >= 2.3.** Verified on 77b8c25: the suite counts are unchanged without it. Status: issue [#17](https://github.com/MadBomber/debug_me/issues/17), PR'd ([#19](https://github.com/MadBomber/debug_me/pull/19)).
+21. **The test suite requires `amazing_print` (and the gemspec lists it) but nothing uses it; `lib/debug_me.rb` keeps a Ruby 1.8.6 `caller` branch that can't run on Ruby >= 2.3.** Verified on 77b8c25: the suite counts are unchanged without it. Status: merged ([#19](https://github.com/MadBomber/debug_me/pull/19), 2026-11-08); the Ruby floor follow-up Dewayne asked for on #17 is PR'd ([#23](https://github.com/MadBomber/debug_me/pull/23)).
 22. **A top-level `debug_me {}` dumps every top-level constant** (`self.class` is Object; 429 lines in one probe for one local). Status: needs Dewayne's decision (skip constants for Object, default `cconst` off at top level, or document it). In `inbox.md`.
-23. **The 11 subprocess tests in `tests/env_test.rb` fail outside a git checkout under `bundle exec`.** They inherit `-rbundler/setup`, the gemspec's `git ls-files` writes `fatal: not a git repository` to stderr, and the tests merge stderr into what they check. Harmless in CI. Fix: clear `RUBYOPT` as #15 did. Status: open (fold into a fix for #14 or findings #12).
+23. **The 11 subprocess tests in `tests/env_test.rb` fail outside a git checkout under `bundle exec`.** They inherit `-rbundler/setup`, the gemspec's `git ls-files` writes `fatal: not a git repository` to stderr, and the tests merge stderr into what they check. Harmless in CI. Fix: clear `RUBYOPT` as #15 did. Status: issue [#25](https://github.com/MadBomber/debug_me/issues/25) (trimming `spec.files` removes the `git ls-files` call).
 
 ### 2026-11-08 second visit (no audit; triage, improver, builder)
 
 - Issues #12, #14, #16 and #17 re-verified on develop 7e12714; all still reproduce. Findings 2, 7, 10, 11, 14, 18 and 22 still present and still need Dewayne's decision.
 
-24. **README.md:38 says `DebugMe::debug_me(){}` works with local, instance and class variables, but it raises NoMethodError.** PR #10 fixed the same claim in docs/ only. Status: issue [#20](https://github.com/MadBomber/debug_me/issues/20).
+24. **README.md:38 says `DebugMe::debug_me(){}` works with local, instance and class variables, but it raises NoMethodError.** PR #10 fixed the same claim in docs/ only. Status: issue [#20](https://github.com/MadBomber/debug_me/issues/20), closed by Copilot PR #21 on `main` only (code fix, per Dewayne); `develop` waits for the sync (findings #30).
 25. **`ruby -w` on tests/debug_me_test.rb prints 15 warnings** (unused locals at lines 115, 121, 132, 358-381 and 414; constants A, B, C redefined at 244/251). Many of those locals exist so `debug_me` has something to show, so a fix must keep them (for example by referencing them or using distinct constant names). Status: open (low value).
-26. **`bt = caller` in lib/debug_me.rb builds the whole stack on every call even when only `bt[0]` is used.** `caller(1, 1)` for the header, plus a bounded `caller` only when `levels` or `:backtrace` needs it, would avoid that. Status: unverified (not measured).
+26. **`bt = caller` in lib/debug_me.rb builds the whole stack on every call even when only `bt[0]` is used.** `caller(1, 1)` for the header, plus a bounded `caller` only when `levels` or `:backtrace` needs it, would avoid that. Status: issue [#26](https://github.com/MadBomber/debug_me/issues/26) (measured 2026-11-08).
 27. **The gemspec's dev dependencies are not in alphabetical order** (`logger` after `rake`), which RuboCop's `Gemspec/OrderedDependencies` flags. Status: open (trivial; could ride along with a gemspec PR).
+
+### 2026-11-08 security audit (develop 6a9ec45; main 15bd90b compared)
+
+- bundler-audit 0.9.3 on a fresh lock (logger 1.7.0, minitest 5.27.0, rake 13.4.2): no vulnerabilities found.
+- PR #21 (Copilot, `extend self` plus block-binding discovery and an autoload filter; fixes issue #20) was merged into `main`, not `develop`. Findings 28 to 30 were checked against both branches.
+- Issue #16 still reproduces on both `main` and `develop`: #21 reads `eval('self.class', block.binding)`, which is still `Class` inside a class method.
+- Findings #9 and #26 measured by the improver: the gem package is 158,208 bytes and would be 11,776 with `lib/` plus README, LICENSE and CHANGELOG only. At stack depth 200, `caller` takes 75 of a call's 102 us, against 0.48 us for `caller(1, 1)`.
+- Dead-code scan: 7e12714..6a9ec45 (#19) read; nothing removable. Old-Ruby-only code found: the gemspec's `# coding: utf-8` and its manual `$LOAD_PATH` push, plus the `bundler` dev dependency.
+
+28. **`debug_me { obj }` raises SyntaxError for any object with the default `to_s`.** Every block value is converted with `to_s` and then evaluated, so `"#<Object:0x...>"` becomes a comment inside `defined?(...)`. SyntaxError is a ScriptError, so a plain `rescue => e` misses it and a debug line crashes the program. Verified on 4.0.7 to 4.1.0-preview1; same code on main. Status: PR'd ([#22](https://github.com/MadBomber/debug_me/pull/22)). Follow-up from its review: the `levels` check `block_value.none? { |v| v.to_s == "backtrace" }` still matches a non-String whose `to_s` is `backtrace` (e.g. `Pathname.new("backtrace")`), which drops the `levels` backtrace. Trivial; fold into the main/develop sync.
+29. **`debug_me {}` loads every autoload constant of the caller's class.** With `cconst: true`, each constant name is evaluated, which triggers a registered `autoload`. Verified on develop. main's #21 already filters `autoload?` names. Status: open (fixed on main only; comes over with the main/develop sync).
+30. **`main` and `develop` have diverged.** main has #21; develop has #8 to #19 (31 commits). A trial merge conflicts in one hunk of lib/debug_me.rb (`extend self` against `**keyword_options`; keep both). After that, one test fails: `tests/module_call_test.rb:18` (`wont_include DebugMe`), because `tests/debug_me_test.rb:7` includes DebugMe at top level in the same rake process. main has no Test workflow, so #21 merged untested. develop's CHANGELOG and docs/configuration.md say `DebugMe.debug_me` was removed or doesn't exist, which is false after #21. Status: needs Dewayne's decision (in `inbox.md`).
+- S-31: security finding, details held locally. Status: fix in flight.
+- S-32: security finding, details held locally. Status: open.
+- S-33: security finding, details held locally. Status: needs Dewayne's decision.
+- S-34: security finding, details held locally. Status: needs Dewayne's action.
+- S-35: security finding, details held locally. Status: open (low).
