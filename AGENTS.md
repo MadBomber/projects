@@ -13,3 +13,4 @@ particular) read it before choosing work and update it after doing work.
 - Mark a PR as **PR open** next to its item. Nothing is "complete" until Dewayne merges it.
 - Commit only the files you changed, by explicit path, with a short title line under 60 characters.
 - This repo is public. No secrets, tokens, personal data, or vulnerability details anywhere in it. Security findings appear in `bomberbot/findings/` only as placeholders; the details live in `notes/security/<repo>.md`. `notes/` is gitignored and must stay that way: never `git add -f` under it or remove it from `.gitignore`.
+- Bomberbot may open GitHub issues labeled `bomberbot` in a monitored repo for findings it verified and could not fix in the same visit, at most three per visit, never for security findings. `bomberbot/findings/<repo>.md` links each one and keeps what did not become an issue.

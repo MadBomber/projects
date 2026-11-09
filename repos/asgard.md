@@ -1,6 +1,6 @@
 # asgard
 
-Thor-based task runner driven by .loki files.
+Thor-based task runner driven by .loki files; the other monitored repos, dev, and the `*_project` workspaces use it. Prefer `asgard <task>` where a repo has a `.loki`, otherwise `bundle exec rake test`. A change to a public method must not break dev; run dev's suite against the branch.
 
 ## Links
 

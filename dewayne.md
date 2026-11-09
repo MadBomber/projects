@@ -10,8 +10,4 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## typed_bus
 
-- [ ] Create a `develop` branch in typed_bus (from `main`), or tell bomberbot to target `main` there. Until then bomberbot can only file issues; [#1](https://github.com/MadBomber/typed_bus/issues/1)–[#6](https://github.com/MadBomber/typed_bus/issues/6) are ready to become PRs. (added 2026-11-09; #4–#6 added on the second visit)
-
-## agent99
-
-- [ ] Create a `develop` branch in agent99 (from `main`), or tell bomberbot to target `main` there. Until then bomberbot can only file issues; [#3](https://github.com/MadBomber/agent99/issues/3)–[#5](https://github.com/MadBomber/agent99/issues/5) and findings F-1/F-2/F-6..F-9 are ready to become PRs. (added 2026-11-09, first visit)
+- [X] Create a `develop` branch in typed_bus (from `main`), or tell bomberbot to target `main` there. Until then bomberbot can only file issues; [#1](https://github.com/MadBomber/typed_bus/issues/1)–[#6](https://github.com/MadBomber/typed_bus/issues/6) are ready to become PRs. (added 2026-11-09; #4–#6 added on the second visit)

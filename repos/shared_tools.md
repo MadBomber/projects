@@ -1,6 +1,6 @@
 # shared_tools
 
-Local tool definitions for Ruby AI frameworks, used by aia.
+Local tool definitions for Ruby AI frameworks, used by aia. A change to a public method must not break aia; run aia's suite against the branch.
 
 ## Links
 

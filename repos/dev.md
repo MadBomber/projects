@@ -1,6 +1,6 @@
 # dev
 
-Shared Asgard task libraries (.loki) for madbomber repos.
+Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite is whatever `test/` holds plus a clean load of every `.loki` file.
 
 ## Links
 
