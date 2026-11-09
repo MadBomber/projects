@@ -182,6 +182,16 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **#16 and #17 both add a section under CHANGELOG `[Unreleased]`** (`### Fixed`, `### Tests`), so whichever merges second may need a one-line conflict fix; the tender rebases it next visit if you'd rather not. (added 2026-11-09)
 - **Bomberbot harness (unverified, from a builder's stray review of `~/.prompts`):** a repo named on the command line isn't checked for a `develop` branch or archived status before a visit (typed_bus hit this). Worth a check in the asgard task? (added 2026-11-09)
 
+## agent99 (2026-11-09, second visit)
+
+- **`develop` now exists.** Bomberbot created it from `main` at 69f0a04 this visit, per the updated branch model ("No develop branch? Create it from main"). The first visit's "create develop" ask above is done.
+- **F-12: move `sinatra` out of the runtime dependencies?** `lib/` never requires it; only `examples/registry.rb` does, yet every `gem install agent99` pulls in sinatra, rack and four others. Options: make it a development dependency and document "install sinatra to run the example registry", or keep it because the example registry is how people try the gem. (added 2026-11-09)
+- **F-15: version bounds on runtime deps.** All four are bare; bunny 3.6.0 is out and untested. Pin `"bunny", ">= 2.24", "< 3"` now, or test bunny 3 and allow `< 4`? (added 2026-11-09)
+- **F-17: test CI + Dependabot.** Which Ruby matrix (3.3 is supported until 2027-03; dev bundle needs 4.0 once tocer is re-locked, see #7)? (added 2026-11-09)
+- **F-19: message hooks are private on `Agent99::Base`.** README and docs call `receive_request` etc. the overridable API; subclasses redefine them public. Document "override as private", or move the hooks above `private`? (added 2026-11-09)
+- **F-20: README env vars the library never reads** (`AGENT99_LOG_LEVEL`, `NATS_URL/USER/PASS`, `RABBITMQ_URL/USER/PASS`). Per the debug_me#20 rule this means changing the code (log level, AMQP config, NATS URL), but precedence and defaults are your call. Check whether nats-pure already honours `NATS_URL`. (added 2026-11-09)
+- **Docs sweep:** ~10 pages under `docs/` repeat the `process_request(payload)` pattern (F-6). One docs PR once F-6 lands, or make `process_request` the documented hook. (added 2026-11-09)
+- **Bomberbot harness (unverified, from a builder's stray review of `~/.prompts`):** bomberbot and madbot may share `~/sandbox/bomberbot/<repo>` as their run directory, and their schedules overlap around 00:45–01:00. If both reach the same repo, one bot's start-up could set the other's live directory aside. Worth a per-bot root? (added 2026-11-09)
 ## trak_flow (2026-11-09, first visit)
 
 - **Create a `develop` branch** (same as typed_bus and agent99). trak_flow has only `main` and `gh-pages`. The branch model says branch from and target `develop` and never push to `main`, so until `develop` exists bomberbot can only file issues. Issues [#1](https://github.com/MadBomber/trak_flow/issues/1)–[#3](https://github.com/MadBomber/trak_flow/issues/3) plus several findings (S-2, F-3, C4) are ready to become PRs the moment it exists. (added 2026-11-09)

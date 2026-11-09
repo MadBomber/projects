@@ -16,44 +16,50 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-09 (first visit)._ **Blocked for PRs: the repo has no `develop` branch**
-(only `main`, `gh-pages`, and the already-merged `meshage`/`playing_with_p2p`), so
-bomberbot couldn't branch from or target it; creating it is Dewayne's step (see
-`dewayne.md`). Suite green on Ruby 4.0.9 (57 runs, 0 failures, 4 skips); no test CI runs
-it (only `docs.yml` deploys mkdocs). First security audit ran. Filed
-[#3](https://github.com/MadBomber/agent99/issues/3) (`require "agent99"` raises
-`LoadError: debug_me` on a clean install — dev-only dependency required at runtime),
-[#4](https://github.com/MadBomber/agent99/issues/4) (`Agent99::Timestamp` round-trip is
-broken — bit-shift decode vs decimal encode, >2-year drift) and
-[#5](https://github.com/MadBomber/agent99/issues/5) (published gem is ~1.5 MB: docs
-images, a binary `.db`, and planning notes ship).
+_Updated 2026-11-09 (second visit)._ Bomberbot created `develop` from `main` at 69f0a04
+and opened three PRs against it, one per first-visit issue: [#9](https://github.com/MadBomber/agent99/pull/9) (#4),
+[#10](https://github.com/MadBomber/agent99/pull/10) (#3), [#11](https://github.com/MadBomber/agent99/pull/11) (#5). First dependencies audit ran; filed
+[#6](https://github.com/MadBomber/agent99/issues/6) (NATS connect failure masked by NoMethodError),
+[#7](https://github.com/MadBomber/agent99/issues/7) (lockfile won't install on Ruby 4.0 / build on 4.1) and
+[#8](https://github.com/MadBomber/agent99/issues/8) (dead class-level rescue in `Base`). Suite green on Ruby 4.0.9
+only after `bundle install` re-resolves the lock (#7); no test CI (only `docs.yml`).
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything
-else in this repo, once `develop` exists.
+else in this repo.
 
-- [#3](https://github.com/MadBomber/agent99/issues/3) make `debug_me` a runtime dep or
-  drop the unused top-level `require`/`include` (C1).
-- [#4](https://github.com/MadBomber/agent99/issues/4) fix `Timestamp.ts2utc` to decode
-  with decimal arithmetic + add a round-trip test (C2).
-- [#5](https://github.com/MadBomber/agent99/issues/5) allowlist `spec.files` (C1 triage).
-- F-1: `AgentDiscovery#add_agent` (`agent_discovery.rb:36`) has zero callers — dead code.
-- F-2: `test/agent99/test_base.rb:57-65` asserts methods that exist only on the test
-  double (`discover_agents`, `get_all_agents`, `send_request`, `create_header`,
-  `validate_header`), not on the real `Agent99::Base`. False confidence; fix the asserts.
-- README Quick Start / Usage teaches overriding the private `process_request` dispatcher
-  and reading `payload.dig(:name)`; every shipped example overrides `receive_request` and
-  uses `get(:field)`. README also links `examples/greeter_agent.rb`,
-  `examples/multi_agent/`, `examples/dashboard/` which don't exist. Fix docs to match code.
-- `examples/maxwell_agent86.rb:97-99` `receive_response(response)` — wrong arity, `loger`
-  typo, non-interpolated string. Shipped sample code that is dead on arrival.
-- gemspec: add `documentation_uri` (docs site is live); de-dupe homepage/source URLs.
-- CHANGELOG `[Unreleased]` empty despite two post-0.0.5 commits.
+- [#3](https://github.com/MadBomber/agent99/issues/3) drop the unused top-level `debug_me` `require`/`include`.
+  **PR open** [#10](https://github.com/MadBomber/agent99/pull/10).
+- [#4](https://github.com/MadBomber/agent99/issues/4) fix `Timestamp.ts2utc` decode + round-trip test. **PR open**
+  [#9](https://github.com/MadBomber/agent99/pull/9).
+- [#5](https://github.com/MadBomber/agent99/issues/5) allowlist `spec.files` (+ `documentation_uri`, F-8). **PR open**
+  [#11](https://github.com/MadBomber/agent99/pull/11).
+- [#6](https://github.com/MadBomber/agent99/issues/6) assign `@logger` before connecting in `NatsMessageClient` (F-18).
+- [#7](https://github.com/MadBomber/agent99/issues/7) re-lock `Gemfile.lock` for Ruby 4.0/4.1 (F-10, F-11).
+- [#8](https://github.com/MadBomber/agent99/issues/8) delete the class-body `rescue` in `base.rb` (F-16).
+- F-2: `test/agent99/test_base.rb:44-66` asserts methods only the test double has
+  (public `receive_*`/`send_response` are private on `Base`; `discover_agents` etc. don't
+  exist). Top candidate next visit: assert against `Agent99::Base` itself.
+- F-1: `AgentDiscovery#add_agent` (`agent_discovery.rb:36`) has zero callers; private.
+- F-6: README Quick Start / Usage teaches overriding private `process_request` and
+  `payload.dig(:name)`; examples use `receive_request` + `get(:field)`. Three README
+  links point at missing examples.
+- F-7: `examples/maxwell_agent86.rb:97-99` `receive_response(response)` wrong arity,
+  `loger` typo, non-interpolated string.
+- F-13: `spec.require_paths = ["lib", "examples"]` → `["lib"]` (after #11 merges).
+- F-14: declare `logger` as a runtime dependency (no longer a default gem on Ruby 4).
+- F-21: `require "agent99"` never loads `version.rb`, so `Agent99::VERSION` is undefined
+  (builder note, unverified).
+- gemspec: de-dupe homepage/source URLs (`gem build` warns).
+- CHANGELOG `[Unreleased]` still lacks the two post-0.0.5 commits (each PR adds its own line).
 
 ## Open bomberbot PRs
 
-- (none — repo blocked for PRs until `develop` exists)
+- [#9](https://github.com/MadBomber/agent99/pull/9) `bomberbot/fix-timestamp-decode` → develop. Fixes #4. Review cap hit, round-3 items fixed.
+- [#10](https://github.com/MadBomber/agent99/pull/10) `bomberbot/drop-debug-me-require` → develop. Fixes #3. [BREAKING FIX] (no more global `DebugMe` include). Review cap hit, trivial items fixed.
+- [#11](https://github.com/MadBomber/agent99/pull/11) `bomberbot/gem-files-allowlist` → develop. Fixes #5; gem 1.5 MB → 80 KB. Review clean. Not auto-merged (touches the gemspec).
+- All three add one line under CHANGELOG `[Unreleased]`; the second and third to merge need a trivial conflict fix (keep both lines).
 
 ## Merged bomberbot PRs
 

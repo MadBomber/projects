@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-09 17:48 agent99
+
+- **Created `develop` from `main` at 69f0a04**, per the updated branch model ("No develop branch? Create it from main"). This supersedes the earlier "no develop = blocked for PRs" practice (typed_bus, agent99 first visit, trak_flow).
+- Three new PRs, all independent, base `develop`, source **brain/issue** (first-visit Backlog). No test CI exists, so "green" = full local suite on Ruby 4.0.9:
+  - [#10](https://github.com/MadBomber/agent99/pull/10) fix: load agent99 without the debug_me development gem. Fixes #3. Suite 58/0F/4S. Review hit the 3-round cap; trivial items fixed, overrun in the body. Marked [BREAKING FIX] in CHANGELOG (no more global `DebugMe` include).
+  - [#9](https://github.com/MadBomber/agent99/pull/9) fix(timestamp): make ts2utc the inverse of utc2ts. Fixes #4. New test 7 runs: 5 fail on develop, 0 on branch; suite 64/0F/4S. Review hit the cap; round-3 items fixed.
+  - [#11](https://github.com/MadBomber/agent99/pull/11) fix(gemspec): allowlist the files that ship in the gem (+ `documentation_uri`). Fixes #5. Gem 1,568,256 → 80,384 bytes, 109 → 33 files; suite 62/0F/4S. Review clean.
+- Merged (low risk): none. All three touch `lib/` or the gemspec. Merged after approval: none.
+- Tended PRs: none; the repo had 0 open PRs. Verified directly; no tender agent. Issues answered: none; the only open issues (#3–#5) were bomberbot's own, with no comments, and the PRs link them via `Fixes`. Verified directly; no responder agent. No triage agent either (it ran 80 minutes earlier on the first visit). Builders started alongside the auditor and improver, since the Backlog already decided the picks.
+- Audit: **dependencies (first ever)** at develop 69f0a04: F-10..F-17. Improver added F-18..F-20; builders noted F-21, F-22.
+- Issues filed (labeled bomberbot, F-18 and F-16 re-reproduced by the main session): [#6](https://github.com/MadBomber/agent99/issues/6) NATS connect failure raises NoMethodError (F-18), [#7](https://github.com/MadBomber/agent99/issues/7) Gemfile.lock doesn't install on Ruby 4.0 or build on 4.1 (F-10, F-11), [#8](https://github.com/MadBomber/agent99/issues/8) dead class-level rescue in `Agent99::Base` (F-16).
+- Inbox: F-12 sinatra runtime dep, F-15 version bounds, F-17 test CI matrix, F-19 private hooks, F-20 unread env vars, docs `process_request` sweep, a harness note about the shared run directory.
+- Security: none new.
+
 ## 2026-11-09 16:42 trak_flow
 
 - **blocked: no `develop` branch.** First visit (repo named on the command line, newly added to brain as #15 in `priorities.md`; created `repos/trak_flow.md`, `bomberbot/findings/trak_flow.md`). trak_flow has only `main` and `gh-pages`; the branch model says branch from and target `develop` and never push to it, so no PRs and no builders. Third application of the "no `develop` = blocked for PRs" rule (after typed_bus, agent99). Step added to `dewayne.md`; create-develop + design/adoption questions in `inbox.md`.
