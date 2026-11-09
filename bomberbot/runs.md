@@ -1,6 +1,17 @@
 # Runs
 
-Newest first. One entry per run; add each repo as it finishes.
+Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
+
+## 2026-11-09 02:00 aia
+
+- New PR [#167](https://github.com/MadBomber/aia/pull/167), fix(skills): recruit and reskill tools accept only skill-directory ids (source: security, finding S-2; brain backlog empty). Neutral title/body: the `recruit_robot`/`reskill_robot` tools' `skills` argument reached an under-confined skill-id resolver; both tools now reject path-style ids via `SkillUtils.path_based_id?` (raising `CrewError`), leaving human-typed directives unchanged. Details held locally in `notes/security/aia.md`. Proof: new `test_tool_rejects_filesystem_path_skill_ids` in both tool tests fails on develop, passes on branch; suite 1997 runs / 0 failures (baseline 1995); rubocop + reek 0/0 on all 4 changed files; 1 `/code-review` round, no defects. Independent.
+- New PR [#166](https://github.com/MadBomber/aia/pull/166), docs: correct README configuration tables to match defaults.yml (source: issue #163 / finding F-18). Resolves #163. Eight README config rows reconciled against `defaults.yml` and the already-correct `docs/reference/config-keys.md`: dropped removed flags `--clear` and `--md`/`--[no-]markdown` and the non-keys `prompts.roles_dir`/`embedding.model`, fixed `max_tokens` 2048→32767, `top_p` 1.0→unset, `logger.mcp.file` STDOUT→`~/.config/aia/logs/mcp.log`, and `paths.config_file`→CLI-only `-c`. Proof: per-row grep/CLI evidence in the PR; suite 1995/0; Tocer TOC undisturbed. `/simplify` nothing; 1 `/code-review` round, no defects. Independent.
+- New PR [#168](https://github.com/MadBomber/aia/pull/168), test: replace deprecated SimpleCov calls (source: issue #164 / finding F-17). Resolves #164. `add_filter`/`track_files`/`add_group` → `skip`/`cover`/`group` in `test/simplecov_helper.rb` (keeping `bin/migrate_prompts` in `cover` so coverage is identical), plus `simplecov '~> 1.0'` pin in the gemspec; same change as prompt_manager#21. Proof: DEPRECATION lines 7→0; coverage report byte-identical (93 files, line 82.12%, branch 65.84% both ways); suite 1995/0; rubocop + reek 0/0; `/simplify` nothing; 1 `/code-review` round, no defects. Independent.
+- Audit: security (first ever), develop d974374; bundler-audit clean (1352 advisories). One finding, S-2 (held locally); posture otherwise by-design. The improver re-confirmed the dead-code scan at d974374 (no new merges since 2026-11-08; nothing newly removable; F-13 re-verified, still needs Dewayne).
+- Tended PRs: none open at start (tender confirmed). #157–#160 already merged by Dewayne 2026-11-07 (merge commits, not squash); v2.1.0 (#162) shipped to main 2026-11-08; nothing closed unmerged. develop green at d974374 (1995 runs, 0 failures). Lesson: #160 follow-up 7208fbb shows Dewayne lints/reeks test files too and save/restores ENV in env-sensitive tests.
+- Issues answered: none. The responder read all 8 open issues and every comment; develop is unchanged since the last visit and each issue already carries BomberBot's current analysis, so a new comment would duplicate (forbidden). #165 left for a future test-harness PR.
+- Issues filed: none. #165 is already open; the remaining candidates (config drift-guard, llms.txt, F-13 dead-method call, design questions on #146/#147/#148/#93/#154) are design calls recorded in `inbox.md`, not fresh issues.
+- Interrupted directory from a prior cut-off was already set aside at `~/sandbox/bomberbot-interrupted/aia-20261109-0200`; started fresh, no work lost (no bomber branch had been pushed).
 
 ## 2026-11-08 13:19 debug_me
 

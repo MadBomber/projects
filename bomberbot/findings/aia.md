@@ -8,8 +8,8 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | never | |
-| dead code | 2026-11-08 | 2026-11-08: improver read of 994ce0c..d974374 (providers feature, v2.1.0 prep), nothing removable. 2026-11-07: debride over lib and bin, then hand checks; results recorded as F-12 and F-13 |
+| security | 2026-11-09 | 2026-11-09: bundler-audit clean (1352 advisories); grep of lib/ and bin/ for shell-out, eval, ERB, deserialization, secrets, MCP, SSRF. Posture by-design except S-2. Audited develop d974374 |
+| dead code | 2026-11-08 | 2026-11-08: improver read of 994ce0c..d974374 (providers feature, v2.1.0 prep), nothing removable. 2026-11-09: no new merges since; improver re-confirmed nothing new removable (F-13 re-verified, still needs Dewayne). 2026-11-07: debride over lib and bin, then hand checks; results recorded as F-12 and F-13 |
 | dependencies | 2026-11-06 | bundle outdated clean; bundle-audit clean; no Ruby 4 removed APIs in lib/bin; suite hermeticity issues found |
 | adoption | never | |
 | quality | never | |
@@ -47,10 +47,16 @@ Dead-code scan last covered commit: d974374 (develop, 2026-11-08; every new meth
 ### 2026-11-07 third run (work on #160, develop 994ce0c)
 
 - **F-16** (needs Dewayne's decision): eleven lazy `require_relative` sites in lib (`SpecialModeHandler` loads debate_handler, delegate_handler, spawn_handler, layered_orchestrator, verification_network, prompt_decomposer; `ToolFilterRegistry` loads tool_filter/tfidf; `StartupCoordinator` loads the task-board tools). A hidden dependency between lazy files shows only when the file is loaded in a fresh process; #160 pins two of them with a child-process test. Options: `autoload` entries in `lib/aia.rb` for the lazily loaded classes, a test that requires every lazy target in its own child process, or leave it per-file. Raised by `/code-review` on #160.
-- **F-17** (issue #164; re-verified 2026-11-08: 7 lines show only with `RUBYOPT` unset, since this shell exports `-W0`): `test/simplecov_helper.rb` uses `SimpleCov.add_filter`, `track_files` and `add_group`, which the installed simplecov deprecates, so every test run prints 7 deprecation lines. Same fix as prompt_manager#21 (`skip`, `cover`, `group`), checking the coverage file list stays the same.
+- **F-17** (PR'd: https://github.com/MadBomber/aia/pull/168; resolves issue #164; re-verified 2026-11-09: 7 lines): `test/simplecov_helper.rb` uses `SimpleCov.add_filter`, `track_files` and `add_group`, which the installed simplecov deprecates, so every test run prints 7 deprecation lines. Same fix as prompt_manager#21 (`skip`, `cover`, `group`), checking the coverage file list stays the same.
 
 ### 2026-11-08 visit (develop d974374, after the v2.1.0 release prep)
 
-- **F-18** (issue #163): eight rows of the README configuration tables disagree with `defaults.yml` and the CLI (`--clear` and `--md`/`--[no-]markdown` were removed in 2.0, `max_tokens` default 32767 not 2048, `top_p` unset not 1.0, `prompts.roles_dir`, `paths.config_file` and `embedding.model` are not config keys, `logger.mcp.file` default changed in 2.0.1). Found by the improver.
+- **F-18** (PR'd: https://github.com/MadBomber/aia/pull/166; resolves issue #163): eight rows of the README configuration tables disagree with `defaults.yml` and the CLI (`--clear` and `--md`/`--[no-]markdown` were removed in 2.0, `max_tokens` default 32767 not 2048, `top_p` unset not 1.0, `prompts.roles_dir`, `paths.config_file` and `embedding.model` are not config keys, `logger.mcp.file` default changed in 2.0.1). Found by the improver.
 - **F-19** (PR'd, see repos/aia.md; released in 2.1.0 by 26e2e00): a bare model name that is also a RubyLLM provider slug becomes `<slug>/default` before `--provider` applies, so `--provider ollama -m mistral` goes to provider `mistral`, model `default` (2.0.1 gave `ollama/mistral`), and `AIA_MODEL=mistral --provider ollama` gives `ollama/default`. Contradicts the README, `docs/reference/cli.md` and the 2.1.0 CHANGELOG. Found by the improver and triage.
 - **F-20** (needs Dewayne's decision): the bare-name-as-provider rule from 26e2e00 applies to every registered provider slug (`mistral`, `deepseek`, `gemini`, `ollama`, ...), though it only makes sense for the agent CLI providers. Options: limit it to providers that opt in (for example `accepts_tools? == false` or a new hook), or keep it for all slugs. F-19's fix covers only the `--provider` case.
+
+### 2026-11-09 security audit (develop d974374)
+
+First security audit for this repo. bundler-audit clean (1352 advisories, DB updated 2026-11-07). Grepped lib/ and bin/ for shell-out (`system`, backticks, `%x`, `Open3`, `spawn`, `popen`), `eval`/`send`, ERB/template injection, deserialization (`YAML.load`/`Marshal`), secret handling, MCP/plugin loading, and SSRF. Posture is by-design everywhere except S-2: config uses `YAML.safe_load_file(permitted_classes: [Symbol])`; prompt ERB/shell is a documented trusted-local-file feature and AI responses are never re-executed; `/ruby` eval is gated behind `flags.allow_ruby_eval` (default false); shell-outs use `Shellwords.escape` or array-form `system`; `/webpage` routes through `https://pure.md/<url>`; API keys live in `RubyLLM.config`/ENV, not in `AIA.config.to_h`, so dumps don't leak them.
+
+- **S-2** (PR'd: https://github.com/MadBomber/aia/pull/167; details held locally in notes/security/aia.md): security finding, details held locally. Fixed by #167 (neutral title/body), which confines the recruit/reskill tools' skill ids to the skills directory while leaving human-typed directives unchanged. Status: PR'd.
