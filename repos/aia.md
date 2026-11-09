@@ -10,13 +10,13 @@ AI Assistant CLI gem; depends on prompt_manager and shared_tools.
 
 ## Status
 
-_Updated 2026-11-09._ #160 merged and v2.1.0 released (#162). This visit opened three PRs: #166 (README config tables, resolves #163/F-18), #167 (recruit/reskill tools confine skill ids, security S-2), #168 (replace deprecated SimpleCov calls, resolves #164/F-17). develop green at d974374 (1995 runs, 0 failures).
+_Updated 2026-11-09 (03:45 visit)._ Review queue full: #166/#167/#168 all still open and unapproved, so no new PRs this visit (skipped per the 3-open rule). Ran the first adoption audit (develop d974374, unchanged since the 02:00 visit): findings F-21..F-26, all net-new. Filed two issues — #169 (dead docs-site assets + decommissioned polyfill.io CDN, F-21/F-22) and #170 (README `/ruby` omits the `--allow-ruby-eval` gate, F-23). No issue activity and no approvals since 02:00, so the tender had nothing to merge/rebase and the responder had nothing non-duplicate to add.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- (none open; F-10 merged in #160. #165 is an open issue a small test-harness PR could resolve next visit; F-5 redundant per-file requires is a low-value removal.)
+- (none of the old items open; F-10 merged in #160. Small-PR targets for next visit once the review queue clears: issues [#169](https://github.com/MadBomber/aia/issues/169) (remove dead mkdocs assets + polyfill.io, F-21/F-22) and [#170](https://github.com/MadBomber/aia/issues/170) (one-line README `/ruby` gate note, F-23); #165 (test-harness exit, F-14); F-5 redundant per-file requires is a low-value removal.)
 
 ## Open bomberbot PRs
 
