@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-09 16:42 trak_flow
+
+- **blocked: no `develop` branch.** First visit (repo named on the command line, newly added to brain as #15 in `priorities.md`; created `repos/trak_flow.md`, `bomberbot/findings/trak_flow.md`). trak_flow has only `main` and `gh-pages`; the branch model says branch from and target `develop` and never push to it, so no PRs and no builders. Third application of the "no `develop` = blocked for PRs" rule (after typed_bus, agent99). Step added to `dewayne.md`; create-develop + design/adoption questions in `inbox.md`.
+- Tended PRs: none. The repo has 0 open PRs (never had any). Merged: none. Verified directly; no tender agent.
+- Issues answered: none. The repo had 0 open issues before this visit. Verified directly; no responder agent.
+- Audit: **security (first ever)** at main 3fa6fb4 (v0.2.0), plus a brief dead-code pass over `lib/`. No eval/shell-injection-in-lib beyond S-2 / Marshal / YAML.load / string-SQL: Oj `:compat`, `YAML.safe_load_file(permitted_classes:)`, escaped LIKE, `Open3` array-form `dot`, dry-schema MCP tool args. S-1 (MCP HTTP binds 0.0.0.0 with no auth — needs decision) and S-2 (task-sync `git` step interpolates a config-derived path into a shell command — clean array-form fix) held locally (`notes/security/trak_flow.md`, confirmed gitignored). Dead code: F-1 (five `DependencyGraph` public methods, no callers), F-2 (`Jsonl#incremental_export`/`#changed_since?`, no callers) — both public-API orphans, needs decision. Triage and improver ran too and converged on the no-test-CI gap and the global-DB default.
+- Issues filed (all labeled bomberbot, all re-verified by the main session on Ruby 4.0.9):
+  - [#1](https://github.com/MadBomber/trak_flow/issues/1) MCP `--both`/`--http` startup banner goes to stdout, corrupting the stdio protocol stream: source audit/judgment (improver C2). `start_stdio` uses `warn` with a comment that stdout is the protocol channel; `start_http`/`start_both` use `puts`.
+  - [#2](https://github.com/MadBomber/trak_flow/issues/2) `examples/cli_demo.sh` mutates the user's real global task DB: source judgment (improver C3). The demo exports PATH/BUNDLE_GEMFILE but not a DB path; default is global `~/.config/trak_flow/tf.db`.
+  - [#3](https://github.com/MadBomber/trak_flow/issues/3) gemspec is missing metadata URIs (docs site, source, changelog): source adoption (improver C1). `Gem::Specification.load(...).metadata` shows only `rubygems_mfa_required` despite a live docs site + CHANGELOG.
+- Suite: 354 tests, 710 assertions, 0 failures, 0 errors, 0 skips, 88.85% line coverage on Ruby 4.0.9 (machine default 4.1.0-preview1's bundler is broken; a clean `env -i` prefix is needed). No test CI (only a docs-deploy workflow that also triggers on a nonexistent `develop` ref).
+- Inbox: develop branch, local-vs-global DB default (+ dead `DATABASE_FILE` constant), F-3 no-op validation knobs, `llms.txt`, Ruby floor contradiction (3.1 vs 3.2), test CI + Dependabot, F-1/F-2 public-API orphans, CLI helper duplication (C5).
+- Security: S-1 needs Dewayne's decision (default bind/auth); S-2 is a clean fix blocked only on `develop`. Both in the final report for disclosure.
+- Taste: no new rule proposed; third application of the pending "no `develop` = blocked for PRs, file issues instead" rule (after typed_bus and agent99), so that rule is reinforced — now a standing pattern across three repos.
+
 ## 2026-11-09 16:34 simple_flow
 
 - Second visit. The first (about 16:03, repo named on the command line) was cut off before it wrote brain; the asgard task set its directory aside as `bomberbot-interrupted/simple_flow-20261109-1634`. This visit created `repos/simple_flow.md` and the findings file, added the repo as #13 in `priorities.md`, and recorded the first visit's security audit (S-1, S-2 held locally).

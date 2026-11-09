@@ -11,3 +11,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## typed_bus
 
 - [X] Create a `develop` branch in typed_bus (from `main`), or tell bomberbot to target `main` there. Until then bomberbot can only file issues; [#1](https://github.com/MadBomber/typed_bus/issues/1)–[#6](https://github.com/MadBomber/typed_bus/issues/6) are ready to become PRs. (added 2026-11-09; #4–#6 added on the second visit)
+
+## trak_flow
+
+- [ ] Create a `develop` branch in trak_flow (from `main`), or tell bomberbot to target `main` there. Until then bomberbot can only file issues; [#1](https://github.com/MadBomber/trak_flow/issues/1)–[#3](https://github.com/MadBomber/trak_flow/issues/3) and findings S-2, F-3, C4 are ready to become PRs. Third repo with this gap (after typed_bus, agent99). (added 2026-11-09)
