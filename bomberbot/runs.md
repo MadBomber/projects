@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-09 08:47 scripts
+
+- Audit: first full whole-tree **dead-code** pass (the most-overdue audit) at develop 543c66a — re-verified F-10/F-17/F-18 removable, found new F-23 (`estimate_tokens.rb` inert); all parked as fix-vs-retire in the inbox, none shipped unasked.
+- Tended: nothing to merge. [#17](https://github.com/MadBomber/scripts/pull/17) and [#18](https://github.com/MadBomber/scripts/pull/18) both still unreviewed (zero reviews); branches current on develop, no review threads, no CI. 2 bomberbot PRs open before this visit's new work.
+- Three new PRs:
+  - [#21](https://github.com/MadBomber/scripts/pull/21) fix: load gem spec YAML with unsafe_load for Psych 4+ — source: brain finding F-5 (verified/reproduced this visit); independent, branched from origin/develop 543c66a, base develop.
+  - [#20](https://github.com/MadBomber/scripts/pull/20) fix(prepend_to_file): report correct program name in usage — source: judgment (improver, new F-25); independent, base develop.
+  - [#22](https://github.com/MadBomber/scripts/pull/22) docs(readme): complete and correct script index — source: issue [#19](https://github.com/MadBomber/scripts/issues/19) (Fixes #19) + judgment (improver, new F-24); **stacks on #18** (base bomber/readme-fix-rows).
+- Issues answered: none warranted — the only open issue, #19, is BomberBot's own gap-report with complete evidence; responder added nothing.
+- Issues filed: [#23](https://github.com/MadBomber/scripts/issues/23) for F-14 (unquoted `cp -R` paths break on spaces), labeled bomberbot.
+- No CI in this repo; all three PRs are docs/2-3-line fixes proven by `ruby -c` + call-level/CLI repro.
+
 ## 2026-11-09 06:05 scripts
 
 - Two new PRs, both independent (branched from `origin/develop` 543c66a, base develop), both unapproved at close; this repo has no CI to watch:

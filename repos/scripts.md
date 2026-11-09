@@ -10,7 +10,7 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-09 (fourth run)._ #16 merged (Dewayne). Two new PRs open: [#17](https://github.com/MadBomber/scripts/pull/17) fixes the `new.rb` `.erb`-fallback bug (F-15, the standing backlog item), and [#18](https://github.com/MadBomber/scripts/pull/18) corrects 6 wrong and removes 4 dead rows in the README script index. Filed [#19](https://github.com/MadBomber/scripts/issues/19) for the 22 tracked scripts still missing from that index. First-ever **quality** audit ran (reek over all top-level scripts): F-17/F-18 (two scripts that cannot run) and F-19 (79 files with 3+ consecutive `puts`), all fix-vs-retire/style decisions in the inbox.
+_Updated 2026-11-09 (fifth run)._ Nothing to merge/tend ([#17](https://github.com/MadBomber/scripts/pull/17), [#18](https://github.com/MadBomber/scripts/pull/18) both still unreviewed; no CI). Three new PRs: [#21](https://github.com/MadBomber/scripts/pull/21) fixes a Psych-4 `YAML.load` crash in three gem-spec scripts (F-5), [#20](https://github.com/MadBomber/scripts/pull/20) makes `prepend_to_file.rb` print its real program name (F-25), and [#22](https://github.com/MadBomber/scripts/pull/22) completes the README script index (Fixes [#19](https://github.com/MadBomber/scripts/issues/19)) and corrects 3 more wrong rows (F-24), stacked on #18. First full **dead-code** audit ran (whole tree at 543c66a): re-confirmed F-10/F-17/F-18 removable, new F-23 (`estimate_tokens.rb` inert) — all fix-vs-retire in the inbox. Filed [#23](https://github.com/MadBomber/scripts/issues/23) for F-14 (unquoted `cp -R` paths break on spaces).
 
 ## Backlog
 
@@ -22,6 +22,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - [#17](https://github.com/MadBomber/scripts/pull/17) fix(new): resolve .erb template fallback before existence check (opened 2026-11-09, F-15), **PR open**
 - [#18](https://github.com/MadBomber/scripts/pull/18) docs(readme): fix wrong and dead script-index rows (opened 2026-11-09), **PR open**
+- [#20](https://github.com/MadBomber/scripts/pull/20) fix(prepend_to_file): report correct program name in usage (opened 2026-11-09, F-25), **PR open**
+- [#21](https://github.com/MadBomber/scripts/pull/21) fix: load gem spec YAML with unsafe_load for Psych 4+ (opened 2026-11-09, F-5), **PR open**
+- [#22](https://github.com/MadBomber/scripts/pull/22) docs(readme): complete and correct script index (opened 2026-11-09, Fixes #19 + F-24; stacks on #18), **PR open**
 
 ## Merged bomberbot PRs
 
