@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-09 16:34 simple_flow
+
+- Second visit. The first (about 16:03, repo named on the command line) was cut off before it wrote brain; the asgard task set its directory aside as `bomberbot-interrupted/simple_flow-20261109-1634`. This visit created `repos/simple_flow.md` and the findings file, added the repo as #13 in `priorities.md`, and recorded the first visit's security audit (S-1, S-2 held locally).
+- PRs merged (by Dewayne, from the first visit, no comments): [#9](https://github.com/MadBomber/simple_flow/pull/9) test CI, [#10](https://github.com/MadBomber/simple_flow/pull/10) README middleware/async wording, [#11](https://github.com/MadBomber/simple_flow/pull/11) runnable RuboCop config. Tended PRs: none open. Verified directly; no tender agent.
+- Issues answered: none. The repo had no open issues (#6, #7 closed in April). Verified directly; no responder agent.
+- Audit: **quality (first ever)** plus a brief lib dead-code pass, at develop e8196cc. Found F-1..F-7; triage and improver added F-8..F-18. Main finding: `call_parallel` silently skips steps in several pipeline shapes.
+- Three new PRs, all independent, base develop, CI green on Ruby 3.3/3.4:
+  - [#16](https://github.com/MadBomber/simple_flow/pull/16) fix(middleware): accept `logger:` keyword in Logging. Source: judgment (triage + improver, F-9); the docs promised it, so the code changed (taste: debug_me#20). Review hit the 3-round cap; overrun noted in the body.
+  - [#15](https://github.com/MadBomber/simple_flow/pull/15) chore: untrack generated `pipeline_graph.*` files. Source: dead code (improver, F-8). -130 lines.
+  - [#17](https://github.com/MadBomber/simple_flow/pull/17) test: run the VERSION check under rake test. Source: audit (F-7).
+- Issues filed (labeled bomberbot, F-1/F-3 re-reproduced by the main session on Ruby 4.0.9): [#12](https://github.com/MadBomber/simple_flow/issues/12) unknown `depends_on:` silently skipped (F-1), [#13](https://github.com/MadBomber/simple_flow/issues/13) named steps in an unnamed `parallel` block never run under `call_parallel` (F-3), [#14](https://github.com/MadBomber/simple_flow/issues/14) stale example baselines (F-10).
+- Suite: 193 runs, 0 failures, 2 skips on Ruby 4.0.9; `bundle exec` is broken under 4.1.0-preview1, as elsewhere.
+
 ## 2026-11-09 16:29 agent99
 
 - **blocked: no `develop` branch.** First visit (repo named on the command line, newly added to brain as #14 in `priorities.md`; created `repos/agent99.md`, `bomberbot/findings/agent99.md`). agent99 has only `main`, `gh-pages`, and the already-merged `meshage`/`playing_with_p2p`; the branch model says branch from and target `develop` and never push to it, so no PRs and no builders. Second application of the typed_bus "no develop = blocked for PRs" rule. Step added to `dewayne.md`; create-develop + design questions in `inbox.md`.

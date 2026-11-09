@@ -11,7 +11,7 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-09 (second visit): #9–#11 from the first visit merged; opened three small PRs (Logging `logger:` crash, tracked generated graph files, a test file that never runs) and filed #12–#14 for `call_parallel` silently skipping steps and stale example baselines._ Suite green on Ruby 4.0.9 (193 runs); Tests CI runs on 3.3 and 3.4. `bundle exec` fails under Ruby 4.1.0-preview1 (bundler 2.7.2), as elsewhere.
+_Updated 2026-11-09 16:45 (second visit): #9–#11 from the first visit merged; opened [#16](https://github.com/MadBomber/simple_flow/pull/16) (Logging `logger:` crash), [#15](https://github.com/MadBomber/simple_flow/pull/15) (tracked generated graph files) and [#17](https://github.com/MadBomber/simple_flow/pull/17) (a test file that never ran) and filed #12–#14 for `call_parallel` silently skipping steps and stale example baselines._ Suite green on Ruby 4.0.9 (193 runs); Tests CI runs on 3.3 and 3.4. `bundle exec` fails under Ruby 4.1.0-preview1 (bundler 2.7.2), as elsewhere.
 
 ## Backlog
 
@@ -28,6 +28,8 @@ Well-defined items a single small PR could close.
 ## Open bomberbot PRs
 
 - [#16](https://github.com/MadBomber/simple_flow/pull/16) fix(middleware): accept `logger:` keyword in Logging (F-9), **PR open**
+- [#15](https://github.com/MadBomber/simple_flow/pull/15) chore: untrack generated `pipeline_graph.*` files and ignore example output (F-8), **PR open**
+- [#17](https://github.com/MadBomber/simple_flow/pull/17) test: run the VERSION check under rake test (F-7), **PR open**
 
 ## Merged bomberbot PRs
 
