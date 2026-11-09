@@ -151,3 +151,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Release 0.0.2.** #1–#3 only reach users with a new release (the logger LoadError breaks every Ruby 4.0 install, including robot_lab's). Fold the CHANGELOG fix (F-7: heading says 0.1.0, the shipped version is 0.0.1) into that release. (added 2026-11-09)
 - **Adoption: `llms.txt` and `documentation_uri`.** No `llms.txt`; the gemspec has no `documentation_uri` although the docs site is live. Both small once `develop` exists. (added 2026-11-09)
 - **The 16 MB `typed_bus.gif`** is still tracked though the README stopped using it in be4018d. Delete it from the tree, or keep it as a docs asset (issue #3 removes it from the gem either way)? Also `examples/temp.md`, an unrelated chat transcript tracked since the first commit: delete? (added 2026-11-09)
+
+## typed_bus (2026-11-09 second visit)
+
+- **F-16:** handler and timeout tasks run as children of the publisher's task, so stopping the publisher strands deliveries pending forever. Give each channel its own parent task/barrier, or document that publishers must outlive their deliveries? (added 2026-11-09)
+- **F-17:** `MessageBus#add_channel` with an existing name silently replaces the channel and orphans the old one. Raise `ArgumentError`, or close the old channel and replace it? (added 2026-11-09)
+- **F-20:** errors are bare `RuntimeError`, and a late ack after a timeout raises and is logged as a subscriber crash. Add a `TypedBus::Error` hierarchy (subclassing `RuntimeError` for compatibility)? And should a late ack raise or be a logged no-op? (added 2026-11-09)
+- **RuboCop/reek config:** typed_bus has neither, and 449 of 479 default-config RuboCop offenses are auto-fixable Layout/Style. Add a `.rubocop.yml` matching your other gems and one autocorrect commit, once `develop` exists? (added 2026-11-09)

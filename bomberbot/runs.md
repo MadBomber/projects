@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-09 16:28 typed_bus
+
+- **blocked: still no `develop` branch** (re-checked `git ls-remote`: only `main` and `gh-pages`; `main` still be4018d). Second visit, 26 minutes after the first. No builders started; taste rule (proposed) applied again.
+- Tended PRs: none (the repo has no PRs). Merged: none. Verified directly; no tender agent.
+- Issues answered: none. #1–#3 are BomberBot's own and have no comments. Verified directly; no responder agent.
+- Triage and improver not rerun: both ran 26 minutes earlier against the same unchanged commit.
+- Audit: **quality (first ever)** at main be4018d. RuboCop/reek/flog/flay, mutation check of the tests. Found F-15..F-22: three verified bugs, a lifecycle leak, three tests that can't fail. No new security findings. F-16, F-17, F-20 need Dewayne's decision → inbox.
+- Issues filed (labeled bomberbot, each re-reproduced by the main session on Ruby 4.0.9):
+  - [#4](https://github.com/MadBomber/typed_bus/issues/4) unsubscribing during publish leaves the tracker pending forever: source brain backlog (F-3). `pending_count` stays 1 after the timeout window.
+  - [#5](https://github.com/MadBomber/typed_bus/issues/5) `max_pending` accepts 0 and negatives: source brain backlog (F-2). `max_pending: 0` publish hangs (killed at 5 s); with throttle it raises `FloatDomainError` at `channel.rb:205`.
+  - [#6](https://github.com/MadBomber/typed_bus/issues/6) `DeadLetterQueue#drain` loses unprocessed entries when the block raises: source audit (F-18). Queue size 0 after a raise on the first of 3.
+
 ## 2026-11-09 16:02 typed_bus
 
 - **blocked: no `develop` branch.** First visit (repo named on the command line, newly added to brain as #12 in `priorities.md`). typed_bus has only `main` and `gh-pages`; the branch model says branch from and target `develop` and never push to it (creating it would be a push), so no PRs. Step added to `dewayne.md`, question in `inbox.md`. No builders started.
