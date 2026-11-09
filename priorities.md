@@ -28,3 +28,5 @@ All run in full mode. Work top down; if usage runs low, finish the repo in progr
 10. [htm](repos/htm.md)
 11. [kbs](repos/kbs.md)
 12. [typed_bus](repos/typed_bus.md)
+13. [simple_flow](repos/simple_flow.md)
+14. [agent99](repos/agent99.md)

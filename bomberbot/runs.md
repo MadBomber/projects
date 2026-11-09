@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-09 16:29 agent99
+
+- **blocked: no `develop` branch.** First visit (repo named on the command line, newly added to brain as #14 in `priorities.md`; created `repos/agent99.md`, `bomberbot/findings/agent99.md`). agent99 has only `main`, `gh-pages`, and the already-merged `meshage`/`playing_with_p2p`; the branch model says branch from and target `develop` and never push to it, so no PRs and no builders. Second application of the typed_bus "no develop = blocked for PRs" rule. Step added to `dewayne.md`; create-develop + design questions in `inbox.md`.
+- Tended PRs: none. The repo has 0 open PRs (#1 playing-with-p2p and #2 meshage are both merged; their branches are 0 ahead of main). Merged: none. Verified directly; no tender agent.
+- Issues answered: none. The repo had 0 open issues before this visit. Verified directly; no responder agent.
+- Audit: **security (first ever)** at main 69f0a04 (v0.0.5), plus a brief dead-code pass on `lib/`. No eval/shell-out/Marshal/YAML.load in `lib/`; all wire data is JSON via `JSON.parse(symbolize_names:)`. Exposure is missing auth / disabled validation / unbounded input: S-1..S-5 held locally (`notes/security/agent99.md`, confirmed gitignored). Dead code: F-1 (`AgentDiscovery#add_agent`, no callers); F-2 (test asserts a double, not the gem). Triage and improver ran too and converged with the auditor on the gem bloat and the debug_me LoadError.
+- Issues filed (all labeled bomberbot, all re-reproduced by the main session):
+  - [#3](https://github.com/MadBomber/agent99/issues/3) `require "agent99"` raises `LoadError: debug_me` on a clean install: source audit/adoption (F-3). Dev-only dependency required at the top of `lib/agent99.rb`; reproduced with debug_me off the load path.
+  - [#4](https://github.com/MadBomber/agent99/issues/4) `Agent99::Timestamp` round-trip is broken: source audit/judgment (F-4). Bit-shift decode (`>> 20`) vs decimal encode (`* 1_000_000`); a 2026 time round-trips to 2024.
+  - [#5](https://github.com/MadBomber/agent99/issues/5) published gem is ~1.5 MB: source adoption (F-5). `spec.files` ships docs images, a binary `htm_demo.db`, planning notes, and a dev `.irbrc`.
+- Suite: 57 runs, 226 assertions, 0 failures, 4 skips on Ruby 4.0.9 (the machine default 4.1.0-preview1's bundler is broken; the env is polluted by `RBENV_VERSION`/`RUBYLIB` — a clean `env -i` prefix is needed). No test CI in the repo (only `docs.yml`).
+- Inbox: develop branch, re-enable schema validation (S-2/design), delete-or-keep `tcp_message_client.rb`, `header_schema.rb` require-tree, `llms.txt` + gemspec description rewrite, test CI + Dependabot, a writing-an-agent doc/`TemplateAgent`.
+- Taste: no new rule proposed; this visit is the second application of the pending "no `develop` = blocked for PRs, file issues instead" rule (first was typed_bus), so that rule is reinforced.
+
 ## 2026-11-09 16:28 typed_bus
 
 - **blocked: still no `develop` branch** (re-checked `git ls-remote`: only `main` and `gh-pages`; `main` still be4018d). Second visit, 26 minutes after the first. No builders started; taste rule (proposed) applied again.
