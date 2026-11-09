@@ -10,7 +10,7 @@ Debug output gem, small and stable.
 
 ## Status
 
-_Updated 2026-11-09 02:40 (resumed visit)._ #22, #23, #24 and #36 merged to `develop`; [#37](https://github.com/MadBomber/debug_me/pull/37) open (harden env_test subprocess tests, findings #12/#23). **The main/develop split widened:** Copilot shipped parallel fixes to `main` (PRs #29–#35, merged by Dewayne) that closed issues #12, #14, #16, #25, #26, #27 there, while `develop` carries bomberbot's own fixes for the same ground (#8–#24). Two Copilot PRs are still open against `main` (#28 string levels = issue #13, #32 remove amazing_print = issue #17). Only issues #13 and #17 remain open, both already fixed on `develop`. The sync is Dewayne's to do (findings #30, inbox, dewayne.md). **PR open**
+_Updated 2026-11-09 04:05._ New PR [#38](https://github.com/MadBomber/debug_me/pull/38) corrects the never-emitted sample output format in the four sync-safe onboarding docs pages (finding #5); [#37](https://github.com/MadBomber/debug_me/pull/37) still open (env_test hardening). Both await Dewayne's approval; nothing was merge-ready this visit (queue was 1, not full). Filed issue [#39](https://github.com/MadBomber/debug_me/issues/39) (gemspec lacks `documentation_uri`, http homepage; fold into the sync). **The main/develop split still stands:** Copilot's `main` PRs (#29–#35, merged by Dewayne) closed issues #12, #14, #16, #25, #26, #27 there, while `develop` carries bomberbot's own fixes for the same ground (#8–#24, #36). Two Copilot PRs are still open against `main` (#28 = issue #13, #32 = issue #17). Only issues #13 and #17 remain open, both already fixed on `develop`. The sync is Dewayne's to do (findings #30, inbox, dewayne.md). **PR open**
 
 ## Backlog
 
@@ -20,6 +20,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
+- [#38](https://github.com/MadBomber/debug_me/pull/38) docs: correct sample output to match real debug_me output (finding #5, sync-safe). **PR open**
 - [#37](https://github.com/MadBomber/debug_me/pull/37) test: harden env_test subprocess tests against env leaks (findings #12, #23). **PR open**
 
 ## Merged bomberbot PRs
@@ -39,6 +40,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot issues
 
+- [#39](https://github.com/MadBomber/debug_me/issues/39) gemspec omits `documentation_uri` and uses an http:// homepage (findings #37). Filed 2026-11-09; not sync-safe (`debug_me.gemspec` changed on `main` too), so fold into the main/develop sync.
 - [#13](https://github.com/MadBomber/debug_me/issues/13) A String levels: value raises (findings #14). Fixed on develop by #18; stays open until a release. BomberBot commented 2026-11-08 (develop fix + Copilot PR #28 on main).
 - [#17](https://github.com/MadBomber/debug_me/issues/17) Unused amazing_print test dependency and Ruby 1.8.6 caller branch (findings #21). Both items fixed on develop (#19, #23); stays open until a release. BomberBot commented 2026-11-08 (Copilot PR #32 covers it on main).
 
