@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-06 | Dependabot alert review plus a grep for removed Ruby APIs; no Gemfile at repo root, so no bundle-audit. |
-| dead code | 2026-11-07 (quick scan only) | Quick scans of 73d6c82..968704b, 968704b..af11b69 and af11b69..5fbd330 (only #13 to #15, all small fixes); nothing removable. No full dead-code audit yet. |
+| dead code | 2026-11-07 (quick scan only) | Quick scans of 73d6c82..968704b, 968704b..af11b69, af11b69..5fbd330 and 5fbd330..543c66a (only #13 to #16, all small fixes); nothing removable. No full dead-code audit yet — still the most-overdue item next visit. The 2026-11-09 quality audit confirmed F-17/F-18 as the strongest removal candidates alongside standing F-10. |
 | dependencies | 2026-11-06 (partial) | `ruby -wc` sweep of all 225 tracked Ruby files, plus a grep for APIs removed in Ruby 3.x and 4.x. |
 | adoption | n/a | Skipped for this repo by rule. |
-| quality | never | |
+| quality | 2026-11-09 | FIRST full run. reek 6.6.0 over all top-level `*.rb` + `lib/` at develop 543c66a; ~99% style smells triaged out. Net-new: F-17 (find_unused_methods.rb broken), F-18 (seed_with_headers.rb missing requires), F-19 (79 files: 3+ consecutive puts vs heredoc). Removed-API sweep (File.exists?, Fixnum, URI.escape, .untaint, ERB safe-level) clean. |
 
-Dead-code scan last covered commit: 5fbd330 (develop, 2026-11-07, third run)
+Dead-code scan last covered commit: 543c66a (develop, 2026-11-09, fourth run; range 5fbd330..543c66a was only the #16 merge, nothing removable)
 
 ## Findings
 
@@ -66,7 +66,7 @@ No audit ran. Verified open findings that aren't held were F-9 plus the new F-15
 
 - F-9: Status: PR'd ([#16](https://github.com/MadBomber/scripts/pull/16)). Reproduced on develop: from a cwd with a space, `cp` prints `Not a directory` and the script exits 0.
 - F-14: Other scripts also build shell commands with unquoted paths: `create_working_directory.rb:121`, `copy_missing_files.rb:121`, `schema_diff.rb:61,80,81,101` and `change_git_repos_to_ssh_access.rb:25,34`. `my_docx_style_fixer.rb:107-124` single-quotes its paths, which still breaks on a `'`. Found by the #16 altitude review. Status: unverified (each needs its own reproduction).
-- F-15: In `new.rb:112-123`, the existence check runs before the `.erb` fallback. A template that exists only as `<name>.erb` is always rejected, so `new Gemfile` (listed in the usage) exits 1 with "no such template file: Gemfile". Status: open, verified on 2026-11-07. A small, good next PR.
+- F-15: In `new.rb:112-123`, the existence check runs before the `.erb` fallback. A template that exists only as `<name>.erb` is always rejected, so `new Gemfile` (listed in the usage) exits 1 with "no such template file: Gemfile". Status: PR'd ([#17](https://github.com/MadBomber/scripts/pull/17), 2026-11-09). Reproduced on develop (exit 1) and after the fix (renders `Gemfile.erb`, exit 0); fix resolves the `.erb` version before the existence check, keeping the user's typed name in the error.
 - F-16: Other older `new.rb` issues that the #16 code review raised:
   - `-v` does nothing: `debug_me` always runs and `verbose?` is never used.
   - The `-v`/`--verbose` loop clears only the first copy of each flag.
@@ -77,3 +77,14 @@ No audit ran. Verified open findings that aren't held were F-9 plus the new F-15
   - `templates_path + f` accepts absolute paths and `..`.
 
   Status: open (low; unverified apart from the code read).
+
+### 2026-11-09, fourth run
+
+Quality audit (first full run) plus the improver's README spot-check. New findings F-17 to F-22. Verified open findings this visit were F-15 (shipped #17) and the README defects (shipped #18 / filed #19); the audits are current.
+
+- F-17: `find_unused_methods.rb:43-63` cannot run in any path — three scope/ordering bugs: `process_a_file` is called (L47) before its `def` (L51) so Ruby raises `NoMethodError`; inside the method `a_child`/`method_name_regex` are outer-scope locals a `def` can't see (`NameError`); and `method_defs` (L61/63) should be the global `$method_defs` (L41). Also shells out to `ag` (non-stdlib) and carries typo comments + an `__END__` scratch block — an abandoned experiment. Status: needs Dewayne's decision (fix vs retire; inbox). Also the strongest dead-code/removal candidate found this visit.
+- F-18: `seed_with_headers.rb:62,74` `require_relative 'utilities'` and `'models/localhost_all'` — neither file exists anywhere in the tree, so it raises `LoadError` once reached, on top of many non-stdlib deps (active_record, pg, cli_helper, pretty_backtrace). Rails-era relic; violates the stdlib-only rule. Status: needs Dewayne's decision (fix vs retire; inbox).
+- F-19: 79 tracked `*.rb` files (archives excluded) have a run of 3+ consecutive static `puts`, almost all usage/help banners — the exact case the "3+ consecutive puts become one heredoc" taste rule targets (e.g. `bible_semantic_search.rb:30-35`, `csv2json.rb:40-44`, `aip.rb:358-361`). A batch conversion is wholesale (against the no-wholesale-restructuring rule); each file is independently a small provable PR if Dewayne wants them converted incrementally. Status: needs Dewayne's decision (inbox).
+- F-20: README script-index rows with WRONG descriptions (guessed from the filename; the script does something else): `bp.rb` ("Boilerplate code generator" → extracts blood-pressure data from email), `ct.rb` ("Code testing utility" → colortail: tail+colorize a log), `disable.rb` ("Disable features or services" → enable/disable Rails migrations by timestamp), `dit.rb` ("Directory iteration tool" → diff old.xml vs new.xml), `docx_brf.rb` ("Convert DOCX to BRF (Braille)" → find bible references; BRF = Bible ReFerences), `organizer.rb` ("Organize files into directories" → process a text file of addresses). Each corrected from the script's own `## Desc:` header/code. Status: PR'd ([#18](https://github.com/MadBomber/scripts/pull/18), 2026-11-09).
+- F-21: README lists four rows for files deleted from the repo — `brewt_all.md`, `create_data_dictionary`, `data_dictionary.rb`, `gems_v344.txt` (all absent from `git ls-files`). Status: PR'd ([#18](https://github.com/MadBomber/scripts/pull/18), 2026-11-09).
+- F-22: README script index is missing rows for 22 tracked top-level `.rb` scripts (e.g. `churn.rb`, `branch_report.rb`, `mp4_to_m4a.rb`, `llmstxt_generator.rb`, `jira_get.rb`, `pr_get.rb`, `tdv.rb`, `remadd.rb`). Repro: `for f in $(git ls-files '*.rb' | grep -v '/'); do grep -qE "^\| *$f " README.md || echo "$f"; done | sort` prints 22 names on develop 543c66a. Status: issue [#19](https://github.com/MadBomber/scripts/issues/19). A companion `rake`/CI drift check (flag README rows with no file, and scripts with no row) would stop F-20/F-21/F-22 recurring — inbox.
