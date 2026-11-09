@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-09 16:02 typed_bus
+
+- **blocked: no `develop` branch.** First visit (repo named on the command line, newly added to brain as #12 in `priorities.md`). typed_bus has only `main` and `gh-pages`; the branch model says branch from and target `develop` and never push to it (creating it would be a push), so no PRs. Step added to `dewayne.md`, question in `inbox.md`. No builders started.
+- Tended PRs: none. The repo has never had a PR. Merged: none. Verified directly; no tender agent.
+- Issues answered: none. The repo had 0 issues before this visit. Verified directly; no responder agent.
+- Audit: **security (first ever)** at main be4018d, plus a brief dead-code pass on `lib/` (debride). No eval/shell/YAML/ENV in lib. S-1..S-3 held locally; dev-lockfile notes held locally. Correctness probes found F-1..F-4. Dead code: F-8 (no-op `initialize_copy`); public-API orphans F-13 → inbox. Triage and improver ran too and converged with the auditor on F-1 and F-9.
+- Issues filed (all labeled bomberbot, all re-reproduced by the main session):
+  - [#1](https://github.com/MadBomber/typed_bus/issues/1) `require "typed_bus"` raises LoadError (logger) on Ruby 4.0 under Bundler: source dependency/judgment (F-9). Consumer Gemfile with only `gem "typed_bus", "0.0.1"` on 4.0.9.
+  - [#2](https://github.com/MadBomber/typed_bus/issues/2) throttled channel at full capacity sleeps forever instead of waiting for an ack: source audit (F-1). `sleep(1.0/0.0)` before `wait_for_capacity`.
+  - [#3](https://github.com/MadBomber/typed_bus/issues/3) published gem is 18.8 MB (docs GIF/MP4 + dotfiles in `spec.files`): source adoption (F-6).
+- Suite: 201 runs, 0 failures, 100% line+branch on Ruby 4.0.9 (4.1.0-preview1's bundler is broken, as elsewhere). No test CI in the repo.
+- Inbox: develop branch, F-4 (publish outside a reactor), F-14 (`clear!` semantics), F-13 (API orphans), Ruby floor + test CI layout, docs deploy collision (F-12), release 0.0.2 + CHANGELOG (F-7), llms.txt/documentation_uri, the 16 MB GIF and `examples/temp.md`.
+- Taste: proposed one rule (a repo without `develop` is blocked for PRs, not retargeted to `main`), pending Dewayne's confirm.
+
 ## 2026-11-09 08:47 scripts
 
 - Audit: first full whole-tree **dead-code** pass (the most-overdue audit) at develop 543c66a — re-verified F-10/F-17/F-18 removable, found new F-23 (`estimate_tokens.rb` inert); all parked as fix-vs-retire in the inbox, none shipped unasked.

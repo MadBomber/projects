@@ -27,3 +27,4 @@ All run in full mode. Work top down; if usage runs low, finish the repo in progr
 9. [ragdoll](repos/ragdoll.md)
 10. [htm](repos/htm.md)
 11. [kbs](repos/kbs.md)
+12. [typed_bus](repos/typed_bus.md)
