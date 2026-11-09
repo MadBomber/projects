@@ -5,5 +5,5 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## debug_me
 
-- [ ] [debug_me#23](https://github.com/MadBomber/debug_me/pull/23): confirm the Ruby 3.2 floor, or ask for 3.3 (the oldest series still getting security fixes). Dropping Rubies makes the next release 1.2.0 rather than 1.1.4 under SemVer. At release, add the missing `[1.1.3]` CHANGELOG section and start the Unreleased compare link at v1.1.3. (added 2026-11-08)
-- [ ] debug_me `main` and `develop` have diverged (Copilot #21 went to `main`). Merge one into the other before the next release; the resolution notes are in the inbox entry. (added 2026-11-08)
+- [ ] [debug_me#23](https://github.com/MadBomber/debug_me/pull/23) is merged (Ruby 3.2 floor confirmed). At release: dropping Rubies makes the next release 1.2.0 rather than 1.1.4 under SemVer; add the missing `[1.1.3]` CHANGELOG section and start the Unreleased compare link at v1.1.3. (added 2026-11-08, updated 2026-11-09)
+- [ ] debug_me `main` and `develop` have diverged further. Besides Copilot #21 on `main`, Copilot #29–#35 merged to `main` (closing issues #12, #14, #16, #25, #26, #27 there) while `develop` holds bomberbot's own fixes for the same ground (#8–#24, #36). Two Copilot PRs are still open against `main` (#28, #32). Merge one branch into the other before the next release; the one-PR resolution plan is in the inbox (findings #30). Consider pointing Copilot at `develop` to stop the two tracks diverging. (added 2026-11-08, updated 2026-11-09)

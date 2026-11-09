@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-08 | First audit, develop 6a9ec45 (diffed against main 15bd90b). bundler-audit clean. Every eval, ENV read, shell-out, file write, gemspec, CI workflow, rultor config and the published 1.1.3 package. Findings 28-30, S-31 to S-35. |
-| dead code | 2026-11-08 | Quick scans through 3c1bd45; on 2026-11-08 the improver read 3c1bd45..77b8c25 (#11, #15) and the whole tree: an unused `amazing_print` test dependency and a dead Ruby 1.8.6 branch (findings #21, issue #17). A second 2026-11-08 read of 77b8c25..7e12714 (#18) found nothing removable. A third 2026-11-08 read of 7e12714..6a9ec45 (#19) found nothing removable. |
-| dependencies | never | |
+| dead code | 2026-11-09 | Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
+| dependencies | 2026-11-09 | Partial (quality-audit leg): `bundle outdated` at e4858c9 shows only minitest 5.27.0 → 6.1.0, held by gemspec `minitest '~> 5.0'` (= finding #8). Ruby 4.1 readiness clean, `pp` still a default gem. No full audit. |
 | adoption | 2026-11-06 | First audit. README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. gem-skill and llms.txt not checked. |
-| quality | never | |
+| quality | 2026-11-09 | First quality audit, develop e4858c9. reek/flog/flay/rubocop in a scratch GEM_HOME; suite green on Ruby 4.1.0preview1, no library deprecations. flog 171 on the one 82-line method; flay 0. New findings 31-35. Repo has no .rubocop.yml/.reek.yml. |
 
-Dead-code scan last covered commit: 6a9ec45 (develop, 2026-11-08)
+Dead-code scan last covered commit: 3a4651e (develop, 2026-11-09, after #36)
 
 ## Findings
 
@@ -100,3 +100,23 @@ Dead-code scan last covered commit: 6a9ec45 (develop, 2026-11-08)
 - S-33: security finding, details held locally. Status: needs Dewayne's decision.
 - S-34: security finding, details held locally. Status: needs Dewayne's action.
 - S-35: security finding, details held locally. Status: open (low).
+
+### 2026-11-09 (resumed visit; quality audit, triage, improver, two builders)
+
+- develop advanced to 3a4651e: PRs #22, #23, #24 merged (findings #28; issue #17; issue #14/findings #19), then #36 merged.
+- **Issues closed on `main` by Copilot PRs (merged by Dewayne), not on develop:** #12 (#29), #14 (#30), #16 (#31, findings #20), #20 (#21, findings #24), #25 (#33, findings #9/#23), #26 (#34, findings #26), #27 (#35, findings #15/#16). The branches diverged further; see findings #30 (inbox, dewayne.md). bomberbot's develop fixes for the same ground (#22/#24) stand; the sync reconciles both.
+- Finding #12 and #23 (env_test subprocess tests leak the parent env / merge stderr): PR'd ([#37](https://github.com/MadBomber/debug_me/pull/37), merged status pending). Repro: under a noisy `RUBYOPT`, develop's env_test gives 15 failures; the branch gives 0.
+- Dead-code scan 6a9ec45..e4858c9 plus whole tree: found `WorldView#everything`, an unused test helper (only its definition and a prose comment reference it). Shipped as [#36](https://github.com/MadBomber/debug_me/pull/36) (merged 2026-11-08).
+
+#### 2026-11-09 quality audit (develop e4858c9; first quality audit)
+
+- Tool baseline: `flog lib/debug_me.rb` = 171.4 for the one method; `flay` = 0; `reek` = 14 warnings; `rubocop` (default cops) = 67 offenses. Suite green on 4.1.0preview1, no library deprecation warnings under `-W:deprecated`. Repo has no `.rubocop.yml`/`.reek.yml`.
+
+31. **Two constants leak into the global `Object` namespace instead of `DebugMe`.** `DebugMeDefaultOptions` (lib/debug_me.rb:15) and `DEBUG_ME_MAX_BACKTRACE` (lib/debug_me.rb:30) are defined at top level, before `module DebugMe` opens at line 33, so `require 'debug_me'` pollutes every consumer's root namespace (`ruby -Ilib -e 'require "debug_me"; p Object.const_defined?(:DebugMeDefaultOptions)'` => true). Feeds finding #22. Fix: move both inside `module DebugMe`, possibly with a deprecated top-level alias. Status: **needs Dewayne's decision** (`DebugMeDefaultOptions` is loosely public API). In `inbox.md`. Verified.
+32. **`debug_me` is a single ~82-line method over every complexity threshold** (lib/debug_me.rb:34-116; flog 171, Metrics/MethodLength/AbcSize/Cyclomatic/Perceived all over default, reek TooManyStatements ~44, FeatureEnvy). The "methods testable in isolation" taste rule is unmet. Fix: extract private helpers without changing output. Status: **needs Dewayne's decision** (taste also says no wholesale restructuring). In `inbox.md`. Verified.
+33. **The repo has no lint/quality gate config.** No tracked `.rubocop.yml`/`.reek.yml`, so the "zero new offenses against the repo's full config" taste rule has nothing to run, and nothing records which default cops are intentionally off for this eval-heavy gem. Fix: add a minimal `.rubocop.yml` (disable `Security/Eval`, `Style/GlobalVars`, `Style/Documentation`, set the real baseline) plus `.reek.yml`. Status: **needs Dewayne's decision** (the baseline is his). In `inbox.md`. Verified.
+34. **`self.class.send('class_variables')` dispatches a public method through `send` for no reason** (lib/debug_me.rb:79; reek ManualDispatch). `self.class.class_variables` is equivalent and clearer. Status: **open**, trivial but sits in `lib/debug_me.rb` (the main/develop merge-conflict file), so fold into the sync rather than a standalone develop PR that deepens divergence. Verified.
+35. **Style/hygiene cluster on the never-linted files** (version.rb/gemspec lack `frozen_string_literal`; `Style/MutableConstant`+`Layout/HashAlignment` ×13; `debug_me.rb` `Layout/SpaceAfterComma` ×3, `Style/CommentedKeyword` ×3, `Style/FormatStringToken` ×5). The gemspec `Gemspec/OrderedDependencies` here is existing finding #27, re-confirmed at e4858c9. Status: **open**, low value; gate behind #33 so "zero new offenses" is meaningful. Verified.
+
+- Dependency leg: `bundle outdated` = only minitest (held by gemspec `~> 5.0`, = finding #8). Ruby 4.1 readiness clean; `pp` still a default gem (no gemspec runtime dep needed, unlike `logger`).
+- Security: no new findings. The two `Security/Eval` sites and `eval(..., block.binding)` calls are the same mechanics already in S-31..S-35 / finding #28, re-confirmed at e4858c9. S-31 to S-35 unchanged, details held locally.
