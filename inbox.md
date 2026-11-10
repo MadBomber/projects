@@ -403,3 +403,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - asgard docs deploy: the workflow runs `mkdocs build` without `--strict`, installs unused `mkdocs-macros-plugin` and `mike`, deploys from both `main` and `develop` (so the site shows unreleased docs), and `edit_uri` points at `main`. CI also warns `actions/checkout@v4` runs on deprecated Node 20. All docs-deploy/CI config, so yours to decide.
 - asgard: `sig/asgard.rbs` is the 4-line `bundle gem` stub and ships in the gem. Write real signatures or drop it (touches the gemspec allowlist).
 - asgard jobs edge cases noticed while fixing #16 (all already on develop): a backgrounded subshell blocks a restart while `sleep 60 &` doesn't; `survives?`/`Pid.matches?` match the script path as a substring (`tail -f .../api.sh.log` counts); `stop` runs without the start lock; `jobs list` runs `ps -A` up to twice per row.
+
+## 2026-11-10 — robot_lab (first visit)
+
+- **#21 conversation shrinking vs the shipped `auto_compact`.** `auto_compact`/`compact_threshold` and the `:compaction` hooks (v0.2.1+) already cover part of #21's requirements 3, 5 and 6. Options: (a) extend `auto_compact` with `:truncate`/`:summarize` values and a message-count threshold, then rewrite #21 to match; (b) add the `auto_shrink_*` API as written and deprecate `auto_compact`; (c) keep both, with `auto_shrink_*` as a thin layer. BomberBot commented on [robot_lab#21](https://github.com/MadBomber/robot_lab/issues/21) with what exists today.
+- **Docs deploy from `develop` (F-10).** `deploy-github-pages.yml` runs on pushes to both `main` and `develop`, so a `docs/` change merged to the lagging `develop` republishes 0.2.6 docs over the live 0.6.0 site. Deploy from `main` only, or use mike versions (`dev` and `latest`)?
+- **Skills root hardcoded to `~/.prompts/skills` (F-1).** That is your AIA directory, and the public gem gives users no way to change it. Add `RobotLab.config.skills_root` with today's path as the default?
+- **Root planning notes (F-2).** `agent2agent_review.md`, `agentf_improvements.md`, `simple_acp_review.md`, `tool_manifest_plan.md`, `robot_concurrency.md`: keep them at the root, move them to `.architecture/` or `docs/`, or delete them?
+- **`RobotLab::ToolManifest` has no caller (F-11).** Keep it for `tool_manifest_plan.md`, deprecate it, or wire it in?
+- **Adoption:** add `docs/llms.txt` after the sync (F-8), and enable Dependabot alerts, which are disabled now. CI is blocked by the `robot_lab-document_store` → `fastembed` → `tokenizers` Rust build in the Gemfile dev group. Make that group optional?
+- Security: S-1, S-2 need your decision; details held locally in `notes/security/robot_lab.md`.

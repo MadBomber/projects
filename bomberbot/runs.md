@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 05:42 robot_lab
+
+_Resumed visit. The first session (started 02:47) was cut off by the monthly spend limit just after the three builders started. This session found two branches with local work and no PRs open, and finished the three changes itself. Each got a low-effort `/code-review`; builder subagents weren't re-spawned for 14-line deletions._
+
+- **First visit.** `develop` existed (8ec1d6e); not created. It is **0 ahead of and 31 behind `main`** (0.6.0; 208 files differ), so every change was limited to files identical on both branches. "Merge main into develop" is in `dewayne.md`. Created the `bomberbot` and `needs-dewayne` labels. No bomberbot PR had ever existed, so the tender wasn't run (checked directly).
+- New PRs (all independent, base `develop`, no CI configured on non-docs paths):
+  - [#28](https://github.com/MadBomber/robot_lab/pull/28) docs: remove stale root agents.md. Source: **judgment/adoption** (improver, F-4). All 7 links dead on both branches, shown by script; review clean. **Merged (low risk)** as develop 83b27c4.
+  - [#26](https://github.com/MadBomber/robot_lab/pull/26) chore: remove stray scratch files from repo root. Source: **dead code** (auditor F-2, triage, improver). Unreferenced, identical on both branches; review clean. The builder's CHANGELOG line was dropped because CHANGELOG differs between the branches. Left for Dewayne: `logfile` is neither docs nor tests.
+  - [#27](https://github.com/MadBomber/robot_lab/pull/27) chore: stop tracking per-user Claude Code local settings. Source: **security** (S-3, details held locally). Review clean; has a before-merge step (back up the local file). Left for Dewayne.
+- Audit: **security** (first run) at main ee0d562, cross-checked against develop. S-1 to S-3 held locally, plus a brief dead-code pass over `lib/` (nothing provably dead). F-1 to F-12 recorded.
+- Issues answered: [#21](https://github.com/MadBomber/robot_lab/issues/21), with what `auto_compact`/`:compaction` already cover. The design question went to the inbox.
+- Issues filed: [#29](https://github.com/MadBomber/robot_lab/issues/29) extension gems pin `robot_lab ~> 0.3.0` (F-7), [#30](https://github.com/MadBomber/robot_lab/issues/30) no test CI (F-6), [#31](https://github.com/MadBomber/robot_lab/issues/31) `documentation_uri` points at the README (F-9).
+- Not built: `docs/llms.txt` (F-8). The docs deploy also runs on pushes to `develop`, so any `docs/` merge now would republish stale 0.2.6 docs.
+
 ## 2026-11-10 05:15 asgard
 
 Fourth visit (last 2026-11-07). develop e206c49 at start and end; `develop` already existed. Tender found no open bomberbot PRs: #6-#9 all merged by Dewayne without comment. CI on develop red on macos-latest (one jobs test, runs 42413020711 and 41222188591).
