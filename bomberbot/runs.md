@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 04:21 agent99
+
+**Fourth visit. skipped: review queue full.** `develop` already existed (5183c92, unchanged since the last visit); not created. Tender found #10, #11, #12, #13 and #17 still open, none approved or reviewed, all MERGEABLE and up to date with `develop`, so it changed nothing and ran no suite. With 5 open after tending, I opened no new PRs.
+
+- **Merged:** none (no approvals, none low risk: #10/#12/#13 touch lib, #11 the gemspec, #17 is needs-dewayne).
+- **Tended PRs:** #10, #11, #12, #13, #17 (verified clean, no action).
+- **Audit:** quality (first run) plus a full dead-code pass, develop 5183c92. flog 640.8, flay 256 (all AMQP/NATS duplication), reek 83, rubocop defaults 249 lib / 857 test offenses (no repo config). New F-42..F-53 and S-7. Triage added S-8 (bundle-audit on the committed lock; fixed by the #7 re-lock). Improver added F-54, F-55. Details for S-7/S-8 held locally (notes/ confirmed gitignored).
+- **Issues answered:** none. No third-party comments; #14/#15/#16 re-verified as still reproducing on develop.
+- **Issues filed (3):** [#18](https://github.com/MadBomber/agent99/issues/18) stale header in response/control handlers (F-42), [#19](https://github.com/MadBomber/agent99/issues/19) failed registration leaves an unreachable agent (F-54), [#20](https://github.com/MadBomber/agent99/issues/20) AMQP client ignores the agent's logger (F-43).
+- **Inbox:** F-45 (raise vs exit), handler message object, shared fake-client test helper, F-52 unused public API, F-48, F-49 rubocop config.
+- **dewayne.md:** no new steps (the existing #10–#13/#17 review step stands).
+
 ## 2026-11-10 04:04 typed_bus
 
 **Fourth visit. Tend-and-record only — skipped new PR work: review queue full.** The three PRs from visit 3 (#7/#8/#9, all targeting `develop`) are still open and unapproved; tender confirmed none approved, merged nothing, and verified all three still MERGEABLE/CLEAN against current `develop` (no rebases needed). No bomberbot PR has ever been closed, so nothing new to learn from merges/comments. `develop` unchanged at 5be35a6. Per the "3+ open bomberbot PRs → skip new work" rule, opened no new PR.

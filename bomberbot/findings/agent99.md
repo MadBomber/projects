@@ -11,12 +11,12 @@ Dewayne's decision, issue #N.
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-09 | First run, at main 69f0a04 (v0.0.5; the repo has no `develop`). No eval/shell-out/Marshal/YAML.load in `lib/`; all wire data is JSON via `JSON.parse(symbolize_names: true)`. Exposure is missing auth, disabled validation, unbounded input: S-1..S-5 (held locally). Found non-security F-1 (dead method) and F-2 (test asserts a double). |
-| dead code | 2026-11-09 (lib, brief) | During the security pass. One true dead method, F-1 (`AgentDiscovery#add_agent`). `lib/agent99/tcp_message_client.rb` is never required by the library (base.rb loads only amqp + nats) — removal is a public-surface decision, in the inbox. |
+| dead code | 2026-11-10 (full) | debride lib+examples at develop 5183c92, hand-verified; no dependent repos. F-51, F-52; F-1/F-40/F-41 still open. Live (no finding): `handle_*` via `send`, header helpers (used in examples), `get`/`run`/`discover_agent`/`fetch_all_agents`, `Agent99.version`. |
 | dependencies | 2026-11-09 | First run, develop 69f0a04. Committed lock doesn't install as-is on Ruby 4.0.9 (tocer 19 chain pins Ruby ~> 3.4; BUNDLED WITH 2.5.23); re-resolved, suite green 57/0/0/4 skips. Ruby 4.1-preview1: rbtree 0.4.6 build failure (0.4.7 fixes). F-10..F-17. No removed-API use in `lib/`. Floor `>= 3.3` OK until 3.3 EOL (2027-03). bunny 3.x untested. Improver added F-18..F-20. |
 | adoption | 2026-11-10 | First run, develop 5183c92. Docs site 404 (Pages off; gh-pages last deployed 2025-09-03). README agent fails on load (HeaderSchema not loaded, F-23) then crashes silently on every request (F-6); example registry needs rackup and 500s on WEBrick (F-27); API reference documents 13 nonexistent methods (F-26); `mkdocs build --strict` passes. F-23..F-36, S-6; updated F-6/8/9/20/21/22. Improver added F-37, F-38. gem-skill not run (paid API). |
-| quality | n/a | Not yet run. No `.rubocop.yml`/`.reek.yml` in the repo. Suite emits many unused-variable warnings. |
+| quality | 2026-11-10 | First run, develop 5183c92. flog 640.8 (avg 7.7), flay 256 (all AMQP/NATS duplication), reek 83, rubocop default+NewCops 249 lib / 857 test offenses (no repo config). F-42..F-50, F-53, S-7. Triage added S-8 (bundle-audit); improver added F-54, F-55. |
 
-Dead-code scan last covered commit: 69f0a04 (no dead-code audit this visit; improver re-verified F-1 at 5183c92) (develop, created from main 2026-11-09)
+Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
 
 ## Findings
 
@@ -181,3 +181,49 @@ Dead-code scan last covered commit: 69f0a04 (no dead-code audit this visit; impr
   routes `'response'` to `receive_response` (`message_processing.rb:58`). `CONTROL_HANDLERS` is
   documented public. Status: needs Dewayne's decision (delete vs rewire).
 - S-6: security finding, details held locally. Status: open (MEDIUM if Pages re-enabled as-is).
+
+### 2026-11-10 (fourth visit; quality audit + full dead-code pass + improver, develop 5183c92)
+
+- F-42: `attr_reader :header` (`base.rb:41`) shadows `HeaderManagement#header`; `@header` set only in
+  `process_request` (`message_processing.rb:38`), so header helpers in `receive_response`/`receive_control`
+  return the previous request's header (NoMethodError before any request). Fix: drop the reader and the
+  assignment; response-path test. Status: issue [#18](https://github.com/MadBomber/agent99/issues/18) (after #12; touches #17's question).
+- F-43: `AmqpMessageClient#setup` ignores its `logger:` (`amqp_message_client.rb:43-50`); NATS assigns it.
+  Status: issue [#20](https://github.com/MadBomber/agent99/issues/20).
+- F-44: dispatch `case` and publish rescue ladder duplicated between AMQP and NATS clients (flay mass
+  100/80/76 at `amqp:69,100,114` / `nats:41,70,78`). Shared `dispatch` is the fix point for F-36 and S-7.
+  Status: open, verified (lib refactor after #13).
+- F-45: constructor exits (`agent_lifecycle.rb:47,51`) and installs global `at_exit`/traps (`:101-107`),
+  so `initialize` can't be tested in isolation (`test_agent_lifecycle.rb:45-48`). Status: needs Dewayne's
+  decision (raise vs exit; opt-in signal handling).
+- F-46: lifecycle tests set `error_logged`/`error_handled` and never assert them
+  (`test_agent_lifecycle.rb:51,54,80,83,191`). Status: open, verified (tests-only PR).
+- F-47: AMQP tests redefine `create_amqp_connection` without restoring in `ensure`
+  (`test_amqp_message_client.rb:8-35,99-127`; `Lint/DuplicateMethods` :33,:239). Fold in F-39.
+  Status: open, verified (tests-only PR).
+- F-48: integration/system suites drive `TestInfrastructure::TestAgent`, which overrides `process_request`,
+  `receive_request(payload, header)`, `send_request`, `discover_agents`, `get_all_agents`
+  (`test/support/test_infrastructure.rb:254-361`); F-2 at suite scale. Status: needs Dewayne's decision (test strategy).
+- F-49: no `.rubocop.yml`/`.reek.yml`; the "zero new offenses under the repo's config" taste rule can't be
+  applied. Fix: `.rubocop.yml` (TargetRubyVersion 3.3) + generated todo. Status: open, verified.
+- F-50: 14 unused assignments in tests (`test_registry_client.rb:48,82-84`, `test_amqp_message_client.rb:185`,
+  `integration/test_agent_communication.rb:22,45,77,86-88,133,151,170,249`) + 12 unused `header` args in
+  `system/test_full_workflows.rb`. Status: open, verified (tests-only PR).
+- F-51: `RegistryClient#register` writes `@id` nothing reads (`registry_client.rb:23`), redundant
+  `payload = info` (`:21`), wrong path in header comment (`:1`). Fold in F-40. Status: open, verified.
+- F-52: unused public surface: `Agent99::Type` (`agent99.rb:15-19`), `AmqpMessageClient.instance` /
+  `NatsMessageClient.instance`, `Timestamp#ts`, `Base::MESSAGE_TYPES` (test + one docs page only).
+  Status: needs Dewayne's decision (public API; deprecation).
+- F-53: `RegistryClient#handle_response` `JSON.parse`s any non-2xx body (`registry_client.rb:81`), so a 404/500
+  logs as a JSON parse error and the status code is lost. Status: open, verified.
+- F-54: failed registration leaves a running, unaddressable agent: `send_request` returns nil
+  (`registry_client.rb:60-68`), `register` logs success with an empty ID (`agent_lifecycle.rb:61-62`), setup
+  gets `agent_id: nil`, AMQP creates a server-named queue (`amqp_message_client.rb:53`). Status: issue
+  [#19](https://github.com/MadBomber/agent99/issues/19) (improver).
+- F-55: `handle_shutdown` calls `fini` then `exit(0)` (`control_actions.rb:41-42`); `at_exit { fini }`
+  (`agent_lifecycle.rb:101`) runs it again and logs `WARN fini called with a nil id` on every remote
+  shutdown. Fix: drop the explicit `fini` (check `exit` from a consumer thread ends the process) or make
+  `fini` idempotent. Status: open, verified (improver).
+- F-1 update: still dead at 5183c92. F-36 update: fix point is F-44. F-39 → fold into F-47. F-40 → fold into F-51.
+- S-7: security finding, details held locally. Status: open.
+- S-8: security finding, details held locally. Status: open (fixed by the #7 re-lock).

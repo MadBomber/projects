@@ -16,11 +16,9 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-10 (third visit)._ Dewayne merged #9 (#4) into develop (5183c92). Tender rebased #10/#11 onto it (both
-mergeable). New PRs [#12](https://github.com/MadBomber/agent99/pull/12) (#8), [#13](https://github.com/MadBomber/agent99/pull/13) (#6), [#17](https://github.com/MadBomber/agent99/pull/17) (F-2). First adoption audit: docs site is 404 and the README agent doesn't run (F-23, F-6). Filed
-[#14](https://github.com/MadBomber/agent99/issues/14) (`get` NameError without `REQUEST_SCHEMA`), [#15](https://github.com/MadBomber/agent99/issues/15) (`VERSION` not loaded, F-21),
-[#16](https://github.com/MadBomber/agent99/issues/16) (`examples/control.rb` TypeError). No test CI; "green" = local suite on Ruby 4.0.9 (put
+_Updated 2026-11-10 (fourth visit)._ Tend-and-record only: skipped new PRs because the review queue is full (#10–#13 and #17 still open, unapproved, all MERGEABLE; `develop` still 5183c92). First quality audit plus a full dead-code pass (F-42..F-55, S-7, S-8). Filed [#18](https://github.com/MadBomber/agent99/issues/18) (stale header in response/control handlers), [#19](https://github.com/MadBomber/agent99/issues/19) (failed registration leaves an unreachable agent), [#20](https://github.com/MadBomber/agent99/issues/20) (AMQP client ignores the agent's logger). No test CI; "green" = local suite on Ruby 4.0.9 (put
 `~/.rbenv/versions/4.0.9/bin` first on PATH; default 4.1-preview1 can't build rbtree, #7).
+
 
 ## Backlog
 
@@ -34,7 +32,7 @@ else in this repo.
 - [#5](https://github.com/MadBomber/agent99/issues/5) allowlist `spec.files` (+ `documentation_uri`, F-8). **PR open**
   [#11](https://github.com/MadBomber/agent99/pull/11).
 - [#6](https://github.com/MadBomber/agent99/issues/6) assign `@logger` before connecting in `NatsMessageClient` (F-18). **PR open** [#13](https://github.com/MadBomber/agent99/pull/13).
-- [#7](https://github.com/MadBomber/agent99/issues/7) re-lock `Gemfile.lock` for Ruby 4.0/4.1 (F-10, F-11).
+- [#7](https://github.com/MadBomber/agent99/issues/7) re-lock `Gemfile.lock` for Ruby 4.0/4.1 (F-10, F-11). Raised priority 2026-11-10: the re-lock also clears S-8 (held locally); stay within majors.
 - [#8](https://github.com/MadBomber/agent99/issues/8) delete the class-body `rescue` in `base.rb` (F-16). **PR open** [#12](https://github.com/MadBomber/agent99/pull/12).
 - F-2: `test/agent99/test_base.rb:44-66` asserts methods only the test double has
   (public `receive_*`/`send_response` are private on `Base`; `discover_agents` etc. don't
@@ -52,6 +50,13 @@ else in this repo.
 - [#15](https://github.com/MadBomber/agent99/issues/15) F-21: `require "agent99"` never loads `version.rb` (verified 2026-11-10).
 - [#14](https://github.com/MadBomber/agent99/issues/14) `get(:field)` NameError when no `REQUEST_SCHEMA` (F-37).
 - [#16](https://github.com/MadBomber/agent99/issues/16) `examples/control.rb:84` TypeError on String control acks (F-38).
+- [#18](https://github.com/MadBomber/agent99/issues/18) header helpers stale inside `receive_response`/`receive_control` (F-42). Build after #12.
+- [#19](https://github.com/MadBomber/agent99/issues/19) failed registration leaves a running agent with a nil id (F-54).
+- [#20](https://github.com/MadBomber/agent99/issues/20) `AmqpMessageClient#setup` ignores its `logger:` (F-43). One line plus a test.
+- F-55: remote shutdown runs `fini` twice and always logs a false warning (`control_actions.rb:41`).
+- F-46/F-47/F-50 (with F-39): tests-only cleanups: assert the flags lifecycle tests set, restore patched AMQP methods in `ensure`, drop unused test assignments. Low-risk candidates.
+- F-51 (with F-40): `registry_client.rb` dead `@id`, `payload` alias, wrong header comment.
+- F-53: registry client hides HTTP error statuses behind a JSON parse error.
 - gemspec: de-dupe homepage/source URLs (`gem build` warns).
 - CHANGELOG `[Unreleased]` still lacks the two post-0.0.5 commits (each PR adds its own line).
 
