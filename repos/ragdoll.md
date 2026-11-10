@@ -25,10 +25,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- None at the start of the 2026-11-10 visit.
+- None open from earlier visits at the start of the 2026-11-10 visit.
 
 ## Merged bomberbot PRs
 
+- [#18](https://github.com/MadBomber/ragdoll/pull/18) test: run the search cleanup tests (first slice of #12, F-16). **Merged (low risk)** by bomberbot 2026-11-10 (develop 1ba1414).
 - [#16](https://github.com/MadBomber/ragdoll/pull/16) refactor: use bound parameters for search filter conditions. Merged 2026-11-09 (b0a7afc). Not recorded by the visit that opened it.
 - [#15](https://github.com/MadBomber/ragdoll/pull/15) docs: fix README Quick Start config to match current API (issue #11, F-18). Merged 2026-11-09 (ca8deeb).
 - [#14](https://github.com/MadBomber/ragdoll/pull/14) fix: require activerecord >= 7.1 in gemspec (issue #13, F-9). Merged 2026-11-09 (5670fa9).
