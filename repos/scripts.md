@@ -10,7 +10,7 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-10 (seventh run)._ **Tend-and-record only — skipped new PR work: review queue full.** The three PRs from the sixth run (#24, #25, #26, all targeting develop) are still open and unapproved; tender confirmed none approved, merged nothing, verified all three MERGEABLE/clean against develop bc51825 (no rebase/retarget needed). Responder linked the fixing PRs on issues #19 (#25) and #23 (#26). Ran the first full **dependencies** audit (F-31..F-33: uncovered Psych-4 `YAML.load` crash sites). Filed [#29](https://github.com/MadBomber/scripts/issues/29) (mbox_finder case-insensitivity), [#30](https://github.com/MadBomber/scripts/issues/30) (yaml2json YAML.load), [#31](https://github.com/MadBomber/scripts/issues/31) (docx_translate `$errors`). S-2 backlog stays queued (not shipped — queue full)._
+_Updated 2026-11-10 (eighth run)._ **Tend-and-record only. Skipped new PR work: review queue full.** #24, #25 and #26 are still open and unapproved, MERGEABLE against develop bc51825, and untouched since the seventh run 30 minutes earlier. Ran a sandboxed **quality** audit for runtime defects: every top-level script run with no args, `-h` and a missing file (F-38..F-48). Filed [#32](https://github.com/MadBomber/scripts/issues/32) (shc.rb ignores its file argument), [#33](https://github.com/MadBomber/scripts/issues/33) (schema_diff.rb `error` called before it is defined) and [#34](https://github.com/MadBomber/scripts/issues/34) (filename_fu.rb crashes with no args), and added `comment_require.rb` to #27. The S-2 backlog item stays queued._
 
 ## Backlog
 

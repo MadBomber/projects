@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 04:41 scripts
+
+**Eighth visit. skipped: review queue full.** `develop` already existed at bc51825 and was not created. The tender found #24, #25 and #26 still open, unapproved and MERGEABLE, with no comments, so it changed nothing. Nothing has merged or closed since the seventh visit 30 minutes earlier.
+
+- **New PRs:** none (queue full). Ready once it drains: S-2 (backlog), F-38..F-42 and F-46 (one-line fixes, verified before and after).
+- **Merged:** none (no approvals; none low risk).
+- **Tended PRs:** #24, #25, #26 (verified clean, no action).
+- **Audit:** quality (runtime defects), develop bc51825. Every top-level script was run with no args, `-h` and a missing file, inside a `sandbox-exec` profile. New F-38..F-48; the improver added F-49..F-51. Dead-code quick scan 543c66a..bc51825: nothing removable.
+- **Issues answered:** none needed (no third-party comments). Added `comment_require.rb` (F-47) to [#27](https://github.com/MadBomber/scripts/issues/27) by comment.
+- **Issues filed (3):** [#32](https://github.com/MadBomber/scripts/issues/32) shc.rb ignores its file argument (F-38), [#33](https://github.com/MadBomber/scripts/issues/33) schema_diff.rb NoMethodError (F-39), [#34](https://github.com/MadBomber/scripts/issues/34) filename_fu.rb crashes with no args (F-41).
+- **Needs Dewayne:** F-43 (rawk log format), F-44 (normalize_pathnames renames on `-h`), F-45 (uninstall_all_gems runs on `-h`). All are in inbox.
+- **Security:** nothing new; S-2..S-4 unchanged and held locally.
+
 ## 2026-11-10 04:55 typed_bus
 
 **Fifth visit. skipped: review queue full.** `develop` already existed (5be35a6, unchanged); not created. Tender found #7, #8 and #9 still open, with no reviews or comments, all MERGEABLE and level with `develop`, so it changed nothing and ran no suite. With 3 open after tending, I opened no new PRs.
