@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 02:00 smart_message
+
+- **Second visit. skipped: review queue full.** The tender found all three bomberbot PRs (#9, #10, #11) still open, unapproved (no review, no comments), none low-risk-mergeable, and `develop` unmoved at 9371456 since visit 1. Per the branch model's phase-2 rule (3+ open PRs after tending → no new work), opened no PRs. `develop` existed; not created.
+- Tended PRs: verification-only. All three still MERGEABLE/CLEAN, 0 commits behind develop, no rebases warranted, no red CI (#11 green on 4.0 + 4.1.0-preview1; #9/#10 have no checks — their branches predate #11's workflow), no review threads to answer. Nothing pushed, nothing merged. Known pending CHANGELOG `[Unreleased]` collision once the first of #9/#10/#11 merges (trivial one-line rebase for the other two).
+- Merged (low risk): none. Merged after approval: none. Dewayne has given no signal on this repo yet (0 merged, 0 closed, 0 comments).
+- Issues answered: none. The only three open issues (#6/#7/#8) are bomberbot's own, no external comments; the responder correctly stayed silent (a comment would only restate the body).
+- Audit: **adoption (first ever)** at develop 9371456. `mkdocs build --strict` clean; memory examples run. Findings F-24–F-37: `:redis_queue` transport + MessagePack serializer + `examples/redis_queue/` all documented but nonexistent (F-24/25/26, needs decision); FileTransport unregistered → `create(:file)` nil (F-27); README `Serializer::JSON` casing (F-28, folds into #7); CHANGELOG/tag drift + dup `[0.0.1]` (F-29/30); no llms.txt (F-31); broken `<string>` docs homepage tag (F-32); dead test debug code (F-33/34); README "Websit" typo (F-35); unused public error classes (F-36); unpinned runtime deps (F-37). No dead-code scan this visit (adoption ran); last dead-code commit remains 9371456.
+- Issues filed (all labeled `bomberbot`, re-verified by the main session): [#12](https://github.com/MadBomber/smart_message/issues/12) FileTransport not registered → `create(:file)` nil (F-27), [#13](https://github.com/MadBomber/smart_message/issues/13) broken `<string>` tag on docs homepage (F-32), [#14](https://github.com/MadBomber/smart_message/issues/14) dead `debug_me` code in tests (F-33/F-34).
+- Security: triage C-1 sharpens S-5 — the activesupport advisories now have a shipped fix (`>= 8.1.4.1`) and the dep is a *runtime* dep declared unpinned, so it's broader than dev-lockfile-only. Details written to `notes/security/smart_message.md` (confirmed gitignored); S-5 placeholder updated in the findings file. No new security details in any public text.
+- Inbox: redis_queue feature gap, MessagePack, runtime-dep pinning policy (F-37), llms.txt, unused error classes (F-36), version single-source-of-truth, `spec.files` allowlist, enable Dependabot.
+- Taste: proposed a process rule for the first "review queue full → skip" application.
+- Note: all three open PRs still need Dewayne's review; the existing `dewayne.md` smart_message entries (review #9/#10/#11, raise the gemspec floor) remain accurate and were left in place.
+
 ## 2026-11-10 01:47 scripts
 
 - `develop` already existed (bc51825); not created. Dewayne merged all five 2026-11-09 PRs (#17, #18, #20, #21, #22) with merge commits, no comments. **#22 merged into its stacked base `bomber/readme-fix-rows` two minutes after #18 had merged that branch into develop, so #22's content (e48c57a) never reached develop** and #19 stayed open. No open or closed-unmerged bomberbot PRs, so the tender wasn't run (checked directly).

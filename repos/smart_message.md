@@ -16,7 +16,18 @@ README calls it alpha.
 
 ## Status
 
-_Updated 2026-11-10 (first visit)._ `develop` (9371456) is 6 commits ahead of `main`;
+_Updated 2026-11-10 (second visit)._ Verification-only visit: Dewayne hasn't reviewed,
+merged, or commented on any of the three open bomberbot PRs (#9, #10, #11) yet, so with
+3 unapproved PRs open and none low-risk-mergeable the **review queue was full** — no new
+PRs this visit. `develop` still at 9371456, unmoved. Ran the **adoption audit** (first
+ever): docs promote a `:redis_queue` transport, a MessagePack serializer, and an
+`examples/redis_queue/` suite that don't exist (F-24–F-26); `FileTransport` is documented
+but unregistered (F-27). Filed issues [#12](https://github.com/MadBomber/smart_message/issues/12)
+(FileTransport not registered → `create(:file)` nil), [#13](https://github.com/MadBomber/smart_message/issues/13)
+(broken `<string>` tag on docs homepage), [#14](https://github.com/MadBomber/smart_message/issues/14)
+(dead `debug_me` code in tests). Findings F-24–F-37.
+
+_First visit (2026-11-10)._ `develop` (9371456) is 6 commits ahead of `main`;
 0.0.18 (Ruby 4.1 support, `to_h` fix) is unreleased. Bomberbot opened three PRs against
 `develop`: test CI ([#11](https://github.com/MadBomber/smart_message/pull/11), green on Ruby 4.0 and 4.1.0-preview1 with Redis),
 a DLQ `inspect_messages` fix ([#10](https://github.com/MadBomber/smart_message/pull/10)) and a docs-site script removal ([#9](https://github.com/MadBomber/smart_message/pull/9)).
@@ -39,6 +50,10 @@ else in this repo.
 - F-3 `Serializer::Base#do_encode` should raise `NotImplemented`.
 - F-20 `gem build smart_message.gemspec` fails with a relative path (`Dir.chdir(__dir__)`), F-18 gemspec URIs point at `/blob/master/`: one gemspec PR.
 - MathJax loads on every docs page though no page uses math (builder note on #9).
+- [#12](https://github.com/MadBomber/smart_message/issues/12) `FileTransport` is documented but never registered, so `Transport.create(:file)` returns nil (F-27): one-line `register(:file, FileTransport)` fix.
+- [#13](https://github.com/MadBomber/smart_message/issues/13) docs homepage opens with a broken `<string>` tag so the lead sentence never renders bold (F-32): `docs/index.md:10`, docs only.
+- [#14](https://github.com/MadBomber/smart_message/issues/14) dead `debug_me` code in the test suite — `Object#debug_me_context` monkeypatch + 3 stray `debug_me` calls (F-33/F-34): pure removal.
+- F-30 duplicate `## [0.0.1]` CHANGELOG section (`CHANGELOG.md:651` and `:697`): renumber/merge one, docs only.
 
 ## Open bomberbot PRs
 

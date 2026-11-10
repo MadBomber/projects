@@ -251,3 +251,45 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - scripts: delete the stale merged branches `bomber/gem-spec-unsafe-load`, `bomber/prepend-usage-name`, `bomber/new-erb-fallback`, `bomber/new-rb-cp-r`, `bomber/imbibler-uri-open`, `bomber/ruby32-removed-apis`, `bomber/sinatra-template-unpin`, and `dependabot/bundler/templates/sinatra_app/tzinfo-1.2.11` (from 2023; its lockfile is gone)? (added 2026-11-10)
 - scripts: a tiny stdlib drift check (README rows vs `git ls-files`, plus `Usage: X.rb` vs the file's basename) would stop F-20/F-21/F-22/F-25/F-26 from recurring. Worth adding a minimal `test/` or rake task, given the repo has no CI? (added 2026-11-10)
 - bomberbot process: when a stacked PR's base merges, the main session should retarget the stacked PR to develop during the same visit if it can, not wait for the next tender run. scripts#22 was merged into its dead base minutes after the base merged. (added 2026-11-10)
+
+## 2026-11-10 — smart_message (second visit)
+
+- **The "Redis Queue Transport" is marketing with no code behind it (F-24/25/26).** README
+  features a "🌟 Redis Queue Transport" with a `Transport.create(:redis_queue, ...)` factory
+  symbol, a `.where.from.to.subscribe` fluent API, `subscribe_pattern`, a "10x faster than
+  RabbitMQ" claim, and links to `docs/transports/redis-queue.md`,
+  `docs/guides/redis-queue-getting-started.md`, and `examples/redis_queue/` — none of which
+  exist. Taste says fix the code not the docs, but this is a whole feature: decide whether
+  to build the Redis Queue transport (big) or strip the marketing, dead links, and dead
+  example section (a clean docs-only PR once you say so). Needs your call before a builder
+  touches it.
+- **MessagePack is advertised but not shipped.** README feature list and `docs/index.md:10`
+  name MessagePack as a serialization format, but `lib/smart_message/serializer/` has only
+  `base.rb` + `json.rb` (relates to F-4's dangling MessagePack require in RedisTransport).
+  Ship a small `Serializer::MessagePack` matching the Base contract, or soften the copy to
+  "(JSON, pluggable)". Same decision as F-4/F-5 (the async/async-redis runtime deps were
+  for the unbuilt Redis Queue transport).
+- **Runtime dependencies are entirely unpinned (F-37).** `smart_message.gemspec:39-48` uses
+  bare `add_dependency` for all ten runtime deps, including the 0.x `breaker_machines` and
+  `chrono_machines` (0.x minors routinely break API) and `activesupport` (no floor; see the
+  held-local S-5 note — 8.1.4 has two advisories fixed in 8.1.4.1). A downstream install can
+  silently pull a breaking 0.x or a vulnerable activesupport. Pick a pinning policy
+  (pessimistic `~>` vs floors, how tight on the 0.x gems).
+- **No llms.txt (F-31).** The gem has a full mkdocs site but no `llms.txt`. An easy adoption
+  add once you want it (same as prompt_manager#24).
+- **Unused public error classes (F-36).** `Errors::ReceivedMessageNotSubscribed` and
+  `UnknownMessageClass` (`errors.rb:23,26`) are never raised in lib/test/examples, only
+  echoed in `docs/core-concepts/architecture.md:363-364`. Same category as F-6 orphans:
+  remove as dead public API (needs a deprecation cycle), start raising them where they
+  belong, or keep as reserved contract?
+- **Version has no single source of truth (F-14).** gem `0.0.18`, `mkdocs.yml` `0.1.11`,
+  `docs/index.md` badge `0.0.8`, CHANGELOG `[Unreleased]` empty, plus CHANGELOG/tag drift
+  (F-29) and a duplicate `[0.0.1]` section (F-30). Deriving the docs version from
+  `SmartMessage::VERSION` and enforcing a CHANGELOG entry in CI would stop this recurring.
+- **`spec.files` ships the whole tree minus tests.** `Dir.chdir(...){ git ls-files ... }`
+  bundles `docs/`, `examples/`, `analysis_2026-10-19.md`, `p2p_plan.md`, `p2p_roadmap.md`,
+  `COMMITS.md`, `smart_message.svg` into every install (beyond issue #8's specific files).
+  A deliberate allowlist would shrink the gem a lot — but a gemspec `spec.files` allowlist
+  is never low risk and changes packaging policy, so it's your call.
+- **Enable Dependabot?** Alerts are disabled and there's no `.github/dependabot.yml`; adding
+  one would auto-surface the activesupport fix and the outdated 0.x gems going forward.
