@@ -13,10 +13,10 @@ Dewayne's decision, issue #N.
 | security | 2026-11-09 | First run, at main 69f0a04 (v0.0.5; the repo has no `develop`). No eval/shell-out/Marshal/YAML.load in `lib/`; all wire data is JSON via `JSON.parse(symbolize_names: true)`. Exposure is missing auth, disabled validation, unbounded input: S-1..S-5 (held locally). Found non-security F-1 (dead method) and F-2 (test asserts a double). |
 | dead code | 2026-11-09 (lib, brief) | During the security pass. One true dead method, F-1 (`AgentDiscovery#add_agent`). `lib/agent99/tcp_message_client.rb` is never required by the library (base.rb loads only amqp + nats) — removal is a public-surface decision, in the inbox. |
 | dependencies | 2026-11-09 | First run, develop 69f0a04. Committed lock doesn't install as-is on Ruby 4.0.9 (tocer 19 chain pins Ruby ~> 3.4; BUNDLED WITH 2.5.23); re-resolved, suite green 57/0/0/4 skips. Ruby 4.1-preview1: rbtree 0.4.6 build failure (0.4.7 fixes). F-10..F-17. No removed-API use in `lib/`. Floor `>= 3.3` OK until 3.3 EOL (2027-03). bunny 3.x untested. Improver added F-18..F-20. |
-| adoption | n/a | Not yet run. Covered in part: gem bloat (issue #5), no `llms.txt`, no `documentation_uri`, misleading gemspec description, README/example drift. |
+| adoption | 2026-11-10 | First run, develop 5183c92. Docs site 404 (Pages off; gh-pages last deployed 2025-09-03). README agent fails on load (HeaderSchema not loaded, F-23) then crashes silently on every request (F-6); example registry needs rackup and 500s on WEBrick (F-27); API reference documents 13 nonexistent methods (F-26); `mkdocs build --strict` passes. F-23..F-36, S-6; updated F-6/8/9/20/21/22. Improver added F-37, F-38. gem-skill not run (paid API). |
 | quality | n/a | Not yet run. No `.rubocop.yml`/`.reek.yml` in the repo. Suite emits many unused-variable warnings. |
 
-Dead-code scan last covered commit: 69f0a04 (develop, created from main 2026-11-09)
+Dead-code scan last covered commit: 69f0a04 (no dead-code audit this visit; improver re-verified F-1 at 5183c92) (develop, created from main 2026-11-09)
 
 ## Findings
 
@@ -103,7 +103,7 @@ Dead-code scan last covered commit: 69f0a04 (develop, created from main 2026-11-
 - F-18: `NatsMessageClient#initialize` connects before assigning `@logger`, so a connect
   failure raises `NoMethodError ... for nil` instead of the intended message
   (`nats_message_client.rb:17-20`). Reproduced by the main session. Status: issue
-  [#6](https://github.com/MadBomber/agent99/issues/6).
+  [#6](https://github.com/MadBomber/agent99/issues/6); PR open [#13](https://github.com/MadBomber/agent99/pull/13).
 - F-19: message hooks (`receive_request`, `send_response`, ...) are private on `Base`
   while README/docs present them as overridable API and subclasses redefine them
   public. Status: needs Dewayne's decision (document "override as private" vs move above
@@ -112,6 +112,72 @@ Dead-code scan last covered commit: 69f0a04 (develop, created from main 2026-11-
   `RABBITMQ_*`); only `AGENT99_REGISTRY_URL` is read. Taste says change the code, but it's
   three files and a precedence/defaults choice. Status: needs Dewayne's decision (inbox).
 - F-21: `require "agent99"` doesn't load `lib/agent99/version.rb`, so `Agent99::VERSION`
-  is undefined after a plain require (builder observation on #10). Status: unverified.
+  is undefined after a plain require (builder observation on #10). Status: issue [#15](https://github.com/MadBomber/agent99/issues/15) (verified 2026-11-10).
 - F-22: `examples/example_agent.rb` uses `require_relative '../../lib/agent99'`, which
-  points outside the installed gem. Status: unverified (builder observation on #11).
+  points outside the installed gem. Status: rejected 2026-11-10 (by design: meant to be copied into `examples/agents/`, as `run_demo.rb:295` does).
+
+### 2026-11-10 (third visit; adoption audit + improver, develop 5183c92)
+
+- F-2 update: PR open [#17](https://github.com/MadBomber/agent99/pull/17) (tests only; needs-dewayne on header-helper visibility).
+- F-6 update: the README `process_request(payload)` pattern crashes on every request. It skips
+  the `@payload =` assignment (`message_processing.rb:37`), so `send_response` → `return_address`
+  raises NoMethodError (`header_management.rb:17`); on NATS the caller never gets a reply and
+  nothing is logged (F-36). README also puts `require 'agent99'` (`README.md:156`) after the
+  classes that need it. Status: open, verified.
+- F-8 update: also missing `bug_tracker_uri`, `rubygems_mfa_required`; #11's `documentation_uri`
+  points at a site that is currently 404 (F-25).
+- F-9 update: rejected. `v0.0.5` is an annotated tag on 69f0a04, so both commits are in 0.0.5.
+- F-20 update: also in `docs/getting-started/installation.md:125-129` and
+  `docs/framework-components/messaging-system.md:57-61`; `NATS.connect` takes no args
+  (`nats_message_client.rb:95`), so the NATS URL isn't configurable at all.
+- F-23: `require "agent99"` doesn't load `Agent99::HeaderSchema` (`lib/agent99/header_schema.rb`
+  required by nothing); README step 1 (`README.md:129`) and ~20 doc snippets use it →
+  NameError. Fix: `require_relative 'agent99/header_schema'` in `lib/agent99.rb` with F-21,
+  after #10. Status: open, verified (top PR candidate next visit).
+- F-24: README/docs call NATS "Recommended" (`README.md:69`, `quick-start.md:15`) but `Base`
+  defaults to AMQP (`agent_lifecycle.rb:12`); no doc shows passing `NatsMessageClient`. Status:
+  needs Dewayne's decision (default vs document the selector).
+- F-25: docs site https://madbomber.github.io/agent99/ is 404; Pages API 404 (disabled);
+  gh-pages last deployed 2025-09-03. Status: needs Dewayne's decision (repo setting; after S-6).
+- F-26: `docs/api-reference/agent99-base.md` documents 12 instance methods and `Base.create`
+  that don't exist; 12 docs pages override `process_request`; `discover_agents`/`send_request`
+  in ~20 places. Status: needs Dewayne's decision (rewrite docs vs add conveniences).
+- F-27: example registry won't start from the repo bundle (no `rackup`), and on WEBrick
+  `POST /register` 500s: `request.body.rewind` (`examples/registry.rb:29`) on non-rewindable
+  Rack 3 input. Works on Puma or with line 29 deleted. Status: open, verified (one-line PR
+  candidate; Gemfile part with #7).
+- F-28: `examples/agent_watcher.rb` defines pre-0.0.4 `capabilities`, no `info` → exits 1;
+  requires `listen` (not bundled); `kaos_spy.rb:12` requires `tty-table` (not bundled).
+  Status: open, verified.
+- F-29: `run_demo.rb:184`, `examples/DEMO.md:98,115` promise a message-client fallback that
+  doesn't exist. Status: needs Dewayne's decision (tied to F-24).
+- F-30: `mkdocs.yml:135,138` social links go to `madbomber/agemt99` (typo) labelled "AIA";
+  `docs.yml:35` installs unused `mkdocs-minify-plugin`. Status: open, verified.
+- F-31: `examples/README.md:31` `mexwell_request.rb` (→ `maxwell_request.rb`), `:50`
+  `control_agent.rb` (→ `control.rb`). Status: open, verified.
+- F-32: `sig/ai_agent.rbs` declares `module AiAgent` (old scaffold name). Rename to
+  `sig/agent99.rbs`; #11's test asserts the old path ships, so do it after #11. Status: open, verified.
+- F-33: CHANGELOG 0.0.5 both "Added SQLite-based registry" (`:18`) and "Removed SQLite
+  registry" (`:37`). Edits released history. Status: needs Dewayne's decision.
+- F-34: `README.md:181` → `docs/configuration/` (actual `docs/operations/configuration.md`);
+  `README.md:266`, `CHANGELOG.md:42` → `docs/breaking_change_v0.0.4.md` (actual
+  `docs/operations/breaking-changes.md`). Status: open, verified (fold in F-6's missing-example links).
+- F-35: no `llms.txt`; sequence after F-26 so it doesn't spread the fictional API. Status:
+  needs Dewayne's decision.
+- F-36: neither listen loop rescues handler exceptions (`nats_message_client.rb:35-50`,
+  `amqp_message_client.rb:63-79`); nats-pure swallows them, so errors vanish with no log.
+  Status: open, verified (small PR after #13).
+- F-37: `get(:field)` raises NameError when the class has no `REQUEST_SCHEMA`
+  (`message_processing.rb:156-158`); no shipped example defines it. Status: issue
+  [#14](https://github.com/MadBomber/agent99/issues/14).
+- F-38: `examples/control.rb:84` does `payload[:data][:type]`, but pause/resume/shutdown/
+  update_config acks send a String (`control_actions.rb:40,51,60,70`) → TypeError. Status:
+  issue [#16](https://github.com/MadBomber/agent99/issues/16).
+- F-39: `test/agent99/test_amqp_message_client.rb:38-53` builds `custom_config` and never uses
+  it (same false-confidence pattern as F-2). Status: open, verified (improver).
+- F-40: `lib/agent99/registry_client.rb:43` unused `response` assignment, the last `-w`
+  warning in lib after #12. Status: open, verified (fold into another PR).
+- F-41: `handle_control_response` (`control_actions.rb:20`) is unreachable: `process_control`
+  routes `'response'` to `receive_response` (`message_processing.rb:58`). `CONTROL_HANDLERS` is
+  documented public. Status: needs Dewayne's decision (delete vs rewire).
+- S-6: security finding, details held locally. Status: open (MEDIUM if Pages re-enabled as-is).

@@ -21,6 +21,13 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Review and merge into `develop` (not `main`) the three bomberbot PRs, each resolving an open issue: [#9](https://github.com/MadBomber/typed_bus/pull/9) (throttle hang at full capacity, Fixes #2), [#8](https://github.com/MadBomber/typed_bus/pull/8) (DLQ drain keeps entries on raise, Fixes #6), [#7](https://github.com/MadBomber/typed_bus/pull/7) (declare `logger` runtime dep, Fixes #1). None were auto-merged as low risk because all touch `lib/` or the gemspec. The `Fixes #N` issues close when `develop` reaches `main` at the next release. (added 2026-11-10)
 
+## agent99
+
+- [ ] Review and merge into `develop` [#12](https://github.com/MadBomber/agent99/pull/12) (Fixes #8, lib) and [#13](https://github.com/MadBomber/agent99/pull/13) (Fixes #6, lib), plus the still-open [#10](https://github.com/MadBomber/agent99/pull/10) and [#11](https://github.com/MadBomber/agent99/pull/11) (gemspec). Each adds a CHANGELOG line, so the next tender rebases whatever merges after the first. (added 2026-11-10)
+- [ ] Decide for [#17](https://github.com/MadBomber/agent99/pull/17): do the header helpers (`to_uuid`, `from_uuid`, `event_uuid`, `timestamp`, `type`, `return_address`) stay public? #17 pins them public as they behave today; `header_management.rb` has a commented-out `# private`. Pairs with F-19. (added 2026-11-10)
+- [ ] Issues #3/#4/#5… won't auto-close: `Fixes #N` only fires on merges into `main`. Close #4 by hand now (fixed on develop via #9) or at release. (added 2026-11-10)
+- [ ] The agent99 docs site is 404 (GitHub Pages disabled, F-25). Before re-enabling Pages, handle the held-local note S-6 for this repo (same one-line `mkdocs.yml` fix as smart_message#9), then redeploy. (added 2026-11-10)
+
 ## trak_flow
 
 - [ ] Create a `develop` branch in trak_flow (from `main`), or tell bomberbot to target `main` there. Until then bomberbot can only file issues; [#1](https://github.com/MadBomber/trak_flow/issues/1)–[#3](https://github.com/MadBomber/trak_flow/issues/3) and findings S-2, F-3, C4 are ready to become PRs. Third repo with this gap (after typed_bus, agent99). (added 2026-11-09)

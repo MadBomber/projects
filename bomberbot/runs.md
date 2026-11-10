@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 01:15 agent99
+
+- `develop` already existed (5183c92); not created. Dewayne merged #9 (Fixes #4) at 00:10Z with a merge commit, no comment.
+- Tended: #10 and #11 had CHANGELOG conflicts after #9 merged; tender rebased both onto develop (keeping every line), suites green locally (65 and 69 runs, 0F), force-pushed with lease, commented. Both MERGEABLE, no review yet.
+- New PRs (all independent, base `develop`; builders started together with phase 1 because the brain backlog fixed the choice; no test CI, so "green" = local suite on Ruby 4.0.9):
+  - [#12](https://github.com/MadBomber/agent99/pull/12) Drop the dead class-body rescue in `Agent99::Base`. Source: **brain backlog / issue #8** (F-16). New `ruby -wc` test fails on develop (mismatched-indentation warning), passes on branch; suite 64/243/0F/4S. Review hit the 3-round cap (contradicting rounds). Fixes #8.
+  - [#13](https://github.com/MadBomber/agent99/pull/13) fix(nats): log and report NATS connection failures. Source: **brain backlog / issue #6** (F-18). Logger assigned first and rescue widened to StandardError (an unreachable server raises `Errno`, not `ConnectError`); two new tests fail on develop, pass on branch; suite 66/255/0F/4S. Cap hit, ended clean. Fixes #6.
+  - [#17](https://github.com/MadBomber/agent99/pull/17) test(base): check method names on `Agent99::Base`, not the test double. Source: **brain backlog** (F-2). Tests only; suite 64/241/0F/4S. Cap hit; labeled `needs-dewayne` (pins header helpers public).
+- Merged (low risk): **none**. #12 and #13 touch `lib/`; #17's review didn't end clean and carries `needs-dewayne`. Merged after approval: none.
+- Audit: **adoption (first ever)** at develop 5183c92 — docs site 404 (Pages off), README agent doesn't load (F-23) and then crashes silently (F-6), example registry 500s on WEBrick (F-27), API reference documents nonexistent methods (F-26). F-23..F-36, S-6 (held locally). Improver: F-37..F-41; F-22 and F-9 rejected.
+- Issues answered: #4 (fixed on develop via #9, unreleased). Issues filed: [#14](https://github.com/MadBomber/agent99/issues/14) `get` NameError without `REQUEST_SCHEMA` (F-37), [#15](https://github.com/MadBomber/agent99/issues/15) `VERSION` not loaded (F-21), [#16](https://github.com/MadBomber/agent99/issues/16) `examples/control.rb` TypeError (F-38).
+- Open bomberbot PRs now: 5 (#10, #11, #12, #13, #17) — next visit's queue is full until some merge.
+- Note: default `ruby` here is 4.1.0-preview1; every agent had to put `~/.rbenv/versions/4.0.9/bin` first on PATH.
+
 ## 2026-11-10 00:59 aia
 
 Queue cleared and four PRs shipped (develop d974374 → 90082b0 → 4cdf934). Dewayne had merged #167 (skills security) and #168 (SimpleCov) since the 03:45 visit, leaving only #166 open and now CONFLICTING.
