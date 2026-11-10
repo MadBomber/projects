@@ -25,10 +25,14 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#10](https://github.com/MadBomber/ragdoll/pull/10) fix: pass converter options to media services (finding F-17). **PR open**, CI green.
+- None at the start of the 2026-11-10 visit.
 
 ## Merged bomberbot PRs
 
+- [#16](https://github.com/MadBomber/ragdoll/pull/16) refactor: use bound parameters for search filter conditions. Merged 2026-11-09 (b0a7afc). Not recorded by the visit that opened it.
+- [#15](https://github.com/MadBomber/ragdoll/pull/15) docs: fix README Quick Start config to match current API (issue #11, F-18). Merged 2026-11-09 (ca8deeb).
+- [#14](https://github.com/MadBomber/ragdoll/pull/14) fix: require activerecord >= 7.1 in gemspec (issue #13, F-9). Merged 2026-11-09 (5670fa9).
+- [#10](https://github.com/MadBomber/ragdoll/pull/10) fix: pass converter options to media services (F-17). Merged 2026-11-08 (20f93f7).
 - [#9](https://github.com/MadBomber/ragdoll/pull/9) test: report database-only client tests as skips. Merged 2026-11-07.
 - [#8](https://github.com/MadBomber/ragdoll/pull/8) ci: add Ruby 4.0 to the test matrix. Merged 2026-11-07.
 - [#7](https://github.com/MadBomber/ragdoll/pull/7) chore(deps): update locked gems within current majors. Merged 2026-11-07.
