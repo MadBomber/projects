@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 05:13 smart_message-transport-named_pipes
+
+Second visit; `develop` unchanged since visit 1 (2a49fcc), Dewayne hadn't reviewed #4/#5. Tender found 2 open bomberbot PRs (#4, #5), neither approved, both MERGEABLE, nothing to merge — queue of 2 under the 3-cap, so new work ran. Responder: both open issues (#6/#7) are bomberbot-owned with no third-party comments, nothing to answer; #7 (CI) judged resolvable by a small PR. Ran the **quality** audit (first quality pass; findings F-8…F-13), which reproduced a real runtime bug. Phase 1 also ran triage and improver.
+
+Opened three PRs against `develop`:
+- [#9](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/9) `madbot/ci-tests-workflow` — CI running the suite directly on Ruby 3.2–3.4 (Fixes #7). Source: issue #7 / finding F-6. Live CI green, clean review. Independent.
+- [#10](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/10) `madbot/readme-deps-accuracy` — correct the false "Zero External Dependencies" README claim. Source: finding F-7 (adoption/docs). Independent. **Low-risk-eligible but NOT self-merged** (review left a deferred out-of-scope note, sqa#46 rule).
+- [#8](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/8) `madbot/remove-dead-publisher-pipe` — remove the dead private `publisher_pipe_name` + its test (public attr_reader kept). Source: finding F-1 (dead code). Independent.
+
+All three independent (different files), built in parallel, clean reviews. **No low-risk self-merges this visit** (#10 held per sqa#46). Tended: verified #4/#5 still merge clean (no rebase needed). PRs merged: none. Issues answered: none (both open issues are our own, no third-party comments). Issues filed: [#11](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/11) (examples nested `def`, F-11), [#12](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/12) (signal handler ThreadError crashing graceful shutdown, F-8). Five bomberbot PRs now await Dewayne (#4/#5/#8/#9/#10). No new security vulns (re-confirmed S-1/S-3/S-4 locally; S-4 is the same code as the neutral #12).
+
 ## 2026-11-10 05:00 sqa
 
 **Resumed** after the first session hit the 45-min cutoff mid-way through the third builder. develop 3209f5f at start → **795bce1** (two low-risk self-merges). Tender found 2 open bomberbot PRs (#44, #46), neither approved, both MERGEABLE — nothing to merge, queue of 2 under the skip threshold, so new work proceeded. Opened three PRs (all independent, disjoint files, built in parallel in separate worktrees), each resolving an open bomberbot-filed issue:

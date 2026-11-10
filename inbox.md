@@ -374,3 +374,21 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **`Metadata#==` vs a plain Hash (F-25).** PR #27 fixed `docs/api/metadata.md` to match the code (`==` is `Metadata`-only, pinned by `test/metadata_hash_test.rb:123`'s `refute_equal … {a:1}`). But a user might reasonably want `meta == {title:'x'}` to be true. Widening `==` to compare `to_h` when `other` responds to `to_h` (and deleting that refute test) is a public-API behavior change used by aia — your call. Default stance shipped: keep `Metadata`-only, doc now says so.
 - **`reset_directives!` README wording (F-23).** README "Custom directives" says `PM.reset_directives!` "restores the built-ins (`include`, `insert`, `read`)", but it actually re-registers every loaded `PM::Directive` subclass (via `inherited` tracking) and drops block-registered directives — not "built-ins only". Reword the doc, or change the semantics to truly reset to built-ins only? A doc reword is the safe fix if the current behavior is intended.
 - **CHANGELOG link-refs (F-24, cosmetic).** The CHANGELOG uses `## [x.y.z]` Keep-a-Changelog bracket headings but defines no `[x.y.z]: url` link references, so they render as literal `[1.2.0]`. Add compare/release link-refs, drop the brackets, or leave as-is? Not filed as an issue (trivial). Also: pre-0.5 tags (v0.0.1, v0.0.2, v0.1.1, v0.2.1, v0.3.1) still have no CHANGELOG section — #26 only completed the 0.5.x series; a future PR could backfill the rest from tags if you want full Keep-a-Changelog coverage.
+
+## smart_message-transport-named_pipes (2026-11-10 visit 2)
+
+- **F-9 (deeper fix for the shipped stub):** PR #4 excludes `lib/smart_message/transport/base.rb`
+  from the packaged gem, which stops the no-op stub from shadowing the real `smart_message` Base at
+  install time. The cleaner structural fix is to move the stub to `test/support/` and drop
+  `require 'smart_message/transport/base'` from `lib/named_pipes.rb` so the real Base is always
+  used at runtime — but that touches the lib require graph and the test harness, so it's a bigger
+  change than #4. Worth doing once #4's direction is confirmed.
+- **Examples aren't exercised in CI.** `examples/basic_pubsub.rb` and `multiple_processes.rb`
+  `require 'bundler/setup'` + `smart_message` and block on `sleep`/`fork`; nothing proves they run
+  against the real `smart_message`. A tiny fork-based smoke test (gated behind #6 being resolved so
+  bundler can install) would guarantee "the example still runs" on each push.
+- **`bindir = "exe"` but the gem ships `bin/console` + `bin/setup`** and no `exe/` — no executables
+  result. Harmless mismatch; worth a deliberate call on whether any CLI belongs here.
+- **F-12:** `.envrc` and `Rakefile` are packaged into the released gem (the gemspec `reject` block
+  omits them). Pure dev noise in a published gem. A gemspec packaging fix — fold into #4 or a
+  follow-up (it overlaps #4's `spec.files` area, so not an independent PR while #4 is open).
