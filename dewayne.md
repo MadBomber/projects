@@ -88,3 +88,11 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Review [simple_flow#22](https://github.com/MadBomber/simple_flow/pull/22) (declares `logger` and `tsort` as runtime deps; gemspec, so not merged as low risk). Released 0.4.0 raises `LoadError` on `require "simple_flow"` in any Ruby 4.0 Bundler app that doesn't list `logger` itself, so users only get the fix with a release from `develop`. If you'd rather keep "zero runtime dependencies", the PR body describes the alternative. (added 2026-11-10)
 - [ ] Review [simple_flow#21](https://github.com/MadBomber/simple_flow/pull/21) (Fixes #12, #13; lib change). It changes behaviour on purpose: a `depends_on:` that names an unknown step, or a parallel group declared later, now raises `ArgumentError` instead of silently skipping the step. (added 2026-11-10)
+
+## smart_message-transport-lanet
+
+- [ ] Review [#6](https://github.com/MadBomber/smart_message-transport-lanet/pull/6) (test CI on Ruby 3.3 and 3.4, green). After merging, you can optionally make `test (3.3)` and `test (3.4)` required checks on `develop` and `main`. Also decide the Ruby floor: the gemspec says `>= 3.2.0`, but the locked smart_message 0.0.17 pulls in breaker_machines 0.7.0 and chrono_machines 0.2.0, which both need 3.3. Raise the floor to 3.3, or relock so 3.2 can go back into the matrix. (added 2026-11-10)
+- [ ] Review [#5](https://github.com/MadBomber/smart_message-transport-lanet/pull/5) (tests load on Ruby 4 and minitest 6; test-only). When the Gemfile moves past `minitest ~> 5`, also add `gem "minitest-mock"`. (added 2026-11-10)
+- [ ] Decide F-1: the transport calls a Lanet API that doesn't exist. Options are in inbox.md (2026-11-10). Issues #2–#4 and most of the backlog depend on this. (added 2026-11-10)
+- [ ] Security: the first audit found S-1…S-6, held locally in `notes/security/smart_message-transport-lanet.md`. All are latent while F-1 stands, and the gem is unpublished, but any F-1 rewrite must cover S-1…S-4. S-6 is advisories in the dev lockfile, fixed by a relock. (added 2026-11-10)
+- [ ] Review [#7](https://github.com/MadBomber/smart_message-transport-lanet/pull/7) (README examples match the smart_message 0.0.17 API; README only). Also decide F-19: should a node receive its own published messages? `publish_to_nodes` never delivers locally. (added 2026-11-10)

@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 05:46 smart_message-transport-lanet
+
+_Resumed visit. The first session was cut off at the 45-minute budget, with the CI builder done (PR #6 open, CI green) and the README builder stopped after one local, unpushed commit. This session updated #6's proof section and re-spawned the README builder from that commit; it opened #7._
+
+- **First visit; created `develop` from `main` at c33acdf.** Created the `bomberbot` and `needs-dewayne` labels. There were no bomberbot PRs and no open issues, so the tender and responder weren't run; I checked both directly.
+- Audit: **security plus dead code** (S-1…S-7, F-1…F-19). Key finding: the transport calls a Lanet API that doesn't exist (F-1), so the gem can't run against the real `lanet`. Needs Dewayne's decision; options are in the inbox.
+- New PRs (all independent, base `develop`):
+  - [#5](https://github.com/MadBomber/smart_message-transport-lanet/pull/5) test: load suite on Ruby 4 and minitest 6. Source: **audit F-3**. Suite 58/295 green on 3.4.6 and on 4.1 (gems limited to the locked set). Review clean in 2 rounds. Not self-merged, because round 1 deferred an out-of-scope note.
+  - [#6](https://github.com/MadBomber/smart_message-transport-lanet/pull/6) ci: run the test suite on Ruby 3.3 and 3.4. Source: **CI / adoption** (F-12). Live CI green. Hit the 3-round review cap with every finding fixed. Touches `.github/`, so not low risk.
+  - [#7](https://github.com/MadBomber/smart_message-transport-lanet/pull/7) docs(readme): match examples to smart_message 0.0.17 API. Source: **adoption** (improver, F-14). Proof script against the 0.0.17 source. Review clean in 2 rounds. Not self-merged, because round 1 rejected 8 out-of-scope transport issues (filed as F-18, F-19, S-7).
+- Merged: none. Tended: none. Issues answered: none (no open issues).
+- Issues filed: [#2](https://github.com/MadBomber/smart_message-transport-lanet/issues/2) Class-keyed subscribe drops messages (F-5), [#3](https://github.com/MadBomber/smart_message-transport-lanet/issues/3) constructor/configure ordering (F-2), [#4](https://github.com/MadBomber/smart_message-transport-lanet/issues/4) no reconnect after disconnect (F-6).
+- The inbox entry for this repo went out early, in the prompt_manager visit's brain commit f62b32a (a concurrent session staged `inbox.md`).
+
 ## 2026-11-10 05:45 prompt_manager
 
 Seventh visit (last 2026-11-10, sixth run). develop `39827bf` at start → `9219201` at end; `develop` already existed. Audit run: **dependencies** (most overdue; clean, no new findings — bundle-audit clean, suite green 292/0/0 at 100%, only F-8/F-9 lockfile churn). Phase-2 gate clear (2 open bomberbot PRs < 3).

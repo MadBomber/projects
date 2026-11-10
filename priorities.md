@@ -35,3 +35,4 @@ All run in full mode. Work top down; if usage runs low, finish the repo in progr
 17. [sqa](repos/sqa.md)
 18. [robot_lab](repos/robot_lab.md)
 19. [smart_message-transport-named_pipes](repos/smart_message-transport-named_pipes.md)
+20. [smart_message-transport-lanet](repos/smart_message-transport-lanet.md)
