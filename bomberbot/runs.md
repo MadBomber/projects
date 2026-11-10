@@ -2,6 +2,22 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 05:00 sqa
+
+**Resumed** after the first session hit the 45-min cutoff mid-way through the third builder. develop 3209f5f at start → **795bce1** (two low-risk self-merges). Tender found 2 open bomberbot PRs (#44, #46), neither approved, both MERGEABLE — nothing to merge, queue of 2 under the skip threshold, so new work proceeded. Opened three PRs (all independent, disjoint files, built in parallel in separate worktrees), each resolving an open bomberbot-filed issue:
+
+- **[#50](https://github.com/MadBomber/sqa/pull/50)** test: assert on_signal callback fires, drop dead gp var (source: **open issue #48** / F-12). Strengthened a no-op callback test to assert the yielded signal; dropped an unused gp var; clears all 6 `Lint/UselessAssignment` offenses (repo now lint-clean on `lib test`). Proof: teeth-check (fails when emission suppressed), rubocop 6→0, suite 612/0F/0E on 4.0.9. 2 clean `/code-review` rounds. **Merged into develop as low risk** (test-only, Fixes #48). develop 9cee34f.
+- **[#51](https://github.com/MadBomber/sqa/pull/51)** docs(changelog): record SQLite stores and other develop changes (source: **open issue #49** / F-10 / adoption). Added only genuinely-missing `[Unreleased]` lines (SQLite stores b185b83, price-fetch bins + rename 7411d07, dep changes, Yahoo window 7838c44, nil guards 89e02af) with per-line commit/grep evidence; didn't duplicate the already-documented FMP/Yahoo/config entries. Clean 1-round review, no deferred findings, CHANGELOG not in the mkdocs site. **Merged into develop as low risk** (docs-only, Fixes #49). develop 795bce1.
+- **[#52](https://github.com/MadBomber/sqa/pull/52)** refactor(patches): drop dead paths in `String#to_constant` (source: **open issue #47** / F-4). Removed the unreachable `RUBY_VERSION == '1.9'` branch (gemspec floor `>= 3.2`) and the dead `|| const_missing` arm (`const_get` raises, never nil); now `names.reduce(Object, :const_get)`; added `test/patches/string_test.rb` as a regression guard. Proof: rubocop clean, suite 616/0F/0E on 4.0.9. The third builder was killed by the cutoff after the change + test were committed and `/simplify` applied; on resume madbot amended the `/simplify` into the commit, rebased onto 795bce1, re-verified, and opened the PR. **Lib change → not low-risk → open for Dewayne. Fixes #47.**
+
+- **Tended:** #44 (stray root files, S-1) and #46 (README examples) verified — both target develop, MERGEABLE, no review threads, not approved, left for Dewayne. #46 will need a one-line CHANGELOG rebase now that #51 merged. No bomberbot PRs closed-unmerged.
+- **Audit: quality** (first run, most overdue). rubocop lib+test clean except F-12 (now fixed); flog gate passes (no method ≥50); flay gate passes (no dup mass ≥50). New findings F-17 (reek_check Rakefile gate not self-contained — needs Dewayne, shared tooling) and F-18 (detect_double_top/_bottom near-dup — needs Dewayne). No new issue-worthy clean findings.
+- **Issues answered:** none — responder confirmed #47/#48/#49 are own fully-stated issues at an unchanged tree (no new evidence to add), and #4's open part is Dewayne's design call (BomberBot already commented last visit). Note: #48/#49 stay open until develop→main (GitHub only auto-closes `Fixes #N` on the default branch).
+- **Issues filed (0):** the three best candidates became PRs instead; the two new findings (F-17/F-18) are both needs-Dewayne, not issue material.
+- **Inbox:** F-17, F-18, vestigial `Ticker::FILENAME_PREFIX`, report-IO testability.
+- **dewayne.md:** added "review #52".
+- **Taste:** sqa self-merge count at 3 (#45/#50/#51), all unreverted, no Dewayne reaction yet — signal still open; plus a note that "deletes no code" means no lib removal, not zero deleted lines.
+
 ## 2026-11-10 04:45 prompt_manager
 
 **Sixth visit.** `develop` already existed (1a817dd), not created. Ran the **adoption** audit (most overdue, tied with dependencies; chose adoption for shippable docs findings). Phase-1 queues at start: tender found only #25 open (unapproved) and left it; responder found #17 already answered with no new comment; triage found `develop` byte-identical to the fifth-run audit. Two docs-only PRs opened, one self-merged.
