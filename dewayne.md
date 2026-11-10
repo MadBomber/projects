@@ -15,7 +15,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## typed_bus
 
-- [X] Create a `develop` branch in typed_bus (from `main`), or tell bomberbot to target `main` there. Until then bomberbot can only file issues; [#1](https://github.com/MadBomber/typed_bus/issues/1)–[#6](https://github.com/MadBomber/typed_bus/issues/6) are ready to become PRs. (added 2026-11-09; #4–#6 added on the second visit)
+- [ ] Review and merge into `develop` (not `main`) the three bomberbot PRs, each resolving an open issue: [#9](https://github.com/MadBomber/typed_bus/pull/9) (throttle hang at full capacity, Fixes #2), [#8](https://github.com/MadBomber/typed_bus/pull/8) (DLQ drain keeps entries on raise, Fixes #6), [#7](https://github.com/MadBomber/typed_bus/pull/7) (declare `logger` runtime dep, Fixes #1). None were auto-merged as low risk because all touch `lib/` or the gemspec. The `Fixes #N` issues close when `develop` reaches `main` at the next release. (added 2026-11-10)
 
 ## trak_flow
 

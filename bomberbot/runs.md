@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 00:45 typed_bus
+
+- `develop` already existed (Dewayne created it from `main` since the second visit, per the completed `dewayne.md` step); **not created this visit**. PRs unblocked for the first time on this repo. Default `main`, integration `develop` at 5be35a6.
+- No open PRs at the start → tender not run (verified directly). All six open issues (#1–#6) are bomberbot's own with no external comments → no responder needed; the fixed ones got `Fixes #N` PRs plus a status comment.
+- Three new PRs, all independent (three different files), all base `develop`, each resolving an open issue (the best kind). No test CI exists, so "green" = full local suite on Ruby 4.0.9:
+  - [#9](https://github.com/MadBomber/typed_bus/pull/9) fix: prevent throttled channel hang at full capacity. Source: **brain backlog / issue #2** (F-1). `return if remaining_ratio <= 0.0` in `apply_throttle!`; new timeout-guarded test fails on develop (hang), passes with fix; suite 201→202/0F, 100% cov. Review clean, 1 round, cap not hit. Not auto-merged (lib change). Fixes #2.
+  - [#8](https://github.com/MadBomber/typed_bus/pull/8) fix(dlq): retain entries when drain block raises. Source: **brain backlog / issue #6** (F-18). `drain` shifts-then-yields so a raise keeps the rest; new test fails on develop, passes with fix; suite 201→202/0F, 100% cov. Review clean, 1 round. Not auto-merged (lib change). Fixes #6.
+  - [#7](https://github.com/MadBomber/typed_bus/pull/7) fix: declare logger as runtime dependency. Source: **brain backlog / issue #1** (F-9). `spec.add_dependency "logger"` + `require "logger"` before first use; verified via a clean consumer bundle; suite 201/0F. Review clean, 1 round. Not auto-merged (gemspec change). Fixes #1.
+- Merged (low risk): **none** — all three touch `lib/` or the gemspec, so none qualifies; all await Dewayne's approval. Merged after approval: none.
+- Audit: **adoption (first ever)** at develop 5be35a6: `mkdocs build --strict` clean, README API tables accurate, examples 01–04 run. New F-23..F-26. Improver added F-27 (stray `examples/temp.md`); dead-code note: `lib/` byte-identical to `main`.
+- Issues answered: #1, #2, #6 (commented that `develop` fixes them via the PRs). Issues filed (labeled bomberbot, verified): [#11](https://github.com/MadBomber/typed_bus/issues/11) no LICENSE despite MIT gemspec (F-23), [#12](https://github.com/MadBomber/typed_bus/issues/12) thin gemspec metadata + duplicate `source_code_uri` warning (F-24), [#10](https://github.com/MadBomber/typed_bus/issues/10) stray `examples/temp.md` (F-27).
+- Inbox: test CI + drop EOL Ruby 3.2, `TypedBus::Error` hierarchy, publish refactor (F-21), `llms.txt` (F-25), docs drift sweep, F-13 public-API orphans, F-14/F-16/F-17 behavioral choices.
+- Created the `needs-dewayne` label (was missing).
+- Security: none new.
+
 ## 2026-11-10 00:41 smart_message
 
 - First visit (repo named on the command line; added to brain as #16 in `priorities.md`, created `repos/smart_message.md` and `bomberbot/findings/smart_message.md`). `develop` existed (9371456, 6 commits ahead of `main`); not created. Labels `bomberbot`/`needs-dewayne` created.
