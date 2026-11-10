@@ -8,7 +8,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-06 | bundle-audit clean (1351 advisories); read every shell-out, ERB, YAML load, file read, ENV read. Findings S-1, S-2. |
+| security | 2026-11-10 | bundle-audit clean (1353 advisories, "No vulnerabilities found"); all sinks re-read at develop 1a817dd. Post-#19 erb-safe escaping verified robust (5 boundary-bypass attempts, none executed). YAML safe_load + aliases-off, no eval/Marshal/unsafe-load, parse regexes linear (no ReDoS). New: S-4 (directive file-arg containment, needs decision); F-21 (insert nil-dir -> cwd = F-7 verified). Earlier: 2026-11-06 found S-1, S-2. |
 | dead code | never (quick scans only) | Quick scan up to af352ae, 2026-11-07. |
 | dependencies | 2026-11-07 | bundle outdated: only minitest 6.0.6 -> 6.1.0 and prism 1.9.0 -> 2.1.0 (dev/transitive, lockfile only); bundle-audit clean; suite green on 4.1.0-preview1, 4.0.9, LANG=C, and ubuntu x86_64 in CI; `ruby -w` load clean; no removed Ruby 4 APIs. Findings F-8, F-9. |
 | adoption | 2026-11-07 | Every README example run against develop 9a385fb and matching; `mkdocs build --strict` clean; CHANGELOG has a section for every tag v0.5.x to v1.2.0; no `llms.txt`; gem-skill generation not run (it calls an LLM). Findings F-11 to F-13. |
@@ -63,3 +63,11 @@ First quality audit. Tools: flog, flay, reek 6.6.0, rubocop 1.92.2, debride 1.15
 - **F-20**: `require 'pathname'` appears twice (`lib/pm.rb:4`, `lib/pm/core_directives.rb:3`); rubocop `Lint/RedundantRequireStatement` flags both. On Ruby 4.1.0preview1 `defined?(Pathname)` is truthy with no require, but auto-availability was not confirmed on the exact 4.0.9 floor, and keeping an explicit require for a used constant is harmless/defensive. Severity trivial. Status: just-record (unverified; negligible value, not an obvious-yes).
 
 Reviewed and rejected (so not re-raised): rubocop `Style/CombinableLoops` at `lib/pm/directives.rb:65` (the two loops are split on purpose for validate-all-then-commit atomicity); `Style/RedundantRegexpCharacterClass` `[ ]` (deliberate readability for literal spaces); all `Metrics/*` (marginal, flog-confirmed low).
+
+### 2026-11-10 (fifth run, RESUMED; security audit, develop 1a817dd)
+
+First security audit since #19 merged, so the erb-safe escaping that fixed S-1 had never been through a security pass until now. Tools: bundle-audit (DB bc80fbb, 1353 advisories), manual sink re-read, 5 boundary-bypass attempts on the ERB escaper, ReDoS sanity check on the parse regexes. Headline: still clean. S-1's escaping held against every bypass (untrusted `<%`, split `<`+`%` across literal/env/env boundaries, trim-marker variants — all rendered literally, no code executed). No `eval`/`Marshal`/unsafe-`YAML.load`/backticks/`popen`; the only `send`/`public_send` are internal with fixed symbols. YAML uses `safe_load` with `permitted_classes:[Date,Time]` and aliases off (no object injection, no billion-laughs). Parse regexes linear (50 KB -> <6 ms).
+
+- **S-4**: security finding, details held locally. Status: needs Dewayne's decision. (Directive file-arg containment; distinct mechanism from S-2/S-3, same author-controlled-execution family. Main session deduped against local S-2/S-3 notes: genuinely new.)
+- **F-21**: `insert`/`read` resolve a relative path against the process cwd when `ctx.directory` is nil (string-parsed prompt), while `include` raises `IncludeContextError` in the same situation (`lib/pm/core_directives.rb:32` has no nil guard; `:11`/`:14` does). This is **F-7 re-observed and now verified** (`PM.parse_string('<%= insert("Gemfile") %>').to_s` reads `./Gemfile`). Severity low. Status: just-record (F-7 promoted to verified; the decision options are already in `inbox.md` under the 2026-11-09 visit — a public-method behavior change held for Dewayne, not a new issue).
+- Re-confirmed, not re-raised: bundle-audit clean; S-1 escaping robust (no regression); no ReDoS; F-14/F-15 are over-escaping (fidelity, not injection).
