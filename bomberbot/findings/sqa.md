@@ -30,7 +30,7 @@ Dead-code scan last covered commit: 7fa65e3 (develop, 2026-11-10; `lib/` only, b
 - F-4: unreachable Ruby 1.9 branch and dead `|| const_missing` in `String#to_constant` (`lib/patches/string.rb:42-46`). Status: open (small PR; obvious yes).
 - F-5: gem ships repo clutter (`spec.files` = git ls-files minus a few dirs: 254 files, ~7 MB; docs/, examples/rails_app, checksums/, notes, `trace.log`, `main.just`). Status: needs Dewayne's decision (gemspec allowlist is never low risk).
 - F-6: `changelog_uri` = homepage (`sqa.gemspec:26`). Status: open (gemspec; fold into a gemspec PR).
-- F-7: suite red on develop without `FMP_API_KEY`: `test/data_frame/fmp_test.rb` 3F/4E because the key is read before the stubbed request. Status: PR'd (see runs.md).
+- F-7: suite red on develop without `FMP_API_KEY`: `test/data_frame/fmp_test.rb` 3F/4E because the key is read before the stubbed request. Status: merged (low risk) [#45](https://github.com/MadBomber/sqa/pull/45), develop 3209f5f.
 - F-8: `required_ruby_version >= 3.2` but sqa-tai `~> 0.4` needs `>= 3.4`; docs say Ruby 3.2+/3.3.6. Status: open (gemspec + docs; follows debug_me#23 precedent).
 - F-9: README examples don't match the API (Portfolio `load_from_csv`/`save_trades_to_csv`/summary keys, backtest fractions printed as %, nonexistent `MomentumBreakout`/`MeanReversion`, `Config.new(data_dir:)`). Status: PR'd (see runs.md). `holding_period:` (README:411) and `gem install sqa-cli` (README:102) need Dewayne's decision.
 - F-10: CHANGELOG `[Unreleased]` misses SQLite stores (b185b83), Yahoo window (7838c44), new bin scripts and rename, dependency changes (7411d07), nil guards (89e02af). Status: open (docs; easy yes).

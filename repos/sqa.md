@@ -26,7 +26,7 @@ Answered issue #4 (API keys in config) with where develop stands; it needs Deway
 Well-defined items a single small PR could close. Bomberbot works these before anything
 else in this repo.
 
-- F-7 suite red without `FMP_API_KEY` (test-only stub). See Open PRs.
+- F-16 is now unblocked: F-7 merged as [#45](https://github.com/MadBomber/sqa/pull/45).
 - F-9 README examples that don't match the API. See Open PRs.
 - F-16 test CI workflow (TA-Lib .deb, Ruby 3.4 + 4.0), once F-7 merges.
 - F-4 dead Ruby 1.9 branch in `String#to_constant`.
@@ -41,4 +41,4 @@ else in this repo.
 
 ## Merged bomberbot PRs
 
-- (none)
+- [#45](https://github.com/MadBomber/sqa/pull/45) test(fmp): placeholder API key in stubbed DataFrame tests. **merged (low risk)** 2026-11-10 by bomberbot as develop 3209f5f; full suite 612 runs 0F/0E without `FMP_API_KEY` (Ruby 4.0.9).
