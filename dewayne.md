@@ -38,3 +38,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review [smart_message#11](https://github.com/MadBomber/smart_message/pull/11) (test CI; touches `.github/` and `Gemfile.lock`, so not merged as low risk). After merge, make `test (4.0)` and `test (4.1.0-preview1)` required checks on `develop` (and `main`). (added 2026-11-10)
 - [ ] smart_message gemspec floor: `required_ruby_version >= 3.0.0`, but the locked breaker_machines 0.21.2 and chrono_machines 0.11.0 need Ruby 4.0 (CI on #11 failed `bundle install` on 3.3/3.4). Raise the floor to `>= 4.0`, or loosen those two deps if 3.x matters. (added 2026-11-10)
 - [ ] Review [smart_message#10](https://github.com/MadBomber/smart_message/pull/10) (DLQ `inspect_messages` fix; `lib/` change). (added 2026-11-10)
+
+## gem-skill
+
+- [ ] Review and merge into `develop` [gem-skill#10](https://github.com/MadBomber/gem-skill/pull/10) (bundle flag parsing, F-3/F-4; lib change, so not low risk). Note the behaviour change: `bundle skill` now exits 1 on an unknown, abbreviated or value-less flag, where before it silently ignored it. (added 2026-11-10)
+- [ ] Review [gem-skill#9](https://github.com/MadBomber/gem-skill/pull/9) (tests only, F-12). Not merged as low risk because its review loop hit the 3-round cap. Optional: `~/sandbox/git_repos/madbomber/gem-skill/.claude/skills/my_gem` in your checkout is the dangling link this leak left on 2026-09-24; it's safe to `rm`. (added 2026-11-10)

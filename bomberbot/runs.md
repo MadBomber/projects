@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 01:31 gem-skill
+
+- `develop` already existed (44a608c); not created. Dewayne merged #4 (F-13) on 2026-11-07. There were no open bomberbot PRs and no closed-unmerged ones, so the tender wasn't run (checked directly).
+- New PRs (all independent, base `develop`; no test CI, so "green" means the full local suite on Ruby 4.0.9):
+  - [#5](https://github.com/MadBomber/gem-skill/pull/5) docs: fix the cache layout link. Source: **brain backlog** (F-16). `mkdocs build --strict` exits 1 on develop and 0 on the branch; suite 181/0F; review clean in 1 round. **Merged (low risk)** by bomberbot → develop 3e384ad (docs + one CHANGELOG line, 3 lines).
+  - [#9](https://github.com/MadBomber/gem-skill/pull/9) test: run gem command tests from a temp project dir. Source: **brain backlog** (F-12). `.claude/` is left after `rake test` on develop and absent on the branch; suite 181/404/0F. Review hit the 3-round cap (trivial fixes made, no open findings), so it's not low risk; left for Dewayne.
+  - [#10](https://github.com/MadBomber/gem-skill/pull/10) fix(bundle): parse skill flags with OptionParser, add --temperature. Source: **findings F-3/F-4** (judgment; docs promised `--temperature`). New tests: 13F+1E on the base, 0F on the branch; suite 197/428/0F. Review hit the cap with contradicting rounds; fix-and-open. Lib change, so left for Dewayne.
+- Merged after approval: none this visit (#4 was merged earlier by Dewayne).
+- Audit: **security (first ever)** at 44a608c. bundle-audit is clean; S-1..S-4 are held locally (S-1 is an obvious-yes PR, first in the backlog for next visit). Improver and auditor findings are recorded as F-22..F-29; F-18 is now verified.
+- Issues answered: [#1](https://github.com/MadBomber/gem-skill/issues/1). The responder noted that the `~/.agents`/`~/.codex` roots already work and left the new-format question to Dewayne (inbox).
+- Issues filed: [#6](https://github.com/MadBomber/gem-skill/issues/6) truncated verify overwrites the cache (F-25), [#7](https://github.com/MadBomber/gem-skill/issues/7) `gem skill` exits 0 on errors (F-26), [#8](https://github.com/MadBomber/gem-skill/issues/8) git-sourced gems skipped (F-24).
+- Open bomberbot PRs now: 2 (#9, #10).
+- Note: builders' first `/code-review` call reviewed the session cwd (`~/.prompts`), not their worktree; they re-ran it with the path. Briefs should say "pass the worktree path to /code-review".
+
 ## 2026-11-10 01:15 agent99
 
 - `develop` already existed (5183c92); not created. Dewayne merged #9 (Fixes #4) at 00:10Z with a merge commit, no comment.
