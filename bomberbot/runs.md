@@ -2,6 +2,24 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 03:45 smart_message-transport-named_pipes
+
+**First visit.** Created `develop` from `main` at **8d0d2af** (repo had only `main` + a merged `claude/…` branch). Created the `bomberbot` and `needs-dewayne` labels. No bomberbot PR had ever existed, so the tender had nothing to tend (queue 0 → new work proceeded). Suite is green run directly (`ruby -Itest -Ilib`): 45 runs, 0 failures, 9 skips; `bundle install` is broken (unsatisfiable `smart_message >= 0.1.0`; RubyGems max 0.0.17), so tests run via the committed stub `lib/smart_message/transport/base.rb`. No CI exists.
+
+New PRs (all independent, built in parallel in separate worktrees, base `develop`):
+
+- **[#3](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/3)** `madbot/readme-accuracy` docs: correct README channel-derivation example (`myapp_events_signedup` → `myapp_events_usersignedup`, matching `test_derive_channel_name`) and stale `Running Tests` file paths (the `test_*.rb` names were renamed to `*_test.rb`). Source: **improver** (judgment/adoption). Proof: wrong example present + documented command `LoadError` before; corrected example + `ruby -Itest -Ilib …/named_pipes_test.rb` runs 17/0 after. `/code-review` clean round 1. Docs-only (README+CHANGELOG, 11 lines). **Merged into develop as low risk by madbot** at `2a49fcc`.
+- **[#5](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/5)** `madbot/version-single-source` refactor: single-source the `VERSION` constant via `version.rb` (`require_relative` it, drop the inline duplicate in `named_pipes.rb`; gemspec left alone to stay lib-only). Source: **finding F-4** (security+dead-code audit). Proof: two defs → one; version.rb unloaded → loaded; `VERSION` still `0.0.1`; suite 45/0. `/code-review` clean round 1. Rebased onto `develop` after #3 merged (CHANGELOG), MERGEABLE. **Lib change → not low-risk → open for Dewayne.**
+- **[#4](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/4)** `madbot/exclude-stub-from-gem` build: stop packaging the test-only `transport/base.rb` stub (add it to the gemspec `spec.files` reject list; file stays in-repo for tests). Source: **audit S-5** (shipped stub shadows the real `smart_message` base; PR body neutral). Proof: `spec.files.grep(/base/)` → stub before, empty after; file still present; suite 45/0. `/code-review` clean round 1. Rebased onto `develop`, MERGEABLE. **Gemspec change → not low-risk → open for Dewayne.**
+
+- **Audit: security + dead-code** (first run, develop @ 8d0d2af). `mkfifo` uses safe array form (no shell injection); no `eval`/`Marshal`/`YAML`/backticks. Findings S-1…S-6 (local-privilege/correctness, details in `notes/security/…`, confirmed gitignored) and F-1…F-4 dead-code. S-5 shipped this visit as #4 under a neutral title.
+- **Tended:** nothing — 0 prior bomberbot PRs. No merge/review history yet, so nothing to learn from Dewayne this visit.
+- **Issues answered:** none — the repo has zero open issues (and zero issues at all; Discussions disabled).
+- **Issues filed (2):** [#6](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/6) (gem uninstallable — unsatisfiable `smart_message >= 0.1.0`, F-5) and [#7](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/7) (no CI runs the suite, F-6).
+- **Inbox:** which smart_message release to target (#6 floor); inert `mode`/`buffer_size` options (F-3); vestigial public `publisher_pipes` (F-1/F-2); signal-handler hijack design note (S-4); README "zero dependencies" wording + a future `llms.txt`/release once installable.
+- **dewayne.md:** review #4 and #5; decide the #6 dependency floor; security notes for S-1..S-6.
+- **Taste:** first-visit docs-only self-merge with no CI present (#3, 5th self-merge across repos); rebase sibling CHANGELOG conflicts the same visit after a self-merge (#4/#5).
+
 ## 2026-11-10 02:45 aia
 
 develop at 4cdf934 at start → **9a00307** (one low-risk self-merge). Review queue was 1 (#172) after tending, under the skip threshold, so new work proceeded. Opened three PRs (all independent, no shared files, built in parallel in separate worktrees):

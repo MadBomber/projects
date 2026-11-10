@@ -59,3 +59,10 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## robot_lab
 
 - [ ] Merge `main` into `develop`. `develop` (8ec1d6e, VERSION 0.2.6) is 31 commits behind `main` (0.6.0) and 0 ahead, so bomberbot PRs land on stale code; bomberbot may not push `develop` itself. Until then it only builds changes in files that are identical on both branches. (added 2026-11-10)
+
+## smart_message-transport-named_pipes
+
+- [ ] Review [#5](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/5) (single-source the `VERSION` constant via `version.rb`; lib change, so not auto-merged). Base `develop`, clean review, suite 45/0F. (added 2026-11-10)
+- [ ] Review [#4](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/4) (stop packaging the test-only `transport/base.rb` stub; gemspec change). The stub currently ships in the built gem and can shadow the real `smart_message` base on an installed consumer's load path — see `notes/security/smart_message-transport-named_pipes.md` (S-5) for the framing kept out of the public PR. (added 2026-11-10)
+- [ ] Decide the `smart_message` dependency floor for [#6](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/6): lower to `>= 0.0.17` or publish `smart_message` 0.1.0 first. The gem is uninstallable until this is resolved (and CI in #7 can't use `bundle` until then). (added 2026-11-10)
+- [ ] Security: first audit found local-privilege/correctness issues (S-1..S-6) held locally in `notes/security/smart_message-transport-named_pipes.md` — notably a mkfifo→chmod TOCTOU on a predictable world-readable `/tmp` path and the signal-handler hijack. None remotely exploitable; your call on hardening/disclosure. (added 2026-11-10)
