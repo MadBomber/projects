@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 00:41 smart_message
+
+- First visit (repo named on the command line; added to brain as #16 in `priorities.md`, created `repos/smart_message.md` and `bomberbot/findings/smart_message.md`). `develop` existed (9371456, 6 commits ahead of `main`); not created. Labels `bomberbot`/`needs-dewayne` created.
+- New PRs (all independent, base `develop`):
+  - [#11](https://github.com/MadBomber/smart_message/pull/11) ci: run the test suite on GitHub Actions (Ruby 4.0 + 4.1.0-preview1, redis:7; deletes `.travis.yml`; lock gains x86_64-linux). Source: judgment (first-visit plumbing). CI green, 316/940/0F/27S on both. Ruby 3.3/3.4 dropped: locked gems need 4.0. Review hit the 3-round cap, no defects left. Pushed over SSH (gh token lacks `workflow` scope).
+  - [#10](https://github.com/MadBomber/smart_message/pull/10) fix(dlq): `inspect_messages` returns the first `limit` entries. Source: judgment (triage repro, F-11). New tests fail on develop, pass on branch; suite 319/947/0F/27S. Review clean (2 rounds).
+  - [#9](https://github.com/MadBomber/smart_message/pull/9) docs: drop unused polyfill script. Source: security (S-7, details held locally). `mkdocs build --strict` OK; 25→0 pages load the script. Review clean. Labeled `needs-dewayne` (live site deploys from `main`).
+- Merged (low risk): none (#9 is a security fix, #10 touches `lib/`, #11 touches `.github/` and the lockfile). Merged after approval: none.
+- Tended PRs: none, 0 open PRs (5 old non-bot PRs, all merged). Issues answered: none, 0 open issues. Both verified directly; the tender and responder agents were not started.
+- Builders for #10 and #11 started as soon as triage and the auditor reported, before the improver finished; #9 started after the improver (it beat the stacked `replay_all` fix, which became issue #6).
+- Audit: **security (first ever)** at develop 9371456: S-1..S-7 held locally (S-1 medium-high routing-by-header needs a fix-shape decision). Brief dead-code pass over `lib/` to 9371456: F-1, F-2 truly dead; F-6 public orphans need a decision. Findings F-1..F-23.
+- Issues filed: [#6](https://github.com/MadBomber/smart_message/issues/6) `replay_all` loses an entry (F-12), [#7](https://github.com/MadBomber/smart_message/issues/7) README examples fail against the API (F-16), [#8](https://github.com/MadBomber/smart_message/issues/8) gem ships IDE/backup/log files (F-7). Re-verified by the main session.
+- Note: one builder ran `/code-review` with no target and reviewed `~/.prompts` HEAD instead; briefs should give `/code-review` an explicit path or diff target. Its harness findings went to `inbox.md`.
+
 ## 2026-11-10 00:15 ragdoll
 
 - `develop` existed (b0a7afc); not created. No bomberbot PRs were open at the start: Dewayne merged #10, #14, #15 and #16 on 2026-11-09 without comments (#14–#16 came from a visit that never wrote brain; recorded now). Tender not started (nothing to tend); verified directly.

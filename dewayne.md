@@ -24,3 +24,6 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## smart_message
 
 - [ ] Review [smart_message#9](https://github.com/MadBomber/smart_message/pull/9) (drops an unused third-party script from the docs site; details in the bomberbot final report of 2026-11-10). The docs deploy only from `main`, so the live site changes only after `develop` reaches `main` (or cherry-pick #9's `mkdocs.yml` line to `main`) and the Pages deploy runs. The same line is in the `mkdocs.yml` of agent99, htm, ragdoll-docs, sqa, sqa-cli and sqa-tai. (added 2026-11-10)
+- [ ] Review [smart_message#11](https://github.com/MadBomber/smart_message/pull/11) (test CI; touches `.github/` and `Gemfile.lock`, so not merged as low risk). After merge, make `test (4.0)` and `test (4.1.0-preview1)` required checks on `develop` (and `main`). (added 2026-11-10)
+- [ ] smart_message gemspec floor: `required_ruby_version >= 3.0.0`, but the locked breaker_machines 0.21.2 and chrono_machines 0.11.0 need Ruby 4.0 (CI on #11 failed `bundle install` on 3.3/3.4). Raise the floor to `>= 4.0`, or loosen those two deps if 3.x matters. (added 2026-11-10)
+- [ ] Review [smart_message#10](https://github.com/MadBomber/smart_message/pull/10) (DLQ `inspect_messages` fix; `lib/` change). (added 2026-11-10)
