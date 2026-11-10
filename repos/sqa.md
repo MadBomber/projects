@@ -37,7 +37,7 @@ else in this repo.
 
 ## Open bomberbot PRs
 
-- (filled in below as builders report)
+- [#44](https://github.com/MadBomber/sqa/pull/44) `bomberbot/drop-root-csv` → develop. chore: remove stray root files (two unreferenced root files; spec.files 256→254). Not low risk (S-1 fix); left for Dewayne.
 
 ## Merged bomberbot PRs
 

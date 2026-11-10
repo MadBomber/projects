@@ -22,7 +22,7 @@ Dead-code scan last covered commit: 7fa65e3 (develop, 2026-11-10; `lib/` only, b
 
 ### 2026-11-10 (first visit; security audit + brief dead-code pass + improver, develop 7fa65e3)
 
-- S-1: security finding, details held locally. Status: PR'd (neutral removal; see runs.md) + needs Dewayne's decision on the rest.
+- S-1: security finding, details held locally. Status: PR'd [#44](https://github.com/MadBomber/sqa/pull/44) + needs Dewayne's decision on the rest.
 - S-2: security finding, details held locally. Status: open (low; small fix, candidate next visit).
 - F-1: five runtime deps never loaded (`redis`, `ruby_llm`, `shared_tools`, `eps`, `regent`; `sqa.gemspec:51-60`). `redis` comes in for kbs, which `require`s it eagerly but lists it only as a dev dep. Status: needs Dewayne's decision (gemspec; downstream may rely on them transitively).
 - F-2: `SQA::PluginManager` (`lib/sqa/plugin_manager.rb`) is never required; `Config#inject_additional_properties` has no caller. Status: needs Dewayne's decision (wire up vs remove; public API).
