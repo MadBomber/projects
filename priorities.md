@@ -33,3 +33,4 @@ All run in full mode. Work top down; if usage runs low, finish the repo in progr
 15. [trak_flow](repos/trak_flow.md)
 16. [smart_message](repos/smart_message.md)
 17. [sqa](repos/sqa.md)
+18. [robot_lab](repos/robot_lab.md)

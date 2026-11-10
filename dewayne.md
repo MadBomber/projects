@@ -55,3 +55,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review [sqa#44](https://github.com/MadBomber/sqa/pull/44) (remove two stray root files). Not merged as low risk because it addresses S-1; see `notes/security/sqa.md` for the decisions only you can make (history and already-published gems). (added 2026-11-10)
 - [ ] Review [sqa#46](https://github.com/MadBomber/sqa/pull/46) (README examples match the API). Docs only, but its review round left 3 out-of-scope findings open, so it wasn't self-merged. (added 2026-11-10)
 - [ ] Decide the design for [sqa#4](https://github.com/MadBomber/sqa/issues/4) (API keys in config: env var name vs value vs close); see inbox. (added 2026-11-10)
+
+## robot_lab
+
+- [ ] Merge `main` into `develop`. `develop` (8ec1d6e, VERSION 0.2.6) is 31 commits behind `main` (0.6.0) and 0 ahead, so bomberbot PRs land on stale code; bomberbot may not push `develop` itself. Until then it only builds changes in files that are identical on both branches. (added 2026-11-10)
