@@ -100,3 +100,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Decide F-1: the transport calls a Lanet API that doesn't exist. Options are in inbox.md (2026-11-10). Issues #2–#4 and most of the backlog depend on this. (added 2026-11-10)
 - [ ] Security: the first audit found S-1…S-6, held locally in `notes/security/smart_message-transport-lanet.md`. All are latent while F-1 stands, and the gem is unpublished, but any F-1 rewrite must cover S-1…S-4. S-6 is advisories in the dev lockfile, fixed by a relock. (added 2026-11-10)
 - [ ] Review [#7](https://github.com/MadBomber/smart_message-transport-lanet/pull/7) (README examples match the smart_message 0.0.17 API; README only). Also decide F-19: should a node receive its own published messages? `publish_to_nodes` never delivers locally. (added 2026-11-10)
+
+## htm (2026-11-10)
+
+- [ ] Review [htm#25](https://github.com/MadBomber/htm/pull/25) (Fixes #21; branches the rake `unload` task on `result.positive?`, adds the repo's first rake-task test). Touches `lib/tasks/files.rake`, so not self-merged. 646 tests green on 4.0.9. After merge, the orphan branch `bomber/rake-unload-unknown-file` can be deleted. (added 2026-11-10)
+- [ ] Review [htm#24](https://github.com/MadBomber/htm/pull/24) (Fixes #18; `unload_file` now evicts the unloaded chunks from working memory, mirroring `forget`). Touches `lib/htm.rb`, so not self-merged. 645 tests green. (added 2026-11-10)
+- [ ] Review [htm#23](https://github.com/MadBomber/htm/pull/23) (adoption: hand-authored `docs/llms.txt`). Not self-merged because the docs-deploy workflow fires on `docs/**` pushes to `develop`, so merging triggers a site deploy. (added 2026-11-10)

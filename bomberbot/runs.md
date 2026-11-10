@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 08:16 htm
+
+- **Queue empty on arrival; phase-2 gate clear.** Tender found 0 open bomberbot PRs — Dewayne had merged #20 (2026-11-08) and #22 (2026-11-09, a readme banner/Rails-link fix this brain hadn't recorded) into `develop`, now 27 ahead of `main`, 0 behind. `develop` existed (8c13a3f); not created.
+- **Three new PRs, all independent, base `develop`, none low-risk (two touch `lib/`, one is a docs-deploy change), all awaiting Dewayne:**
+  - [#25](https://github.com/MadBomber/htm/pull/25) fix(tasks): htm:files:unload reports not-found for unknown files. Source: **open issue #21 / brain F-25**. Reused the orphan branch `bomber/rake-unload-unknown-file`'s correct fix (`if result.positive?`) and added the repo's first rake-task test (`test/tasks/`, loads the task via `Rake::Task[...]` against the real test DB). `Fixes #21`. Proof: test red with fix reverted (unknown path printed "Unloaded:"), green after; full suite 646 runs 0 failures on Ruby 4.0.9 / PG18; rubocop clean. `/code-review` 1 round clean.
+  - [#24](https://github.com/MadBomber/htm/pull/24) fix(files): unload_file drops chunks from working memory. Source: **open issue #18 / brain F-21**. Captures the chunk ids before `source.unload!`, then `@working_memory.remove(id)` each, mirroring `forget`. `Fixes #18`. Proof: fail-before (chunk still in WM) / pass-after; suite 645 green; rubocop clean. `/code-review` 1 round clean.
+  - [#23](https://github.com/MadBomber/htm/pull/23) docs: add llms.txt for AI discoverability. Source: **adoption audit F-29**. Hand-authored 35-line `docs/llms.txt`, every API fact verified against lib/. `mkdocs build` OK (the one strict-mode warning is the pre-existing F-30). Not self-merged: docs-deploy fires on `docs/**` pushes to `develop`. `/code-review` clean first pass.
+- Merged (low risk): none (all three ineligible). Merged after approval: none.
+- **Tended:** nothing to merge/rebase/retarget (queue empty). Read merged #20/#22 for lessons (both merge-commits, zero review comments, fast). 0 open bomberbot PRs after tending (before this visit's 3).
+- **Audit: adoption (first run)** at develop 8c13a3f. README/MCP-tool-count/examples all accurate; #22's banner fix sound. New F-29–F-33. F-6/F-18/F-19/F-20/F-28 re-verified open; F-9 re-confirmed unreachable (needs-decision). No dead-code scan; last-covered commit stays cf7ec39.
+- **Issues answered:** none. All open issues are either BomberBot's own backlog with no external comments (#18/#19/#21), already carry a BomberBot answer (#13), or are design/acceptance calls routed to inbox (#12 startup prompt, #8 RBAC).
+- **Issues filed (1):** [#26](https://github.com/MadBomber/htm/issues/26) database docs out of sync with schema — dangling `node_relationships` link breaks `mkdocs --strict` (F-30) plus orphaned pages for dropped tables/views (F-31).
+- Inbox: hybrid-search design + F-9 dead-code (needs-decision), `ontology_structure` view-or-remove-code (F-10/F-31), CHANGELOG release sections (F-32), #12 and #8 design calls, the rbenv-pin env note. Security: none.
+- Taste: htm merges are merge-commits (keep a clean commit sequence); the first rake-task test harness pattern.
+
 ## 2026-11-10 07:45 agent99
 
 - **Fifth visit. skipped: review queue full.** Tender: #10, #11, #12, #13, #17 still open, all MERGEABLE, none approved, no reviews/comments; `develop` unmoved at 5183c92 (merge of #9) since the fourth visit. Nothing merged, pushed, rebased, or retargeted. `develop` existed; not created. Phase-2 gate (5 ≥ 3) → no new PRs.
