@@ -2,6 +2,23 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 07:05 gem-skill
+
+- **Resumed visit** (the prior session was cut off by the 45-min budget after opening #11 and committing two more builds). `develop` existed (3e384ad); not created. Phase 1 (five gather agents) and phase 2 (three builders) had run before the cut-off; this session verified disk/GitHub state, finished the two interrupted builds, filed issues, and recorded brain.
+- New PRs (all independent, base `develop`, lib changes → none low risk, all awaiting Dewayne):
+  - [#11](https://github.com/MadBomber/gem-skill/pull/11) Fix verify overwriting cache with truncated skill. Source: **issue #6 / F-25** (brain backlog). One-line `return fallback unless stop` + test. Fixes #6. Opened by the builder before the cut-off. Suite 183 runs green.
+  - [#12](https://github.com/MadBomber/gem-skill/pull/12) fix(cli): exit 1 on gem skill error paths. Source: **issue #7 / F-26** (brain backlog). Error paths now `terminate_interaction 1`; new `exit_for` (error 1 > verify-fixed 2 > 0). Fixes #7. Behaviour change (error paths now exit 1). Built in the interrupted session; verified green (187 runs), pushed and opened on resume.
+  - [#13](https://github.com/MadBomber/gem-skill/pull/13) Validate gem names and versions before building cache paths. Source: **security S-1** (brain backlog, top item; neutral title). New `Gem::Skill::Validation` module applied at lockfile/cache/linker boundaries. Built in the interrupted session; verified green (195 runs), pushed and opened on resume. No weakness described in the PR.
+- Merged (low risk): none (all three new PRs touch `lib/`). Merged after approval: none (#9/#10/#11/#12/#13 all unapproved; Dewayne has given no signal on this repo's open PRs yet).
+- Tended: #9 and #10 — verification only (both MERGEABLE, up to date with develop, no reviews/comments/threads, no CI to fix). Nothing merged, nothing pushed.
+- Audit: **dependencies (first run)** at 3e384ad. F-23 verified (the `json < 3` comments are stale — ruby_llm 2.1.1 allows json < 4 and resolves json 3.1.0); F-30 (3 unpinned runtime deps, needs decision); F-31 (minitest 5→6 held by a protective dev pin, needs decision). lib/ clean on ruby 4.1.0preview1. No dead-code audit this visit; last dead-code commit remains 44a608c.
+- Issues answered: none. Responder found no comment was warranted — #1 already has a BomberBot factual reply, and #6/#7/#8 are bomberbot's own with no external comments.
+- Issues filed (labeled `bomberbot`): [#14](https://github.com/MadBomber/gem-skill/issues/14) docs describe removed metadata/Result fields (F-27), [#15](https://github.com/MadBomber/gem-skill/issues/15) ollama models can't be configured, ENV_KEY_MAP lacks OLLAMA_API_BASE (F-18).
+- Security: S-1 shipped as #13 (neutral). S-2/S-3/S-4 remain held locally (notes/security/gem-skill.md), all needs-decision. No new security details in any public text.
+- Deferred: F-24/#8 (bundle skill skips git gems) — collides with #13 in lockfile.rb; stack on #13 or build next visit. F-17 (verify max-tokens) sent to inbox as the #11 follow-up.
+- Inbox: feature request #1 design call, dep-pinning policy (F-30), minitest 6 (F-31), F-17 follow-up, .rubocop.yml + test CI.
+- Taste: flat-commit vs merge-commit observation on self-merges; resumed-builder process rule.
+
 ## 2026-11-10 06:45 robot_lab
 
 _Second visit, hours after the first (resumed-from-cutoff) visit. `develop` existed at 83b27c4; not created. develop still 1 ahead / 31 behind main, so only files identical on both branches are safe; `docs/` PRs still deploy-blocked._
