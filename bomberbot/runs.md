@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 09:11 aia
+
+- **Skipped new work: review queue full.** develop existed (9a00307); not created. Tender found all three bomberbot PRs (#172, #176, #177) still open and unapproved (reviewDecision empty) since the 02:45 visit, all MERGEABLE, none low-risk self-mergeable. Per the phase-2 gate (3+ open after tending → no new work), opened no PRs. Phase 1 still ran in full.
+- **Tended:** rebased all three onto develop; **fixed CHANGELOG `[Unreleased]` collisions** on #176 and #172 (sibling `### Fixed` bullets had concatenated — the same collision the taste rule predicts); suite green on each (2000/2001/1998). Nothing approved → nothing merged; develop unchanged at 9a00307. No bomberbot PRs closed-unmerged since 02:45 (#166/#171/#173/#178 all merged, unreverted). No CI configured on the repo (empty status rollups); baseline `rake test` on develop green (1998/0).
+- **Audit: adoption** (most overdue, tied at 2026-11-09 with security/dead-code; chosen because the churn since d974374 is all docs/test, so adoption is where the repo actually changed). develop 9a00307. mkdocs `--strict` clean (35 nav pages); gemspec metadata complete; `docs/reference/*` accurate vs code/`defaults.yml`; recent README fixes (F-18/23/38) confirmed correct. New findings F-41 (README `/paste` row omits `/clipboard` alias → issue #180) and F-42 (full README-vs-registered-directive gap: also `/plugins`,`/insert`; extends F-25 → needs-Dewayne, inbox).
+- **Issues answered:** none warranted — responder read all 13 open issues; every one is either bomberbot's own backlog with no third-party comment, or already ends in a signed BomberBot analysis with the relevant code unchanged. A comment anywhere would duplicate.
+- **Issues filed (3):** [#180](https://github.com/MadBomber/aia/issues/180) (README `/paste` omits `/clipboard` alias, F-41 — adoption, docs), [#181](https://github.com/MadBomber/aia/issues/181) (duplicate `model_opts` → delegate to `Crew.model_opts`, F-29 — judgment/improver, removal), [#182](https://github.com/MadBomber/aia/issues/182) (duplicate `extract_model_id` across MentionRouter/ChatLoop + near-twin in SessionTracker, F-30 — judgment/triage). All re-verified in code this visit, all give a future obvious-yes PR a target.
+- **Inbox:** F-42 (README directive-table completeness decision, settles with F-25).
+- **dewayne.md:** no new steps (no builders ran; #176/#177 are standard non-low-risk awaiting-merge PRs; the #172 docs-deploy review step stands).
+- **Taste:** first queue-full application on aia; the two CHANGELOG collisions the tender fixed re-confirm the sibling-`[Unreleased]` rule.
+
 ## 2026-11-10 08:45 agent99
 
 - **Skipped new work: review queue full.** Tender found #10/#11/#12/#13/#17 all still open, unapproved (reviewDecision empty, reviews empty), MERGEABLE, 0 behind develop, no review threads, no CI (empty rollups) — nothing to merge (none approved; none low-risk — #10/#12/#13 touch lib/, #11 the gemspec, #17 carries needs-dewayne), rebase, or retarget. 5 bomberbot PRs open after tending → "3+ open → skip new work." `develop` existed (5183c92); not created. Unmoved since #9 merged.

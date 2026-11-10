@@ -501,3 +501,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **agent99 test CI + Dependabot (triage).** No Ruby CI exists (filed as #26) and Dependabot is
   disabled (`dependabot/alerts` → 403); every "proof" is a local transcript and merges are
   unguarded. Enabling Dependabot is a one-click adoption/security hygiene win if you want it.
+- **aia README directive-table completeness (F-42, extends F-25).** The README directive quick
+  tables are a curated subset: they omit `/plugins` (`utility_directives.rb:28`), `/insert`/`/read`,
+  `/orchestrate`/`/reskill` (F-25), and `/add_recruit`/`/drop_recruit` (only in crew prose).
+  `docs/reference/directives.md` is the complete, accurate list. One decision settles both F-25 and
+  F-42: should the README tables enumerate every registered directive (then it's an obvious-yes docs
+  PR), or stay a curated subset that points at the reference page (then close F-25/F-42 as by-design)?
