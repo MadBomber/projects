@@ -43,7 +43,7 @@ Dead-code scan last covered commit: 9371456 (develop, 2026-11-10; `lib/` only, b
 - F-13: the test suite writes `dead_letters.jsonl`, `file1.log`, `file2.log`, `messages.log` and `log/` into the repo root. Status: open, verified (triage).
 - F-14: version strings disagree: `mkdocs.yml:138` says 0.1.11, `docs/index.md:64` says v0.0.8, the gem is 0.0.18. Status: open, verified (triage).
 - F-15: failed publishes never reach the DLQ and `publish` reports success, though the README says messages go to the DLQ when the circuit trips (`README.md:46-47`). Status: needs Dewayne's decision (should `publish` raise after dead-lettering?); depends on F-8/F-9.
-- S-7: security finding, details held locally. Status: PR'd (see below).
+- S-7: security finding, details held locally. Status: PR'd [#9](https://github.com/MadBomber/smart_message/pull/9).
 - F-16: README code examples don't run: `Serializer::JSON` (real: `Json`) and a class-level `serializer` call that no longer exists (`README.md:148,573,743,1010`); the custom-transport example overrides `publish(header, payload)` instead of `do_publish(message_class, serialized_message)` (`README.md:773`). Status: issue #7.
 - F-17: `examples/README.md` file index: all 18 referenced example paths are wrong. Status: open, verified (improver).
 - F-18: gemspec `changelog_uri`/`documentation_uri` point at `/blob/master/`, which redirects to a branch named `old_stuff_to_delete`. Gemspec change. Status: open, verified (improver).
