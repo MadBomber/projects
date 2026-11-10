@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 04:45 prompt_manager
+
+**Sixth visit.** `develop` already existed (1a817dd), not created. Ran the **adoption** audit (most overdue, tied with dependencies; chose adoption for shippable docs findings). Phase-1 queues at start: tender found only #25 open (unapproved) and left it; responder found #17 already answered with no new comment; triage found `develop` byte-identical to the fifth-run audit. Two docs-only PRs opened, one self-merged.
+
+- [#27](https://github.com/MadBomber/prompt_manager/pull/27) docs: correct `Metadata#==` comparison description (source: improver C-1 / judgment). `docs/api/metadata.md:85` claimed `==` "Compares with another `Metadata` or a Hash", but `lib/pm/metadata.rb` `==` is `Metadata`-only and `test/metadata_hash_test.rb:123` pins that with `refute_equal … {a:1}` — the doc was the error (deliberate exception to "change code not docs"). **Merged into develop by madbot as low risk** (signed PR comment; `docs/`-only +1/-1, Test green, review clean) → develop 39827bf. Independent.
+- [#26](https://github.com/MadBomber/prompt_manager/pull/26) docs: add CHANGELOG entries for v0.5.1 and v0.5.2 (source: adoption audit F-22). CHANGELOG jumped `[0.5.3]`→`[0.5.0]`, skipping two real released tags; fills them in neighboring plain-bullet style from the tag diffs (v0.5.1 = param handling in `FileSystemAdapter`, PR #15/issue #14; v0.5.2 = markdown-aware comment removal in `Prompt`). **PR open, left for Dewayne** — touches version-stamped CHANGELOG history (not `## Unreleased`), so not low-risk self-mergeable. Test green, CHANGELOG-only. Independent.
+
+- Audit run: adoption (now 2026-11-10). Findings F-22 (PR'd #26), F-23 (reset_directives! README wording — needs decision → inbox), F-24 (changelog link-refs — cosmetic, just-record), F-25 (= #27, merged).
+- PRs merged (low risk): #27 (develop 39827bf). PRs merged after approval: none. Tended: #25 (verified still merges clean onto develop, green, unapproved — left for Dewayne); no rebase/retarget needed; no bomberbot PR closed-without-merge recently.
+- Issues answered: none new (#17 already answered 2026-11-09; no new comment). Issues filed: none (F-23 → inbox as a decision; F-24 too trivial/cosmetic to file).
+- Open bomberbot PRs after visit: #26, #25 (2 — below the 3-PR review-queue cap).
+- Security: no new finding (no code change since the fifth-run security audit). S-1 merged, S-2/S-3/S-4 unchanged, held locally. Nothing public describes any of them.
+- Inbox: `Metadata#==`-vs-Hash widening (F-25), reset_directives! wording (F-23), changelog link-refs + pre-0.5 gaps (F-24). dewayne.md unchanged (builders flagged no blocking steps).
+
 ## 2026-11-10 04:41 scripts
 
 **Eighth visit. skipped: review queue full.** `develop` already existed at bc51825 and was not created. The tender found #24, #25 and #26 still open, unapproved and MERGEABLE, with no comments, so it changed nothing. Nothing has merged or closed since the seventh visit 30 minutes earlier.
