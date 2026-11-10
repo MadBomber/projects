@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-10 (fourth visit)._ Tend-and-record only: skipped new PRs because the review queue is full (#10–#13 and #17 still open, unapproved, all MERGEABLE; `develop` still 5183c92). First quality audit plus a full dead-code pass (F-42..F-55, S-7, S-8). Filed [#18](https://github.com/MadBomber/agent99/issues/18) (stale header in response/control handlers), [#19](https://github.com/MadBomber/agent99/issues/19) (failed registration leaves an unreachable agent), [#20](https://github.com/MadBomber/agent99/issues/20) (AMQP client ignores the agent's logger). No test CI; "green" = local suite on Ruby 4.0.9 (put
+_Updated 2026-11-10 (fifth visit)._ Tend-and-record again: **skipped new PRs — review queue full** (#10–#13 and #17 still open, unapproved, all MERGEABLE; `develop` still 5183c92, unmoved since #9). Second **security** audit (most overdue; S-1..S-7 re-confirmed open, S-8 fixed by #7's re-lock, new S-9/S-10/S-11 held locally). Filed [#21](https://github.com/MadBomber/agent99/issues/21) (require doesn't load `HeaderSchema`, F-23), [#22](https://github.com/MadBomber/agent99/issues/22) (`maxwell_agent86#receive_response` broken, F-7), [#23](https://github.com/MadBomber/agent99/issues/23) (`registry.rb` 500s on Rack 3, F-27). Responder posted nothing (all issues are BomberBot's own, no external comments). No test CI; "green" = local suite on Ruby 4.0.9 (put
 `~/.rbenv/versions/4.0.9/bin` first on PATH; default 4.1-preview1 can't build rbtree, #7).
 
 
@@ -37,15 +37,15 @@ else in this repo.
 - F-2: `test/agent99/test_base.rb:44-66` asserts methods only the test double has
   (public `receive_*`/`send_response` are private on `Base`; `discover_agents` etc. don't
   exist). **PR open** [#17](https://github.com/MadBomber/agent99/pull/17) (needs-dewayne: header-helper visibility).
-- F-23: `require "agent99"` doesn't load `HeaderSchema`; README step 1 NameErrors. Pair with #15 after #10. Top candidate next visit.
-- F-27: `examples/registry.rb:29` `request.body.rewind` 500s on WEBrick/Rack 3 (one-line delete).
+- [#21](https://github.com/MadBomber/agent99/issues/21) F-23: `require "agent99"` doesn't load `HeaderSchema`; README step 1 NameErrors. Pair with #15 after #10. Top PR candidate once the queue clears.
+- [#23](https://github.com/MadBomber/agent99/issues/23) F-27: `examples/registry.rb:29` `request.body.rewind` 500s on WEBrick/Rack 3 (one-line delete).
 - F-1: `AgentDiscovery#add_agent` (`agent_discovery.rb:36`) has zero callers; private.
 - F-6: README Quick Start / Usage teaches overriding private `process_request` and
   `payload.dig(:name)`; examples use `receive_request` + `get(:field)`. Three README
   links point at missing examples.
-- F-7: `examples/maxwell_agent86.rb:97-99` `receive_response(response)` wrong arity,
+- [#22](https://github.com/MadBomber/agent99/issues/22) F-7: `examples/maxwell_agent86.rb:97-99` `receive_response(response)` wrong arity,
   `loger` typo, non-interpolated string.
-- F-13: `spec.require_paths = ["lib", "examples"]` → `["lib"]` (after #11 merges).
+- F-13: `spec.require_paths = ["lib", "examples"]` → `["lib"]` (after #11 merges). Also clears S-10 (held locally).
 - F-14: declare `logger` as a runtime dependency (no longer a default gem on Ruby 4).
 - [#15](https://github.com/MadBomber/agent99/issues/15) F-21: `require "agent99"` never loads `version.rb` (verified 2026-11-10).
 - [#14](https://github.com/MadBomber/agent99/issues/14) `get(:field)` NameError when no `REQUEST_SCHEMA` (F-37).

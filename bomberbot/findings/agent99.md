@@ -10,7 +10,7 @@ Dewayne's decision, issue #N.
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-09 | First run, at main 69f0a04 (v0.0.5; the repo has no `develop`). No eval/shell-out/Marshal/YAML.load in `lib/`; all wire data is JSON via `JSON.parse(symbolize_names: true)`. Exposure is missing auth, disabled validation, unbounded input: S-1..S-5 (held locally). Found non-security F-1 (dead method) and F-2 (test asserts a double). |
+| security | 2026-11-10 | Second run, develop 5183c92 (first was main 69f0a04, pre-`develop`). bundle-audit DB bc80fbb. S-1..S-7 re-confirmed open (lib/ byte-identical since #9); S-8 fixed by #7's re-lock. New S-9 (vulnerable sinatra/rack/uri chain in the lock; `uri` is core-path), S-10 (`examples` on require_paths executes `kaos_spy` on require), S-11 (unbounded TCP read + `symbolize_names` on untrusted JSON, LOW). All held locally. |
 | dead code | 2026-11-10 (full) | debride lib+examples at develop 5183c92, hand-verified; no dependent repos. F-51, F-52; F-1/F-40/F-41 still open. Live (no finding): `handle_*` via `send`, header helpers (used in examples), `get`/`run`/`discover_agent`/`fetch_all_agents`, `Agent99.version`. |
 | dependencies | 2026-11-09 | First run, develop 69f0a04. Committed lock doesn't install as-is on Ruby 4.0.9 (tocer 19 chain pins Ruby ~> 3.4; BUNDLED WITH 2.5.23); re-resolved, suite green 57/0/0/4 skips. Ruby 4.1-preview1: rbtree 0.4.6 build failure (0.4.7 fixes). F-10..F-17. No removed-API use in `lib/`. Floor `>= 3.3` OK until 3.3 EOL (2027-03). bunny 3.x untested. Improver added F-18..F-20. |
 | adoption | 2026-11-10 | First run, develop 5183c92. Docs site 404 (Pages off; gh-pages last deployed 2025-09-03). README agent fails on load (HeaderSchema not loaded, F-23) then crashes silently on every request (F-6); example registry needs rackup and 500s on WEBrick (F-27); API reference documents 13 nonexistent methods (F-26); `mkdocs build --strict` passes. F-23..F-36, S-6; updated F-6/8/9/20/21/22. Improver added F-37, F-38. gem-skill not run (paid API). |
@@ -62,7 +62,7 @@ Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
 - F-7: `examples/maxwell_agent86.rb:97-99` `receive_response(response)` — wrong arity
   (framework calls it with no args, `message_processing.rb:47`), `loger` typo
   (NoMethodError), and a non-interpolated `"...response.inspect"` literal. Shipped sample
-  code, dead on arrival on the error path. Status: open, verified.
+  code, dead on arrival on the error path. Status: issue [#22](https://github.com/MadBomber/agent99/issues/22) (filed 2026-11-10).
 - F-8: gemspec adoption nits: no `documentation_uri` though the docs site is live
   (`agent99.gemspec:30-32`); `homepage_uri` and `source_code_uri` are the same URL
   (`gem build` warns); gemspec `description` claims NLP/"conversing with AI models" while
@@ -133,7 +133,7 @@ Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
 - F-23: `require "agent99"` doesn't load `Agent99::HeaderSchema` (`lib/agent99/header_schema.rb`
   required by nothing); README step 1 (`README.md:129`) and ~20 doc snippets use it →
   NameError. Fix: `require_relative 'agent99/header_schema'` in `lib/agent99.rb` with F-21,
-  after #10. Status: open, verified (top PR candidate next visit).
+  after #10. Status: issue [#21](https://github.com/MadBomber/agent99/issues/21) (filed 2026-11-10; verified still open on develop 5183c92).
 - F-24: README/docs call NATS "Recommended" (`README.md:69`, `quick-start.md:15`) but `Base`
   defaults to AMQP (`agent_lifecycle.rb:12`); no doc shows passing `NatsMessageClient`. Status:
   needs Dewayne's decision (default vs document the selector).
@@ -144,8 +144,7 @@ Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
   in ~20 places. Status: needs Dewayne's decision (rewrite docs vs add conveniences).
 - F-27: example registry won't start from the repo bundle (no `rackup`), and on WEBrick
   `POST /register` 500s: `request.body.rewind` (`examples/registry.rb:29`) on non-rewindable
-  Rack 3 input. Works on Puma or with line 29 deleted. Status: open, verified (one-line PR
-  candidate; Gemfile part with #7).
+  Rack 3 input. Works on Puma or with line 29 deleted. Status: issue [#23](https://github.com/MadBomber/agent99/issues/23) (filed 2026-11-10).
 - F-28: `examples/agent_watcher.rb` defines pre-0.0.4 `capabilities`, no `info` → exits 1;
   requires `listen` (not bundled); `kaos_spy.rb:12` requires `tty-table` (not bundled).
   Status: open, verified.
@@ -227,3 +226,24 @@ Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
 - F-1 update: still dead at 5183c92. F-36 update: fix point is F-44. F-39 → fold into F-47. F-40 → fold into F-51.
 - S-7: security finding, details held locally. Status: open.
 - S-8: security finding, details held locally. Status: open (fixed by the #7 re-lock).
+
+### 2026-11-10 (fifth visit; security audit re-run, develop 5183c92)
+
+- S-1..S-7: re-confirmed open on develop 5183c92 (lib/ control plane byte-identical to the
+  first pass; develop differs from main only by the #9 timestamp fix). Details held locally.
+- S-8: fixed by the #7 re-lock (lock present/identical); but see S-9 for its vulnerable
+  *contents*.
+- S-9: security finding, details held locally. Status: open (vulnerable dependency chain in
+  the committed lock, shipped via the `sinatra` runtime dep; `uri` CVE is on the core agent
+  path). Overlaps #7 (lock re-resolution) and the dependencies audit; joint fix.
+- S-10: security finding, details held locally. Status: open (`examples/` on `require_paths`
+  executes a side-effecting script on `require`). Also closed by F-13's `require_paths = ["lib"]`
+  change, after #11.
+- S-11: security finding, details held locally. Status: open (LOW, unverified; unbounded TCP
+  read + `symbolize_names` on untrusted JSON; concrete sink detail for S-3).
+- F-7 → issue [#22](https://github.com/MadBomber/agent99/issues/22). F-23 → issue
+  [#21](https://github.com/MadBomber/agent99/issues/21). F-27 → issue
+  [#23](https://github.com/MadBomber/agent99/issues/23). All three filed this visit.
+- Non-security this pass: none new. The gemspec file-list concern is already covered by the
+  open `bomberbot/gem-files-allowlist` PR (#11); the `require_paths` residue is S-10 / F-13.
+- Dead-code scan not re-run this visit; last covered commit stays 5183c92.

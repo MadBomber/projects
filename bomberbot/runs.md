@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 07:45 agent99
+
+- **Fifth visit. skipped: review queue full.** Tender: #10, #11, #12, #13, #17 still open, all MERGEABLE, none approved, no reviews/comments; `develop` unmoved at 5183c92 (merge of #9) since the fourth visit. Nothing merged, pushed, rebased, or retargeted. `develop` existed; not created. Phase-2 gate (5 ≥ 3) → no new PRs.
+- Merged (low risk): none. Merged after approval: none.
+- **Audit: security (second run, most overdue)** at develop 5183c92 (first run was main 69f0a04, before `develop` existed; bundle-audit DB bc80fbb). S-1..S-7 all re-confirmed open (lib/ control plane byte-identical to the first pass — develop differs from main only by the #9 timestamp fix). S-8 fixed by #7's re-lock. Three new, all held locally in `notes/security/agent99.md`: **S-9** (vulnerable `sinatra`/`rack`/`rack-session`/`uri` chain pinned in the committed lock, shipped via the `sinatra` runtime dep; the `uri` advisory is on the core agent path, the rest only via `examples/registry.rb`), **S-10** (`examples/` on `require_paths` executes a side-effecting script on `require`; not fixed by the open allowlist PR, but closed by F-13's `require_paths=["lib"]`), **S-11** (LOW/unverified: unbounded TCP read + `symbolize_names` on untrusted JSON). No dead-code re-scan; last covered commit stays 5183c92.
+- Improver + triage + responder also ran. Triage: Dependabot disabled, discussions disabled, no test CI; `bundle outdated` shows bunny/json/amazing_print/mocha/bigdecimal majors available (all needs-decision), committed lock still doesn't install as-is on Ruby 4.0 (the live #7 symptom). Improver re-verified F-1/F-6/F-7/F-23/F-27 and re-confirmed F-41 dead-but-ambiguous.
+- Issues answered: none. All 11 pre-existing open issues (#3–#8, #14–#20) are BomberBot's own filings with no external comments; #4 re-verified fixed on develop (ts2utc round-trips to the microsecond) but it stays open because #9 targeted develop, not the default branch. Nothing a comment would usefully add.
+- **Issues filed (3):** [#21](https://github.com/MadBomber/agent99/issues/21) require doesn't load `HeaderSchema`, README step 1 NameErrors (F-23); [#22](https://github.com/MadBomber/agent99/issues/22) `examples/maxwell_agent86.rb#receive_response` broken — wrong arity + `loger` typo + non-interpolated string (F-7); [#23](https://github.com/MadBomber/agent99/issues/23) `examples/registry.rb` 500s on `POST /register` under Rack 3 via `request.body.rewind` (F-27). All three re-verified on develop 5183c92 before filing.
+- Security: S-9/S-10/S-11 held locally; `notes/security/agent99.md` confirmed gitignored. No vulnerability detail in any public text. S-9 overlaps #7 and the dependencies audit (joint fix); S-10 is closed by F-13 (after #11); S-11 is the concrete sink for S-3.
+- Inbox: F-41 (remove vs re-wire `handle_control_response`, needs decision); a neutral reinforcement of F-12 (move `sinatra` out of runtime deps). Taste: audit-rotation-on-a-stalled-queue note (rotate oldest-first).
+
 ## 2026-11-10 07:05 gem-skill
 
 - **Resumed visit** (the prior session was cut off by the 45-min budget after opening #11 and committing two more builds). `develop` existed (3e384ad); not created. Phase 1 (five gather agents) and phase 2 (three builders) had run before the cut-off; this session verified disk/GitHub state, finished the two interrupted builds, filed issues, and recorded brain.
