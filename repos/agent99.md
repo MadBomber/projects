@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-10 (fifth visit)._ Tend-and-record again: **skipped new PRs — review queue full** (#10–#13 and #17 still open, unapproved, all MERGEABLE; `develop` still 5183c92, unmoved since #9). Second **security** audit (most overdue; S-1..S-7 re-confirmed open, S-8 fixed by #7's re-lock, new S-9/S-10/S-11 held locally). Filed [#21](https://github.com/MadBomber/agent99/issues/21) (require doesn't load `HeaderSchema`, F-23), [#22](https://github.com/MadBomber/agent99/issues/22) (`maxwell_agent86#receive_response` broken, F-7), [#23](https://github.com/MadBomber/agent99/issues/23) (`registry.rb` 500s on Rack 3, F-27). Responder posted nothing (all issues are BomberBot's own, no external comments). No test CI; "green" = local suite on Ruby 4.0.9 (put
+_Updated 2026-11-10 (sixth visit)._ Tend-and-record again: **skipped new PRs — review queue full** (#10–#13 and #17 still open, unapproved, all MERGEABLE, 0 behind develop, no review threads; `develop` still 5183c92, unmoved since #9). Second **dependencies** audit (most overdue; committed lock still un-installable on Ruby 4.0.9/4.1-preview1 and carries ~34 bundle-audit advisories — S-12, held locally; re-resolved lock installs clean + green 64/0/0/4 on both Rubies; `rbtree` re-resolves to 0.4.7). New F-56 (re-lock jumps bunny 2.24→3.6 major, needs-decision), F-57/#26 (no Ruby CI); re-verified F-14/#25 (logger undeclared), #7. Responder linked PRs on #3/#5/#6/#8; no new design comments. Filed [#24](https://github.com/MadBomber/agent99/issues/24) (README teaches crashing `process_request`, F-6), [#25](https://github.com/MadBomber/agent99/issues/25) (declare `logger` runtime dep, F-14), [#26](https://github.com/MadBomber/agent99/issues/26) (no Ruby test CI, F-57). No test CI; "green" = local suite on Ruby 4.0.9 (put
 `~/.rbenv/versions/4.0.9/bin` first on PATH; default 4.1-preview1 can't build rbtree, #7).
 
 
@@ -40,13 +40,14 @@ else in this repo.
 - [#21](https://github.com/MadBomber/agent99/issues/21) F-23: `require "agent99"` doesn't load `HeaderSchema`; README step 1 NameErrors. Pair with #15 after #10. Top PR candidate once the queue clears.
 - [#23](https://github.com/MadBomber/agent99/issues/23) F-27: `examples/registry.rb:29` `request.body.rewind` 500s on WEBrick/Rack 3 (one-line delete).
 - F-1: `AgentDiscovery#add_agent` (`agent_discovery.rb:36`) has zero callers; private.
-- F-6: README Quick Start / Usage teaches overriding private `process_request` and
-  `payload.dig(:name)`; examples use `receive_request` + `get(:field)`. Three README
-  links point at missing examples.
+- [#24](https://github.com/MadBomber/agent99/issues/24) F-6: README Quick Start / Usage teaches overriding private `process_request` and
+  `payload.dig(:name)`; examples use `receive_request` + `get(:field)`. A follower's first agent crashes on a nil `@payload`. Filed this visit.
 - [#22](https://github.com/MadBomber/agent99/issues/22) F-7: `examples/maxwell_agent86.rb:97-99` `receive_response(response)` wrong arity,
   `loger` typo, non-interpolated string.
 - F-13: `spec.require_paths = ["lib", "examples"]` → `["lib"]` (after #11 merges). Also clears S-10 (held locally).
-- F-14: declare `logger` as a runtime dependency (no longer a default gem on Ruby 4).
+- [#25](https://github.com/MadBomber/agent99/issues/25) F-14: declare `logger` as a runtime dependency (no longer a default gem on Ruby 4). Filed this visit.
+- [#26](https://github.com/MadBomber/agent99/issues/26) F-57: no CI runs `bundle install`/tests on any Ruby (only `docs.yml`); lock drift goes unnoticed. Filed this visit. Pair with #7.
+- F-56: a plain re-lock jumps `bunny` 2.24→3.6 (major, unguarded by the gemspec, untested vs a real broker). Pin the gemspec when cutting the #7 re-lock. **needs Dewayne's decision** (supported bunny range).
 - [#15](https://github.com/MadBomber/agent99/issues/15) F-21: `require "agent99"` never loads `version.rb` (verified 2026-11-10).
 - [#14](https://github.com/MadBomber/agent99/issues/14) `get(:field)` NameError when no `REQUEST_SCHEMA` (F-37).
 - [#16](https://github.com/MadBomber/agent99/issues/16) `examples/control.rb:84` TypeError on String control acks (F-38).

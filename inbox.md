@@ -478,3 +478,26 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Shipped RBS is the empty `rbs init` template (F-25).** `sig/asgard.rbs` is 4 lines (`VERSION: String` + the boilerplate "See the writing guide of rbs" comment), yet `asgard.gemspec:30` ships `sig/`. A stub signature can mislead Steep/RBS consumers into thinking the gem is typed. Options: (a) write real signatures for the public surface (large effort), (b) stop shipping `sig/` until there are. Not shipped — scope/effort is yours. — BomberBot
 - **`jobs stop --all` / `clean` can't run without a `.loki` (F-26).** `Asgard.machine_wide?` (`lib/asgard.rb:36`) whitelists only `jobs list`/`jobs`, so from a dir with no `.loki`, `boot` aborts with "no .loki file found" before the machine-wide `stop`/`clean` run — even though `Jobs::Commands#every_project?`/`no_jobs_message` are written for the no-`.loki` case. `docs/task-files.md:40` limits "run anywhere" to the three listing commands (consistent), but `docs/jobs.md:170` shows `asgard jobs stop --all` without that caveat. Options: (a) extend `machine_wide?` so `stop`/`clean` run anywhere (code), (b) add the caveat to `docs/jobs.md` (docs). Your call. — BomberBot
 - **Feature #10 "Watch websites" is a design + acceptance call.** Open questions from the issue if you want it: DSL spelling (`watch :task, url:` vs a separate `poll`), a floor on `every:` (30s vs 1m; auto-floor from `Cache-Control`?), per-element vs whole-selection `added`/`removed` for a multi-match `select:`, snapshot retention (last-two vs ring), poller as Ractor vs Thread (issue leans Thread; `Net::HTTP` isn't Ractor-shareable), and phasing. Code facts: `rss` would need a gemspec entry (like `tsort` in `asgard.gemspec:48`); a "poll now" command collides with the hidden `asgard watcher check` (`lib/asgard/watch/commands.rb:117`). BomberBot already answered #10 factually last visit; the acceptance decision is yours. — BomberBot
+
+## 2026-11-10 agent99 (sixth visit)
+
+- **agent99 bunny supported range (F-56).** The gemspec declares `add_dependency "bunny"` with
+  no constraint, so cutting the #7 re-lock on Ruby 4.0 silently adopts bunny 3.6.0 (major) over
+  the locked 2.24.0. The suite passes but mocks/skips the real-broker AMQP paths, so 3.x is
+  unexercised. Decision needed: pin `~> 2.24`, or validate 3.x against a live broker and allow
+  `">= 2.24", "< 4"`. Whoever cuts the #7 re-lock should pin deliberately rather than drift.
+- **agent99 `validate_schema` is a no-op (improver).** README claims "each message is validated",
+  but `message_processing.rb:130-132` returns an always-empty array, so `process_request` never
+  rejects a bad payload. Either wire up real validation via `simple_json_schema_builder` (already
+  a dependency) or soften the docs claim. Trust/adoption gap; a design call.
+- **agent99 `require_paths = ["lib","examples"]` (F-13, improver).** Shipping `examples/` on the
+  load path lets a consumer `require` an example agent by accident; narrowing to `["lib"]` is the
+  right end state but is entangled with the open files-allowlist PR (#11). Sequence after #11.
+- **agent99 make `fini` idempotent (F-55, improver).** The double-`fini` on remote shutdown is one
+  symptom; `at_exit` + signal traps + explicit calls mean cleanup can run more than once on several
+  paths. A single guard (`return if @finalized; @finalized = true`) would make all of them safe and
+  retire the false "nil id" warning, instead of patching individual call sites. Touches lifecycle
+  semantics — worth a design nod.
+- **agent99 test CI + Dependabot (triage).** No Ruby CI exists (filed as #26) and Dependabot is
+  disabled (`dependabot/alerts` → 403); every "proof" is a local transcript and merges are
+  unguarded. Enabling Dependabot is a one-click adoption/security hygiene win if you want it.

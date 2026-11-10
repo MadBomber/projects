@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 08:45 agent99
+
+- **Skipped new work: review queue full.** Tender found #10/#11/#12/#13/#17 all still open, unapproved (reviewDecision empty, reviews empty), MERGEABLE, 0 behind develop, no review threads, no CI (empty rollups) — nothing to merge (none approved; none low-risk — #10/#12/#13 touch lib/, #11 the gemspec, #17 carries needs-dewayne), rebase, or retarget. 5 bomberbot PRs open after tending → "3+ open → skip new work." `develop` existed (5183c92); not created. Unmoved since #9 merged.
+- **New PRs: none** (queue full). **Merged (low risk): none.** **Merged after approval: none.**
+- **Tended:** #10/#11/#12/#13/#17 verified unapproved/current/thread-free, awaiting Dewayne. Only closed bot PR is #9 (merged to develop 5183c92, 2026-11-10; no comment). CHANGELOG [Unreleased] collision between #10 and #11 still stands — second to merge needs a one-line rebase.
+- **Audit: dependencies (most overdue, 2026-11-09)** at develop 5183c92. Committed lock still un-installable on Ruby 4.0.9 (`core 2.3.0` pins ruby ~> 3.4) and 4.1-preview1; re-resolve green 64/0/0/4 on both, `rbtree`→0.4.7. Committed lock carries ~34 bundle-audit advisories (S-12, held locally in `notes/security/agent99.md`); re-resolved lock clean. New F-56 (bunny 2.24→3.6 major on re-lock, needs-decision), F-57 (no Ruby CI). Re-verified present: F-14 (logger undeclared), #7. S-12 + #7 install failure + stale lock all close with one re-lock. No dead-code scan; last-covered commit stays 5183c92.
+- **Issues answered:** responder linked the fixing PRs on #3→#10, #5→#11, #6→#13, #8→#12. #4 already carried a BomberBot answer; the rest are BomberBot's own backlog with no third-party comment and an existing open PR or no PR — nothing new to add.
+- **Issues filed (3):** [#24](https://github.com/MadBomber/agent99/issues/24) README teaches crashing `process_request` (F-6, adoption), [#25](https://github.com/MadBomber/agent99/issues/25) declare `logger` as a runtime dep (F-14, dependency), [#26](https://github.com/MadBomber/agent99/issues/26) no Ruby test CI (F-57, judgment).
+- **Inbox:** F-56 (bunny range, needs-decision), `validate_schema` no-op (design), F-13 require_paths (sequence after #11), F-55 idempotent `fini` (design), test CI + Dependabot disabled. **Security:** S-12 held locally, needs disclosure/decision; closes with the #7 re-lock.
+- **Taste:** `Fixes #N` doesn't auto-close for develop-targeted PRs; fourth application of the stalled-queue "skip new work" rule.
+
 ## 2026-11-10 08:18 asgard
 
 - **Skipped new work: review queue full.** Tender found #11/#12/#16 all still open, unapproved (reviewDecision empty), MERGEABLE, every CI check green on each branch, 0 behind develop — nothing to merge (none approved), rebase, retarget, or answer (no review threads/comments). 3 bomberbot PRs open after tending → "3+ open → skip new work." `develop` existed (e206c49); not created. Second visit of the day, 3h after 05:15; `develop` byte-identical since.

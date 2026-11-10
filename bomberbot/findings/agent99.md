@@ -12,7 +12,7 @@ Dewayne's decision, issue #N.
 |---|---|---|
 | security | 2026-11-10 | Second run, develop 5183c92 (first was main 69f0a04, pre-`develop`). bundle-audit DB bc80fbb. S-1..S-7 re-confirmed open (lib/ byte-identical since #9); S-8 fixed by #7's re-lock. New S-9 (vulnerable sinatra/rack/uri chain in the lock; `uri` is core-path), S-10 (`examples` on require_paths executes `kaos_spy` on require), S-11 (unbounded TCP read + `symbolize_names` on untrusted JSON, LOW). All held locally. |
 | dead code | 2026-11-10 (full) | debride lib+examples at develop 5183c92, hand-verified; no dependent repos. F-51, F-52; F-1/F-40/F-41 still open. Live (no finding): `handle_*` via `send`, header helpers (used in examples), `get`/`run`/`discover_agent`/`fetch_all_agents`, `Agent99.version`. |
-| dependencies | 2026-11-09 | First run, develop 69f0a04. Committed lock doesn't install as-is on Ruby 4.0.9 (tocer 19 chain pins Ruby ~> 3.4; BUNDLED WITH 2.5.23); re-resolved, suite green 57/0/0/4 skips. Ruby 4.1-preview1: rbtree 0.4.6 build failure (0.4.7 fixes). F-10..F-17. No removed-API use in `lib/`. Floor `>= 3.3` OK until 3.3 EOL (2027-03). bunny 3.x untested. Improver added F-18..F-20. |
+| dependencies | 2026-11-10 | Second run, develop 5183c92. Committed lock still un-installable on Ruby 4.0.9 (`core 2.3.0` pins ruby ~> 3.4) and 4.1-preview1; re-resolve succeeds on both, suite green 64/0/0/4 skips. `rbtree` re-resolves to 0.4.7 (clears the 4.1 build failure). Committed lock carries ~34 bundle-audit advisories (held locally as S-12; the re-resolved lock is clean). New F-56 (re-lock jumps bunny 2.24→3.6 major, unguarded by gemspec; needs-decision), F-57 (no Ruby CI). Re-verified present: F-14 (logger undeclared), #7 (lock un-installable/stale). All three (S-12, #7 install, Note #7) close with one re-lock. First run was 2026-11-09, develop 69f0a04: F-10..F-17, improver F-18..F-20. |
 | adoption | 2026-11-10 | First run, develop 5183c92. Docs site 404 (Pages off; gh-pages last deployed 2025-09-03). README agent fails on load (HeaderSchema not loaded, F-23) then crashes silently on every request (F-6); example registry needs rackup and 500s on WEBrick (F-27); API reference documents 13 nonexistent methods (F-26); `mkdocs build --strict` passes. F-23..F-36, S-6; updated F-6/8/9/20/21/22. Improver added F-37, F-38. gem-skill not run (paid API). |
 | quality | 2026-11-10 | First run, develop 5183c92. flog 640.8 (avg 7.7), flay 256 (all AMQP/NATS duplication), reek 83, rubocop default+NewCops 249 lib / 857 test offenses (no repo config). F-42..F-50, F-53, S-7. Triage added S-8 (bundle-audit); improver added F-54, F-55. |
 
@@ -246,4 +246,31 @@ Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
   [#23](https://github.com/MadBomber/agent99/issues/23). All three filed this visit.
 - Non-security this pass: none new. The gemspec file-list concern is already covered by the
   open `bomberbot/gem-files-allowlist` PR (#11); the `require_paths` residue is S-10 / F-13.
+- Dead-code scan not re-run this visit; last covered commit stays 5183c92.
+
+### 2026-11-10 (sixth visit; dependencies audit, develop 5183c92)
+
+- F-56: a fresh `bundle install` resolves `bunny` 2.24.0 → **3.6.0** (major); the gemspec
+  declares `add_dependency "bunny"` with no constraint (`agent99.gemspec:44`), so re-locking
+  silently adopts an untested major. Suite passes but AMQP broker paths are mocked/skipped, so
+  bunny 3.x is unexercised. Fix: pin the gemspec (`~> 2.24`, or validate 3.x and allow
+  `">= 2.24", "< 4"`). Status: needs Dewayne's decision (supported bunny range).
+- F-57: no CI runs `bundle install`/tests on any Ruby — `.github/workflows/` has only `docs.yml`
+  (mkdocs). This is why the un-installable lock (#7) and the lock CVE drift sat unnoticed. Fix:
+  add a Ruby matrix workflow (`bundle install` + `bundle exec rake test`, optionally
+  `bundle-audit`). Status: issue [#26](https://github.com/MadBomber/agent99/issues/26).
+- S-12: security finding, details held locally. Status: open (committed `Gemfile.lock` pins
+  many known-vulnerable transitive gems — rack/concurrent-ruby/uri/rack-session/sinatra/json).
+  Closed by the same #7 re-lock that fixes the install failure; the re-resolved lock is
+  bundle-audit clean. Overlaps #7 and S-9.
+- F-14 re-verified present at 5183c92: `logger` is `require`d in `base.rb:3` +
+  the three message clients and exposed in public initializers, but `agent99.gemspec` declares
+  no `logger` runtime dep (only transitive via sinatra); on Ruby 4.0 `logger` is a bundled,
+  non-default gem. Status: issue [#25](https://github.com/MadBomber/agent99/issues/25).
+- F-6 re-verified present at 5183c92: README Quick Start (`README.md:147-150`) + two getting-started
+  docs teach overriding the private `process_request(payload)` dispatcher and `payload.dig(:name)`;
+  the real hook is `receive_request` (no args) + `get(:name)` (examples). A follower's agent crashes
+  on first request (nil `@payload`). Status: issue [#24](https://github.com/MadBomber/agent99/issues/24).
+- F-1/F-51/F-53/F-55 re-verified still present at 5183c92 by the improver (no code change this
+  visit); statuses unchanged.
 - Dead-code scan not re-run this visit; last covered commit stays 5183c92.
