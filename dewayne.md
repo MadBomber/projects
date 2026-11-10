@@ -20,6 +20,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## typed_bus
 
 - [ ] Review and merge into `develop` (not `main`) the three bomberbot PRs, each resolving an open issue: [#9](https://github.com/MadBomber/typed_bus/pull/9) (throttle hang at full capacity, Fixes #2), [#8](https://github.com/MadBomber/typed_bus/pull/8) (DLQ drain keeps entries on raise, Fixes #6), [#7](https://github.com/MadBomber/typed_bus/pull/7) (declare `logger` runtime dep, Fixes #1). None were auto-merged as low risk because all touch `lib/` or the gemspec. The `Fixes #N` issues close when `develop` reaches `main` at the next release. (added 2026-11-10)
+- [ ] Decide the dev-dependency bloat ([#13](https://github.com/MadBomber/typed_bus/issues/13)/F-31): `aigcm` (AI commit CLI, never used in repo code) and `ratatui_ruby` (native Rust ext, only `examples/15_performance.rb`) dominate the Gemfile, break `bundle exec rake test` on a plain checkout, cause the red YARD-deploy CI, and are the sole source of the dev-tree security advisories (S-32, held local). Options: (a) drop `aigcm` from the committed Gemfile (install it globally instead); (b) move `ratatui_ruby` to an optional/examples-only group; (c) keep both and just unbreak CI via [#13](https://github.com/MadBomber/typed_bus/issues/13). (added 2026-11-10)
+- [ ] Enable Dependabot + vulnerability alerts in repo settings (currently off — `dependabot/alerts` returns 403). A PR can add `.github/dependabot.yml` ([#15](https://github.com/MadBomber/typed_bus/issues/15)) but the alerts toggle is admin-only. (added 2026-11-10)
 
 ## agent99
 

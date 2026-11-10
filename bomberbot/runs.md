@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 04:04 typed_bus
+
+**Fourth visit. Tend-and-record only — skipped new PR work: review queue full.** The three PRs from visit 3 (#7/#8/#9, all targeting `develop`) are still open and unapproved; tender confirmed none approved, merged nothing, and verified all three still MERGEABLE/CLEAN against current `develop` (no rebases needed). No bomberbot PR has ever been closed, so nothing new to learn from merges/comments. `develop` unchanged at 5be35a6. Per the "3+ open bomberbot PRs → skip new work" rule, opened no new PR.
+
+- **Audit:** dependencies (first run, most overdue), develop 5be35a6. New findings F-28..F-32; S-32 held locally (bundler-audit: 8 advisories, all in the dev/test group via `aigcm`; shipped gem's `async` runtime dep is clean). F-5/F-9 reconfirmed. Full suite green under async 2.46.0 (201 runs, 0F).
+- **Issues answered:** none. All 9 open issues are bomberbot-authored; the three with fixing PRs (#1→#7, #2→#9, #6→#8) already link them, the rest are fully documented. Responder re-verified every no-PR finding still reproduces on `develop` but added no restating comments.
+- **Issues filed (3):** [#13](https://github.com/MadBomber/typed_bus/issues/13) red YARD-deploy CI on `develop` (ratatui_ruby native ext fails under `bundler-cache`, F-32 — fresh signal from triage), [#14](https://github.com/MadBomber/typed_bus/issues/14) stale async 2.36→2.46 lock (F-29, dependency audit), [#15](https://github.com/MadBomber/typed_bus/issues/15) no `.github/dependabot.yml`, alerts off (F-28, dependency audit).
+- **Not filed:** F-30 (unused dev dep `debug_me`) — deliberately kept as Dewayne's standing debug tool. F-31 (aigcm/ratatui_ruby dev-dep bloat) → inbox + dewayne.md (needs decision).
+- **Tended PRs:** #7, #8, #9 (confirmed clean, no action needed). **Merged:** none.
+
 ## 2026-11-10 03:45 smart_message-transport-named_pipes
 
 **First visit.** Created `develop` from `main` at **8d0d2af** (repo had only `main` + a merged `claude/…` branch). Created the `bomberbot` and `needs-dewayne` labels. No bomberbot PR had ever existed, so the tender had nothing to tend (queue 0 → new work proceeded). Suite is green run directly (`ruby -Itest -Ilib`): 45 runs, 0 failures, 9 skips; `bundle install` is broken (unsatisfiable `smart_message >= 0.1.0`; RubyGems max 0.0.17), so tests run via the committed stub `lib/smart_message/transport/base.rb`. No CI exists.
