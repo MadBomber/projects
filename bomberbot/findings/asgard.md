@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-06 | bundle-audit clean; read of shell-outs, loads, env, file writes; one finding (S-1) |
-| dead code | never | quick scans only (2026-11-06, 2026-11-07 x2), see F-3/F-4/F-8 |
+| dead code | 2026-11-10 | First full audit: debride over lib + bin/asgard (47 suspects, all hand-checked), constant/attr sweep, dynamic-call grep, dependents checked (dev, vbr_project, prompts). One removable but public reader (F-15), one test-only lib method (F-16), test-only readers (F-17), one wrong seam comment (F-18); F-3 unchanged. |
 | dependencies | 2026-11-07 | bundle-audit clean; bundle outdated lists only transitive gems (F-6); Ruby 4 greps clean apart from F-8; one locale defect in lib (F-7) |
 | adoption | 2026-11-07 | First audit (third run). Every example project loads and its tasks run; `mkdocs build --strict` clean; `docs/commands.md` matches `asgard help`; README shell registry matches `Shell`; RubyGems metadata lacks docs and issue links (F-14, PR #9); CHANGELOG gaps (F-11); no `llms.txt` (F-12); gem-skill not run (it calls an LLM). |
 | quality | never | `bin/asgard quality` ran green apart from Fasterer/Reek warnings (2026-11-06) |
 
-Dead-code scan last covered commit: 13037ae (develop, 2026-11-07, third run)
+Dead-code scan last covered commit: e206c49 (develop, 2026-11-10, dead code audit)
 
 ## Findings
 
@@ -46,3 +46,15 @@ Dead-code scan last covered commit: 13037ae (develop, 2026-11-07, third run)
 - **F-13**: `quality.loki` `run_gate` calls `gsub` on backtick output, and that output is tagged US-ASCII when no locale is set. `bin/asgard quality` run with `LANG`/`LC_ALL` unset crashed in `typos_check` (`String#gsub: invalid byte sequence in US-ASCII`, quality.loki:182), because typos prints box-drawing characters. This affects the repo's own dev tasks only, not lib, and it showed up because typos scanned `vendor/bundle` (F-5). Without a vendored bundle, typos may print nothing non-ASCII. Likely fix: `force_encoding(Encoding::UTF_8).scrub` on the captured output in `run_gate`. dev has no `run_gate`. Status: unverified (reproduce without `vendor/` before acting).
 - **F-14**: the gemspec has no `documentation_uri` or `bug_tracker_uri`, so the RubyGems page (0.6.0) shows no link to the docs site or issues. Status: PR'd ([#9](https://github.com/MadBomber/asgard/pull/9)).
 - Dead-code quick scan of 9c59b2e..13037ae (PR #8: one line in `daemon.rb`, one test): nothing removable.
+
+### 2026-11-10 (dead code audit, plus phase-1 leads)
+
+- **F-15**: `Asgard::Watch::Daemon` declares `attr_reader :inbox, :listeners` (`lib/asgard/watch/daemon.rb:30`, added 0768af2), and nothing reads either: not lib, test, examples, docs, `.loki` files, dev, vbr_project or prompts (the test hits on `.listeners` are the fake Listen module's own reader). The suite passes with the line removed. Status: needs Dewayne's decision (same public-API question as F-3; one-line removal once answered).
+- **F-16**: `Asgard::Watch.split_glob` (`lib/asgard/watch/declaration.rb:146-155`) has had no lib caller since 45663a4, when `watched` switched to `split_path` + `glob_regexp`. Only 5 tests in `test/test_watcher.rb:24-79` use it. Not documented, not in `sig/`, no dependent calls it. Status: needs Dewayne's decision (same question as F-3; the fix moves the composition into a test helper).
+- **F-17**: test-only readers: `Watch::State#read_entry`, `Watch::State#root_path`, `Watch::Dispatcher#dispatch`. Cheap test seams; recommend keeping, or deleting only `root_path`. Status: needs Dewayne's decision (low value).
+- **F-18**: the comment on `Changes.forget` (`lib/asgard/watch/changes.rb:18-19`) says a re-exec'ing watcher task calls it; only tests do. Status: open (comment only).
+- **F-19**: `Jobs::Launcher.start` returns the stale record of a job that just ended ("already running", nothing started) when it runs in the gap between the trampoline writing the status file and its `/bin/sh` exiting: `State.verified?` still matches the trampoline's PID and script. Flakes `test_a_new_start_of_an_ended_job_replaces_its_record_and_truncates_the_log` on macOS CI (runs 42413020711, 41222188591). Not PID reuse (macOS PIDs are sequential). Reproduced deterministically by stretching the trampoline. Status: PR'd (see runs.md 2026-11-10).
+- **F-20**: `asgard --doctor` promises to work when the `.loki` won't load (README, `docs/tips.md:47`), but a `.loki` that calls `abort`/`exit` while loading kills it with no report: `lib/asgard/doctor.rb:86` rescues `StandardError, ScriptError`, not `SystemExit`. Status: PR'd (see runs.md 2026-11-10).
+- **F-21**: the undefined-dependency error (`lib/asgard/base/dependency_graph.rb:126`) doesn't name the task that declared it: `asgard: undefined task(s) in depends_on: buidl`. Status: open (output change; filed as an issue to ask first).
+- **F-22**: `CHANGELOG.md:8` `## [Unreleased]` has no link reference, so it renders as a literal `[Unreleased]` on GitHub and on the docs site (which includes CHANGELOG via a snippet). Status: open.
+- F-13 recheck: `env -u LANG -u LC_ALL -u LC_CTYPE typos` prints nothing without a vendored bundle, so F-13 only happens together with F-5. F-10 recheck: the detached daemon reopens `$stderr` onto `watcher.log` (`daemon.rb:183-192`, `:324-325`), so a crashed worker's dump likely lands in the log already; still unverified by a live run. F-3 unchanged on e206c49.
