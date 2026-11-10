@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 00:15 ragdoll
+
+- `develop` existed (b0a7afc); not created. No bomberbot PRs were open at the start: Dewayne merged #10, #14, #15 and #16 on 2026-11-09 without comments (#14–#16 came from a visit that never wrote brain; recorded now). Tender not started (nothing to tend); verified directly.
+- New PRs (all independent, base `develop`):
+  - [#18](https://github.com/MadBomber/ragdoll/pull/18) test: run the search cleanup tests. Source: issue #12 (F-16, first slice). 0 → 6 runs, 37 assertions against a throwaway pgvector DB; CI-mode 1300→1306 runs, 0 failures; RuboCop 9→9. Review clean, no cap. **Merged (low risk)** → develop 1ba1414.
+  - [#19](https://github.com/MadBomber/ragdoll/pull/19) chore(deps): drop annotate, which has no Rails 8 release. Source: issue #17 (Dewayne). Develop already locked Rails 8.1.4.1 via #7; annotate fell back to 2.6.5 (2014) and every task crashed. Suites unchanged (CI-mode 1300/0F/397S; DB suite only F-3), no 8.1 deprecations. Review hit the cap on CHANGELOG wording; opened per ragdoll#5. CI green.
+  - [#20](https://github.com/MadBomber/ragdoll/pull/20) fix: build ImageToTextService vision model. Source: judgment (F-19, reproduced by triage). New test fails on develop, passes on branch; CI-mode 1305/0F; `unknown keyword: :detail_level` gone. Still blocked in practice by F-1. Review hit the cap (rounds contradicting); opened per ragdoll#5. CI green.
+- Audit: **security (first ever)** at b0a7afc. S-2 reconfirmed open (top pick next visit, with F-29); new S-3 (low) held locally; F-28, F-29. Improver: F-30–F-32, dead-code scan to b0a7afc. Builders: F-33, F-34 (unverified).
+- Issues answered: #11 and #13 (fixed on develop, close on release), #17 (link to #19). Issues filed: [#21](https://github.com/MadBomber/ragdoll/issues/21) (F-30), [#22](https://github.com/MadBomber/ragdoll/issues/22) (F-28), [#23](https://github.com/MadBomber/ragdoll/issues/23) (F-20).
+- Note: the auditor and improver found `src/` checked out on `main` (another agent switched it) and read an export of develop instead; my own early lockfile check read `main` by mistake. Briefs should say "read via `git show origin/develop:` or an export, never check out in src/".
+
 ## 2026-11-09 17:48 agent99
 
 - **Created `develop` from `main` at 69f0a04**, per the updated branch model ("No develop branch? Create it from main"). This supersedes the earlier "no develop = blocked for PRs" practice (typed_bus, agent99 first visit, trak_flow).

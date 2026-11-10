@@ -3,6 +3,11 @@
 Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entries; remove them when done.
 
 
+## ragdoll
+
+- [ ] Review [ragdoll#19](https://github.com/MadBomber/ragdoll/pull/19) (drops `annotate`; gemspec change, so not merged as low risk). Issue #17 closes only when `develop` reaches `main`; `main` still locks Rails 8.0.3, so 8.1 reaches gem users with the next release. Say if you want the floor raised to `activerecord`/`activejob >= 8.1.4.1`. (added 2026-11-10)
+- [ ] Issues #11 and #13 are fixed on `develop` (#15, #14) but stay open until `develop` is merged to `main`, or close them by hand. (added 2026-11-10)
+
 ## debug_me
 
 - [ ] [debug_me#23](https://github.com/MadBomber/debug_me/pull/23) is merged (Ruby 3.2 floor confirmed). At release: dropping Rubies makes the next release 1.2.0 rather than 1.1.4 under SemVer; add the missing `[1.1.3]` CHANGELOG section and start the Unreleased compare link at v1.1.3. (added 2026-11-08, updated 2026-11-09)

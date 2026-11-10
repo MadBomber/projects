@@ -10,7 +10,7 @@ RAG library; most-starred repo, idle since early 2026.
 
 ## Status
 
-_Updated 2026-11-08 09:22 visit._ #9 merged; this visit opened [#10](https://github.com/MadBomber/ragdoll/pull/10), which makes image and audio files reach their converters instead of being stored as filename placeholders (finding F-17), **PR open**, CI green on 3.2/3.3/3.4/4.0. Filed issues #11 (README Quick Start config fails), #12 (43 private search tests, F-16) and #13 (activerecord floor, F-9).
+_Updated 2026-11-10 00:15 visit._ Dewayne merged #10, #14, #15 and #16 on 2026-11-09. This visit merged [#18](https://github.com/MadBomber/ragdoll/pull/18) as low risk (first #12 slice) and opened [#19](https://github.com/MadBomber/ragdoll/pull/19) (drop `annotate`, fixes #17; develop already locks Rails 8.1.4.1) and [#20](https://github.com/MadBomber/ragdoll/pull/20) (F-19, vision model options), both **PR open**, CI green. Filed issues #21 (F-30), #22 (F-28), #23 (F-20). Next visit: the S-2 + F-29 audio fix first.
 
 ## Backlog
 
@@ -25,7 +25,8 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- None open from earlier visits at the start of the 2026-11-10 visit.
+- [#19](https://github.com/MadBomber/ragdoll/pull/19) chore(deps): drop annotate, which has no Rails 8 release (fixes #17). **PR open**, CI green on 3.2/3.3/3.4/4.0. Touches the gemspec, so not low risk.
+- [#20](https://github.com/MadBomber/ragdoll/pull/20) fix: build ImageToTextService vision model (F-19). **PR open**, CI green. Review hit the cap. Conflicts with #19 in CHANGELOG `[Unreleased]` once one merges (trivial rebase).
 
 ## Merged bomberbot PRs
 
