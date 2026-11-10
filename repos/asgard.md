@@ -22,6 +22,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 ## Open bomberbot PRs
 
 - [#11](https://github.com/MadBomber/asgard/pull/11) docs: add llms.txt index of the docs site (**PR open**, 2026-11-10)
+- [#12](https://github.com/MadBomber/asgard/pull/12) fix(doctor): report exit or abort during .loki load (**PR open**, 2026-11-10; F-20)
 
 ## Merged bomberbot PRs
 
