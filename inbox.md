@@ -305,3 +305,4 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **`SQA.init(argv)` discards its argument (F-15)** though YARD advertises `--debug --verbose`. Per "change the code", implement the parsing?
 - **RuboCop `TargetRubyVersion` 4.0 vs gemspec floor 3.2** (should be 3.4, F-8). Pick one floor.
 - Security: S-1/S-2, details held locally in `notes/security/sqa.md`.
+- sqa repo hygiene (triage): `data/talk_talk.json` (5.3 MB, unused) and `checksums/` (stops at 0.0.24) ship in the gem; `justfile` is empty while CLAUDE.md documents `just test`, and `main.just` is aia's copy; `Rakefile` has `task default: %i[]`, so bare `rake` does nothing. Enable Dependabot (alerts currently disabled).

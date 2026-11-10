@@ -49,3 +49,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review [scripts#25](https://github.com/MadBomber/scripts/pull/25), which re-lands the README index fixes from #22 (they merged into the stale stack branch `bomber/readme-fix-rows`, not develop). After it merges, close [#19](https://github.com/MadBomber/scripts/issues/19) by hand (`Fixes` doesn't auto-close for PRs into develop), then delete the branches `bomber/readme-fix-rows` and `bomber/readme-index-complete`. (added 2026-11-10)
 - [ ] Review [scripts#26](https://github.com/MadBomber/scripts/pull/26) (FileUtils copy, Fixes #23) and [scripts#24](https://github.com/MadBomber/scripts/pull/24) (sinatra template APP_BIND error). Both are code changes, so neither qualified for a low-risk merge. (added 2026-11-10)
 - [ ] scripts: security findings S-2..S-4 are held locally in `notes/security/scripts.md`. S-2 has a small fix that bomberbot will open next visit under a neutral title unless you say otherwise. (added 2026-11-10)
+
+## sqa
+
+- [ ] Review [sqa#44](https://github.com/MadBomber/sqa/pull/44) (remove two stray root files). Not merged as low risk because it addresses S-1; see `notes/security/sqa.md` for the decisions only you can make (history and already-published gems). (added 2026-11-10)
+- [ ] Review [sqa#46](https://github.com/MadBomber/sqa/pull/46) (README examples match the API). Docs only, but its review round left 3 out-of-scope findings open, so it wasn't self-merged. (added 2026-11-10)
+- [ ] Decide the design for [sqa#4](https://github.com/MadBomber/sqa/issues/4) (API keys in config: env var name vs value vs close); see inbox. (added 2026-11-10)

@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 02:15 sqa
+
+- **First visit.** `develop` existed (7fa65e3, 13 ahead of main); not created. Created the `bomberbot` and `needs-dewayne` labels. No bomberbot PR had ever been opened, so the tender wasn't run (queue checked directly: 0 open, 0 closed). The suite needs Ruby 4.0.9 (polars-df/rb-sys won't build on 4.1.0-preview1); no test CI, no committed lockfile, Dependabot alerts disabled.
+- New PRs (all independent, base `develop`):
+  - [#45](https://github.com/MadBomber/sqa/pull/45) test(fmp): placeholder API key in stubbed DataFrame tests. Source: **CI/judgment** (suite red on develop without `FMP_API_KEY`, F-7). 3F/4E → 0F/0E; full suite 612 runs 0F/0E; review clean in 1 round. **merged (low risk)** as develop 3209f5f.
+  - [#44](https://github.com/MadBomber/sqa/pull/44) chore: remove stray root files. Source: **security** (S-1, details held locally). Deletion only, nothing in code references the files; spec.files 256→254. Left for Dewayne (security fix).
+  - [#46](https://github.com/MadBomber/sqa/pull/46) docs(readme): examples match the current API. Source: **adoption** (F-9). An offline probe shows each old snippet failing and each new one running. One review round: 5 fixed, 3 out of scope left open, so not low risk.
+- Audit: **security** (first run) plus a brief dead-code pass over `lib/` at 7fa65e3: S-1 and S-2 held locally; F-1 to F-6. The improver and triage added F-7 to F-16.
+- Issues answered: [#4](https://github.com/MadBomber/sqa/issues/4), where develop stands on API keys. The design question went to the inbox.
+- Issues filed: [#47](https://github.com/MadBomber/sqa/issues/47) dead Ruby 1.9 branch in `String#to_constant` (F-4), [#48](https://github.com/MadBomber/sqa/issues/48) `on_signal` test asserts nothing (F-12), [#49](https://github.com/MadBomber/sqa/issues/49) CHANGELOG misses the SQLite store and other develop changes (F-10).
+- Inbox: #4 design, version numbers disagree (F-14), unused runtime deps (F-1), unused public API (F-2/F-3), gem packaging and stray root files (F-5), README `holding_period:` and `sqa-cli`, `SQA.init(argv)` (F-15), RuboCop target vs floor, Dependabot.
+- Process note: the improver and triage took about 24 and 30 minutes, so the builders ran against a hard deadline, one review round each.
+
 ## 2026-11-10 02:00 smart_message
 
 - **Second visit. skipped: review queue full.** The tender found all three bomberbot PRs (#9, #10, #11) still open, unapproved (no review, no comments), none low-risk-mergeable, and `develop` unmoved at 9371456 since visit 1. Per the branch model's phase-2 rule (3+ open PRs after tending → no new work), opened no PRs. `develop` existed; not created.
