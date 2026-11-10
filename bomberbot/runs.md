@@ -2,6 +2,22 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 02:45 aia
+
+develop at 4cdf934 at start → **9a00307** (one low-risk self-merge). Review queue was 1 (#172) after tending, under the skip threshold, so new work proceeded. Opened three PRs (all independent, no shared files, built in parallel in separate worktrees):
+
+- **[#176](https://github.com/MadBomber/aia/pull/176)** fix: case-insensitive `state_setting?` directive matching (source: **open issue #174** / F-37). `directive_processor.rb:42` didn't `.downcase` the directive name while `directive?`/`process` do, so `/DEBATE`, `/Clear` ran but `state_setting?` returned false and the chat loop forwarded wrapper text to the model. One-line `.downcase` + fail-before/pass-after test. Proof: new `test_state_setting_is_case_insensitive` fails on develop (`Expected false to be truthy`), passes on branch; full suite 2000/0; rubocop/reek clean. `/simplify` + 1 clean `/code-review` round. **Lib change → not low-risk → open for Dewayne. Fixes #174.**
+- **[#177](https://github.com/MadBomber/aia/pull/177)** refactor: share `split_skills` via `SkillUtils` (source: **finding F-27**, quality audit). The byte-identical private `split_skills` in `recruit_robot_tool.rb` and `reskill_robot_tool.rb` moved to `AIA::SkillUtils.split_skills`; both tools delegate; copies deleted. Zero behavior change. Proof: new `skill_utils_test` cases fail on develop (`NoMethodError`), pass on branch; recruit+reskill tool tests stay green; full suite 2001/0; rubocop/reek clean. `/simplify` + 1 clean `/code-review` round. **Lib change → not low-risk → open for Dewayne.**
+- **[#178](https://github.com/MadBomber/aia/pull/178)** docs: fix README's unregistered /shell /next /pipeline directives (source: **open issue #175** / F-38). Dropped the false `/shell` `/next` `/pipeline` directive rows+examples, rewrote them to `$(…)` expansion, `next:`/`pipeline:` front-matter keys, and `-n`/`-p` flags. Builder used the documented `\$(…)` escape so a "bad" example stays inert. Proof: grep before 13 hits → after only the legit line-37 feature cell; `directive?` false for all three; supported forms cited in `cli_parser.rb`/`prompt_handler.rb`. README+CHANGELOG only, ~46 lines, 1 clean `/code-review` round. **Merged into develop as low risk by madbot. Fixes #175.**
+
+- **Tended:** #172 (mkdocs dead assets, Fixes #169) verified clean (0 behind develop, MERGEABLE, no review threads), left open for Dewayne — docs-deploy config, not low-risk. Nothing approved, nothing else to rebase/retarget. No bomberbot PRs closed-unmerged. Self-merges #166/#171/#173 still intact on develop, unreverted, no comment — weak positive, still watching.
+- **Audit: dependencies** (most overdue, develop 4cdf934). bundle-audit clean (1353 adv); bundle outdated all transitive (json/prism/unicode-display_width/ruby_llm-providers-lms); no Ruby-4 removed APIs in lib/bin; hermeticity green (1998/0 + all 127 files standalone, keys unset, ASCII locale). New findings F-39 (`word_wrapper` not Ruby-4-clean, no upstream fix → inbox/needs-Dewayne), F-40 (utility_test `const_set` VERSION warnings → issue #179).
+- **Issues answered:** none warranted — develop unmoved since 00:59, every open issue is bomberbot backlog with no third-party comment or a user thread already ending in BomberBot's signed analysis with the relevant code unchanged.
+- **Issues filed (1):** [#179](https://github.com/MadBomber/aia/issues/179) (test run prints `already initialized constant VERSION` warnings, F-40 — verified, obvious-yes, pairs with F-5).
+- **Inbox:** F-39 (`word_wrapper` Ruby-4 cleanliness — vendor a minimum-raggedness wrap or swap the dep).
+- **dewayne.md:** no new steps (builders flagged none; #176/#177 are standard non-low-risk PRs awaiting his merge; #172 step stands).
+- **Taste:** self-merge signal still pending (#166/#171/#173 unreverted, no reaction); #178 is the 4th low-risk self-merge on aia.
+
 ## 2026-11-10 02:15 sqa
 
 - **First visit.** `develop` existed (7fa65e3, 13 ahead of main); not created. Created the `bomberbot` and `needs-dewayne` labels. No bomberbot PR had ever been opened, so the tender wasn't run (queue checked directly: 0 open, 0 closed). The suite needs Ruby 4.0.9 (polars-df/rb-sys won't build on 4.1.0-preview1); no test CI, no committed lockfile, Dependabot alerts disabled.

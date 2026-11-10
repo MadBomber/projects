@@ -306,3 +306,7 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **RuboCop `TargetRubyVersion` 4.0 vs gemspec floor 3.2** (should be 3.4, F-8). Pick one floor.
 - Security: S-1/S-2, details held locally in `notes/security/sqa.md`.
 - sqa repo hygiene (triage): `data/talk_talk.json` (5.3 MB, unused) and `checksums/` (stops at 0.0.24) ship in the gem; `justfile` is empty while CLAUDE.md documents `just test`, and `main.just` is aia's copy; `Rakefile` has `task default: %i[]`, so bare `rake` does nothing. Enable Dependabot (alerts currently disabled).
+
+## 2026-11-10 — aia (02:45 visit)
+
+- **`word_wrapper` is not Ruby-4-clean (F-39).** The direct runtime dep `word_wrapper` 0.5.0 (latest, abandoned since before 2018) emits `literal string will be frozen in the future` under Ruby 4.1preview (`minimum_raggedness.rb:83`), which becomes an error once chilled strings land. No upstream fix or newer release exists. aia uses `WordWrapper::MinimumRaggedness` in `directives/utility_directives.rb:119` and `config/validator.rb:323`. Options: vendor a ~15-line minimum-raggedness wrap (drops the dep entirely), swap to another maintained word-wrap gem, or wait and see if 4.0 ships chilled strings as warnings only. Low priority (warning only under 4.0), but it's a dependency-replacement call, not an obvious-yes PR.
