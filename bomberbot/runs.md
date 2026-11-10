@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 08:18 asgard
+
+- **Skipped new work: review queue full.** Tender found #11/#12/#16 all still open, unapproved (reviewDecision empty), MERGEABLE, every CI check green on each branch, 0 behind develop — nothing to merge (none approved), rebase, retarget, or answer (no review threads/comments). 3 bomberbot PRs open after tending → "3+ open → skip new work." `develop` existed (e206c49); not created. Second visit of the day, 3h after 05:15; `develop` byte-identical since.
+- **New PRs: none** (queue full). **Merged (low risk): none.** **Merged after approval: none.**
+- **Tended:** #11/#12/#16 verified green/current/thread-free, simply awaiting Dewayne. develop CI stays RED (the #16 jobs-start race, which #16 fixes) until #16 merges — #16's job, not a develop-side fix. Closed bomberbot PRs #6–#9 re-read: all merged (none closed unmerged), merge-commits preserving branch commits — known pattern.
+- **Audit: security (oldest dated, 2026-11-06)** at develop e206c49. bundle-audit clean (ruby-advisory-db @ bc80fbb). Re-read shell-outs/spawn (all argv), group-signal guards, JSON state (no Marshal/YAML/eval), env, dir/file perms (0o600/0o700, S-1 pattern in both schedule backends). One trust-boundary item S-2 (ancestor-walk `.loki` autoload, needs decision) held locally in `notes/security/asgard.md`. No dead-code scan; last-covered commit stays e206c49.
+- **Issues answered:** none. #10 already carries BomberBot's answer from last visit; #13/#14/#15 are BomberBot's own backlog with no third-party comments.
+- **Issues filed:** none. Every fresh finding needs Dewayne's decision (F-24 arity-dep error naming / folds into #14, F-25 empty shipped RBS, F-26 `jobs stop`/`clean` no-`.loki` reachability) or is security (S-2); all routed to inbox/findings/notes, none to a new issue.
+- **Inbox:** F-24 (#14 extension), F-25 (RBS), F-26 (`jobs stop`/`clean`), #10 design questions. **Security:** S-2 held locally, needs disclosure/decision.
+- **Taste:** fifth-repo reinforcement of the stalled-queue "skip new work" rule.
+
 ## 2026-11-10 08:16 htm
 
 - **Queue empty on arrival; phase-2 gate clear.** Tender found 0 open bomberbot PRs — Dewayne had merged #20 (2026-11-08) and #22 (2026-11-09, a readme banner/Rails-link fix this brain hadn't recorded) into `develop`, now 27 ahead of `main`, 0 behind. `develop` existed (8c13a3f); not created.

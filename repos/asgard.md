@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-10._ Three PRs open: #16 fixes the jobs start race behind the red macOS CI on `develop`, #12 makes `--doctor` survive `exit`/`abort` in a `.loki`, #11 adds `docs/llms.txt` (F-12). First full dead-code audit ran; issues #13-#15 filed. CI on develop is red (the #16 race) until #16 merges.
+_Updated 2026-11-10 (second visit)._ Review queue full: #16 (jobs start race / red CI), #12 (`--doctor` survives `exit`/`abort`), #11 (`docs/llms.txt`) all still open, green, MERGEABLE, none approved. Per the "3+ open bomberbot PRs" rule this was a tend-and-record visit: no new PR opened. Security audit ran (bundle-audit clean; one trust-boundary item S-2 held locally, needs decision). CI on develop stays red (the #16 race) until #16 merges.
 
 ## Backlog
 
