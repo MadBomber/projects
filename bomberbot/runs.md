@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 04:11 scripts
+
+**Seventh visit. Tend-and-record only — skipped new PR work: review queue full.** The three PRs from the sixth run (#24, #25, #26, all targeting `develop`) are still open and unapproved; tender confirmed none approved, merged nothing, verified all three MERGEABLE and 0-behind `develop` bc51825 (no rebase/retarget/force-push needed; scripts has no CI). No bomberbot PR has been closed-without-merge, so nothing new to learn from rejections. `develop` unchanged at bc51825 (not created this visit — already existed). Per the "3+ open bomberbot PRs → skip new work" rule, opened no new PR. S-2 backlog item stays queued.
+
+- **Merged:** none (no approvals; none low-risk self-mergeable — #24 touches templates code, #26 lib code, #25 hit its review cap).
+- **Tended PRs:** #24, #25, #26 (verified clean, no action needed).
+- **Audit:** dependencies (first full pass), develop bc51825 — `ruby -c`/`-wc` across 208 tracked Ruby files, removed-API grep sweep (all clean; #14/#15 hold), require-loadability probe, Psych-4 `YAML.load` readiness. New F-31..F-33 (uncovered `YAML.load` anchor-crash sites). Dependabot alerts API still 403 (disabled).
+- **Issues answered:** #19 and #23 — linked their fixing PRs #25 / #26 (both carry `Fixes`). #27/#28 left alone (our own backlog, no outside comments, no fixing PR yet).
+- **Issues filed (3):** [#29](https://github.com/MadBomber/scripts/issues/29) mbox_finder case-insensitive search broken (F-35, docs-vs-code), [#30](https://github.com/MadBomber/scripts/issues/30) yaml2json YAML.load crashes on anchors under Psych 4+ (F-31, dependency), [#31](https://github.com/MadBomber/scripts/issues/31) docx_translate `$errors` NoMethodError (F-34, defect).
+- **New findings not filed (3-issue cap):** F-32/F-33 (more `YAML.load` sites), F-36 (insert_ticket_into_changelog `nil.empty?` crash), F-37 (image_renamer wrong `cli_helper` banner).
+- **Inbox:** usage-name/filename drift check (rake/CI); shared arg/usage boilerplate helper; VCR-cassette `YAML.load` alias handling.
+- **dewayne.md:** no new steps (the existing #24/#25/#26 review and S-2 steps stand).
+- **Security:** S-2..S-4 unchanged, held locally; S-2 not shipped (queue full).
+
 ## 2026-11-10 04:21 agent99
 
 **Fourth visit. skipped: review queue full.** `develop` already existed (5183c92, unchanged since the last visit); not created. Tender found #10, #11, #12, #13 and #17 still open, none approved or reviewed, all MERGEABLE and up to date with `develop`, so it changed nothing and ran no suite. With 5 open after tending, I opened no new PRs.

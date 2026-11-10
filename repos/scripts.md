@@ -10,7 +10,7 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-10 (sixth run)._ Dewayne merged all five 2026-11-09 PRs (#17, #18, #20, #21, #22), but #22 merged into its stacked base `bomber/readme-fix-rows` after #18 had already merged, so its README fixes never reached develop; re-landed as [#25](https://github.com/MadBomber/scripts/pull/25) (Fixes #19). Also opened [#26](https://github.com/MadBomber/scripts/pull/26) (Fixes #23, F-14 copy step) and [#24](https://github.com/MadBomber/scripts/pull/24) (F-6). First full **security** audit: S-2..S-4 held locally. Filed [#27](https://github.com/MadBomber/scripts/issues/27) and [#28](https://github.com/MadBomber/scripts/issues/28).
+_Updated 2026-11-10 (seventh run)._ **Tend-and-record only — skipped new PR work: review queue full.** The three PRs from the sixth run (#24, #25, #26, all targeting develop) are still open and unapproved; tender confirmed none approved, merged nothing, verified all three MERGEABLE/clean against develop bc51825 (no rebase/retarget needed). Responder linked the fixing PRs on issues #19 (#25) and #23 (#26). Ran the first full **dependencies** audit (F-31..F-33: uncovered Psych-4 `YAML.load` crash sites). Filed [#29](https://github.com/MadBomber/scripts/issues/29) (mbox_finder case-insensitivity), [#30](https://github.com/MadBomber/scripts/issues/30) (yaml2json YAML.load), [#31](https://github.com/MadBomber/scripts/issues/31) (docx_translate `$errors`). S-2 backlog stays queued (not shipped — queue full)._
 
 ## Backlog
 
