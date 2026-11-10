@@ -293,3 +293,15 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
   is never low risk and changes packaging policy, so it's your call.
 - **Enable Dependabot?** Alerts are disabled and there's no `.github/dependabot.yml`; adding
   one would auto-surface the activesupport fix and the outdated 0.x gems going forward.
+
+## 2026-11-10 — sqa (first visit)
+
+- **#4 API keys in the config file: which design?** Today keys come only from `AV_API_KEY`/`ALPHAVANTAGE_API_KEY`/`FMP_API_KEY` (`lib/sqa/init.rb`), and a key in a config file is silently ignored. Options: (a) config holds the env var *name* (`fmp_api_key_env: MY_FMP_KEY`), as you leaned in the issue; (b) config holds the key value (then `dump_file` must filter it); (c) close as obsolete. Bomberbot can build (a) in one small PR once you pick. BomberBot commented on [sqa#4](https://github.com/MadBomber/sqa/issues/4).
+- **Version numbers disagree (F-14).** `VERSION = '0.4.0'`, CHANGELOG's newest release `[0.1.0]` sits above `[0.3.0]`, `.semver` says 0.0.30, RubyGems has 0.0.38. Which is current?
+- **Unused runtime deps (F-1).** `redis`, `ruby_llm`, `shared_tools`, `eps`, `regent` are declared but never required; they pull native builds into every install. `redis` is there because kbs `require`s it eagerly while listing it as dev-only — a lazy require in kbs would let sqa drop it.
+- **Unused public API (F-2, F-3).** `SQA::PluginManager` is never required; top-level `AlphaVantageAPI` (458 lines) is loaded but nothing calls it in sqa or the local dependents. Deprecate/remove, or wire up?
+- **Gem packaging (F-5).** `spec.files` ships ~254 files / ~7 MB (docs/, examples/rails_app, checksums/, notes). An allowlist (`lib/**`, README, LICENSE, CHANGELOG) would fix it; gemspec, so your call.
+- **README promises:** `holding_period: (5..20)` (README:411) raises `ArgumentError` — implement in `StrategyGenerator` or drop from README? `gem install sqa-cli` (README:102) — no such gem is published; publish it or point at the repo?
+- **`SQA.init(argv)` discards its argument (F-15)** though YARD advertises `--debug --verbose`. Per "change the code", implement the parsing?
+- **RuboCop `TargetRubyVersion` 4.0 vs gemspec floor 3.2** (should be 3.4, F-8). Pick one floor.
+- Security: S-1/S-2, details held locally in `notes/security/sqa.md`.
