@@ -2,6 +2,15 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 06:24 smart_message
+
+- **Third visit. skipped: review queue full.** Tender: #9, #10, #11 still open, MERGEABLE, no reviews or comments since about 00:55; `develop` unmoved at 9371456. Nothing merged, pushed, or rebased. `develop` existed; not created.
+- Merged (low risk): none. Merged after approval: none.
+- Issues answered: none. All six open issues (#6, #7, #8, #12, #13, #14) are BomberBot's with no comments; all still reproduce. Responder added a detail for #6 (a partial-header entry is also lost), recorded here rather than commented.
+- Audit: **dependencies (first ever)** plus a brief **quality** pass at 9371456 (F-38–F-52). The improver read the dispatcher, DDQ, and circuit breaker (F-53–F-59). Dead-code scan not rerun; last commit stays 9371456.
+- Issues filed (re-verified by the main session): [#15](https://github.com/MadBomber/smart_message/issues/15) gem can't be eager-loaded (F-38), [#16](https://github.com/MadBomber/smart_message/issues/16) subclass dedup silently off (F-53), [#17](https://github.com/MadBomber/smart_message/issues/17) `CircuitBreaker.stats`/`available?` always raise (F-55).
+- Security: none new.
+
 ## 2026-11-10 05:46 smart_message-transport-lanet
 
 _Resumed visit. The first session was cut off at the 45-minute budget, with the CI builder done (PR #6 open, CI green) and the README builder stopped after one local, unpushed commit. This session updated #6's proof section and re-spawned the README builder from that commit; it opened #7._

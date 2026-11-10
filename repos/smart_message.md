@@ -16,7 +16,15 @@ README calls it alpha.
 
 ## Status
 
-_Updated 2026-11-10 (second visit)._ Verification-only visit: Dewayne hasn't reviewed,
+_Updated 2026-11-10 (third visit)._ Review queue still full (#9, #10, #11 unreviewed, `develop`
+unmoved at 9371456), so no new PRs. Ran the first **dependencies** audit plus a brief quality
+pass and an improver read of the dispatcher, DDQ, and circuit breaker (F-38–F-59). Filed
+[#15](https://github.com/MadBomber/smart_message/issues/15) (gem can't be eager-loaded: Zeitwerk
+expects `Ddq`), [#16](https://github.com/MadBomber/smart_message/issues/16) (subclass dedup
+silently off), [#17](https://github.com/MadBomber/smart_message/issues/17)
+(`CircuitBreaker.stats`/`available?` always raise).
+
+_Second visit (2026-11-10).__ Verification-only visit: Dewayne hasn't reviewed,
 merged, or commented on any of the three open bomberbot PRs (#9, #10, #11) yet, so with
 3 unapproved PRs open and none low-risk-mergeable the **review queue was full** — no new
 PRs this visit. `develop` still at 9371456, unmoved. Ran the **adoption audit** (first
@@ -54,6 +62,14 @@ else in this repo.
 - [#13](https://github.com/MadBomber/smart_message/issues/13) docs homepage opens with a broken `<string>` tag so the lead sentence never renders bold (F-32): `docs/index.md:10`, docs only.
 - [#14](https://github.com/MadBomber/smart_message/issues/14) dead `debug_me` code in the test suite — `Object#debug_me_context` monkeypatch + 3 stray `debug_me` calls (F-33/F-34): pure removal.
 - F-30 duplicate `## [0.0.1]` CHANGELOG section (`CHANGELOG.md:651` and `:697`): renumber/merge one, docs only.
+- [#15](https://github.com/MadBomber/smart_message/issues/15) gem can't be eager-loaded (F-38): one `loader.inflector.inflect("ddq" => "DDQ")` line plus an eager-load test. Top pick when the queue frees (Rails production boot breaks).
+- [#16](https://github.com/MadBomber/smart_message/issues/16) `enable_deduplication!` on a subclass leaves dedup off (F-53): default fallbacks in `ddq_config`/builder plus a test.
+- [#17](https://github.com/MadBomber/smart_message/issues/17) `CircuitBreaker.stats`/`available?` always raise (F-55): rewrite on the BreakerMachines API `transport_circuit_stats` uses.
+- F-39 declare `logger` as a runtime dependency (bundled gem since Ruby 4.0); gemspec, one line.
+- F-48 flaky wall-clock test `test_concurrent_proc_handler_execution`: test-only fix; rule out a pool cause first.
+- F-42/F-43 drop unused `mutex_m`, swap `shoulda` for `shoulda-context`: one dev-deps PR.
+- F-40 lock bump (all green): after #11 merges.
+- F-54 Redis DDQ never evicts its lookup SET; F-56 Redis DDQ ignores `redis_url:`/`redis_db:`.
 
 ## Open bomberbot PRs
 

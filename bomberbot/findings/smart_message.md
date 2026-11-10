@@ -12,9 +12,9 @@ Dewayne's decision, issue #N.
 |---|---|---|
 | security | 2026-11-10 | First run, at develop 9371456. bundler-audit flags 2 activesupport advisories in the dev lockfile. No shell-outs, string eval, YAML/Marshal or ENV reads in `lib/`. S-1..S-6 held locally. |
 | dead code | 2026-11-10 (lib only, brief) | debride over `lib/` at develop 9371456. True dead: F-1, F-2. Public-API orphans need a decision (F-6). Dependent `sm-transport-*` gems checked. |
-| dependencies | n/a | Not yet run. Noted: unused runtime deps `async`/`async-redis` (F-5), floor `>= 3.0.0` (F-10), activesupport lock (S-5). `bundle outdated`: breaker_machines 0.21.2→0.24.1, chrono_machines 0.11.0→0.12.1, hashie 5.1.0→5.2.0, minitest 6.0.6→6.1.0, redis-client 0.30.1→0.31.0. |
+| dependencies | 2026-11-10 (3rd visit) | First run, at develop 9371456. Suite green on 4.0.9 (current lock), 4.1 (all gems updated), and with breaker_machines 0.13.2. Zeitwerk eager-load NameError on DDQ (F-38, issue #15); undeclared bundled gem `logger` (F-39); lock bump clean (F-40, after #11); beta bundler pin (F-41); unused mutex_m and shoulda→shoulda-context (F-42/43); F-10 floor evidence (lib parses at 3.3); optional redis (F-44). No lib deprecation warnings under -W:deprecated; suite passes with frozen string literals forced on. |
 | adoption | 2026-11-10 (2nd visit) | First run, at develop 9371456. `mkdocs build --strict` clean; memory examples run. `:redis_queue` transport + `examples/redis_queue/` + `docs/transports/redis-queue.md` all documented but nonexistent (F-24/25/26, needs decision); FileTransport unregistered so `create(:file)`→nil (F-27, issue #12); README `Serializer::JSON` casing NameError (F-28); CHANGELOG/tag drift + dup `[0.0.1]` (F-29/30); no llms.txt (F-31). Broken `<string>` docs homepage tag (F-32, issue #13); dead test debug code (F-33/34, issue #14). Obvious-yes: F-27, F-30, F-32, F-33/34. |
-| quality | n/a | Not yet run. No `.rubocop.yml`. |
+| quality | 2026-11-10 (3rd visit, brief) | flog/flay/rubocop Lint (default config); reek not run. Flaky timing test (F-48); triplicated transport `logger` (F-49); dup circuit-stats hash (F-50); dead branch (F-51); empty metaclass (F-52). Hotspots: Messaging#publish 117.6, Base#initialize 98.9, Dispatcher#route 92.6. Improver read dispatcher/DDQ/circuit breaker: F-53–F-59. |
 
 Dead-code scan last covered commit: 9371456 (develop, 2026-11-10; `lib/` only, brief)
 
@@ -72,3 +72,30 @@ Dead-code scan last covered commit: 9371456 (develop, 2026-11-10; `lib/` only, b
 - Note (C-3): `.travis.yml` (dead, targets Ruby 2.6.0) is tracked and would ship (F-7 missed it); PR #11 already deletes it. No separate finding.
 - Note (C-4/deps re-check): new `bundle outdated` since last visit — `activesupport 8.1.4→8.1.4.1` (security, see S-5 local note), `prism 1.9.0→2.1.0` (major), `shoulda-matchers 4.5.1→8.0.1` (major, dev/test only). Known-still-outdated: breaker_machines 0.21.2→0.24.1, chrono_machines 0.11.0→0.12.1, hashie 5.1.0→5.2.0, minitest 6.0.6→6.1.0, redis-client 0.30.1→0.31.0. Dependabot alerts disabled; no `.github/dependabot.yml`.
 - S-5 update: the activesupport advisories now have a shipped fix (`>= 8.1.4.1`), and the dep is a *runtime* dep declared unpinned (`gemspec:40`, loaded at `lib/smart_message.rb:14-19`), so this is broader than "dev lockfile only." Details held locally. Status: open (details in `notes/security/smart_message.md`).
+
+### 2026-11-10 (third visit; dependencies audit + brief quality pass + improver, develop 9371456)
+
+- F-38: gem cannot be eager-loaded: `ddq.rb` defines `SmartMessage::DDQ` but `Zeitwerk::Loader.for_gem` (`lib/smart_message.rb:24-27`) has no inflection, so `Zeitwerk::Loader.eager_load_all` raises `NameError: uninitialized constant SmartMessage::Ddq` (breaks a Rails production boot). Fix: `loader.inflector.inflect("ddq" => "DDQ")` + eager-load test; verified green in scratch. Also found by the improver. Status: issue #15.
+- F-39: `logger` is required (`logger/default.rb:5`) but undeclared; it's a bundled (not default) gem since Ruby 4.0 and resolves only transitively. Fix: `spec.add_dependency 'logger'`. Status: open, verified (gemspec PR, not low risk).
+- F-40: `bundle update --all` (breaker_machines 0.24.1, chrono_machines 0.12.1, activesupport 8.1.4.1, hashie 5.2.0, minitest 6.1.0, prism 2.1.0) keeps the suite at 316/940/0F/0E/27S; redis-client is pinned by redis 6.0.0. chrono_machines 0.12.1 adds `rb_sys`. Status: open, verified; wait for #11 (also edits `Gemfile.lock`).
+- F-41: `Gemfile.lock` says `BUNDLED WITH 4.1.0.beta2`; Ruby 4.0 contributors and CI auto-install a prerelease bundler. Status: needs Dewayne's decision (his local Ruby would rewrite it).
+- F-42: dev dependency `mutex_m` (`gemspec:53`) unused anywhere. Status: open, verified (pair with F-43).
+- F-43: dev dependency `shoulda` can be `shoulda-context` (tests use no matchers); drops the shoulda-matchers 4.5.1 pin. Verified green. Status: open, verified.
+- F-10 update: lib parses under the 3.3 grammar and the suite is green with breaker_machines 0.13.2, so the coherent floors are `>= 3.3` or `>= 4.0`; `>= 3.0.0` is wrong either way. Still needs Dewayne's decision.
+- F-44: `redis` is a hard runtime dep but only loaded lazily (`transport/redis_transport.rb:5`, `ddq/redis.rb:143`). Same decision as F-5. Status: needs Dewayne's decision.
+- F-45: every require loads `active_support/core_ext/object/try` + `log_subscriber` (`lib/smart_message.rb:15-19`) only for dev-only `amazing_print`. Status: needs Dewayne's decision (comment says deliberate).
+- F-46: Ruby 4 cosmetic cleanup: redundant `require 'set'` (3 files), misplaced `# encoding: utf-8` in 42 files, `lib/simple_stats.rb` missing frozen_string_literal. Status: open, low value.
+- F-47: `-w` warnings: indentation mismatch `transport/stdout_transport.rb:16`, unused `e` `transport/file_operations.rb:95`. Status: open, trivial.
+- F-48: flaky wall-clock test `test_concurrent_proc_handler_execution` (`test/proc_handler_integration_test.rb:362`), failed 2/5 full runs. Fix: assert overlap, not finish order; rule out a pool cause first. Status: open, verified (test-only, obvious yes).
+- F-49: three identical private `logger` methods in FileTransport mixins (`async_publish_queue.rb:14`, `fifo_operations.rb:14`, `file_watching.rb:12`) override `Transport::Base#logger`. Status: open, verified.
+- F-50: duplicated circuit-stats hash (`dispatcher.rb:269`, `transport/base.rb:134`). Status: open, low.
+- F-51: both branches of `Configuration#default_logger` (`configuration.rb:126-132`) return `Logger::Null.new`. Status: open, trivial.
+- F-52: empty `class << self` with a TODO (`dispatcher.rb:524-526`). Status: open, trivial.
+- F-53: `enable_deduplication!` on a subclass leaves dedup silently off: defaults are set only on `Base` (`deduplication.rb:13-20`), subclass `ddq_config` is all nil, `dispatcher.rb:458` rescues the nil `.merge`. Status: issue #16.
+- F-54: Redis DDQ never evicts from its lookup SET: `LTRIM` runs in `MULTI` before the `llen > size` check (`ddq/redis.rb:52-74`); size 3 + adds a..e → `contains?("a")` true, count 5. Memory backend correct. Fix: LPUSH, read overflow via LRANGE, SREM, LTRIM. Status: open, verified by improver (needs Redis).
+- F-55: `CircuitBreaker.stats`/`.available?` (`circuit_breaker.rb:129-150`) always raise NoMethodError (`state` etc. not on BreakerMachines::Circuit). Status: issue #17.
+- F-56: Redis DDQ ignores documented `redis_url:`/`redis_db:` (`ddq/redis.rb:18,141-144`; docs `README.md:306`, `message-deduplication.md:102-104`); silently connects to localhost db 0. Status: open, verified by improver.
+- F-57: `Dispatcher#route` nil check on `@subscribers[klass]` (`dispatcher.rb:204`) can never fire (hash default block) and inserts an empty entry per routed unsubscribed class; "disoatcher" typo at `:10`. Status: open, low.
+- F-58: public `Dispatcher#worker_task_completed` (`dispatcher.rb:71-73`) looks like a getter but increments the pool's completed counter; no callers. Status: needs Dewayne's decision (remove vs deprecate).
+- F-59: undocumented debug helpers `Dispatcher#pool` (instance_variable_get), `#what_can_i_do?`, and `#status`'s dead NoMethodError fallback (`dispatcher.rb:43-64`). Status: needs Dewayne's decision (keep vs remove with F-58).
+- Note: no new security findings; S-1..S-7 unchanged. F-40's lock bump would move activesupport past S-5's versions, but S-5's real fix is the unpinned runtime dep.
