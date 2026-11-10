@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 05:45 prompt_manager
+
+Seventh visit (last 2026-11-10, sixth run). develop `39827bf` at start → `9219201` at end; `develop` already existed. Audit run: **dependencies** (most overdue; clean, no new findings — bundle-audit clean, suite green 292/0/0 at 100%, only F-8/F-9 lockfile churn). Phase-2 gate clear (2 open bomberbot PRs < 3).
+
+- **New PR [#29](https://github.com/MadBomber/prompt_manager/pull/29)** (source: judgment/improver C-1 → F-26) `docs: fix git rev-parse option in code-review example` — `--toplevel` → `--show-toplevel`. Independent. **Self-merged into develop as low risk** (c2eab17).
+- **New PR [#30](https://github.com/MadBomber/prompt_manager/pull/30)** (source: judgment/improver C-2 → F-27) `docs: fix include paths in ai-agent example` — `../common/` → `../../common/` (x2). Independent. **Self-merged into develop as low risk** (b01cc88).
+- **New PR [#28](https://github.com/MadBomber/prompt_manager/pull/28)** (source: judgment/improver C-3 → F-28) `docs: update PM::VERSION example to 1.2.0`. Independent. **Self-merged into develop as low risk** (9219201).
+- **Merged after Dewayne's approval:** none.
+- **Tended:** [#25](https://github.com/MadBomber/prompt_manager/pull/25) and [#26](https://github.com/MadBomber/prompt_manager/pull/26) rebased onto develop, CI re-ran green, both still unapproved → left for Dewayne.
+- **Issues answered:** #17 — existing BomberBot comment verified accurate vs. current code; no new comment (would duplicate).
+- **Issues filed:** none (remaining findings need Dewayne's decision or are cosmetic).
+
+Taste: three docs-example fixes self-merged low risk in one visit. Toolchain: Ruby 4.1.0preview1 + bundler crashes `bundle install`; use `RBENV_VERSION=4.0.9`. Retired F-20 (both `require 'pathname'` lines are correct per-file declarations).
+
 ## 2026-11-10 05:42 robot_lab
 
 _Resumed visit. The first session (started 02:47) was cut off by the monthly spend limit just after the three builders started. This session found two branches with local work and no PRs open, and finished the three changes itself. Each got a low-effort `/code-review`; builder subagents weren't re-spawned for 14-line deletions._
