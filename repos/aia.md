@@ -10,22 +10,27 @@ AI Assistant CLI gem; depends on prompt_manager and shared_tools.
 
 ## Status
 
-_Updated 2026-11-09 (03:45 visit)._ Review queue full: #166/#167/#168 all still open and unapproved, so no new PRs this visit (skipped per the 3-open rule). Ran the first adoption audit (develop d974374, unchanged since the 02:00 visit): findings F-21..F-26, all net-new. Filed two issues — #169 (dead docs-site assets + decommissioned polyfill.io CDN, F-21/F-22) and #170 (README `/ruby` omits the `--allow-ruby-eval` gate, F-23). No issue activity and no approvals since 02:00, so the tender had nothing to merge/rebase and the responder had nothing non-duplicate to add.
+_Updated 2026-11-10 (00:59 visit)._ Queue cleared and four PRs shipped. Dewayne merged #167 (skills security) and #168 (SimpleCov) since the last visit; I rebased #166 (README config tables, resolves #163) onto develop and merged it as low risk, then built and merged two issue-resolving PRs as low risk — [#171](https://github.com/MadBomber/aia/pull/171) (README `/ruby` gate note, Fixes #170) and [#173](https://github.com/MadBomber/aia/pull/173) (test harness now fails the run on an unknown CLI option, Fixes #165). [#172](https://github.com/MadBomber/aia/pull/172) (remove dead mkdocs assets + polyfill.io, Fixes #169) is open for Dewayne — `mkdocs.yml` is docs-deploy config, not low risk. Ran the first **quality audit** (develop 90082b0): flog/flay/reek/rubocop within house thresholds; the only signal is cross-file duplication (F-27..F-36). Answered #163 on-issue. Filed [#174](https://github.com/MadBomber/aia/issues/174) (`state_setting?` is case-sensitive while directives are case-insensitive — a real chat bug) and [#175](https://github.com/MadBomber/aia/issues/175) (README documents removed/never-existent `/shell`, `/next`, `/pipeline` directives). develop now at 4cdf934.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- (none of the old items open; F-10 merged in #160. Small-PR targets for next visit once the review queue clears: issues [#169](https://github.com/MadBomber/aia/issues/169) (remove dead mkdocs assets + polyfill.io, F-21/F-22) and [#170](https://github.com/MadBomber/aia/issues/170) (one-line README `/ruby` gate note, F-23); #165 (test-harness exit, F-14); F-5 redundant per-file requires is a low-value removal.)
+- Open issues a PR can resolve: [#172](https://github.com/MadBomber/aia/pull/172) already covers #169 (awaiting Dewayne). [#174](https://github.com/MadBomber/aia/issues/174) (one-line `.downcase` fix + test) and [#175](https://github.com/MadBomber/aia/issues/175) (README drop false directive rows/examples) are the next obvious-yes targets.
+- Quality DRY refactors from the 2026-11-10 audit (each a small, provable, zero-behavior-change PR): **F-27** (`split_skills` duplicated across recruit/reskill tools → move to `SkillUtils`; strongest), F-28..F-36. See findings file.
+- F-5 redundant per-file `require 'ostruct'`/`require_relative` in test files is a low-value removal.
 
 ## Open bomberbot PRs
 
-- [#166](https://github.com/MadBomber/aia/pull/166) docs: correct README configuration tables to match defaults.yml (resolves #163/F-18) (**PR open**)
-- [#167](https://github.com/MadBomber/aia/pull/167) fix(skills): recruit and reskill tools accept only skill-directory ids (security S-2) (**PR open**)
-- [#168](https://github.com/MadBomber/aia/pull/168) test: replace deprecated SimpleCov calls (resolves #164/F-17) (**PR open**)
+- [#172](https://github.com/MadBomber/aia/pull/172) fix(docs): drop dead asset and CDN refs in mkdocs (resolves #169/F-21-F-22) (**PR open** — awaiting Dewayne; docs-deploy config, not low-risk)
 
 ## Merged bomberbot PRs
 
+- [#173](https://github.com/MadBomber/aia/pull/173) test: fail the run on an unknown CLI option (merged low risk by madbot 2026-11-10, resolves #165/F-14)
+- [#171](https://github.com/MadBomber/aia/pull/171) docs: note /ruby directive needs --allow-ruby-eval (merged low risk by madbot 2026-11-10, resolves #170/F-23)
+- [#168](https://github.com/MadBomber/aia/pull/168) test: replace deprecated SimpleCov calls (merged by Dewayne 2026-11-09, resolves #164/F-17)
+- [#167](https://github.com/MadBomber/aia/pull/167) fix(skills): recruit and reskill tools accept only skill-directory ids (merged by Dewayne 2026-11-09, security S-2)
+- [#166](https://github.com/MadBomber/aia/pull/166) docs: correct README configuration tables to match defaults.yml (merged low risk by madbot 2026-11-10, resolves #163/F-18)
 - [#160](https://github.com/MadBomber/aia/pull/160) fix: DelegateHandler and Foreman tool require their classes (merged 2026-11-07)
 - [#159](https://github.com/MadBomber/aia/pull/159) fix(test): failing test runs exit non-zero (merged 2026-11-07)
 - [#158](https://github.com/MadBomber/aia/pull/158) fix(test): every unit test file runs on its own (merged 2026-11-07)

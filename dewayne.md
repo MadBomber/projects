@@ -3,6 +3,10 @@
 Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entries; remove them when done.
 
 
+## aia
+
+- [ ] Review [aia#172](https://github.com/MadBomber/aia/pull/172) (removes two dead `mkdocs.yml` asset lines + the decommissioned polyfill.io CDN, Fixes #169). Not merged as low risk because `mkdocs.yml` is the config the docs site deploys from. The docs deploy runs on push to both `main` and `develop`, so the live site changes once this reaches those branches. The open question of whether to drop the whole MathJax/arithmatex stack (no math content found in `docs/`) is in `inbox.md`. (added 2026-11-10)
+
 ## ragdoll
 
 - [ ] Review [ragdoll#19](https://github.com/MadBomber/ragdoll/pull/19) (drops `annotate`; gemspec change, so not merged as low risk). Issue #17 closes only when `develop` reaches `main`; `main` still locks Rails 8.0.3, so 8.1 reaches gem users with the next release. Say if you want the floor raised to `activerecord`/`activejob >= 8.1.4.1`. (added 2026-11-10)
