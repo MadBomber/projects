@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 01:47 scripts
+
+- `develop` already existed (bc51825); not created. Dewayne merged all five 2026-11-09 PRs (#17, #18, #20, #21, #22) with merge commits, no comments. **#22 merged into its stacked base `bomber/readme-fix-rows` two minutes after #18 had merged that branch into develop, so #22's content (e48c57a) never reached develop** and #19 stayed open. No open or closed-unmerged bomberbot PRs, so the tender wasn't run (checked directly).
+- New PRs (all independent, base `develop`; no CI and no `test/`, so "green" = proof transcript + `ruby -c`):
+  - [#25](https://github.com/MadBomber/scripts/pull/25) docs(readme): land script index fixes stranded by #22. Source: **issue #19** + approved #22. `cherry-pick -x e48c57a` + one review-fix commit; missing-row detector 21 → 0, no dangling rows; README only, 29 lines. Review hit the 3-round cap (no defects left), so **not** low risk. Fixes #19 (needs a manual close, since develop isn't the default branch).
+  - [#26](https://github.com/MadBomber/scripts/pull/26) fix: copy with FileUtils so paths with spaces work. Source: **issue #23** (F-14). Real scripts run against temp dirs with spaces: before, `cp: dir: Not a directory` and nothing copied; after, everything copied; dry-run output byte-identical. Review: 2 rounds, cap not hit, round-2 items rejected with reasons. Code change → left for Dewayne. Fixes #23.
+  - [#24](https://github.com/MadBomber/scripts/pull/24) fix(templates): raise MissingSystemEnvironmentVariable for APP_BIND. Source: **findings F-6** (judgment). NameError → intended error; 1 line; review clean in 1 round. Code change → left for Dewayne.
+- Merged (low risk): none. Merged after approval: none pending.
+- Audit: **security (first full read)** at bc51825: S-2..S-4 held locally; S-2 queued in the backlog for next visit. Quick dead-code scan 543c66a..bc51825: nothing removable.
+- Issues answered: none (both open issues are bomberbot's own, no outside comments). Issues filed: [#27](https://github.com/MadBomber/scripts/issues/27) five usage lines name non-existent scripts (F-26), [#28](https://github.com/MadBomber/scripts/issues/28) create_working_directory skips checkout on spaced paths but says Done (F-27).
+- Open bomberbot PRs now: 3 (#24, #25, #26) — next visit's queue is full until some merge.
+
 ## 2026-11-10 01:31 gem-skill
 
 - `develop` already existed (44a608c); not created. Dewayne merged #4 (F-13) on 2026-11-07. There were no open bomberbot PRs and no closed-unmerged ones, so the tender wasn't run (checked directly).

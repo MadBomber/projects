@@ -43,3 +43,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Review and merge into `develop` [gem-skill#10](https://github.com/MadBomber/gem-skill/pull/10) (bundle flag parsing, F-3/F-4; lib change, so not low risk). Note the behaviour change: `bundle skill` now exits 1 on an unknown, abbreviated or value-less flag, where before it silently ignored it. (added 2026-11-10)
 - [ ] Review [gem-skill#9](https://github.com/MadBomber/gem-skill/pull/9) (tests only, F-12). Not merged as low risk because its review loop hit the 3-round cap. Optional: `~/sandbox/git_repos/madbomber/gem-skill/.claude/skills/my_gem` in your checkout is the dangling link this leak left on 2026-09-24; it's safe to `rm`. (added 2026-11-10)
+
+## scripts
+
+- [ ] Review [scripts#25](https://github.com/MadBomber/scripts/pull/25), which re-lands the README index fixes from #22 (they merged into the stale stack branch `bomber/readme-fix-rows`, not develop). After it merges, close [#19](https://github.com/MadBomber/scripts/issues/19) by hand (`Fixes` doesn't auto-close for PRs into develop), then delete the branches `bomber/readme-fix-rows` and `bomber/readme-index-complete`. (added 2026-11-10)
+- [ ] Review [scripts#26](https://github.com/MadBomber/scripts/pull/26) (FileUtils copy, Fixes #23) and [scripts#24](https://github.com/MadBomber/scripts/pull/24) (sinatra template APP_BIND error). Both are code changes, so neither qualified for a low-risk merge. (added 2026-11-10)
+- [ ] scripts: security findings S-2..S-4 are held locally in `notes/security/scripts.md`. S-2 has a small fix that bomberbot will open next visit under a neutral title unless you say otherwise. (added 2026-11-10)
