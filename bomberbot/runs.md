@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 04:55 typed_bus
+
+**Fifth visit. skipped: review queue full.** `develop` already existed (5be35a6, unchanged); not created. Tender found #7, #8 and #9 still open, with no reviews or comments, all MERGEABLE and level with `develop`, so it changed nothing and ran no suite. With 3 open after tending, I opened no new PRs.
+
+- **Merged:** none (no approvals; none low risk, since all touch lib or the gemspec).
+- **Tended PRs:** #7, #8, #9 (verified clean, no action).
+- **Audit:** full dead-code pass at develop 5be35a6 (lib, examples, test, docs references, and the four local dependents). New F-33..F-35; improver added F-40, F-41, F-43..F-45. No security findings.
+- **Issues answered:** none needed.
+- **Issues filed (3):** [#16](https://github.com/MadBomber/typed_bus/issues/16) subscribe without a block deadlocks publish (F-41, judgment), [#17](https://github.com/MadBomber/typed_bus/issues/17) logging examples print no DEBUG (F-40, adoption), [#18](https://github.com/MadBomber/typed_bus/issues/18) three tests that can't fail (F-19, brain backlog).
+- **Inbox:** F-43 (should standalone `Channel.new` follow global config?), F-45 (`configure` with no block), a no-Bundler test CI job, merge-method mismatch between the tender's definition and the taste rule.
+- **Process:** the visit came 30 minutes after the last one, so all of phase 1 found nothing new except the audit.
+
 ## 2026-11-10 04:21 simple_flow
 
 **Third visit.** `develop` already existed (f58e221); not created. Tender found #15 and #16 merged by Dewayne (merge commits, no comments) and #17 still open and CONFLICTING. It rebuilt #17 on `develop` as one commit (112d59a); now MERGEABLE and green. 1 open after tending, so new work went ahead.
