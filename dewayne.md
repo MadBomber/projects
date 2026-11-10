@@ -67,7 +67,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## robot_lab
 
-- [ ] Merge `main` into `develop`. `develop` (8ec1d6e, VERSION 0.2.6) is 31 commits behind `main` (0.6.0) and 0 ahead, so bomberbot PRs land on stale code; bomberbot may not push `develop` itself. Until then it only builds changes in files that are identical on both branches. (added 2026-11-10)
+- [ ] Merge `main` into `develop`. `develop` (now 0304617, VERSION 0.2.6) is 31 commits behind `main` (0.6.0) and a few ahead (bomberbot merges), so bomberbot PRs land on stale code; bomberbot may not push `develop` itself. Until then it only builds changes in files that are identical on both branches. Extra reason to do this soon: develop's stale gemspec still pins `ruby_llm "~> 1.12"`, which resolves to a version carrying 3 published High ReDoS CVEs (main 0.6.0 is already on ruby_llm 2.1.1 and audits clean), so the sync also clears that. (added 2026-11-10, CVE note 2026-11-10 v2)
 - [ ] Review [robot_lab#27](https://github.com/MadBomber/robot_lab/pull/27) (untracks `.claude/settings.local.json`). Before pulling the merge into any checkout, back up that file and restore it afterwards, because pulling a commit that deletes a tracked file removes the local copy. It stays ignored after that. (added 2026-11-10)
 - [ ] Review [robot_lab#26](https://github.com/MadBomber/robot_lab/pull/26) (removes stray `temp.md` and `logfile`). It wasn't self-merged because `logfile` is neither docs nor tests. (added 2026-11-10)
 - [ ] Release the `robot_lab-*` extension gems with a core requirement that admits 0.6.0 ([robot_lab#29](https://github.com/MadBomber/robot_lab/issues/29)). (added 2026-11-10)

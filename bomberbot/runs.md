@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 06:45 robot_lab
+
+_Second visit, hours after the first (resumed-from-cutoff) visit. `develop` existed at 83b27c4; not created. develop still 1 ahead / 31 behind main, so only files identical on both branches are safe; `docs/` PRs still deploy-blocked._
+
+- Phase-2 gate clear: tender reported 2 open bomberbot PRs (< 3).
+- **New PR [#32](https://github.com/MadBomber/robot_lab/pull/32)** (source: **judgment/improver C-1 → F-19**) `test: add DelegationFuture unit tests` — new `test/robot_lab/delegation_future_test.rb`, 9 isolated tests for resolve/value/blocking/timeout/reject/`wait`-alias/readers on a lib file identical on main+develop. Independent (no stack). **Self-merged into develop as low risk** (0304617): test-only, review-clean round 1, suite 1291 → 1300 green, RuboCop clean. Proof: full `rake test` green + file run `9 tests, 0 failures`; removing `raise @error if @error` in the source turned the suite red, proving the reject path is exercised.
+- **Merged after Dewayne's approval:** none.
+- **Tended:** [#26](https://github.com/MadBomber/robot_lab/pull/26) and [#27](https://github.com/MadBomber/robot_lab/pull/27) rebased onto develop (clean, force-pushed); both still unapproved and left for Dewayne. #27's stale self-referencing SHA in its body fixed. 2 bomberbot PRs open after tending.
+- **Audit:** **dependencies** (first ever) at develop 83b27c4 / main ee0d562 — bundle-audit clean on main 0.6.0; develop's stale `ruby_llm ~> 1.12` carries 3 High ReDoS CVEs resolved by the pending sync (F-13/14/15). Improver + triage also ran; dead-code scan not rerun (last commit stays ee0d562).
+- **Issues answered:** none. #21 is Dewayne's design call (unchanged since BomberBot's prior comment); #29/#30/#31 are BomberBot's own, zero external comments, all still reproduce — nothing new to add.
+- **Issues filed:** [#33](https://github.com/MadBomber/robot_lab/issues/33) DelegationFuture#value spurious-wakeup timeout (F-16).
+- **Security:** none new (develop's ruby_llm CVEs are public and don't affect the released gem; captured as F-14, resolved by the sync).
+
 ## 2026-11-10 06:38 smart_message-transport-named_pipes
 
 - **Third visit. skipped: review queue full.** Tender: #4, #5, #8, #9, #10 still open, MERGEABLE, 0 behind, no reviews or comments; `develop` unmoved at 2a49fcc. Nothing merged, pushed, rebased. `develop` existed; not created.
