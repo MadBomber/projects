@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 04:21 simple_flow
+
+**Third visit.** `develop` already existed (f58e221); not created. Tender found #15 and #16 merged by Dewayne (merge commits, no comments) and #17 still open and CONFLICTING. It rebuilt #17 on `develop` as one commit (112d59a); now MERGEABLE and green. 1 open after tending, so new work went ahead.
+
+- **New PRs** (all independent, base `develop`, built in parallel):
+  - [#21](https://github.com/MadBomber/simple_flow/pull/21) fix(pipeline): stop `call_parallel` silently skipping steps. Fixes #12 and #13 in two commits (#13 first, because #12's validation would otherwise reject real steps). Source: brain backlog / issues. Proof: 4 new tests fail on f58e221, pass on the branch; suite green apart from the then-known timing flake; zero new RuboCop offenses. `/code-review` clean round 1. Lib change, so it waits for Dewayne. It changes behaviour on purpose: a typo'd `depends_on` now raises.
+  - [#22](https://github.com/MadBomber/simple_flow/pull/22) fix: declare `logger` and `tsort` as runtime deps. Source: adoption audit (F-19, Ruby 4 readiness). Proof: a consumer app with only `simple_flow` in its Gemfile raised `LoadError` on 4.0.9 before, and loads and runs on 4.0.9 and 4.1.0-preview1 after; a new gemspec test fails before and passes after; `gem spec` shows both runtime deps. The review hit the 3-round cap on wording only; the overrun is spelled out. Gemspec, so it waits for Dewayne.
+  - [#23](https://github.com/MadBomber/simple_flow/pull/23) test: prove thread fallback runs steps concurrently. Source: triage/improver (F-28). Proof: 19/20 isolated failures before, 0/20 after; goes red when the fallback is forced sequential or inline. Review clean within the cap. **Merged (low risk)** by bomberbot, develop 195aa58.
+- **Audit:** adoption (first run), develop f58e221. New F-19..F-27; triage, improver and builders added F-28..F-32. No security findings.
+- **Merged after approval:** none (no approvals). **Tended:** #17 (rebased, conflict cleared).
+- **Issues answered:** none needed (#12–#14 still reproduce, nothing new to say). Commented on #20 that #22 fixes its Ruby-floor line.
+- **Issues filed (3):** [#18](https://github.com/MadBomber/simple_flow/issues/18) parallel steps repeat inherited errors (F-29), [#19](https://github.com/MadBomber/simple_flow/issues/19) docs describe a sequential fallback and a nonexistent `execute_sequential` (F-20/F-21), [#20](https://github.com/MadBomber/simple_flow/issues/20) stale installation/testing pages (F-22).
+- **Inbox:** Ruby-support release with Ruby 4.0 in CI, F-26, F-30, one parallel-merge rule, shared step registration, branch cleanup.
+- **Process:** two builders stopped mid-`/simplify` to "wait" for background reviewers whose notices go to the main session, and needed a resume message each.
+
 ## 2026-11-10 04:11 scripts
 
 **Seventh visit. Tend-and-record only — skipped new PR work: review queue full.** The three PRs from the sixth run (#24, #25, #26, all targeting `develop`) are still open and unapproved; tender confirmed none approved, merged nothing, verified all three MERGEABLE and 0-behind `develop` bc51825 (no rebase/retarget/force-push needed; scripts has no CI). No bomberbot PR has been closed-without-merge, so nothing new to learn from rejections. `develop` unchanged at bc51825 (not created this visit — already existed). Per the "3+ open bomberbot PRs → skip new work" rule, opened no new PR. S-2 backlog item stays queued.
