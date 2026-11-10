@@ -10,6 +10,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 |-------|----------|--------|--------|
 | security (+dead-code) | 2026-11-10 | 8d0d2af | S-1…S-6 (5 open local/correctness, 1 unverified-theoretical); F-1…F-4 dead-code |
 | quality | 2026-11-10 | 2a49fcc | F-8…F-13 (RuboCop 137 offenses baseline; 9 test skips); F-8→issue #12, F-11→issue #11 |
+| dependencies | 2026-11-10 | 2a49fcc | F-14…F-21 (+F-22/F-23 from triage/improver); stub checked against real smart_message 0.0.17 — framework path works, README transport API doesn't; minitest 6.1.0 blocked by `~> 5.16`; Ruby floor 3.2 is EOL. F-15→#13, F-22→#14, F-16→#15 |
 
 ## 2026-11-10 — madbot — security + dead-code (first visit) — develop @ 8d0d2af
 
@@ -82,3 +83,52 @@ RuboCop 1.92.2 baseline: 137 offenses in 8 files (no gate; ties to F-6/#7). Test
   `initialize`/signal/`at_exit` path is never exercised (why F-8 went unnoticed); 9 skips, several
   of which the vendored stub Base could satisfy. status: open (judgment-heavy; not an obvious-yes
   PR). Pairs with F-8.
+
+## 2026-11-10 (visit 3) — bomberbot — dependencies audit — develop @ 2a49fcc
+
+Checked against the real smart_message 0.0.17 (scratch bundle, Ruby 4.0.9) with the stub
+`transport/base.rb` off the load path. Driven through the framework (`Msg.subscribe(proc)` +
+`msg.publish`) the transport works end to end. Suite 45 runs / 0F / 9 skips against both stub
+and real gem, but only because the tests avoid the paths below (F-13). Dead-code scan not rerun;
+last commit stays 2a49fcc.
+
+- **F-14:** README, examples, and YARD teach a transport-level API the real smart_message 0.0.17
+  doesn't support: `transport.publish(MyMessage, msg)` (README.md:66,133; examples; YARD
+  named_pipes.rb:22) raises `ArgumentError` (real `Base#publish(message)` has arity 1), and
+  `transport.subscribe(MyMessage, method(:h))` registers but every delivery fails in the real
+  dispatcher (`undefined method 'split' for an instance of Method`). status: **needs Dewayne's
+  decision** (rewrite docs to the framework API vs add transport-side adapters; taste says change
+  code, but the contract is upstream Base). verified.
+- **F-15:** `unsubscribe` looks up `@dispatcher.subscribers[message_class]` with a Class, but the
+  real dispatcher keys by String, so unsubscribing one of two handlers removes the pipe and reader
+  while the other is still subscribed (and inserts a phantom Class key). status: **issue #13**.
+  verified. Obvious-yes PR when the queue clears.
+- **F-16:** no `unsubscribe!` override — `Msg.unsubscribe!` clears the dispatcher but leaves the
+  FIFO and reader thread. status: **issue #15**. verified.
+- **F-17:** the stub Base diverges from the real 0.0.17 contract (publish arity, no-op subscribe,
+  any-key dispatcher, public receive/logger, missing serializer/unsubscribe!/circuit breakers);
+  F-14–F-16 all hide behind it. status: open (judgment-heavy; pairs with F-9/F-13). verified.
+- **F-18:** even with F-5's floor lowered to `>= 0.0.17`, a fresh resolve can't load smart_message:
+  `require 'ap'` with amazing_print only a dev dep; amazing_print 3.0 breaks on ActiveSupport
+  `try`; lumberjack 2.1 breaks the logger. Works only with `amazing_print ~> 1.6` + `lumberjack
+  ~> 1.2` pinned by the consumer. Settles F-5: lowering the floor alone ships a gem that installs
+  then crashes. status: **needs Dewayne's decision** (cross-repo release ordering). verified.
+- **F-19:** Ruby floor `>= 3.2.0` (gemspec:13, .rubocop.yml) is EOL since 2026-04-01; taste
+  (debug_me#17) says raise it. status: **needs Dewayne's decision** on `>= 3.3` vs `>= 4.0`;
+  gemspec, so sequence after #4. verified.
+- **F-20:** minitest capped `~> 5.16` in both Gemfile:11 and gemspec:39; suite passes unchanged on
+  minitest 6.1.0 (45/0F/9S). Dev deps also declared twice (Gemfile + gemspec). status: open — can't
+  be proved on `develop` until #6 lets `bundle install` resolve. verified.
+- **F-21:** the two `rescue Errno::ENXIO` branches (reader :253, writer :304-306) are unreachable —
+  the FIFOs are opened in blocking mode, so `open` blocks rather than raising ENXIO — and the
+  comment "Open pipe in non-blocking mode" (:240) doesn't match the code. Further detail held
+  locally. status: open. verified.
+- **F-22:** (triage + improver) `unsubscribe`/`disconnect` stall ~2s per idle channel and then
+  `Thread#kill` the reader, because the reader blocks in `File.open(pipe, 'r')` and never sees the
+  stop flag (1 channel 2.14s, 3 channels 4.01s). status: **issue #14**. verified.
+- **F-23:** (improver) security-adjacent change to FIFO creation; details held locally with S-3.
+  status: open (local).
+- F-10 update: with the real default JSON serializer, embedded newlines are escaped, so `"a\nb"`
+  round-trips; F-10 bites only custom serializers that emit raw newlines.
+- Ruby 4 readiness: lib clean under 4.1.0-preview1 `-W:deprecated -W`; only 3 unused-variable
+  warnings in tests.

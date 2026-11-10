@@ -2,6 +2,15 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 06:38 smart_message-transport-named_pipes
+
+- **Third visit. skipped: review queue full.** Tender: #4, #5, #8, #9, #10 still open, MERGEABLE, 0 behind, no reviews or comments; `develop` unmoved at 2a49fcc. Nothing merged, pushed, rebased. `develop` existed; not created.
+- Merged (low risk): none. Merged after approval: none.
+- Issues answered: none (#6/#7/#11/#12 have no comments from anyone).
+- Audit: **dependencies (first ever)** at 2a49fcc, F-14–F-21; triage and improver added F-22/F-23. Real smart_message 0.0.17 checked against the stub: framework path works, README's transport API doesn't (F-14, needs decision). Dead-code scan not rerun; stays 2a49fcc.
+- Issues filed: [#13](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/13) unsubscribe wrong dispatcher key (F-15), [#14](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/14) ~2s stall per channel on unsubscribe/disconnect (F-22), [#15](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/15) `unsubscribe!` leaks pipe+reader (F-16).
+- Security: nothing new remotely; F-21's stall detail and F-23 (mkfifo) held locally as S-2/S-3-adjacent, not filed publicly.
+
 ## 2026-11-10 06:24 smart_message
 
 - **Third visit. skipped: review queue full.** Tender: #9, #10, #11 still open, MERGEABLE, no reviews or comments since about 00:55; `develop` unmoved at 9371456. Nothing merged, pushed, or rebased. `develop` existed; not created.

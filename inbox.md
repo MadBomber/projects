@@ -434,3 +434,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Dedup check-then-mark race.** `route` checks the DDQ before posting and marks only after the handler succeeds, so two copies arriving together are both processed. Atomic claim, or document at-least-once? Design call.
 - **Eager-load smoke test in CI** once #15 lands, to catch future file/constant mismatches.
 - **Decisions:** F-41 (beta bundler in the lock), F-44 (make `redis` optional), F-45 (ActiveSupport loaded only for amazing_print), F-58/F-59 (remove `Dispatcher#worker_task_completed` and the debug helpers). F-10 now has evidence: lib runs on 3.3, so the floor can be `>= 3.3` or `>= 4.0`.
+
+## smart_message-transport-named_pipes (2026-11-10 visit 3)
+
+- **Queue full, third visit.** #4/#5/#8/#9/#10 unreviewed; this visit added only the dependencies audit and issues #13–#15. Ready-to-build when the queue clears: #13 (one-line fix), #14, #15, #11.
+- **F-14 — which API do the README/examples teach?** `transport.publish(MyMessage, msg)` raises `ArgumentError` against real smart_message 0.0.17 (`Base#publish(message)` is arity 1), and `transport.subscribe(MyMessage, method(:h))` registers but every delivery errors in the real dispatcher. Options: (a) rewrite README/examples/YARD to the framework API (`MyMessage.subscribe`, `msg.publish`) — recommended, since the contract lives upstream; (b) add transport-side adapters accepting those call shapes. Overlaps #10 (README) and #11 (examples).
+- **F-18 — #6 needs more than a floor change.** Even `smart_message >= 0.0.17` installs a gem that then fails to load on a fresh resolve (`require 'ap'` with amazing_print only a dev dep; amazing_print 3.0 and lumberjack 2.1 both break it). Works only with `amazing_print ~> 1.6` and `lumberjack ~> 1.2` pinned by the consumer. Recommended: release smart_message with fixed runtime deps first (its own F-37/F-45), then set this floor to that release.
+- **F-19 — Ruby floor.** `>= 3.2.0` is EOL since 2026-04-01; `>= 3.3` or `>= 4.0`? Lib is clean on 4.1.0-preview1.
+- **Test stub drift (F-17).** The vendored stub Base encodes the wrong publish/subscribe contract, which is why F-14/F-15/F-16 passed CI. Once #6/F-18 are settled, run the suite (or a smoke test) against the real gem.

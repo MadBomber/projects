@@ -13,7 +13,14 @@ files: the transport, a committed test stub `transport/base.rb`, and a `version.
 
 ## Status
 
-_Updated 2026-11-10 (visit 2): `develop` unmoved since visit 1 (2a49fcc); Dewayne hasn't reviewed
+_Updated 2026-11-10 06:38 (visit 3): **skipped new work — review queue full** (#4/#5/#8/#9/#10
+still open, unreviewed; `develop` unmoved at 2a49fcc). First **dependencies** audit (F-14…F-23):
+against the real smart_message 0.0.17, the framework path works but the transport API the README
+teaches does not (F-14), and lowering the #6 floor alone isn't enough (F-18). Filed three verified
+lib bugs: [#13](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/13) (unsubscribe wrong dispatcher key), [#14](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/14) (~2s stall per channel
+on unsubscribe/disconnect), [#15](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/15) (`unsubscribe!` leaks pipe+reader)._
+
+**Visit 2 (2026-11-10):** _Updated 2026-11-10 (visit 2): `develop` unmoved since visit 1 (2a49fcc); Dewayne hasn't reviewed
 #4/#5 yet. Queue was 2 (under the 3-cap), so new work ran. Quality audit ran (F-8…F-13); the
 richest find is a verified runtime bug — the INT/TERM signal handler crashes with `ThreadError:
 can't be called from trap context` (mutex in trap context), so graceful shutdown is broken
@@ -50,6 +57,11 @@ Well-defined items a single small PR could close.
 - **F-2:** remove vestigial `publisher_pipes` **public** `attr_reader` — public API →
   needs Dewayne's decision (inbox). (The private method is gone via #8.)
 - **F-3:** `mode` / `buffer_size` options are documented but inert → implement or remove (inbox).
+- **F-15 / [#13](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/13):** `unsubscribe` uses the Class, not `to_s`, as the dispatcher key → tears down a still-used pipe. One-line fix + test; ready PR when the queue clears.
+- **F-22 / [#14](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/14):** unsubscribe/disconnect stall ~2s per idle channel; wake the blocked reader with a nonblocking write-open + per-channel stop flag.
+- **F-16 / [#15](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/15):** add `unsubscribe!` override that removes the pipe and stops the reader.
+- **F-11 / [#11](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/11):** responder verified the hoist is behaviour-neutral (~56 lines across both examples, `ruby -wc` clean).
+- **F-14 / F-18 / F-19:** README transport API vs real Base; smart_message's own unpinned deps; Ruby floor — Dewayne's decisions (inbox).
 - **F-10:** newline framing corrupts multi-line payloads → wire-format decision (inbox).
 
 ## Open bomberbot PRs
