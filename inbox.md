@@ -392,3 +392,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-12:** `.envrc` and `Rakefile` are packaged into the released gem (the gemspec `reject` block
   omits them). Pure dev noise in a published gem. A gemspec packaging fix — fold into #4 or a
   follow-up (it overlaps #4's `spec.files` area, so not an independent PR while #4 is open).
+
+## 2026-11-10 asgard
+
+- asgard: is anything under `Asgard::` other than the `.loki` DSL and subclassing `Asgard::Base` public API? Three removals wait on it: F-3 `Doctor.duplicate_methods`, F-15 `Watch::Daemon#inbox`/`#listeners` (one line, unused anywhere), F-16 `Watch.split_glob` (test-only since 45663a4). Recommended: declare them internal and take one removal PR of about 15 lib lines.
+- asgard #10 (watch websites) open design questions, collected by the responder: `watch :task, url:` vs a separate `poll`; a new name for the one-shot command, since a hidden `watcher check` already exists (`lib/asgard/watch/commands.rb:117`, used by `Daemon.loki_valid?`); the `every:` floor; per-element vs whole-selection reporting for `select:`; snapshot retention; Thread vs Ractor poller; daemon vs `schedule` placement; whether Nokogiri/Ferrum stay optional. BomberBot also noted on the issue that `rss` needs a gemspec line under Bundler (like `tsort`).
+- asgard: `dep_result(:typo)` silently returns nil (`lib/asgard/base/dispatch.rb:162`), so `dep_result(:test_chek) == :pass` is just false. Raise when the name isn't a direct dependency? Changes behaviour for tasks called directly as methods.
+- asgard: task runtime errors print a full backtrace, while load errors get one line plus `ASGARD_TRACE`. Same rule for task dispatch? `docs/environment.md:54` documents today's behaviour, so it's your call.
+- asgard: a bare `dotenv` resolves relative to the cwd, not the project root (`docs/environment.md:101` documents the `loki_up` workaround). Resolve it against the `.loki` directory?
+- asgard docs deploy: the workflow runs `mkdocs build` without `--strict`, installs unused `mkdocs-macros-plugin` and `mike`, deploys from both `main` and `develop` (so the site shows unreleased docs), and `edit_uri` points at `main`. CI also warns `actions/checkout@v4` runs on deprecated Node 20. All docs-deploy/CI config, so yours to decide.
+- asgard: `sig/asgard.rbs` is the 4-line `bundle gem` stub and ships in the gem. Write real signatures or drop it (touches the gemspec allowlist).
+- asgard jobs edge cases noticed while fixing #16 (all already on develop): a backgrounded subshell blocks a restart while `sleep 60 &` doesn't; `survives?`/`Pid.matches?` match the script path as a substring (`tail -f .../api.sh.log` counts); `stop` runs without the start lock; `jobs list` runs `ps -A` up to twice per row.

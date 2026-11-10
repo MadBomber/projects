@@ -3,6 +3,12 @@
 Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entries; remove them when done.
 
 
+## asgard
+
+- [ ] Review [asgard#16](https://github.com/MadBomber/asgard/pull/16) (jobs start race: a start right after a job ends could say "already running" and start nothing; this is what turns macOS CI red on `develop`). Lib change, so not merged as low risk. (added 2026-11-10)
+- [ ] Review [asgard#12](https://github.com/MadBomber/asgard/pull/12) (`--doctor` reports `exit`/`abort` during `.loki` load instead of dying). Lib change. (added 2026-11-10)
+- [ ] Review [asgard#11](https://github.com/MadBomber/asgard/pull/11) (`docs/llms.txt`). Not merged as low risk: merging deploys the docs site (Pages runs on `docs/**` pushes to `develop`) and its review loop hit the cap. After merge, check https://madbomber.github.io/asgard/llms.txt is live. (added 2026-11-10)
+
 ## aia
 
 - [ ] Review [aia#172](https://github.com/MadBomber/aia/pull/172) (removes two dead `mkdocs.yml` asset lines + the decommissioned polyfill.io CDN, Fixes #169). Not merged as low risk because `mkdocs.yml` is the config the docs site deploys from. The docs deploy runs on push to both `main` and `develop`, so the live site changes once this reaches those branches. The open question of whether to drop the whole MathJax/arithmatex stack (no math content found in `docs/`) is in `inbox.md`. (added 2026-11-10)

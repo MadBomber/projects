@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-10 05:15 asgard
+
+Fourth visit (last 2026-11-07). develop e206c49 at start and end; `develop` already existed. Tender found no open bomberbot PRs: #6-#9 all merged by Dewayne without comment. CI on develop red on macos-latest (one jobs test, runs 42413020711 and 41222188591).
+
+- **New PR [#16](https://github.com/MadBomber/asgard/pull/16)** fix(jobs): restart a job whose trampoline is still exiting (source: **CI**, F-19). The first builder, briefed to fix a "PID reuse" test flake, proved it was a lib race instead (macOS PIDs are sequential; a stretched trampoline reproduces it every time) and opened nothing. A second builder fixed `State.verified?`/`survives?` to ignore the trampoline once the status is written while still counting left-behind script processes, dropped two `Pid` methods nothing else called, and made `jobs list` read the status after `verified?`. Proof: 6 targeted tests 3F+1E on develop, all green on the branch; suite 613/0F/0E; test_jobs.rb 20x green; rubocop clean. Review: round 1 caught a real regression in the first version (backgrounded subshells), fixed; cap hit at 3 rounds with nothing open. CI green 4/4. +93/-38. Not low risk (lib).
+- **New PR [#12](https://github.com/MadBomber/asgard/pull/12)** fix(doctor): report exit or abort during .loki load (source: **judgment**, F-20; docs promised it, code changed to match). Proof: new tests fail on develop (SystemExit kills the run), pass on branch; run path still exits 1; suite 613/0F/0E; end-to-end `--doctor` demo before/after. Review: cap hit at 3 rounds, trivial items fixed, scope-widening ones rejected in the PR. CI green 4/4. Not low risk (lib).
+- **New PR [#11](https://github.com/MadBomber/asgard/pull/11)** docs: add llms.txt index of the docs site (source: **brain** backlog F-12 / adoption). Plus a sync test against the `mkdocs.yml` nav. Proof: test red without the file, mutation checks, suite 615/0F, `mkdocs build --strict` clean and serves `/llms.txt`. Review: cap hit, 2 hypothetical findings left open. CI green 4/4. Not self-merged: the review loop wasn't clean, and merging deploys Pages (the workflow runs on `docs/**` pushes to `develop`).
+- None stack; all three branch from develop. Each adds one CHANGELOG `[Unreleased]` entry, so expect a rebase after the first merges.
+- Merged (low risk): none. Merged after approval: none (nothing approved was open).
+- Audit: **dead code** (first full run) at e206c49: F-15 (public but unused `Daemon` readers), F-16 (`Watch.split_glob` test-only), F-17 (test-only readers), F-18 (wrong seam comment); all removals wait on the F-3 public-API question in `inbox.md`.
+- Issues answered: #10 (watch websites, Dewayne's design): one comment correcting two facts (`rss` isn't loadable under Bundler without a gemspec line; `watcher check` is already a hidden command).
+- Issues filed: [#13](https://github.com/MadBomber/asgard/issues/13) `--doctor` exits 0 on problems (F-23), [#14](https://github.com/MadBomber/asgard/issues/14) undefined `depends_on` error doesn't name the declaring task (F-21), [#15](https://github.com/MadBomber/asgard/issues/15) CHANGELOG `[Unreleased]` has no link reference (F-22).
+- Triage put scratch under a stray `run-2026-11-10/` directory in the run dir; removed with it.
+
 ## 2026-11-10 05:13 smart_message-transport-named_pipes
 
 Second visit; `develop` unchanged since visit 1 (2a49fcc), Dewayne hadn't reviewed #4/#5. Tender found 2 open bomberbot PRs (#4, #5), neither approved, both MERGEABLE, nothing to merge — queue of 2 under the 3-cap, so new work ran. Responder: both open issues (#6/#7) are bomberbot-owned with no third-party comments, nothing to answer; #7 (CI) judged resolvable by a small PR. Ran the **quality** audit (first quality pass; findings F-8…F-13), which reproduced a real runtime bug. Phase 1 also ran triage and improver.

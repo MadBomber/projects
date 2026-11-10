@@ -10,19 +10,19 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-07 (third run)._ PR #9 adds the docs-site and issue-tracker links to the gemspec (F-14), from the first adoption audit; #8 merged. CI on develop is green.
+_Updated 2026-11-10._ Three PRs open: #16 fixes the jobs start race behind the red macOS CI on `develop`, #12 makes `--doctor` survive `exit`/`abort` in a `.loki`, #11 adds `docs/llms.txt` (F-12). First full dead-code audit ran; issues #13-#15 filed. CI on develop is red (the #16 race) until #16 merges.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- F-14: link the docs site and issue tracker from the gemspec metadata. **PR open** ([#9](https://github.com/MadBomber/asgard/pull/9))
 - F-12: add an `llms.txt` built from the README and docs site. **PR open** ([#11](https://github.com/MadBomber/asgard/pull/11))
 
 ## Open bomberbot PRs
 
 - [#11](https://github.com/MadBomber/asgard/pull/11) docs: add llms.txt index of the docs site (**PR open**, 2026-11-10)
 - [#12](https://github.com/MadBomber/asgard/pull/12) fix(doctor): report exit or abort during .loki load (**PR open**, 2026-11-10; F-20)
+- [#16](https://github.com/MadBomber/asgard/pull/16) fix(jobs): restart a job whose trampoline is still exiting (**PR open**, 2026-11-10; F-19)
 
 ## Merged bomberbot PRs
 
