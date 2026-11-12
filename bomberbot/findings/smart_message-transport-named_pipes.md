@@ -11,6 +11,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 | security (+dead-code) | 2026-11-10 | 8d0d2af | S-1…S-6 (5 open local/correctness, 1 unverified-theoretical); F-1…F-4 dead-code |
 | quality | 2026-11-10 | 2a49fcc | F-8…F-13 (RuboCop 137 offenses baseline; 9 test skips); F-8→issue #12, F-11→issue #11 |
 | dependencies | 2026-11-10 | 2a49fcc | F-14…F-21 (+F-22/F-23 from triage/improver); stub checked against real smart_message 0.0.17 — framework path works, README transport API doesn't; minitest 6.1.0 blocked by `~> 5.16`; Ruby floor 3.2 is EOL. F-15→#13, F-22→#14, F-16→#15 |
+| adoption | 2026-11-12 | b2042fc | F-24…F-32 (README/examples never ran against any smart_message — `attribute` DSL; Related Projects names nonexistent gems; gem unpublished/untagged; silent EPIPE message loss); +F-33 (improver) connect-after-disconnect; no mkdocs; no llms.txt; gem-skill blocked by #6 |
 
 ## 2026-11-10 — madbot — security + dead-code (first visit) — develop @ 8d0d2af
 
@@ -132,3 +133,51 @@ last commit stays 2a49fcc.
   round-trips; F-10 bites only custom serializers that emit raw newlines.
 - Ruby 4 readiness: lib clean under 4.1.0-preview1 `-W:deprecated -W`; only 3 unused-variable
   warnings in tests.
+
+## 2026-11-12 (visit 4) — madbot — adoption audit — develop @ b2042fc
+
+First adoption audit. Run against the real smart_message 0.0.17 (Ruby 4.0.9, scratch gems,
+lumberjack pinned ~> 1.2 per F-18) with the stub base.rb off the load path. No mkdocs.yml; no
+llms.txt; gem-skill not run (gem uninstallable/unpublished). No new security findings.
+
+- **F-24:** README "Complete Example" and both `examples/*.rb` define messages with
+  `attribute :x, :type`, which neither real smart_message 0.0.17 nor the stub provides — they die
+  at class definition (`undefined method 'attribute'`). Real DSL is `property`, and `from` is
+  required. Verified working replacement: `from`, `property`, `config { transport T }`,
+  `def self.process`, `Msg.subscribe`, `Msg.new(...).publish`. Examples' `require 'bundler/setup'`
+  also fails (#6). status: **needs Dewayne's decision** (tied to F-14: framework path vs
+  transport-side API). verified.
+- **F-25:** README "Related Projects" lists `smart_message-transport-tcp`, `-redis`, `-http`; none
+  exists (RubyGems 404, no repos). Real siblings: -lanet, -email, -rabbitmq, -nats; Redis/memory/
+  stdout/file are built into smart_message. status: **issue #19**. verified.
+- **F-26:** gem never released (no tags, RubyGems 404) but CHANGELOG has dated `[0.0.1] -
+  2025-11-13` and README says `gem install …`. status: **needs Dewayne's decision** (release;
+  blocked by #6/F-18). verified.
+- **F-27:** silent message loss under bursty publish: `write_to_pipe` rescues `Errno::EPIPE` and
+  reports success, and the reader closes/reopens the FIFO after every EOF, so a writer racing the
+  reopen loses its message. 5000 in-process publishes received 4986–4998; cross-process 2998/3000.
+  Fix: reader holds FIFO open `r+` (or dummy writer), or retry on EPIPE. Interacts with #14.
+  status: **issue #18**. verified (intermittent).
+- **F-28:** gemspec metadata thin: no `bug_tracker_uri`, `documentation_uri`,
+  `rubygems_mfa_required`; `changelog_uri` mis-indented. GitHub repo has no description/topics
+  (Dewayne-only settings). status: open, verified; small gemspec PR (never self-merged).
+- **F-29:** no `llms.txt`. status: open; sequence after F-14/F-24.
+- **F-30:** README claims "hundreds of thousands of messages per second"; measured ≈19k/s raw,
+  ≈2.7k/s through the framework (open/close per publish). status: **needs Dewayne's decision**
+  (fix docs vs code). verified.
+- **F-31:** README troubleshooting "subscribe AFTER connect" and `configure` YARD ("called by
+  #connect") are wrong for the real gem: real `Base#initialize` calls `configure`. status: open,
+  verified; fold into F-24 rewrite.
+- **F-32:** CHANGELOG `[Unreleased]` omits merged #10 (README dependency-claim fix). One line
+  under Fixed. status: open, verified; low-risk docs PR next visit.
+- **F-33:** (improver) `connect` after `disconnect` returns a dead transport: `disconnect` sets
+  `@shutdown = true` and removes the pipe directory; `connect` never clears the flag and skips
+  `configure` because `@pipe_path` is set → `connected?` false, subscribe raises
+  `Failed to create named pipe`. Fix: `@shutdown = false` + always `configure` in `connect`.
+  status: **issue #17**. verified.
+- Updates: F-12 now also ships `.github/workflows/ci.yml` (and `.envrc`, `Rakefile`) in the built
+  gem — still a one-line gemspec reject-list fix. F-4 residual: gemspec:5 still hardcodes
+  `"0.0.1"`; requiring version.rb first raises `superclass mismatch` (needs Dewayne: regex-read vs
+  separate constant). F-8: README advises SIGTERM/SIGINT for graceful shutdown — true only after
+  #12. Issue #7 resolved on develop by #9 (BomberBot commented; closing is Dewayne's).
+- Dead-code scan: no new dead code at b2042fc (F-1 removed by #8).

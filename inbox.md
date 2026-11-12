@@ -541,3 +541,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Two "concurrency" tests test a Hash, not the transport (F-27).** Delete them now, or keep them until F-11 (the "Thread-Safe" claim) is settled with a mutex?
 - **Upstream smart_message 0.0.17:** it requires `ap` without declaring it (known, F-17), and the builders also found that `CircuitBreaker.available?`/`.stats` call `breaker.state`, which breaker_machines doesn't have (it's `status`). Worth a finding on the smart_message repo.
 - **Toolchain:** in asgard's shell `RBENV_VERSION=x ruby` doesn't switch Ruby, because `~/.rbenv/versions/4.1.0-preview1/bin` is ahead of the shims on PATH. Use `rbenv exec` or prefix PATH. Two builders were caught by this.
+
+## smart_message-transport-named_pipes (2026-11-12, visit 4, madbot)
+
+- **README and examples can't run against any smart_message (F-24).** They define messages with `attribute :x, :type`; the real DSL is `property`, and `from` is required. A verified framework-path rewrite (`from`, `property`, `config { transport T }`, `def self.process`, `Msg.subscribe`, `Msg.new(...).publish`) printed the expected message on 0.0.17. Options: (a) rewrite README + examples to the framework path now (also fixes F-31's wrong "subscribe after connect" advice), or (b) first decide F-14 (support the transport-direct API the README teaches). Recommend (a); an `llms.txt` (F-29) should follow it, not precede it.
+- **The gem was never released (F-26).** No tags, RubyGems 404, yet CHANGELOG has `[0.0.1] - 2025-11-13` and README says `gem install`. Options: publish 0.0.1 once #6/F-18 settle, or mark 0.0.1 unreleased and show a `github:` Gemfile line until then.
+- **Throughput claim (F-30).** README says "hundreds of thousands of messages per second"; measured ≈19k/s raw and ≈2.7k/s through the framework (each publish opens/closes the FIFO). Replace with measured numbers + method, or improve the code (keep the write end open) first?
+- **version.rb superclass trap.** Requiring `named_pipes/version` before the transport raises `superclass mismatch for class NamedPipes`, which is also why the gemspec still hardcodes `"0.0.1"`. Options: gemspec reads VERSION by regex; or move VERSION to a constant that doesn't reopen the class (public constant change).
+- **Adoption, repo settings (Dewayne-only):** the GitHub repo has no description, topics, or homepage.
+- **Examples' `rescue Interrupt` never runs** because the library's INT trap replaces it; fold into the #12 decision.
