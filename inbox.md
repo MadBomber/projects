@@ -636,3 +636,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **1.0 removal list (F-26).** Unused public constants/methods: top-level `NotImplemented`, `HOME`, `DataFrame.normalize_keys`/`.aofh_to_hofa`/`.sanitize_key`, `Stock#update_the_dataframe` (already marked deprecated). Deprecate-then-remove?
 - **Release.** #47/#48/#49 close only when develop reaches main; RubyGems is still 0.0.38 (2025-11) while develop says 0.4.0 (F-14).
 
+
+## 2026-11-12 — htm (security audit visit)
+
+- **htm queue has been full two visits running.** #30, #31, #32 are open, MERGEABLE, unreviewed. Nothing new will be built until one is approved or closed.
+- **Issues #18 and #21 are fixed on develop (#24, #25) but still open,** because `Fixes #N` only auto-closes from `main`. Close by hand, or wait for the release merge?
+- **`HTM_ENV` is ignored by the config loader (F-54).** myway_config reads only `RAILS_ENV`/`RACK_ENV`. Fix in myway_config (read `"#{env_prefix.upcase}_ENV"`) or set the env in htm before loading? It's your gem either way.
+- **Ruby 4.1: simple_flow requires `tsort` without declaring it (F-57).** Fix in simple_flow's gemspec, or declare `tsort` in htm's?
+- **The released htm gem is 6.6 MB** (`gem fetch htm` 0.0.32): `spec.files` is `git ls-files` minus tests, so it ships 171 docs files, 98 examples (including a Rails app), `.architecture/` and dev dotfiles. An allowlist (`lib/**`, `bin/htm_mcp`, `db/**`, README/LICENSE/CHANGELOG) would shrink it a lot. Gemspec packaging is your call.
+- **Unused public error classes (F-64)** `ResourceExhaustedError`, `QueryTimeoutError`, `AuthorizationError` join the F-43/F-46/F-47 "unused public surface" decision; and `Sinatra::Middleware.store_config!` (F-65) is a public no-op.
+- **`htm_mcp` command list drifts in three places** (bin header, README, help text). Once #30 lands, generate both from one list.
+- **Security S-4–S-7 held locally** (see the 2026-11-12 03:06 htm final report). S-6 needs your decision.

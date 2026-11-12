@@ -10,13 +10,13 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-12._ Review queue full (#30–#32 open, none approved), so no PRs were opened. Ran the second dead-code audit (F-44–F-52) and filed #33 (`htm_mcp --config` database check), #34 (docs env var names) and #35 (dead private methods).
+_Updated 2026-11-12 03:30._ Review queue still full (#30–#32 open, none approved), so no PRs were opened. Ran the second security audit (F-53–F-60, three items held locally) and filed #36 (install guide calls removed methods) and #37 (rubocop not clean).
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- F-6: one autocorrectable rubocop offense in `hybrid_search.rb:324`.
+- F-6 / F-61: rubocop not clean (one offense in `hybrid_search.rb:324` plus a `.rubocop.yml` warning). Issue [#37](https://github.com/MadBomber/htm/issues/37). Three-line PR.
 - F-18: extract the duplicated working-memory eviction block in `lib/htm.rb` (improver C2).
 - F-19 / F-50: `check_database_config!` defined twice and both ignore config files, so `htm_mcp --config` can't find the database. Issue [#33](https://github.com/MadBomber/htm/issues/33).
 - F-20: `enqueue_tags_job` / `generate_tags_step` re-implement `Node#add_tags` (improver C1). Touches `lib/htm.rb` — stack on #24 or wait until it merges.
@@ -27,6 +27,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-40: `Tag#restore!` and `RobotNode#restore!` raise; soft-deleted tag names can't be reused. Issue [#28](https://github.com/MadBomber/htm/issues/28).
 - F-44/F-45: three private methods with no callers. Issue [#35](https://github.com/MadBomber/htm/issues/35). A removal; an easy next PR.
 - F-49: `htm:files:info` hand-rolls `FileSource.by_path`.
+- F-63: install guide's verification script calls removed `HTM` methods. Issue [#36](https://github.com/MadBomber/htm/issues/36) (docs-deploy, so not self-merged).
+- F-53: DB passwords with URL-reserved characters aren't encoded/decoded. Small PR with unit tests, no DB needed.
+- F-55 / F-56: `Node#nearest_neighbors(distance:)` ignored; `Tag.with_prefix` doesn't escape LIKE wildcards.
 - F-8: gemspec `required_ruby_version` floor is unreachable (plus the undeclared `logger`, F-36). Issue [#29](https://github.com/MadBomber/htm/issues/29).
 
 ## Open bomberbot PRs

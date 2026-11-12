@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 03:06 htm
+
+- `develop` already existed (b7eb5ef, unchanged); not created.
+- **Skipped new work: review queue full.** The tender found #30, #31, #32 still open, unapproved, CLEAN/MERGEABLE, 0 behind develop, no reviews or threads. No changes needed.
+- New PRs: none. Merged (low risk): none. Merged after approval: none. Tended: #30, #31, #32 (checked only).
+- Audit: security, second run (develop b7eb5ef): bundle-audit on dev and gemspec-only resolves, code re-read, throwaway PG 18. F-53–F-60; improver/triage added F-61–F-65. Four security items (S-4–S-7) held locally.
+- Issues answered: none (no new third-party comments; #8, #12, #13 are design calls).
+- Issues filed: [#36](https://github.com/MadBomber/htm/issues/36) (install guide calls removed `HTM` methods, F-63; adoption), [#37](https://github.com/MadBomber/htm/issues/37) (rubocop not clean, F-6/F-61; judgment).
+- Inbox: full queue, #18/#21 still open, F-54 HTM_ENV, F-57 tsort, 6.6 MB gem, unused error classes, htm_mcp command list drift.
+
 ## 2026-11-12 02:45 sqa
 
 - `develop` existed (5ea98c8). Since the last visit Dewayne rebase-merged [#44](https://github.com/MadBomber/sqa/pull/44), [#46](https://github.com/MadBomber/sqa/pull/46), [#52](https://github.com/MadBomber/sqa/pull/52) without comment; queue empty, so three new PRs.

@@ -8,7 +8,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-07 | first run: bundle-audit (only S-1), read of every shell-out, eval/const_get, deserialization and file read; two low items held locally |
+| security | 2026-11-12 | second run (develop b7eb5ef): bundle-audit on the dev lock (ruby_llm 1.16.0, S-1 unchanged) and on a gemspec-only resolve (clean); re-read of shell-outs, send/const_get, YAML, ENV, file reads, raw SQL, MCP inputs against a throwaway PG 18; F-53–F-60, S-4–S-6 held locally |
 | dead code | 2026-11-12 | second run: debride over lib and bin plus the cf7ec39..b7eb5ef diff; F-44–F-49; last covered commit b7eb5ef |
 | dependencies | 2026-11-11 | second run (develop b7eb5ef): Ruby 4.1-preview1/4.0.9 boot, bundle outdated, bundle-audit, gemspec floors; suite 647 green against a ruby_llm 2.2 resolve; F-34–F-39; F-2 fixed upstream, F-8 confirmed (issue #29) |
 | adoption | 2026-11-10 | first run: README/API accuracy (clean), mkdocs `--strict` build, CHANGELOG vs released tags, gemspec metadata, llms.txt check |
@@ -25,7 +25,7 @@ Dead-code scan last covered commit: b7eb5ef (2026-11-12 second run)
 - **F-3: S-1, security finding, details held locally.** Status: needs Dewayne's decision (it involves a major dependency bump).
 - **F-4: the hybrid search docstring contradicts the implementation, and issue #13 is still open.** The `HybridSearch` module header says "three independent searches", but since 4993548 (2026-02-12) the vector step only re-ranks fulltext and tag candidates. The docstring on `search_hybrid_rrf` documents this as a deliberate trade-off. Issue #13 asks for the independent-merge behaviour, which d96afdf delivered on 2025-12-30 before 4993548 reverted it. Status: needs Dewayne's decision. Either restore an independent vector CTE (`ORDER BY embedding <=> q LIMIT candidate_limit`, which can use the HNSW index) or keep rerank and fix the module docstring and docs.
 - **F-5: dead files tracked in git:** `test/caching_test.rb.bak3` and `test/ontology_test.rb.bak`. Neither matches `*_test.rb`, so they never run. Status: PR'd ([#15](https://github.com/MadBomber/htm/pull/15)), which also adds `*.bak` patterns to `.gitignore`.
-- **F-6: one rubocop offense on develop:** `lib/htm/long_term_memory/hybrid_search.rb:324`, `Layout/SpaceAroundOperators`, autocorrectable. No CI runs rubocop. Status: open (small).
+- **F-6: one rubocop offense on develop:** `lib/htm/long_term_memory/hybrid_search.rb:324`, `Layout/SpaceAroundOperators`, autocorrectable. No CI runs rubocop. Status: issue [#37](https://github.com/MadBomber/htm/issues/37) (with F-61).
 - **F-7: no test CI.** The only workflow deploys docs, so PRs get no checks. The suite needs Postgres with pgvector and pg_trgm. Status: open (a workflow with a pgvector service container would be a candidate; check with Dewayne first).
 - **F-8: `required_ruby_version >= 3.0.0` is probably stale given current dependency floors.** Status: issue [#29](https://github.com/MadBomber/htm/issues/29) (verified 2026-11-11: myway_config 0.1.2 and simple_flow 0.1.0 both need Ruby >= 3.2).
 
@@ -110,3 +110,21 @@ The review queue was full (#30–#32 open, none approved), so no PRs were built.
 - **F-50: `htm_mcp` ignores a database set in `--config`, XDG config, or the development default.** Both `check_database_config!` copies (F-19) look only at `ENV`; `HTM.config.database_configured?` is true in the same environment. The improver reproduced it. Status: issue [#33](https://github.com/MadBomber/htm/issues/33).
 - **F-51: docs list `HTM_*` env var names HTM ignores.** `docs/guides/configuration.md`, `docs/guides/mcp-server.md`, `docs/using_rake_tasks_in_your_app.md`, `docs/setup_local_database.md`, `docs/multi_framework_support.md`, `db/seed_data/README.md`. Includes the F-42 docs half. Status: issue [#34](https://github.com/MadBomber/htm/issues/34).
 - **F-52: `docs/api/htm.md` describes `forget` as permanent and confirm-required, and omits `forget_content`, `restore`, `purge_deleted`, `clear_working_memory`.** `lib/htm.rb:286` is `forget(node_id, soft: true, confirm: false)`. Status: open (docs-deploy, so not self-mergeable).
+
+### 2026-11-12 03:06 (security audit, second run, develop b7eb5ef)
+
+Review queue full (#30–#32), so nothing was built. The improver and triage added F-61–F-65.
+
+- **F-53: database passwords containing URL-reserved characters (`@ / # %`) break the connection config.** `Config#build_database_url` / `database_auth_segment` (`lib/htm/config/database.rb:217-227`) don't URL-encode the user and password, and `HTM::Database.parse_connection_url` (`lib/htm/database.rb:283-297`) doesn't decode them, so the rake/db tasks fail to authenticate with an encoded URL. Fix: `URI.encode_www_form_component` when building, decode in both parsers, unit tests (no DB needed). Status: open, verified. Extra detail held locally.
+- **F-54: `HTM_ENV` doesn't select the environment section of `defaults.yml`.** `HTM::Config.env` reads `HTM_ENV` (`config.rb:70-77`) but myway_config 0.1.2 `DefaultsLoader#current_environment` reads only `RAILS_ENV`/`RACK_ENV`. With `HTM_ENV=production` the config keeps development values (`htm_development`, pool 10). Status: needs Dewayne's decision (fix in myway_config or in htm).
+- **F-55: `Node#nearest_neighbors(distance:)` (instance method) is ignored.** `lib/htm/models/node.rb:187-206` hardcodes `<=>`; euclidean returned cosine results. Fix: reuse the class method's operator mapping (`node.rb:111-115`) with bound parameters. Status: open, verified.
+- **F-56: `Tag.with_prefix` and MCP `ListTagsTool` don't escape LIKE wildcards in the prefix.** `models/tag.rb:40-42`, `mcp/tools.rb:311`; `with_prefix("datab_se")` matched `databxse:other`. Fix: `SqlBuilder.sanitize_like_pattern`. Status: open, verified.
+- **F-57: a fresh install doesn't load on Ruby 4.1.0-preview1.** simple_flow 0.4.0 requires `tsort` without declaring it; on a gemspec-only resolve `require "htm"` raises LoadError (the dev lockfile hides it via rbs/rdoc). Status: needs Dewayne's decision (fix in simple_flow or declare in htm's gemspec); same family as F-36/#29.
+- **F-58: S-4, security finding, details held locally.** Status: open.
+- **F-59: S-5, security finding, details held locally.** Status: open.
+- **F-60: S-6, security finding, details held locally.** Status: needs Dewayne's decision.
+- **F-61: rubocop prints a config warning on every run.** `.rubocop.yml:108-110` `AllowedMethods` isn't supported by `Lint/EmptyBlock`; removing it keeps the offense count unchanged. Status: issue [#37](https://github.com/MadBomber/htm/issues/37) (with F-6).
+- **F-62: S-7, security finding, details held locally.** Status: open.
+- **F-63: the installation guide's verification script calls removed `HTM` methods** (`add_node`, `retrieve`, `memory_stats`), and a few other docs pages do too. Status: issue [#36](https://github.com/MadBomber/htm/issues/36).
+- **F-64: three public error classes are never raised.** `ResourceExhaustedError`, `QueryTimeoutError`, `AuthorizationError` (`lib/htm/errors.rb`), only referenced from generated docs and `mkdocs.yml`. Status: needs Dewayne's decision (same question as F-43/F-46/F-47).
+- **F-65: `HTM::Sinatra::Middleware.store_config!` is a public no-op** (`integrations/sinatra.rb:127-131`), and `ensure_connection!`'s `unless HTM.db` branch can't run. Also misleading YARD: `errors.rb:15-22` example and the `HTM#restore` docstring name the wrong exceptions. Status: removal needs Dewayne's decision; the YARD fix is open (small).
