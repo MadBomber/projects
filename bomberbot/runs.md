@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 06:45 smart_message-transport-named_pipes
+
+- `develop` existed (6725e5c); not created. Now at `52f8e45`.
+- **New PRs:**
+  - [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27) fix: connect after disconnect restores the transport. Fixes #17. Source: **brain/issue** (F-33). Independent (base develop). Tests fail on develop, pass on branch; suite 18/10/18 runs 0F; CI green 3.2–3.4; review round 1 found the cleanup:false dead-reader case (fixed test-first), round 2 clean; test-merges clean with #21. lib → awaiting Dewayne.
+  - [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22) docs: list real sibling transports in README Related Projects. Fixes #19. Source: **brain/issue** (F-25). README +6/−5, every link 200, built-ins verified against smart_message 0.0.17 `registry.rb`; CI green; review clean except an out-of-scope note on #6 → **held** (sqa#46 rule), not self-merged.
+  - [#26](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/26) test: assert cleanup behaviour instead of assert true. Source: **judgment** (improver, F-37). Mutation-checked, `-w` warnings gone, CI green, review clean. **Merged (low risk)** at `52f8e45`.
+- **Audit: security (+dead-code)** at 6725e5c: bundle-audit clean; S-7 new (local); S-5 resolved; F-34, F-35 (+improver F-36, F-37, F-38). Dead-code scan reached 6725e5c, nothing new.
+- **Merged after approval:** none. **Tended:** #20 (rebased → 5da9867), #21 (rebased onto #20 → 040f885), both green, unreviewed.
+- **Issues answered:** none (no outside comments; responder re-verified #12, #14, #17, #18, #19).
+- **Issues filed:** [#23](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/23) raising receive drops buffered messages (F-34), [#24](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/24) cleanup:false leaves readers (F-36), [#25](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/25) CI token permissions (F-35).
+- Open bomberbot PRs now 4: #20, #21, #22, #27.
+
 ## 2026-11-12 06:16 aia
 
 - `develop` existed (22120fa, unchanged since 02:14); not created.

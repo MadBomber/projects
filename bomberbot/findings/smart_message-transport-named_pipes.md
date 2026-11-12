@@ -8,7 +8,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 
 | audit | last run | commit | result |
 |-------|----------|--------|--------|
-| security (+dead-code) | 2026-11-10 | 8d0d2af | S-1…S-6 (5 open local/correctness, 1 unverified-theoretical); F-1…F-4 dead-code |
+| security (+dead-code) | 2026-11-12 | 6725e5c | bundle-audit clean; S-7 new (local); S-5 resolved by #4; S-1–S-4, S-6 still hold; F-34 (failing receive drops buffered messages) → #23, F-35 (CI token perms) → #25; dead-code: none new (F-1 resolved #8; F-2/F-3 hold); +F-36 → #24, F-37 → merged #26 |
 | quality | 2026-11-10 | 2a49fcc | F-8…F-13 (RuboCop 137 offenses baseline; 9 test skips); F-8→issue #12, F-11→issue #11 |
 | dependencies | 2026-11-10 | 2a49fcc | F-14…F-21 (+F-22/F-23 from triage/improver); stub checked against real smart_message 0.0.17 — framework path works, README transport API doesn't; minitest 6.1.0 blocked by `~> 5.16`; Ruby floor 3.2 is EOL. F-15→#13, F-22→#14, F-16→#15 |
 | adoption | 2026-11-12 | b2042fc | F-24…F-32 (README/examples never ran against any smart_message — `attribute` DSL; Related Projects names nonexistent gems; gem unpublished/untagged; silent EPIPE message loss); +F-33 (improver) connect-after-disconnect; no mkdocs; no llms.txt; gem-skill blocked by #6 |
@@ -182,3 +182,38 @@ llms.txt; gem-skill not run (gem uninstallable/unpublished). No new security fin
   #12. Issue #7 resolved on develop by #9 (BomberBot commented; closing is Dewayne's).
 - Dead-code scan: no new dead code at b2042fc (F-1 removed by #8).
 - Status updates (visit 4): F-11/#11 → merged low-risk [#16](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/16) at 6725e5c; F-15/#13 → PR [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20); F-16/#15 → PR [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) (stacked on #20).
+
+## 2026-11-12 (visit 5) — madbot — security + dead-code — develop @ 6725e5c
+
+Diff since 8d0d2af reviewed (lib: #5 version require, #8 helper removal; gemspec: #4; new ci.yml
+from #9). `bundle-audit check` (scratch lock, smart_message floor lowered to 0.0.17): no
+vulnerabilities. **Dead-code scan reached develop @ 6725e5c**: debride flags only public
+API/framework hooks plus `publisher_pipes` (F-2); no new dead code.
+
+Status updates this visit: **F-25 / #19** → PR open [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22). **F-33 / #17** → PR open
+[#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27). F-12 and F-32 still hold (F-32 waits until the CHANGELOG-touching PRs land).
+
+- **S-7:** security finding, details held locally. status: open (local-only).
+- **F-34:** a `receive` that raises makes the reader drop the other messages read in the same
+  buffer and sleep ~1s before reopening (catch-all `rescue` outside the `File.open` block in
+  `start_pipe_reader`). Probe: `"bad\ngood1\ngood2"` → received `["bad"]`; next write returned at
+  ~1.1s. Fix: rescue per message inside the loop + test. Same loop as #14/#18.
+  status: **issue [#23](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/23)**.
+- **F-35:** `.github/workflows/ci.yml` has no `permissions:` block (default token scope). Fix: add
+  `permissions: contents: read`. Push needs the `workflow` scope or SSH. status: **issue [#25](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/25)**.
+- **F-36:** (improver) `cleanup: false` makes `disconnect` skip stopping the reader threads too
+  (`cleanup_pipes` returns before `stop_pipe_reader`): `live readers=1` after disconnect.
+  status: **issue [#24](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/24)**. (#27 makes `subscribe` restart a dead reader after
+  reconnect but doesn't stop live ones.)
+- **F-37:** (improver) `test_cleanup_pipes_respects_cleanup_option` ended in `assert true`;
+  `test_write_after_disconnect` never asserted; three unused `pipe_name` warnings under `-w`.
+  status: **merged (low risk) [#26](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/26)** at 52f8e45.
+- **F-38:** (improver) unreachable `Errno::ENXIO` rescues (named_pipes.rb reader/writer; both opens
+  are blocking) and the wrong "non-blocking mode" comment — extends F-21. status: open; hold until
+  the #14 reader rework decides whether a nonblocking open returns.
+
+Re-confirmation at 6725e5c: S-1–S-4, S-6 still present; S-5 resolved by #4 (4470127); F-1
+resolved by #8; F-2, F-3 hold (needs Dewayne's decision); F-4 lib part resolved by #5, gemspec:5
+still hardcodes `"0.0.1"` (requiring version.rb first → superclass mismatch); F-12 holds.
+F-8 note: every `NamedPipes.new` adds an `at_exit` hook holding the instance and re-sets the
+traps; folds into the #12 fix.
