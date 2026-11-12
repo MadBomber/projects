@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 05:10 htm
+
+- `develop` already existed (b7eb5ef, unchanged since the 03:06 visit); not created.
+- **skipped: review queue full.** The tender found #30, #31, #32 still open, unapproved, MERGEABLE, 0 behind develop, with no reviews or threads; nothing to do. htm has no PR CI (docs deploy only).
+- New PRs: none. Merged (low risk): none. Merged after approval: none. Tended: #30, #31, #32 (checked only).
+- Audit: quality, second run (develop b7eb5ef): flog, flay, reek 6.6.0, rubocop; F-66–F-70; F-66/F-67 reproduced on a throwaway PG 18. The improver added F-71 (gem ships 6.59 MB; 195 KB needed) and F-72; F-73 (S-8) is held locally.
+- Issues answered: none (no new comments from anyone on the 14 open issues).
+- Issues filed: [#38](https://github.com/MadBomber/htm/issues/38) (`Database.drop` misses `node_relationships`), [#39](https://github.com/MadBomber/htm/issues/39) (session settings reach one pooled connection only), [#40](https://github.com/MadBomber/htm/issues/40) (`recall` YARD default strategy).
+- Next when the queue clears: F-67 (#38), F-53, F-44/F-45 removal (#35), F-72 (#40).
+
 ## 2026-11-12 04:53 scripts
 
 - `develop` already existed (86201ce, unchanged since the 04:05 visit).

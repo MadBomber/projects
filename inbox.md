@@ -734,3 +734,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **scripts F-79:** `projxslt.rb` (names a nonexistent caller, needs an uninstalled gem): delete, move to `retirement_home/`, or keep? Same question as F-10/F-17/F-18/F-23.
 - **scripts adoption (improver):** a tiny GitHub Action running `ruby -c` on every `*.rb` and `sh -n`/`bash -n` on shell scripts would have caught several filed defects; six scripts (`c2s`, `s2c`, `camels2snakes2camels.rb`, `erd_for.rb`, …) require `mods/string_mods` from your private `lib/ruby`, so they LoadError for anyone else; overlapping families (`acronym_*`, `note`/`note_v2`, `lipsum`/`loripsum`, `ripfzf`/`ripfzfsubl`) could retire their losers to shrink the README index.
 
+## 2026-11-12 05:10 — htm (quality audit visit)
+
+- **htm queue full for the third visit running.** #30, #31, #32 are open, MERGEABLE, and unreviewed. htm's CI runs only the docs deploy, not tests on PRs, so "green" means nothing there. A test workflow with a pgvector service (F-7) would give every PR a real check.
+- **What the htm gem should ship (F-71).** It is 6.59 MB, of which 195 KB is needed. Options: (a) exclude `docs/`, `examples/`, `.architecture/` and the dev dotfiles (195 KB); (b) exclude `docs/` only and keep the examples; (c) switch to an allow-list (`lib/ db/ bin/ README LICENSE CHANGELOG .tbls.yml`). BomberBot recommends (a) or (c).
+- **htm `scripts/`: keep, convert, or delete?** `backfill_parent_tags.rb` (376 lines) and `normalize_plural_tags.rb` (335 lines) describe themselves as one-off data migrations, nothing references them, and they ship in the gem. Turn them into `htm:tags:*` rake tasks, or delete them once you're sure they've run everywhere.
+- **htm per-instance query timeout (F-66, #39).** `HTM.new(db_query_timeout:)` can't work on a shared pool as written. Keep it (`SET LOCAL` per transaction) or drop it in favour of the global setting? Same question for the ignored `db_pool_size:`.
+- **htm `Database.migrate/.migration_status/.seed(db_url)` ignore their argument (F-68).** Honor it like `drop` does, or remove it (public API)?
+- **htm `QueryCache` and `SqlBuilder` have no unit tests.** Both are pure Ruby. Hold the `QueryCache` tests until S-8 (held locally) is settled.
+

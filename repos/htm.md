@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-12 03:30._ Review queue still full (#30–#32 open, none approved), so no PRs were opened. Ran the second security audit (F-53–F-60, three items held locally) and filed #36 (install guide calls removed methods) and #37 (rubocop not clean).
+_Updated 2026-11-12 05:15._ Review queue still full (#30–#32 open, none approved), so no PRs were opened. Ran the second quality audit (F-66–F-73, one item held locally) and filed #38 (`db:reset` fails), #39 (per-connection timeout), and #40 (`recall` YARD default).
 
 ## Backlog
 
@@ -30,6 +30,10 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-63: install guide's verification script calls removed `HTM` methods. Issue [#36](https://github.com/MadBomber/htm/issues/36) (docs-deploy, so not self-merged).
 - F-53: DB passwords with URL-reserved characters aren't encoded/decoded. Small PR with unit tests, no DB needed.
 - F-55 / F-56: `Node#nearest_neighbors(distance:)` ignored; `Tag.with_prefix` doesn't escape LIKE wildcards.
+- F-67: `Database.drop` misses `node_relationships`, so `htm:db:reset` fails. Issue [#38](https://github.com/MadBomber/htm/issues/38). One line plus a test; best next PR.
+- F-72: `HTM#recall` YARD gives the wrong default strategy. Issue [#40](https://github.com/MadBomber/htm/issues/40). Three comment lines.
+- F-66: session settings applied to one pooled connection only. Issue [#39](https://github.com/MadBomber/htm/issues/39). The `connect_sqls` half is small; the per-instance timeout needs a decision.
+- F-69: MCP tools use `instance_variable_get(:@long_term_memory)` instead of the reader (small swap).
 - F-8: gemspec `required_ruby_version` floor is unreachable (plus the undeclared `logger`, F-36). Issue [#29](https://github.com/MadBomber/htm/issues/29).
 
 ## Open bomberbot PRs
