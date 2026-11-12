@@ -38,10 +38,10 @@ Well-defined items a single small PR could close.
 
 ## Open bomberbot PRs
 
-- [#5](https://github.com/MadBomber/smart_message-transport-lanet/pull/5) `bomberbot/drop-ostruct`, "test: load suite on Ruby 4 and minitest 6". Replaces the one `OpenStruct` with a `Struct` and requires `minitest/mock`. Touches test files and CHANGELOG only, 6 lines. Review clean after 2 rounds. Not self-merged, because round 1 deferred an out-of-scope note (an unused dispatcher stub), which counts as open under the sqa#46 rule. Source: finding F-3.
-- [#6](https://github.com/MadBomber/smart_message-transport-lanet/pull/6) `bomberbot/ci-tests`, "ci: run the test suite on Ruby 3.3 and 3.4". Live CI is green. Hit the 3-round review cap, and every round-3 finding was fixed. Not low risk, because it touches `.github/`. Source: finding F-12.
-- [#7](https://github.com/MadBomber/smart_message-transport-lanet/pull/7) `bomberbot/readme-api-accuracy`, "docs(readme): match examples to smart_message 0.0.17 API" (`property`, `Class.subscribe`, `message.to`, binding the transport). README only, 30 lines, MERGEABLE. Review clean after 2 rounds, but round 1 rejected 8 transport-code issues as out of scope (now F-18, F-19, S-7), so it was not self-merged. Source: improver, F-14.
+- [#8](https://github.com/MadBomber/smart_message-transport-lanet/pull/8) `bomberbot/reconnect-after-disconnect`, "fix: allow connect after disconnect". Fixes #4 (F-6). Resets `@shutdown` in `configure`; 1 lib line + 2 tests + CHANGELOG. CI green; review hit the 3-round cap with no open defects. Touches `lib/`, so not low risk. (2026-11-12)
 
 ## Merged bomberbot PRs
 
-- (none yet)
+- **merged by Dewayne** [#5](https://github.com/MadBomber/smart_message-transport-lanet/pull/5) `bomberbot/drop-ostruct`, "test: load suite on Ruby 4 and minitest 6". Replaces the one `OpenStruct` with a `Struct` and requires `minitest/mock`. Touches test files and CHANGELOG only, 6 lines. Review clean after 2 rounds. Not self-merged, because round 1 deferred an out-of-scope note (an unused dispatcher stub), which counts as open under the sqa#46 rule. Source: finding F-3.
+- **merged by Dewayne** [#6](https://github.com/MadBomber/smart_message-transport-lanet/pull/6) `bomberbot/ci-tests`, "ci: run the test suite on Ruby 3.3 and 3.4". Live CI is green. Hit the 3-round review cap, and every round-3 finding was fixed. Not low risk, because it touches `.github/`. Source: finding F-12.
+- **merged by Dewayne** [#7](https://github.com/MadBomber/smart_message-transport-lanet/pull/7) `bomberbot/readme-api-accuracy`, "docs(readme): match examples to smart_message 0.0.17 API" (`property`, `Class.subscribe`, `message.to`, binding the transport). README only, 30 lines, MERGEABLE. Review clean after 2 rounds, but round 1 rejected 8 transport-code issues as out of scope (now F-18, F-19, S-7), so it was not self-merged. Source: improver, F-14.
