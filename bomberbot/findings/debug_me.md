@@ -132,8 +132,8 @@ Dead-code scan last covered commit: 200c10f (develop, 2026-11-12)
 
 Status re-check at 0d7fb14: develop now contains all of main (64 ahead, 0 behind), so #30 is **resolved** (Copilot #28/#32 closed #13/#17). Confirmed fixed on develop: #2/#24, #9/#23, #16/#20, #26, #29, #37 ([#43](https://github.com/MadBomber/debug_me/pull/43)), and the test_files half of #8. Still open: #8 (minitest 6), #18, #22, #28 follow-up, #31, #34 (now covered by issue #45).
 
-38. **Empty-block discovery reads constants lexically, not from the receiver's class; autoloaded constants are bypassed.** Status: issue [#44](https://github.com/MadBomber/debug_me/issues/44).
-39. **`debug_me {}` crashes when self is a BasicObject and lists the wrong locals through a Delegator.** Status: issue [#45](https://github.com/MadBomber/debug_me/issues/45).
+38. **Empty-block discovery reads constants lexically, not from the receiver's class; autoloaded constants are bypassed.** Status: issue [#44](https://github.com/MadBomber/debug_me/issues/44); PR'd ([#52](https://github.com/MadBomber/debug_me/pull/52)).
+39. **`debug_me {}` crashes when self is a BasicObject and lists the wrong locals through a Delegator.** Status: issue [#45](https://github.com/MadBomber/debug_me/issues/45); PR'd ([#52](https://github.com/MadBomber/debug_me/pull/52)).
 40. **CI uses actions/checkout@v4, which runs on the deprecated Node 20 runtime.** Status: issue [#46](https://github.com/MadBomber/debug_me/issues/46).
 41. **The Ruby 3.2 floor is EOL; raise it to 3.3?** Status: needs Dewayne's decision (inbox).
 - S-36: security finding, details held locally. Status: needs Dewayne's decision.
@@ -144,9 +144,9 @@ Triage/improver extras (not audit findings):
 42. **`skip1:`/`skip2:` do nothing when `header: false`,** although the docs promise blank lines. Status: PR'd ([#48](https://github.com/MadBomber/debug_me/pull/48)).
 43. **Ten tests fail with `DEBUG_ME=false` again** (regression of #19). Status: merged ([#49](https://github.com/MadBomber/debug_me/pull/49), low risk).
 44. **api-reference mixed up `levels:` pairs and `:backtrace` frame strings** (from our #41). Status: merged ([#47](https://github.com/MadBomber/debug_me/pull/47), low risk).
-45. **Two tests in tests/debug_me_test.rb (~519-554) can never fail** (mutation-proven). Status: open (small removal PR candidate).
-46. **README "only local variables" example omits `cconst: false`,** so it also prints constants. Status: open (small docs PR candidate).
-47. **Suite output is noisy:** WorldView#six writes to stdout (no `file: nil`) and constants A/B/C are redefined with warnings. Status: open.
+45. **Two tests in tests/debug_me_test.rb (~519-554) can never fail** (mutation-proven). Status: PR'd ([#51](https://github.com/MadBomber/debug_me/pull/51)).
+46. **README "only local variables" example omits `cconst: false`,** so it also prints constants. Status: merged ([#50](https://github.com/MadBomber/debug_me/pull/50), low risk, develop 8fbbbde).
+47. **Suite output is noisy:** WorldView#six writes to stdout (no `file: nil`) and constants A/B/C are redefined with warnings. Status: issue [#53](https://github.com/MadBomber/debug_me/issues/53).
 48. **The `skip1:`/`skip2:` comments in DebugMeDefaultOptions are misleading.** Status: open (fold into a docs PR).
 49. **The gemspec `Dir[]` file list depends on the cwd** (related to S-37). Status: open.
 50. **CHANGELOG has no line for the #38/#41/#47 docs fixes, and docs/changelog.md has drifted from CHANGELOG.md.** Status: open (adoption).
@@ -159,16 +159,16 @@ Triage/improver extras (not audit findings):
 Re-checks at 200c10f: #5, #6, #24 fixed on develop. Still open: #7, #46, #48, #50, #51. mkdocs `--strict` clean; README examples run as documented on Ruby 4.1.0preview1; every ruby fence parses except deliberate signature notation.
 
 53. **The live docs site, GitHub landing README and `changelog_uri` are all stale.** `origin/main` is 87ef4b7 (66 behind develop); the deploy workflow fires only on pushes to `main` and last deployed 10d92b1 (on neither branch). The live site still shows fixed bugs (#3, #5). Fix: sync/release develop to main, or `workflow_dispatch` the deploy. Status: needs Dewayne's decision (inbox).
-54. **README puts shell commands inside ruby fences** (README.md:25, :46, :52) and has the heading "Examples Usage". Status: PR'd (see 2026-11-12 run).
-55. **README never links to the docs site.** Status: PR'd (see 2026-11-12 run).
-56. **Contributing docs don't name a target branch; README.md:348 has a `[my-github-username]` placeholder fork URL.** The placeholder is PR'd; whether outside PRs should target `develop` needs Dewayne's decision (inbox).
+54. **README puts shell commands inside ruby fences** (README.md:25, :46, :52) and has the heading "Examples Usage". Status: merged ([#50](https://github.com/MadBomber/debug_me/pull/50)).
+55. **README never links to the docs site.** Status: merged ([#50](https://github.com/MadBomber/debug_me/pull/50)).
+56. **Contributing docs don't name a target branch; README.md:348 has a `[my-github-username]` placeholder fork URL.** The placeholder is fixed by [#50](https://github.com/MadBomber/debug_me/pull/50) (merged); whether outside PRs should target `develop` needs Dewayne's decision (inbox).
 57. **gem-skill readiness verified at the deterministic stage:** `gem_skill.rb sources debug_me` uses metadata + README + CHANGELOG only (14,805 chars); docs/ never feeds the skill. Status: informational; depends on README/CHANGELOG findings.
 58. **The docs deploy workflow has dead parts:** an unreachable `else` arm in the Deploy step, unused pip installs (`mkdocs-macros-plugin`, `mike`), and an unread `extra.version: 1.1.4` in mkdocs.yml:93. Status: open; deploy config is never low risk, fold into #53's decision.
 
 Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing removable in 0d7fb14..200c10f):
 
 59. **docs/changelog.md lists invented releases** (0.1.0–0.9.0, a 1.0.0 dated 2024-01-01) and CHANGELOG.md has wrong dates for 1.0.4–1.1.2 plus no 1.1.3 section (extends #7/#50). Status: needs Dewayne's decision (which file is the source of truth; inbox).
-60. **'produces no output when $DEBUG_ME is false' can't see output** (passes `file: nil`); mutation-proven. Status: PR'd with #45 (see 2026-11-12 run).
-61. **Four docs pages say `debug_me {}` shows "all local variables"** (README:91, getting-started.md:93-101, usage.md:39-47, api-reference.md:108-109); at top level it also dumps constants. Status: README half PR'd; the rest waits on #22's decision.
-62. **`v.to_s == 'backtrace'` (lib/debug_me.rb:74, :90) treats any object whose to_s is "backtrace" as the backtrace marker,** unlike line 99's Symbol/String check. Status: open (edge case).
+60. **'produces no output when $DEBUG_ME is false' can't see output** (passes `file: nil`); mutation-proven. Status: PR'd ([#51](https://github.com/MadBomber/debug_me/pull/51)).
+61. **Four docs pages say `debug_me {}` shows "all local variables"** (README:91, getting-started.md:93-101, usage.md:39-47, api-reference.md:108-109); at top level it also dumps constants. Status: README half merged ([#50](https://github.com/MadBomber/debug_me/pull/50)); the rest waits on #22's decision.
+62. **`v.to_s == 'backtrace'` (lib/debug_me.rb:74, :90) treats any object whose to_s is "backtrace" as the backtrace marker,** unlike line 99's Symbol/String check. Status: issue [#54](https://github.com/MadBomber/debug_me/issues/54).
 63. **docs/contributing.md mentions a nonexistent PR template and shows a Minitest::Test skeleton while every test is spec style.** Status: open, low value.

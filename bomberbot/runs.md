@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 08:54 debug_me
+
+- `develop` already existed (200c10f); not created. Now at 8fbbbde.
+- **New PRs** (all independent, base develop, CI green on 3.2–4.0, review clean):
+  - [#52](https://github.com/MadBomber/debug_me/pull/52) fix: read discovered names from the block's receiver. Fixes #44, #45. Source: **issue**. 5 new tests fail on develop, pass on branch; suite 82 runs 0F in both DEBUG_ME modes; review round 1 flagged the shadowed-constant change (kept: it is #44's point, now pinned by a test), round 2 clean. lib → awaits Dewayne.
+  - [#51](https://github.com/MadBomber/debug_me/pull/51) test: make the disabled $DEBUG_ME test catch output. Source: **dead code** (findings #45, #60). Mutation-proven; 75 runs 0F both modes; review clean. Deletes two tests, so **not** self-merged.
+  - [#50](https://github.com/MadBomber/debug_me/pull/50) docs: correct README examples and install fences. Source: **adoption** (findings #46, #54, #55). **Merged (low risk)** → develop 8fbbbde (README only, 24 lines).
+- Merged after Dewayne's approval: none.
+- Tended: [#48](https://github.com/MadBomber/debug_me/pull/48) rebased onto 200c10f, CI green, still awaits review. No orphan bot branches; develop CI green.
+- Audit: **adoption** (develop 200c10f), findings 53–58; improver added 59–63; dead-code read reached 200c10f.
+- Issues answered: none (all open issues are BomberBot's own, no comments).
+- Issues filed: [#53](https://github.com/MadBomber/debug_me/issues/53) (findings #47), [#54](https://github.com/MadBomber/debug_me/issues/54) (findings #62).
+- Blocked: issue #46 (workflow bump) can't be pushed; the token lacks `workflow` scope (dewayne.md).
+- Review: no /simplify or /code-review in this harness; builders used a foreground code-review agent.
+
 ## 2026-11-12 00:41 kbs
 
 - **Resumed visit.** The first session (00:41) was cut off when the account's API spend limit stopped every agent mid-work; this session (08:38) finished it.

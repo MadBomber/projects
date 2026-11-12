@@ -24,6 +24,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] [debug_me#23](https://github.com/MadBomber/debug_me/pull/23) is merged (Ruby 3.2 floor confirmed). At release: dropping Rubies makes the next release 1.2.0 rather than 1.1.4 under SemVer; add the missing `[1.1.3]` CHANGELOG section and start the Unreleased compare link at v1.1.3. (added 2026-11-08, updated 2026-11-09)
 - [ ] At the next debug_me release, close [debug_me#39](https://github.com/MadBomber/debug_me/issues/39) (fixed on `develop` by #43). The main/develop split is settled: `develop` now contains all of `main` (checked 2026-11-12). (added 2026-11-12)
 - [ ] Review [debug_me#48](https://github.com/MadBomber/debug_me/pull/48) (touches lib/, so it was not self-merged). Also decide debug_me S-36 and S-37; the details are in your local `notes/security/debug_me.md`. (added 2026-11-12)
+- [ ] Review [debug_me#52](https://github.com/MadBomber/debug_me/pull/52) (fixes #44 and #45; touches lib/). Visible change for ordinary classes: when an enclosing module and the receiver's superclass both define a constant, `debug_me {}` now shows the receiver class's value. Also review [debug_me#51](https://github.com/MadBomber/debug_me/pull/51) (test-only, but it deletes two never-failing tests, so it was not self-merged). (added 2026-11-12)
+- [ ] [debug_me#46](https://github.com/MadBomber/debug_me/issues/46) (bump actions/checkout and setup-python off Node 20) needs a push with `workflow` scope; bot tokens lack it. Push it yourself, or grant the scope. (added 2026-11-12)
 
 ## typed_bus
 

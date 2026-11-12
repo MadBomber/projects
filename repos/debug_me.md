@@ -10,7 +10,7 @@ Debug output gem, small and stable.
 
 ## Status
 
-_Updated 2026-11-12 02:30._ New PR [#48](https://github.com/MadBomber/debug_me/pull/48) makes `skip1:`/`skip2:` work with `header: false` (touches lib, awaits Dewayne). Merged as low risk: [#47](https://github.com/MadBomber/debug_me/pull/47) (api-reference backtrace format) and [#49](https://github.com/MadBomber/debug_me/pull/49) (suite green under `DEBUG_ME=false`). **The main/develop split is over:** develop now contains all of main (64 ahead, 0 behind), with Copilot's fixes cherry-picked; findings #30 is settled. Filed issues [#44](https://github.com/MadBomber/debug_me/issues/44), [#45](https://github.com/MadBomber/debug_me/issues/45), [#46](https://github.com/MadBomber/debug_me/issues/46). Only #39 (fixed on develop by #43) and the new issues are open. **PR open**
+_Updated 2026-11-12 09:10._ Second visit today: opened [#52](https://github.com/MadBomber/debug_me/pull/52) (fixes #44 and #45; touches lib, awaits Dewayne) and [#51](https://github.com/MadBomber/debug_me/pull/51) (tests: the disabled-output test now catches leaks; deletes tests, so awaits Dewayne), and merged [#50](https://github.com/MadBomber/debug_me/pull/50) (README accuracy) as low risk. [#48](https://github.com/MadBomber/debug_me/pull/48) was rebased and is still waiting. Filed [#53](https://github.com/MadBomber/debug_me/issues/53) and [#54](https://github.com/MadBomber/debug_me/issues/54). The live docs site and GitHub landing README stay stale until develop reaches main (findings #53). **PR open**
 
 ## Backlog
 
@@ -20,10 +20,13 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#48](https://github.com/MadBomber/debug_me/pull/48) fix: skip1/skip2 add blank lines when header is off (triage; docs promised it). **PR open**
+- [#48](https://github.com/MadBomber/debug_me/pull/48) fix: skip1/skip2 add blank lines when header is off (triage; docs promised it). Rebased onto 200c10f 2026-11-12. **PR open**
+- [#52](https://github.com/MadBomber/debug_me/pull/52) fix: read discovered names from the block's receiver (Fixes #44, #45). lib/, CI green, merges clean with #48 and #51. **PR open**
+- [#51](https://github.com/MadBomber/debug_me/pull/51) test: make the disabled $DEBUG_ME test catch output (findings #45, #60). Tests only but deletes two tests. **PR open**
 
 ## Merged bomberbot PRs
 
+- [#50](https://github.com/MadBomber/debug_me/pull/50) docs: correct README examples and install fences (findings #46, #54, #55). **Merged (low risk)** by madbot 2026-11-12 → develop 8fbbbde.
 - [#49](https://github.com/MadBomber/debug_me/pull/49) test: keep the whole suite green under DEBUG_ME=false. **Merged (low risk)** by madbot 2026-11-12 → develop 200c10f.
 - [#47](https://github.com/MadBomber/debug_me/pull/47) docs: distinguish levels: pairs from :backtrace frame strings. **Merged (low risk)** by madbot 2026-11-12 → develop b5d5323.
 - [#43](https://github.com/MadBomber/debug_me/pull/43) chore: add documentation_uri and https homepage to gemspec (issue #39). Merged 2026-11-10 (rebase) → 0d7fb14.
@@ -46,9 +49,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot issues
 
-- [#44](https://github.com/MadBomber/debug_me/issues/44) Empty-block discovery reads constants lexically, not from the receiver's class (findings #38). Filed 2026-11-12.
-- [#45](https://github.com/MadBomber/debug_me/issues/45) `debug_me {}` fails or shows the wrong locals when self is a BasicObject or Delegator (findings #39). Filed 2026-11-12.
-- [#46](https://github.com/MadBomber/debug_me/issues/46) CI actions target the deprecated Node.js 20 runtime (findings #40). Filed 2026-11-12.
+- [#44](https://github.com/MadBomber/debug_me/issues/44) Empty-block discovery reads constants lexically, not from the receiver's class (findings #38). Filed 2026-11-12. **PR open** #52.
+- [#45](https://github.com/MadBomber/debug_me/issues/45) `debug_me {}` fails or shows the wrong locals when self is a BasicObject or Delegator (findings #39). Filed 2026-11-12. **PR open** #52.
+- [#46](https://github.com/MadBomber/debug_me/issues/46) CI actions target the deprecated Node.js 20 runtime (findings #40). Filed 2026-11-12. Blocked for bots: the token lacks `workflow` scope (dewayne.md).
+- [#53](https://github.com/MadBomber/debug_me/issues/53) Test suite output is noisy (findings #47). Filed 2026-11-12.
+- [#54](https://github.com/MadBomber/debug_me/issues/54) Any object whose to_s is "backtrace" is treated as the :backtrace marker (findings #62). Filed 2026-11-12.
 - [#39](https://github.com/MadBomber/debug_me/issues/39) gemspec omits `documentation_uri` and uses an http:// homepage (findings #37). **Fixed on develop by #43** (2026-11-10); stays open until a release reaches main.
 
 ### Closed since last visit (by Copilot PRs on `main`, merged by Dewayne)
