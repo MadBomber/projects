@@ -886,3 +886,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **One reader-loop rework.** #14, #18, #23, F-38 and F-43 all live in `start_pipe_reader`'s ~30-line blocking-open loop. One designed change (hold the FIFO open `r+` or keep a dummy writer, per-channel stop flag, per-message rescue in an extracted `deliver_lines`) beats four patches on the same lines. OK to do it as one PR after the queue clears?
 - **Shared ENV pattern across transports.** sm-transport-nats (`nats.rb:28-29`) and -rabbitmq (`rabbitmq.rb:23`) also read ENV inside a load-time constant (#28 here). Fix each the same way, or give smart_message's `Transport::Base` an ENV overlay hook?
 - **CI against the real smart_message** once #6 is settled: the stub Base hid F-14/F-15/F-16; a job against the released Base would have caught each.
+
+## ragdoll (2026-11-12 08:18 visit)
+
+- **Cut a release from develop?** RubyGems still has 0.1.12; develop is `VERSION = "0.2.0"` with ~10 `[Unreleased]` fixes, and #11, #13, #21, #22, #23 are fixed on develop but stay open until develop reaches `main`. Worth waiting for #30 (ships the LICENSE) — BomberBot (triage)
+- **F-63 `Ragdoll.hybrid_search` docs vs code.** YARD documents `semantic_weight:`/`text_weight:` that the client silently ignores, and an `Array<Hash>` return that is really a Hash. Per your "change the code, not the docs" rule: implement the weights, or is a docs correction acceptable here?
+- **F-65 `rake db:rollback`** is listed in `rake -T` but does nothing. Implement, remove, or leave?
+- **`db:*` tasks ignore config.** Postgres `db:create`/`db:drop` hard-code `ragdoll_development` and create a `ragdoll` role; `db:truncate` only clears two of the tables. A small rewrite around `Ragdoll.config.database` pairs with #36 and F-62 (drop MySQL branches).
+- **Retire `lib/ragdoll.rb`'s ~20 hand-written delegators** in favour of `SingleForwardable` to `Ragdoll::Core`: same public API, ~200 fewer lines, and no more doc drift (F-31, F-63). Public surface, so your call.
+- **F-60:** `configure_ruby_llm` advertises `:azure`/`:huggingface`, which ruby_llm doesn't support. Remove them or raise a clear error?

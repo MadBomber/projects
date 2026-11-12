@@ -10,11 +10,11 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 |---|---|---|
 | security | 2026-11-10 | develop b0a7afc. bundle-audit (ruby_llm only, S-1 remainder), shell-outs, YAML/Marshal, ENV, file/upload paths, raw SQL, outbound HTTP. S-2 reconfirmed open; #16's search-filter hardening verified. New F-28, F-29, S-3. |
 | dead code | 2026-11-10 | develop 1ba1414. Improver fresh pass: F-21/F-31/F-32 confirmed dead; F-23 `examples/temp.rb` confirmed unreferenced + not shipped. Nothing else provably orphaned. |
-| dependencies | 2026-11-06 | bundle outdated, bundle-audit, gemspec constraints, Ruby 4 readiness (suite green on 4.0.9). Findings S-1, F-10 to F-12. |
+| dependencies | 2026-11-12 | develop 53fc937, Ruby 4.0.9. bundle outdated, bundle-audit (ruby_llm only, S-1 remainder), gemspec vs lock, runtime-dep usage grep, full-relock suite (green CI-mode, DB skipped), Ruby 4.1 load test. F-51 re-verified; F-11 updated (ruby_llm 2.2.0); new F-55–F-60. |
 | adoption | 2026-11-10 | First formal run @ develop 1ba1414. F-35–F-43 raised; F-23 re-confirmed. README markets a Unified arch the client API doesn't use; several README API examples inaccurate; no LICENSE file; no llms.txt; version 0.2.0 un-logged. |
 | quality | 2026-11-12 | First run @ develop 53fc937. flog/flay/RuboCop Lint (rubycritic/reek not run, time-box). F-44–F-48: hybrid-search helpers duplicated in the workflow; TextGenerationService RubyLLM setup always fails; hybrid fulltext arm ignores filters; class methods under `private` are public; OpenAI org/project setters misnamed. Top flog: workflow `build_pipeline`s (238, 200), `SearchEngine#search_similar_content` (128). |
 
-Dead-code scan last covered commit: 53fc937 (2026-11-12 improver/triage pass: F-51 unused runtime deps, F-50, `Embedding.cosine_similarity`; F-31/F-32/F-23 still present)
+Dead-code scan last covered commit: 53fc937 (2026-11-12 08:18 improver pass: F-55 ruby-progressbar, F-62 MySQL branches; earlier 2026-11-12 pass: F-51 unused runtime deps, F-50, `Embedding.cosine_similarity`; F-31/F-32/F-23 still present)
 
 ## Findings
 
@@ -103,3 +103,22 @@ Status: F-39 (adoption 2026-11-10, issue [#29](https://github.com/MadBomber/ragd
 - **F-52** needs Dewayne's decision (improver). `logging.level` config is ignored: `client.rb:522-548` compares a String to Symbols, always lands on WARN, and line 544 forces WARN anyway. Honour it (behaviour change) or delete the dead `case`.
 - **F-53** needs Dewayne's decision (improver, extends F-25). `Client.new` sets `ActiveJob::Base.queue_adapter = :inline` and replaces `ActiveJob::Base.logger` host-wide (`client.rb:543-547`), switching every job in a Rails host (ragdoll-rails) to inline.
 - **F-54** open (builder #32, low). Default proposition and tag extractors hard-code `gpt-4o-mini` instead of reading the configured model.
+
+### 2026-11-12 (08:18 visit): dependencies audit (develop 53fc937), plus improver, triage, responder
+
+Status check on 53fc937, Ruby 4.0.9, committed lock: CI-mode suite green (1314 runs, 0 failures, 0 errors, 403 skips). F-13, F-15, F-23, F-29, F-31, F-32 still present. F-12 not re-tested. S-1 remainder still flagged by bundle-audit (details held locally). S-2 still present.
+
+- **F-51** re-verified, still open. Only matches are `ragdoll.gemspec:48` (`opensearch-ruby`) and `:56` (`searchkick`). One removal PR can carry F-51 + F-55 (+ F-56); wait for #30 (gemspec).
+- **F-11** update, needs Dewayne's decision. ruby_llm 1.9.1 → 2.2.0 latest; simple_flow 0.2.0 → 0.4.0; simplecov 0.22.0 → 1.3.2 (dev); bigdecimal → 4.1.3; json → 3.1.0; docx → 0.13.3; shrine → 3.10.2. A full `bundle update` in scratch stays green in CI mode (weak evidence: DB tests skipped, LLM stubbed).
+- **F-55** open (low, removal). `ruby-progressbar` runtime dependency (`ragdoll.gemspec:53`) is referenced nowhere in the tree or history; ragdoll-cli declares it itself. Remove with F-51 after #30 merges. Gemspec: never low risk.
+- **F-56** open (low). `rubyzip` (`ragdoll.gemspec:55`) is never required directly (arrives via `docx`). Fold into the F-51/F-55 PR or leave.
+- **F-57** issue [#37](https://github.com/MadBomber/ragdoll/issues/37) (medium, Ruby 4.1 readiness). simple_flow requires `tsort` and `logger` without declaring them; on 4.1.0-preview1 `cannot load such file -- tsort`. Fix upstream in simple_flow, then relock; stopgap `add_dependency "tsort"`.
+- **F-58** issue [#38](https://github.com/MadBomber/ragdoll/issues/38) (medium). `required_ruby_version >= 3.2.0` and CI `"3.2"`; Ruby 3.2 EOL 2026-03-31. Floor to 3.3 after #30 merges.
+- **F-59** open (low, Ruby 4 idiom). `ModelResolver#resolve_embedding` (`model_resolver.rb:61-66`) is the only runtime `OpenStruct` use; callers read only `.model`. `Data.define` would let `ostruct` become a dev dependency. Mild API care.
+- **F-60** needs Dewayne's decision. `configure_ruby_llm` accepts `:azure` and `:huggingface` (`config.rb:519-520,530`) but ruby_llm 1.9.1/2.2.0 has no such config; `respond_to?` guards drop the keys silently. Remove from supported list, or raise a clear error?
+- **F-61** issue [#36](https://github.com/MadBomber/ragdoll/issues/36) (improver, reproduced with stub psql). `rake db:console` reads `db_config[:username]`/`[:database]`; config keys are `user`/`name`, so psql gets neither. MySQL `db:console`/`db:drop` share the wrong keys.
+- **F-62** open (improver, removal). MySQL branches in `db.rake` (`db:create` :87-94, `db:drop` :132-153, `db:console` :277-286, `db:truncate` :361-362/:377-378), about 40 lines; the gem is PostgreSQL-only (pg/pgvector deps, vector migrations). Do before F-61's fix.
+- **F-63** needs Dewayne's decision (improver, docs drift). `Ragdoll.hybrid_search` YARD (`lib/ragdoll.rb:199-211`) documents `semantic_weight:`/`text_weight:` that `Client#hybrid_search` silently swallows, and says it returns `Array<Hash>` (it returns a Hash). Taste says change code, not docs: implement weights, or correct the docs? Also `config.models[:default]` examples print nil.
+- **F-64** open (low, needs DB test). `Client#hybrid_search` records `options.slice(:limit, :candidate_limit)` (`client.rb:208`), but `limit` is a named keyword so it never reaches `options`.
+- **F-65** needs Dewayne's decision. `rake db:rollback` is listed in `rake -T` but only prints "not yet implemented". Implement via `MigrationContext#rollback`, remove, or leave?
+- **S-4** open (low). Security finding, details held locally.

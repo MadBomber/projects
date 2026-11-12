@@ -2,6 +2,15 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 08:18 ragdoll
+
+- `develop` already existed (53fc937); not created.
+- **skipped: review queue full.** Tender: #30, #31, #32 still open, unapproved, CI green on 3.2/3.3/3.4/4.0, MERGEABLE/CLEAN, up to date with develop, no reviews or comments; pairwise `git merge-tree` shows their CHANGELOG lines don't conflict. No rebases needed. New PRs: none. Merged (low risk): none. Merged after approval: none.
+- **Audit:** dependencies (most overdue, last 2026-11-06), develop 53fc937: F-51 re-verified, F-11 updated (ruby_llm 2.2.0), new F-55–F-60. Improver: F-61–F-65. S-4 recorded locally (low).
+- **Issues answered:** none needed; responder found every open issue already carries an up-to-date BomberBot note or a PR cross-reference.
+- **Issues filed:** [#36](https://github.com/MadBomber/ragdoll/issues/36) (F-61 db:console keys), [#37](https://github.com/MadBomber/ragdoll/issues/37) (F-57 Ruby 4.1 tsort via simple_flow), [#38](https://github.com/MadBomber/ragdoll/issues/38) (F-58 EOL Ruby 3.2 floor).
+- **Inbox:** release from develop, F-63, F-65, db:* config rewrite, delegator retirement, F-60.
+
 ## 2026-11-12 08:22 smart_message-transport-named_pipes
 
 - **skipped: review queue full.** 4 bomberbot PRs open after tending (#20, #21, #22, #27), none approved; no new PRs, no merges.
