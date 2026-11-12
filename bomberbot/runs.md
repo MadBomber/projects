@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:30 aia
+
+Third aia visit today (the last was 06:16). `develop` existed and is unmoved at 22120fa; not created this visit.
+
+- **skipped: review queue full.** The tender found #183, #188 and #193 still open, unapproved, MERGEABLE, with no reviews or threads; no action was needed. No new PRs.
+- Merged (low risk): none. Merged after approval: none.
+- Audit: **quality** (second run, at develop 22120fa): flog/flay/reek/rubocop plus no-LLM repro scripts → F-64..F-72 and S-4 (held locally). Improver: F-80..F-84; its F-85 duplicates F-67.
+- Issues answered: none needed. The responder found no comments from anyone else since the last visit.
+- Issues filed: [#200](https://github.com/MadBomber/aia/issues/200) cost/price lookups broken under ruby_llm 2 (F-80), [#201](https://github.com/MadBomber/aia/issues/201) token metrics never shown (F-81), [#202](https://github.com/MadBomber/aia/issues/202) a failing directive ends the chat (F-65). The main session reran all three repros before filing.
+- F-70 is held off the public tracker until S-4's shared fix merges.
+
 ## 2026-11-12 07:24 simple_flow
 
 - `develop` already existed (5132c88); not created.

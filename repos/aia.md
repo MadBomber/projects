@@ -10,11 +10,11 @@ AI Assistant CLI gem; depends on prompt_manager and shared_tools.
 
 ## Status
 
-_Updated 2026-11-12 (06:16 visit)._ **Skipped new PRs again: the review queue is full.** #183, #188 and #193 are unchanged, MERGEABLE and unapproved, and develop is still 22120fa. Filed [#197](https://github.com/MadBomber/aia/issues/197) (zsh/fish completion broken, F-61), [#198](https://github.com/MadBomber/aia/issues/198) (`debug_me` runtime dep, F-58) and [#199](https://github.com/MadBomber/aia/issues/199) (`mcp_servers/README.md` drift, F-63). The dependencies audit is clean apart from F-58..F-60; F-59 (tty-table breaks under frozen string literals) needs Dewayne.
+_Updated 2026-11-12 (07:30 visit)._ **Skipped new PRs a third time: the review queue is full.** #183, #188 and #193 are unchanged and unapproved, and develop is still 22120fa. The quality audit and the improver found that **cost and token metrics have been broken since the move to ruby_llm 2**: filed [#200](https://github.com/MadBomber/aia/issues/200) (F-80, prices) and [#201](https://github.com/MadBomber/aia/issues/201) (F-81, tokens). Also filed [#202](https://github.com/MadBomber/aia/issues/202) (a failing directive ends the chat, F-65). F-67 (1.x log truncated on upgrade) needs Dewayne.
+
+_Prior (2026-11-12 06:16 visit)._ **Skipped new PRs again: the review queue is full.** #183, #188 and #193 are unchanged, MERGEABLE and unapproved, and develop is still 22120fa. Filed [#197](https://github.com/MadBomber/aia/issues/197) (zsh/fish completion broken, F-61), [#198](https://github.com/MadBomber/aia/issues/198) (`debug_me` runtime dep, F-58) and [#199](https://github.com/MadBomber/aia/issues/199) (`mcp_servers/README.md` drift, F-63). The dependencies audit is clean apart from F-58..F-60; F-59 (tty-table breaks under frozen string literals) needs Dewayne.
 
 _Prior (2026-11-12 03:44 visit)._ **Skipped new PRs: the review queue is full.** The tender rebased #183, #188 and #193 onto 22120fa (all CLEAN, suites green), and none is approved yet. Filed [#194](https://github.com/MadBomber/aia/issues/194) (`--provider` ignored for bare slug names; F-19 was never actually merged, and its fix is stranded on `bomber/provider-bare-model-name`), [#195](https://github.com/MadBomber/aia/issues/195) (`--fuzzy` broken) and [#196](https://github.com/MadBomber/aia/issues/196) (`--require` spaces). The adoption audit found F-49..F-53 and S-3.
-
-_Prior (2026-11-12 02:08 visit)._ Opened #188 (removes `TurnState#active_mcp_servers`, Fixes #187), #189 (README `--log-level`, Fixes #186) and #193 (shared `Utility.model_id_of`, Fixes #182, stacked on #188). **#189 merged low risk by madbot**, so develop is now 22120fa. The security audit found nothing new, but it showed that **develop is 6 commits behind main and lacks the released `--paint` fix** (F-45/F-46, in the inbox for Dewayne). Filed #190-#192. Suite 2001/0 on #188 and 2002/0 on #193.
 
 
 ## Backlog
@@ -33,6 +33,13 @@ Well-defined items a single small PR could close. Bomberbot works these before a
   - [#199](https://github.com/MadBomber/aia/issues/199): `mcp_servers/README.md` names a deleted `imcp.json`, covers 3 of 7 files, has dead links (F-63, docs/examples, low-risk candidate).
   - F-62: dead kramdown-man block in `Rakefile:10-15` warns on every rake run (removal, build tooling so not low risk; not filed).
   - [#191](https://github.com/MadBomber/aia/issues/191): `--tools` files load twice and their warnings print twice (F-33, lib).
+- [#202](https://github.com/MadBomber/aia/issues/202): a directive that raises ends the chat session (F-65, lib, about 4 lines plus a test). Small and user-facing; top pick next to #194.
+- [#200](https://github.com/MadBomber/aia/issues/200): `--cost`, `/cost` and `/robots` never show a price under ruby_llm 2 (F-80, lib, about 15 lines plus a test against the bundled `models.json`). User-facing.
+- [#201](https://github.com/MadBomber/aia/issues/201): `--tokens` shows nothing, and turns record 0 tokens (F-81, lib, about 60 lines including test doubles). Build after #200; it touches `pipeline_orchestrator.rb` (hold rule).
+- F-64 + F-82: `/config` strips `=` from values and shows `nil` for nested keys (same method, `configuration_directives.rb`). One small lib PR; not filed.
+- F-68 then F-69: skill/role front matter with a Date is dropped; `/skills` has a third parser that cuts at `---` (1 line, then about −10). Not filed.
+- F-83: `docs/reference/directives.md` says `/temperature`/`/top_p` don't retune the running robot (2 lines, docs). Not filed.
+- F-71 (ignored `ephemeral:` keyword, about −4) and F-84 (`FactAsserter` removal, about −27): removals, lib. Not filed.
 - Already in PRs: #187 → **PR open** [#188](https://github.com/MadBomber/aia/pull/188); #182 → **PR open** [#193](https://github.com/MadBomber/aia/pull/193) (stacked on #188); #181 → **PR open** [#183](https://github.com/MadBomber/aia/pull/183).
 - Quality DRY refactors still un-filed, all re-verified on 2c1d77b by triage:
   - F-28: config `reset_section`/`merge_into_section` (`config.rb:363-383`).
