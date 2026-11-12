@@ -2,6 +2,14 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:40 dev
+
+- `develop` already existed (5a0b89e, unmoved since 2026-11-09); not created.
+- **skipped: review queue full.** Tender: [#10](https://github.com/MadBomber/dev/pull/10), [#11](https://github.com/MadBomber/dev/pull/11), [#12](https://github.com/MadBomber/dev/pull/12) (stacked on #11) still open, MERGEABLE/CLEAN, no reviews or comments, no CI; nothing to rebase or answer. **Merged:** none. **Merged (low risk):** none.
+- **Issues answered:** none. Responder re-reproduced #7 and #8 at 5a0b89e, matching their bodies, so it posted no comment; #9 also needs README lines 139-141 changed.
+- **Audit:** security (second run, at 5a0b89e): F-40 to F-42; S-4 to S-6 and an S-2 update, details held locally. Improver: F-43 to F-46. Triage re-verified backlog F-37 and F-13 (both reproduce, independent of the open PRs). No dead-code scan (develop unmoved).
+- **Issues filed:** [#13](https://github.com/MadBomber/dev/issues/13) (F-43), [#14](https://github.com/MadBomber/dev/issues/14) (F-44), [#15](https://github.com/MadBomber/dev/issues/15) (F-40).
+
 ## 2026-11-12 07:30 aia
 
 Third aia visit today (the last was 06:16). `develop` existed and is unmoved at 22120fa; not created this visit.

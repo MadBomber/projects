@@ -10,7 +10,7 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-12 (fourth run)._ Dewayne merged dev#4–#6; opened dev#10 (weekly_report week snap, F-28) and dev#11 (reek_baseline task, F-26), with dev#12 (SKIP for absent tools, F-27) stacked on #11; filed issues #7–#9. `develop` (5a0b89e) is 26 commits ahead of `main`.
+_Updated 2026-11-12 (fifth run)._ Review queue full (dev#10–#12 unreviewed, `develop` still 5a0b89e), so no new PRs; ran the overdue security audit and filed issues #13–#15. `develop` is 26 commits ahead of `main`.
 
 ## Backlog
 
@@ -19,7 +19,8 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-5: drop the header comments copied from the vbr project (after F-6 is decided).
 - F-37: keep git `fatal:` noise out of `branch_report` stderr (1 line).
 - F-13: escape `|` in branch_report author cells.
-- F-39: stale header comments and labels in quality.loki.
+- F-39: stale header comments and labels in quality.loki (plus F-46 ArchSpec message); after dev#11/#12 merge, since they edit quality.loki.
+- F-45: friendly abort on an invalid `STATUS_DATE` (after dev#10 merges).
 
 ## Open bomberbot PRs
 
@@ -32,6 +33,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [dev#7](https://github.com/MadBomber/dev/issues/7) gem_version can read the wrong version.rb (F-31)
 - [dev#8](https://github.com/MadBomber/dev/issues/8) asgard console fails on Ruby 4 without irb in the bundle (F-32)
 - [dev#9](https://github.com/MadBomber/dev/issues/9) rubocop-strict.yml promises more than RuboCop enforces (F-38)
+- [dev#13](https://github.com/MadBomber/dev/issues/13) release crashes with NoMethodError when stdin is closed (F-43)
+- [dev#14](https://github.com/MadBomber/dev/issues/14) quality summary KeyError on a non-status *_check (F-44)
+- [dev#15](https://github.com/MadBomber/dev/issues/15) github_collect ignores RR (F-40)
 
 ## Merged bomberbot PRs
 

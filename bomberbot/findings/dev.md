@@ -8,7 +8,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-06 | No Gemfile, so bundle-audit n/a. Shell-outs, env and file reads read by hand. 2 findings, details held locally. |
+| security | 2026-11-12 | Second run, at 5a0b89e. No Gemfile, so bundle-audit n/a. Read by hand: shell-outs, asgard `sh` echo, env and file reads, YAML, network, `claude -p`, `.irbrc`; history secret scan; open bot branches reviewed. F-40 to F-42; S-4 to S-6 plus an S-2 update, details held locally. (First run 2026-11-06: S-1, S-2.) |
 | dead code | 2026-11-12 | Fourth-run cheap scan b1c29ed..5a0b89e (dev#4 to #6); nothing new. |
 | dependencies | 2026-11-12 | First run, at 5a0b89e. No Gemfile; every require is a default gem on 4.0.9 and 4.1.0-preview1; clean load of all .loki with -W:deprecated; missing-tool fixtures. F-27, F-32 to F-36. |
 | adoption | n/a | Skipped for dev by spec. |
@@ -75,3 +75,19 @@ Dewayne merged dev#5 and dev#6 on 2026-11-09 from `bomber/` branches whose visit
 - **F-38:** `rubocop-strict.yml` and the README say its cops fire "regardless of .rubocop_todo.yml or inline directives"; inline disables still win, and it loses to the todo file if inherited first or under `inherit_mode: merge: [Exclude]`. Status: issue [#9](https://github.com/MadBomber/dev/issues/9).
 - **F-39:** stale comments: `quality.loki:3-4` and `gem_tasks.loki:4` show `import "../dev/..."`/`repo_dev.loki` (README and consumers use `import_up "dev/..."`); `quality.loki:9,327-328` say Rails checks load "once Rails is defined" (actually the `RAILS_ROOT` guard); flog's desc says ">=20/>=50" but the code uses `>`; the `test_check` label says "Tests + Coverage" but nothing measures coverage. Status: open, cosmetic.
 - **S-3:** security finding, details held locally. Status: needs Dewayne's decision, low.
+
+### 2026-11-12, fifth run (security audit; improver findings)
+
+No dead-code scan: `develop` is still 5a0b89e.
+
+- **F-40:** `github_collect` (status_report.loki:147) runs `gh repo view` in the process cwd, while every other collector reads `RR` (`status_repo_root`), so with `RR` ≠ cwd the GitHub section reports on the wrong repo or SKIPs. Fix: `chdir: status_repo_root` through `safe_capture2`. Status: issue [#15](https://github.com/MadBomber/dev/issues/15).
+- **F-41:** `weekly_report` (status_report.loki:327) passes the whole prompt as one argv entry and rescues only `Errno::ENOENT`; a week over ARG_MAX crashes (`Argument list too long - claude (Errno::E2BIG)`, verified with 1.2 MB of daily files). Fix: prompt on stdin. Status: open, low; ship together with the S-4 fix.
+- **F-42:** `db_doc`, `db_doc_diff`, `db_doc_mermaid` (db_doc.loki:29,36,47) put `DB_DOC_DSN` unquoted into a bash script; a DSN with `&` (a second query parameter) splits the command (verified: exit 127). Fix: `Shellwords.escape` or argv-form. Status: open, low; waits on F-6.
+- **F-43:** `release` without `-y` crashes with `NoMethodError` (`$stdin.gets.strip` on nil) when stdin is closed (gem_tasks.loki:54). asgard's copy already uses `.to_s`. Status: issue [#13](https://github.com/MadBomber/dev/issues/13).
+- **F-44:** `quality`'s summary dies with `KeyError` at `STATUS_BADGES.fetch(status)` (quality.loki:458) when any swept-in `*_check` task returns a non-status value (e.g. a consumer's `def ruby_check = puts(...)`); the remaining rows and the fail line never print. Proposed: treat it as FAIL and name the task. Status: issue [#14](https://github.com/MadBomber/dev/issues/14) (best after #12 merges; asgard's quality.loki:218 has the same bug).
+- **F-45:** an invalid `STATUS_DATE` (status_report.loki:27) ends `daily_summary` in a `Date::Error` backtrace after every collector has run; `Date.parse` also accepts words like "tuesday". Fix: `Date.iso8601` with a friendly abort. Status: open, low (after dev#10, which edits the same lines).
+- **F-46:** the ArchSpec SKIP message (quality.loki:426-428) tells a user who already has `archspec` on PATH to `gem install archspec`. Status: open, cosmetic (fold into the F-39 PR).
+- **S-2 update:** wider than first recorded; details held locally. Status: low.
+- **S-4:** security finding, details held locally. Status: open, medium-low.
+- **S-5:** security finding, details held locally (extends S-1). Status: needs Dewayne's decision, low, latent.
+- **S-6:** security finding, details held locally. Status: needs Dewayne's decision, low.
