@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 00:15 smart_message-transport-lanet
+
+- `develop` already existed (b9b206e); nothing created. Dewayne had merged #5, #7 (2026-11-10) and #6 (2026-11-11) without comment, so the queue was empty. The tender deleted the three merged bot branches. CI on `develop` is green.
+- New PRs, all independent and targeting `develop`:
+  - [#8](https://github.com/MadBomber/smart_message-transport-lanet/pull/8) fix: allow connect after disconnect. Fixes #4. Source: **brain/issue** (F-6). Fails before, passes after; suite 60/301; CI green on 3.3/3.4. Review hit the 3-round cap with no open defects; lifecycle items deferred to #3.
+  - [#9](https://github.com/MadBomber/smart_message-transport-lanet/pull/9) fix: key Lanet message handlers by class name. Fixes #2. Source: **brain/issue** (F-5). 3 of 4 new tests fail on develop; suite 62/305; demo against real smart_message 0.0.17 Base/Dispatcher. Review hit the cap (rounds 2 and 3 contradicted each other).
+  - [#13](https://github.com/MadBomber/smart_message-transport-lanet/pull/13) build: relock dev dependencies so the bundle installs on Ruby 4. Source: **brain/dependency** (F-16, plus F-22 Ruby 4.0 in CI). CI green on 3.3/3.4/4.0. Review hit the cap with no open defects.
+- Merged as low risk: none (#8 and #9 touch `lib/`; #13 touches the lockfile and `.github/`). Merged after approval: none pending.
+- Skipped #3 (F-2): its obvious fix makes a held security note live (S-4); it waits on the F-1 decision.
+- Audit: **dependencies** (first run). F-20…F-24 plus phase-1 items F-25…F-29. Dead-code scan reached b9b206e; nothing new.
+- Issues answered: none (#2–#4 are BomberBot's own, with nothing new to add; two now have fixing PRs). Issues filed: [#10](https://github.com/MadBomber/smart_message-transport-lanet/issues/10) blank env vars become 0 (F-23), [#11](https://github.com/MadBomber/smart_message-transport-lanet/issues/11) `logger` undeclared (F-20), [#12](https://github.com/MadBomber/smart_message-transport-lanet/issues/12) configure test leaks threads (F-25).
+
 ## 2026-11-11 21:20 htm
 
 - `develop` already existed (b7eb5ef); nothing was created. The queue was empty: Dewayne merged #23, #24 and #25 on 2026-11-10. The tender found no open PRs and no comments.

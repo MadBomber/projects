@@ -97,11 +97,13 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## smart_message-transport-lanet
 
-- [ ] Review [#6](https://github.com/MadBomber/smart_message-transport-lanet/pull/6) (test CI on Ruby 3.3 and 3.4, green). After merging, you can optionally make `test (3.3)` and `test (3.4)` required checks on `develop` and `main`. Also decide the Ruby floor: the gemspec says `>= 3.2.0`, but the locked smart_message 0.0.17 pulls in breaker_machines 0.7.0 and chrono_machines 0.2.0, which both need 3.3. Raise the floor to 3.3, or relock so 3.2 can go back into the matrix. (added 2026-11-10)
-- [ ] Review [#5](https://github.com/MadBomber/smart_message-transport-lanet/pull/5) (tests load on Ruby 4 and minitest 6; test-only). When the Gemfile moves past `minitest ~> 5`, also add `gem "minitest-mock"`. (added 2026-11-10)
-- [ ] Decide F-1: the transport calls a Lanet API that doesn't exist. Options are in inbox.md (2026-11-10). Issues #2–#4 and most of the backlog depend on this. (added 2026-11-10)
-- [ ] Security: the first audit found S-1…S-6, held locally in `notes/security/smart_message-transport-lanet.md`. All are latent while F-1 stands, and the gem is unpublished, but any F-1 rewrite must cover S-1…S-4. S-6 is advisories in the dev lockfile, fixed by a relock. (added 2026-11-10)
-- [ ] Review [#7](https://github.com/MadBomber/smart_message-transport-lanet/pull/7) (README examples match the smart_message 0.0.17 API; README only). Also decide F-19: should a node receive its own published messages? `publish_to_nodes` never delivers locally. (added 2026-11-10)
+- [ ] Decide F-1: the transport calls a Lanet API that doesn't exist. Options are in inbox.md (2026-11-10). Issue #3 and most of the backlog depend on this. (added 2026-11-10)
+- [ ] Security: the first audit found S-1…S-7, held locally in `notes/security/smart_message-transport-lanet.md`. All are latent while F-1 stands, and the gem is unpublished, but any F-1 rewrite must cover S-1…S-4. S-6 is cleared by [#13](https://github.com/MadBomber/smart_message-transport-lanet/pull/13). (added 2026-11-10, updated 2026-11-12)
+- [ ] Decide F-19: should a node receive its own published messages? `publish_to_nodes` never delivers locally. (added 2026-11-10)
+- [ ] Review [#8](https://github.com/MadBomber/smart_message-transport-lanet/pull/8) (Fixes #4, reconnect after disconnect; 1 lib line + tests) and [#9](https://github.com/MadBomber/smart_message-transport-lanet/pull/9) (Fixes #2, Class-keyed subscribe; `network_topology[:active_subscriptions]` now returns Strings). Both touch `lib/`. Both add a CHANGELOG line, so whichever merges second needs a trivial rebase; BomberBot will do it next visit. (added 2026-11-12)
+- [ ] Review [#13](https://github.com/MadBomber/smart_message-transport-lanet/pull/13) (relock so the dev bundle installs on Ruby 4; CI runs 3.3, 3.4 and 4.0). Optional after merging: (a) make the hold durable with `gem "breaker_machines", "~> 0.17.0", force_ruby_platform: true` in the Gemfile, or else a `bundle update` on Ruby 4 or a relock on Linux will break the 3.3 job; (b) make `test (4.0)` a required check. (added 2026-11-12)
+- [ ] Decide the Ruby floor (F-24): the gemspec says `>= 3.2.0` and `.rubocop.yml` targets 3.2, but no lock installs on 3.2, and smart_message's dependency chain (breaker_machines ≥ 0.18, chrono_machines ≥ 0.9.1) now needs Ruby ≥ 4.0. Options: floor 3.3 and keep holding those gems back (#13 does this), or floor 4.0 and drop 3.x from CI. (added 2026-11-10, updated 2026-11-12)
+- [ ] Optional: turn on "Automatically delete head branches" for this repo (merged bot branches pile up; the tender deletes them by hand). (added 2026-11-12)
 
 ## htm (2026-11-11)
 
