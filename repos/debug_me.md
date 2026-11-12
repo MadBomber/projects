@@ -10,7 +10,7 @@ Debug output gem, small and stable.
 
 ## Status
 
-_Updated 2026-11-09 04:05._ New PR [#38](https://github.com/MadBomber/debug_me/pull/38) corrects the never-emitted sample output format in the four sync-safe onboarding docs pages (finding #5); [#37](https://github.com/MadBomber/debug_me/pull/37) still open (env_test hardening). Both await Dewayne's approval; nothing was merge-ready this visit (queue was 1, not full). Filed issue [#39](https://github.com/MadBomber/debug_me/issues/39) (gemspec lacks `documentation_uri`, http homepage; fold into the sync). **The main/develop split still stands:** Copilot's `main` PRs (#29–#35, merged by Dewayne) closed issues #12, #14, #16, #25, #26, #27 there, while `develop` carries bomberbot's own fixes for the same ground (#8–#24, #36). Two Copilot PRs are still open against `main` (#28 = issue #13, #32 = issue #17). Only issues #13 and #17 remain open, both already fixed on `develop`. The sync is Dewayne's to do (findings #30, inbox, dewayne.md). **PR open**
+_Updated 2026-11-12 02:30._ New PR [#48](https://github.com/MadBomber/debug_me/pull/48) makes `skip1:`/`skip2:` work with `header: false` (touches lib, awaits Dewayne). Merged as low risk: [#47](https://github.com/MadBomber/debug_me/pull/47) (api-reference backtrace format) and [#49](https://github.com/MadBomber/debug_me/pull/49) (suite green under `DEBUG_ME=false`). **The main/develop split is over:** develop now contains all of main (64 ahead, 0 behind), with Copilot's fixes cherry-picked; findings #30 is settled. Filed issues [#44](https://github.com/MadBomber/debug_me/issues/44), [#45](https://github.com/MadBomber/debug_me/issues/45), [#46](https://github.com/MadBomber/debug_me/issues/46). Only #39 (fixed on develop by #43) and the new issues are open. **PR open**
 
 ## Backlog
 
@@ -20,11 +20,17 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#38](https://github.com/MadBomber/debug_me/pull/38) docs: correct sample output to match real debug_me output (finding #5, sync-safe). **PR open**
-- [#37](https://github.com/MadBomber/debug_me/pull/37) test: harden env_test subprocess tests against env leaks (findings #12, #23). **PR open**
+- [#48](https://github.com/MadBomber/debug_me/pull/48) fix: skip1/skip2 add blank lines when header is off (triage; docs promised it). **PR open**
 
 ## Merged bomberbot PRs
 
+- [#49](https://github.com/MadBomber/debug_me/pull/49) test: keep the whole suite green under DEBUG_ME=false. **Merged (low risk)** by madbot 2026-11-12 → develop 200c10f.
+- [#47](https://github.com/MadBomber/debug_me/pull/47) docs: distinguish levels: pairs from :backtrace frame strings. **Merged (low risk)** by madbot 2026-11-12 → develop b5d5323.
+- [#43](https://github.com/MadBomber/debug_me/pull/43) chore: add documentation_uri and https homepage to gemspec (issue #39). Merged 2026-11-10 (rebase) → 0d7fb14.
+- [#41](https://github.com/MadBomber/debug_me/pull/41) docs: correct api-reference and configuration sample output. Merged (low risk, by madbot) 2026-11-10.
+- [#40](https://github.com/MadBomber/debug_me/pull/40) test: run gemspec packaging check in a clean bundler env. Merged (low risk, by madbot) 2026-11-10. (#42 duplicated it and was closed.)
+- [#38](https://github.com/MadBomber/debug_me/pull/38) docs: correct sample output to match real debug_me output. Merged 2026-11-09.
+- [#37](https://github.com/MadBomber/debug_me/pull/37) test: harden env_test subprocess tests against env leaks. Merged 2026-11-09.
 - [#22](https://github.com/MadBomber/debug_me/pull/22) fix: print non-String block values instead of evaluating them (findings #28). Merged 2026-11-08.
 - [#23](https://github.com/MadBomber/debug_me/pull/23) chore: raise the minimum Ruby to 3.2 (issue #17). Merged 2026-11-08.
 - [#24](https://github.com/MadBomber/debug_me/pull/24) test: keep the suite green with DEBUG_ME=false (issue #14, findings #19). Merged 2026-11-08.
@@ -40,11 +46,15 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot issues
 
-- [#39](https://github.com/MadBomber/debug_me/issues/39) gemspec omits `documentation_uri` and uses an http:// homepage (findings #37). Filed 2026-11-09; not sync-safe (`debug_me.gemspec` changed on `main` too), so fold into the main/develop sync.
-- [#13](https://github.com/MadBomber/debug_me/issues/13) A String levels: value raises (findings #14). Fixed on develop by #18; stays open until a release. BomberBot commented 2026-11-08 (develop fix + Copilot PR #28 on main).
-- [#17](https://github.com/MadBomber/debug_me/issues/17) Unused amazing_print test dependency and Ruby 1.8.6 caller branch (findings #21). Both items fixed on develop (#19, #23); stays open until a release. BomberBot commented 2026-11-08 (Copilot PR #32 covers it on main).
+- [#44](https://github.com/MadBomber/debug_me/issues/44) Empty-block discovery reads constants lexically, not from the receiver's class (findings #38). Filed 2026-11-12.
+- [#45](https://github.com/MadBomber/debug_me/issues/45) `debug_me {}` fails or shows the wrong locals when self is a BasicObject or Delegator (findings #39). Filed 2026-11-12.
+- [#46](https://github.com/MadBomber/debug_me/issues/46) CI actions target the deprecated Node.js 20 runtime (findings #40). Filed 2026-11-12.
+- [#39](https://github.com/MadBomber/debug_me/issues/39) gemspec omits `documentation_uri` and uses an http:// homepage (findings #37). **Fixed on develop by #43** (2026-11-10); stays open until a release reaches main.
 
 ### Closed since last visit (by Copilot PRs on `main`, merged by Dewayne)
+
+- [#13](https://github.com/MadBomber/debug_me/issues/13) A String levels: value raises — closed on main by Copilot #28/#32 (2026-11-10).
+- [#17](https://github.com/MadBomber/debug_me/issues/17) Unused amazing_print test dependency and Ruby 1.8.6 caller branch — closed on main by Copilot #28/#32 (2026-11-10).
 
 - [#12](https://github.com/MadBomber/debug_me/issues/12) README examples (findings #6) — closed by #29.
 - [#14](https://github.com/MadBomber/debug_me/issues/14) suite fails with DEBUG_ME=false (findings #19) — closed by #30. (bomberbot #24 fixed the same on develop.)

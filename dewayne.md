@@ -22,7 +22,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## debug_me
 
 - [ ] [debug_me#23](https://github.com/MadBomber/debug_me/pull/23) is merged (Ruby 3.2 floor confirmed). At release: dropping Rubies makes the next release 1.2.0 rather than 1.1.4 under SemVer; add the missing `[1.1.3]` CHANGELOG section and start the Unreleased compare link at v1.1.3. (added 2026-11-08, updated 2026-11-09)
-- [ ] debug_me `main` and `develop` have diverged further. Besides Copilot #21 on `main`, Copilot #29–#35 merged to `main` (closing issues #12, #14, #16, #25, #26, #27 there) while `develop` holds bomberbot's own fixes for the same ground (#8–#24, #36). Two Copilot PRs are still open against `main` (#28, #32). Merge one branch into the other before the next release; the one-PR resolution plan is in the inbox (findings #30). Consider pointing Copilot at `develop` to stop the two tracks diverging. (added 2026-11-08, updated 2026-11-09)
+- [ ] At the next debug_me release, close [debug_me#39](https://github.com/MadBomber/debug_me/issues/39) (fixed on `develop` by #43). The main/develop split is settled: `develop` now contains all of `main` (checked 2026-11-12). (added 2026-11-12)
+- [ ] Review [debug_me#48](https://github.com/MadBomber/debug_me/pull/48) (touches lib/, so it was not self-merged). Also decide debug_me S-36 and S-37; the details are in your local `notes/security/debug_me.md`. (added 2026-11-12)
 
 ## typed_bus
 

@@ -8,13 +8,13 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-08 | First audit, develop 6a9ec45 (diffed against main 15bd90b). bundler-audit clean. Every eval, ENV read, shell-out, file write, gemspec, CI workflow, rultor config and the published 1.1.3 package. Findings 28-30, S-31 to S-35. |
-| dead code | 2026-11-09 | Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
-| dependencies | 2026-11-09 | Partial (quality-audit leg): `bundle outdated` at e4858c9 shows only minitest 5.27.0 → 6.1.0, held by gemspec `minitest '~> 5.0'` (= finding #8). Ruby 4.1 readiness clean, `pp` still a default gem. No full audit. |
+| security | 2026-11-12 | Second audit, develop 0d7fb14 (develop now contains all of main). bundler-audit clean. Findings 38-39, S-36, S-37. |
+| dead code | 2026-11-12 | 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
+| dependencies | 2026-11-12 | Full audit, develop 0d7fb14. `bundle outdated`: only minitest 5.27 → 6.1, held by gemspec `~> 5.0` (#8; suite passes on 6.1.0). Finding 40 (actions/checkout@v4 on Node 20, issue #46), 41 (Ruby 3.2 floor EOL, needs decision). |
 | adoption | 2026-11-09 | develop 3a4651e. mkdocs `--strict` clean; #3/#4 confirmed fixed on develop (api-reference 10000 / DEBUG_ME_VERSION); #5 verified vs real output (`TIMESTAMP TAG Source:  file:line:in 'meth'`), the non-api-reference docs pages still printed the never-emitted `TAG [TIMESTAMP] file:line` format — PR'd for the four sync-safe pages ([#38](https://github.com/MadBomber/debug_me/pull/38)). New: #36 (no llms.txt/skill, sync-safe, needs decision — already in inbox), #37 (gemspec no `documentation_uri`, http homepage — not sync-safe; issue [#39](https://github.com/MadBomber/debug_me/issues/39)). gem-skill readiness unverified (LLM generator needs a key). Earlier first run 2026-11-06: README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. |
 | quality | 2026-11-09 | First quality audit, develop e4858c9. reek/flog/flay/rubocop in a scratch GEM_HOME; suite green on Ruby 4.1.0preview1, no library deprecations. flog 171 on the one 82-line method; flay 0. New findings 31-35. Repo has no .rubocop.yml/.reek.yml. |
 
-Dead-code scan last covered commit: 3a4651e (develop, 2026-11-09, after #36)
+Dead-code scan last covered commit: 0d7fb14 (develop, 2026-11-12)
 
 ## Findings
 
@@ -127,3 +127,29 @@ Dead-code scan last covered commit: 3a4651e (develop, 2026-11-09, after #36)
 
 36. **No `llms.txt` and no committed skill artifact for the gem.** `git ls-tree -r develop` has no `llms.txt`/`SKILL.md`, and the published gh-pages site has none either, so there is no AI-/LLM-consumer entry point beyond the README. Evidence: `git ls-tree -r develop --name-only | grep -i 'llms\|skill'` → nothing; `git ls-tree origin/gh-pages --name-only` → no `llms.txt`. Proposed fix: add a short root `llms.txt` pointing at the docs pages and the one public method. Sync-safe (new root file). Status: **needs Dewayne's decision** (new convention/content, not a defect) — already covered by the standing llms.txt notes in `inbox.md` (not re-added). Verified.
 37. **RubyGems metadata omits `documentation_uri`, and `spec.homepage` uses `http://`.** The docs site returns 200 (`curl -s -o /dev/null -w '%{http_code}' https://madbomber.github.io/debug_me/` → `200`) but the RubyGems listing shows `"documentation_uri": null`, because the gemspec has no `documentation_uri` key (debug_me.gemspec:18-22), and `spec.homepage` (line 13) is `http://` while metadata `homepage_uri` is `https://`. Proposed fix: add `'documentation_uri' => 'https://madbomber.github.io/debug_me/'` to `spec.metadata` and make `spec.homepage` https. **Not sync-safe** (`debug_me.gemspec` was changed on `main` since the split) — fold into the sync. Status: **issue [#39](https://github.com/MadBomber/debug_me/issues/39)**. Verified.
+
+### 2026-11-12 security + dependencies audit (develop 0d7fb14; resumed visit)
+
+Status re-check at 0d7fb14: develop now contains all of main (64 ahead, 0 behind), so #30 is **resolved** (Copilot #28/#32 closed #13/#17). Confirmed fixed on develop: #2/#24, #9/#23, #16/#20, #26, #29, #37 ([#43](https://github.com/MadBomber/debug_me/pull/43)), and the test_files half of #8. Still open: #8 (minitest 6), #18, #22, #28 follow-up, #31, #34 (now covered by issue #45).
+
+38. **Empty-block discovery reads constants lexically, not from the receiver's class; autoloaded constants are bypassed.** Status: issue [#44](https://github.com/MadBomber/debug_me/issues/44).
+39. **`debug_me {}` crashes when self is a BasicObject and lists the wrong locals through a Delegator.** Status: issue [#45](https://github.com/MadBomber/debug_me/issues/45).
+40. **CI uses actions/checkout@v4, which runs on the deprecated Node 20 runtime.** Status: issue [#46](https://github.com/MadBomber/debug_me/issues/46).
+41. **The Ruby 3.2 floor is EOL; raise it to 3.3?** Status: needs Dewayne's decision (inbox).
+- S-36: security finding, details held locally. Status: needs Dewayne's decision.
+- S-37: security finding, details held locally. Status: needs Dewayne's decision.
+
+Triage/improver extras (not audit findings):
+
+42. **`skip1:`/`skip2:` do nothing when `header: false`,** although the docs promise blank lines. Status: PR'd ([#48](https://github.com/MadBomber/debug_me/pull/48)).
+43. **Ten tests fail with `DEBUG_ME=false` again** (regression of #19). Status: merged ([#49](https://github.com/MadBomber/debug_me/pull/49), low risk).
+44. **api-reference mixed up `levels:` pairs and `:backtrace` frame strings** (from our #41). Status: merged ([#47](https://github.com/MadBomber/debug_me/pull/47), low risk).
+45. **Two tests in tests/debug_me_test.rb (~519-554) can never fail** (mutation-proven). Status: open (small removal PR candidate).
+46. **README "only local variables" example omits `cconst: false`,** so it also prints constants. Status: open (small docs PR candidate).
+47. **Suite output is noisy:** WorldView#six writes to stdout (no `file: nil`) and constants A/B/C are redefined with warnings. Status: open.
+48. **The `skip1:`/`skip2:` comments in DebugMeDefaultOptions are misleading.** Status: open (fold into a docs PR).
+49. **The gemspec `Dir[]` file list depends on the cwd** (related to S-37). Status: open.
+50. **CHANGELOG has no line for the #38/#41/#47 docs fixes, and docs/changelog.md has drifted from CHANGELOG.md.** Status: open (adoption).
+51. **The `:backtrace` frame format differs on Ruby 3.2/3.3 (`` `meth' ``) vs 3.4+ (`'Class#meth'`);** the docs show only 3.4+. Status: open.
+52. **mkdocs-material reaches end of life in May 2027.** Status: open (watch).
+

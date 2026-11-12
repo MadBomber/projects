@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:20 debug_me
+
+Resumed visit (the first session ran out of budget during phase 3). The 2026-11-10 visit was never recorded here; it opened #40 and #41 (merged low risk), #42 (closed as a duplicate of #40) and #43 (merged by Dewayne). develop was not created; it already existed and now contains all of main.
+
+- New PRs:
+  - [#47](https://github.com/MadBomber/debug_me/pull/47) (adoption; fixes our own #41 doc error): **merged (low risk)** → develop b5d5323.
+  - [#49](https://github.com/MadBomber/debug_me/pull/49) (judgment; a regression of findings #19): **merged (low risk)** → develop 200c10f.
+  - [#48](https://github.com/MadBomber/debug_me/pull/48) (judgment; docs promise the behavior): **PR open**, CI green, touches lib/. None of the three stacks on another.
+- Audits: security and full dependencies at 0d7fb14 (findings 38–41, S-36, S-37); dead-code read to 0d7fb14.
+- Tended: no open bot PRs. The tender deleted 14 merged bot branches. develop CI is green.
+- Issues answered: none (only #39 is open; it is fixed on develop).
+- Issues filed: #44, #45, #46.
+- Review: the harness had no /simplify or /code-review, so builders used a code-review agent; 1 clean round each, noted on #48.
+
 ## 2026-11-12 07:08 robot_lab
 
 - `develop` already existed (9d407dd, unchanged since 2026-11-10); not created.
