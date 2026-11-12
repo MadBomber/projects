@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 04:15 dev
+
+- `develop` already existed (5a0b89e); not created.
+- **Merged since last visit (by Dewayne, merge commits):** [#4](https://github.com/MadBomber/dev/pull/4) (2026-11-07), [#5](https://github.com/MadBomber/dev/pull/5) and [#6](https://github.com/MadBomber/dev/pull/6) (2026-11-09; their visit wasn't recorded in brain, now backfilled as F-24). **Tended:** none open. **Merged (low risk):** none; every PR this visit changes `.loki` code. **Issues answered:** none open.
+- **New PRs** (no CI on this repo; proof is fixtures plus a clean asgard load of every `.loki`):
+  - [#10](https://github.com/MadBomber/dev/pull/10) fix(status_report): snap STATUS_WEEK_OF back to Monday. Source: judgment (triage, F-28). Independent. Scratch minitest 8 errors on develop → 8/8 on branch; fixture finds Monday's file for Tue/Fri/Sun inputs with `claude` off PATH. `/code-review` clean round 1.
+  - [#11](https://github.com/MadBomber/dev/pull/11) feat(quality): add reek_baseline task. Source: judgment (triage + improver, F-26). Independent. Fixture: reek_check NEW → reek_baseline writes `12\tlib/smelly.rb` → reek_check passes; reek_check output identical to develop otherwise. Review hit the 3-round cap with no defects in round 3; overrun spelled out in the PR.
+  - Third PR (F-27, SKIP for absent flay/reek/flog and bundler-audit without a lockfile) building, stacked on #11.
+- **Audit:** dependencies (first run) at 5a0b89e: F-27, F-32–F-36; cheap dead-code scan b1c29ed..5a0b89e, nothing new. Triage and improver added F-26, F-28–F-31, F-37–F-39, F-13/F-6 updates, S-3 (held locally).
+- **Issues filed:** [#7](https://github.com/MadBomber/dev/issues/7) (F-31), [#8](https://github.com/MadBomber/dev/issues/8) (F-32), [#9](https://github.com/MadBomber/dev/issues/9) (F-38).
+
 ## 2026-11-12 04:18 robot_lab
 
 - `develop` already existed (9d407dd); not created. Still 31 behind `main` ee0d562.
