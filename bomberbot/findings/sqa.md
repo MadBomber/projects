@@ -11,12 +11,12 @@ Dewayne's decision, issue #N.
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-10 | First run, at develop 7fa65e3. bundle-audit clean (no lockfile committed; resolved in scratch). SQL bind params, YAML safe, curl shell-out escaped. S-1, S-2 held locally. |
-| dead code | 2026-11-10 (lib only, brief) | debride over `lib/` at 7fa65e3: F-1 unused runtime deps, F-2 PluginManager never required, F-3 top-level `AlphaVantageAPI` unused, F-4 dead Ruby 1.9 branch. test/examples/docs not covered. |
+| dead code | 2026-11-12 | Full run at develop 5ea98c8: debride 1.15.2 over lib+bin+test+examples, every candidate grepped by hand, dynamic-dispatch sites checked, dependents sqa-cli/sqa-advisor/sqa-bi/sqa_demo-sinatra cloned to scratch. No unused private methods, error classes or orphan docs pages. New: F-41..F-48. |
 | dependencies | 2026-11-12 | First run at develop 5ea98c8 (Ruby 4.0.9, resolved in scratch). bundle outdated: only indirect gems behind (prism via flog, unicode-display_width via tty-table/strings, redis-client via redis = F-1); no gemspec limit blocks a newer release. bundle-audit clean. Dep Ruby floors confirm F-8 (sqa-tai ≥3.4; polars-df/eps/shared_tools ≥3.3; native gems <4.1.dev). New: F-19..F-22. |
 | adoption | 2026-11-12 | First run at develop 5ea98c8 (Ruby 4.0.9, offline seeded store). README blocks run: 3 broken (F-28 KBS syntax, F-29 indicator snippet, F-9 holding_period still). Examples 01-04/06-08 exit 0 offline (05/09 need network). `mkdocs build --strict` exit 0; api-reference stale (F-31). llms.txt 50/50 links resolve. gem-skill not run. New: F-28..F-33. |
 | quality | 2026-11-10 | First run at develop 3209f5f. rubocop lib+test clean except the 6 F-12 Lint/UselessAssignment (fixed by #50, now 0 offenses on develop 795bce1). flog gate passes (no method ≥50; 16 in 40–50 warn band, highest 46.6). flay gate passes (no dup mass ≥50). Only assertion-free test was F-12's. New: F-17 reek_check gate not self-contained, F-18 detect_double_top/_bottom mirror near-dup. |
 
-Dead-code scan last covered commit: 7fa65e3 (develop, 2026-11-10; `lib/` only, brief)
+Dead-code scan last covered commit: 5ea98c8 (develop, 2026-11-12; lib + bin + test + examples, dependents sqa-cli 4406392, sqa-advisor 1bd6b08, sqa-bi b020cbb, sqa_demo-sinatra d800f76).
 
 ## Findings
 
@@ -76,3 +76,16 @@ Dead-code scan last covered commit: 7fa65e3 (develop, 2026-11-10; `lib/` only, b
 - F-38: `Strategy#add` (`strategy.rb:40`) raises a bare `BadParameterError` with no message for a Proc or Symbol. Status: open (one-line message + test).
 - F-39: `Strategy::MP` and `Strategy::MR` always `:hold` with any vector the library builds (nothing sets `market_profile`/`mr` outside their tests; checked sqa-cli, sqa-advisor, sqa-bi); `Ensemble#select_strategy` picks MR for every sideways regime. Status: needs Dewayne's decision (compute the keys / deprecate / document caller must supply).
 - F-40: `Strategy::Consensus` is five random votes but documented as a strategy. Status: needs Dewayne's decision (label as demo in YARD, or deprecate).
+
+### 2026-11-12 05:45 (fifth visit; full dead-code audit + improver, develop 5ea98c8)
+
+- F-41: `SQA::Strategy#auto_load` (`lib/sqa/strategy.rb:77-96`) is a no-op: it `load`s files `strategy.rb:113-125` already required, never adds to `@strategies`, prints `loading x ... done`, and warns about redefined constants (`s.auto_load(only: [:rsi]); s.strategies.size # => 0`). No callers in sqa or the four dependents; documented in `docs/strategy.md:66-76`, `docs/api/index.md:345-351`. Status: needs Dewayne's decision (public API: remove, or make it `add` what it finds).
+- F-42: `lib/sqa.rb:48-51` requires `lite/statistics`, its Enumerable/Array monkey patches, and `tty-table`, but nothing in sqa or the dependents uses them (sqa-cli requires its own tty-table). Suite identical without the three requires (616 runs, 0F/0E, 87 skips). Status: needs Dewayne's decision (removing a global monkey patch is user-visible; gemspec deps `sqa.gemspec:46,56`).
+- F-43: `test/strategy/mp_test.rb:7-41` wraps three tests in `rescue NoMethodError; skip "MP strategy has syntax error on line 9"`; the bug is gone (5 runs, 0 skips), so the rescue would hide a real regression. Test-only removal. Status: issue [#63](https://github.com/MadBomber/sqa/issues/63) (low-risk candidate; moot if F-39 removes MP).
+- F-44: five tests never run even with `RUN_INTEGRATION_TESTS` because an unconditional `skip "Long running test"` follows the gate: `test/strategy_generator_test.rb:52,68,87,107`, `test/gp_test.rb:98`. Only tests of `discover_patterns`/`generate_strategy` and `evolve` history. Status: open (gate on `RUN_SLOW_TESTS` or delete; needs a run to prove they pass).
+- F-45: `examples/F.csv` (710 KB, Ford daily prices) referenced nowhere; `download_prices.rb F` output committed in 3ea1acc; ships in the gem (F-5). Status: issue [#64](https://github.com/MadBomber/sqa/issues/64) (pure deletion).
+- F-46: more unreferenced public API for the F-26 1.0 list: `SQA::Store::Market::PRICE_COLUMNS` (`store/market.rb:25-27`), `Stock#strategy`/`#strategy=` (`stock.rb:76-78`, never set or read), String aliases `to_snakecase`/`snakecase`/`snake_case`/`camelcase` (`patches/string.rb:19-21,31`). Status: needs Dewayne's decision (batch with F-26).
+- F-47: `Strategy::Common#desc` (`strategy/common.rb:69-80`) `puts` and returns nil, but `lib/sqa/strategy/README.md` says it returns a String; only `random.md` exists. Status: open (behaviour change: return the String; one test).
+- F-48: `lib/sqa/strategy/README.md` stale (6 of 12 strategies, "OpenStruct" vector, typos `:bur`). Status: open (fold into F-11/F-31 docs pass).
+- F-49 (improver C-1): `Stream` never runs strategies when `window_size` < 30 (`sufficient_data?` needs 30, `trim_buffers` caps at `window_size`), silently; sqa-cli passes `-w` through. Repro: window 20/29 → 0 signals, 30 → 1. Status: issue [#62](https://github.com/MadBomber/sqa/issues/62).
+- F-50 (improver C-2): `Stream#process_strategies` (`stream.rb:236`) reports strategy failures with `puts` to stdout; every strategy uses `warn`. One line + `assert_output` test. Status: open (good next small PR; stream.rb, no overlap with #59 lines).

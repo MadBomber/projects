@@ -15,7 +15,9 @@ Dependents: sqa-cli, sqa-advisor, sqa-bi, sqa_demo-sinatra.
 
 ## Status
 
-_Fourth visit (2026-11-12 03:15)._ Queue still full (#53, #54, #58 open, none approved), so no new PRs. First adoption audit (F-28..F-33); improver found Stream/KBS stochastic+volume bug and MultiTimeframe short-data crash. Filed #59, #60, #61.
+_Fifth visit (2026-11-12 05:45)._ Queue still full (#53, #54, #58 open, none approved), so no new PRs. First full dead-code audit (F-41..F-48) plus improver F-49/F-50. Filed #62 (Stream window < 30 silent), #63 (mp_test dead rescue), #64 (orphan examples/F.csv).
+
+_Previous: fourth visit (2026-11-12 03:15)._ Queue still full (#53, #54, #58 open, none approved), so no new PRs. First adoption audit (F-28..F-33); improver found Stream/KBS stochastic+volume bug and MultiTimeframe short-data crash. Filed #59, #60, #61.
 
 _Previous: third visit (2026-11-12)._ Dewayne rebase-merged #44, #46 and #52 (develop **5ea98c8**), so the queue was empty; opened three backlog PRs: [#53](https://github.com/MadBomber/sqa/pull/53) test CI (F-16, green on 3.4/4.0), [#54](https://github.com/MadBomber/sqa/pull/54) docs/ backtest percentages (F-9 follow-up), [#58](https://github.com/MadBomber/sqa/pull/58) Alpha Vantage/Stooq params hash. None low risk. First dependencies audit (F-19..F-22, bundle-audit clean). Filed #55 (RiskManager integer division), #56 (Portfolio cost-basis truncation), #57 (docs keyword drift). #47-#49 fixed on develop, stay open until develop→main. #4 still awaits a design call.
 
@@ -38,6 +40,9 @@ else in this repo.
 - [#59](https://github.com/MadBomber/sqa/issues/59) Stream vectors give KBS no stochastic/volume facts (F-34; lib ~3 lines + 2 tests). Good next PR.
 - [#60](https://github.com/MadBomber/sqa/issues/60) MultiTimeframe raises with < ~2 years of data (F-35; lib ~10 lines + test).
 - [#61](https://github.com/MadBomber/sqa/issues/61) README KBS rule + indicator examples fail (F-28/F-29; README-only, low-risk candidate; F-30 SQLite README note could ride along).
+- [#62](https://github.com/MadBomber/sqa/issues/62) Stream never emits signals with `window_size` < 30 (F-49; lib ~5 lines + 2 tests; raise ArgumentError). F-50 `puts`→`warn` in the same file could be its own 1-line PR.
+- [#63](https://github.com/MadBomber/sqa/issues/63) mp_test dead `rescue NoMethodError; skip` (F-43; test-only, low-risk candidate).
+- [#64](https://github.com/MadBomber/sqa/issues/64) orphan 710 KB `examples/F.csv` (F-45; pure deletion; ships in the gem).
 
 ## Open bomberbot PRs
 

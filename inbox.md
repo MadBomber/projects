@@ -749,3 +749,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **agent99 schema validation is a stub (F-69).** `validate_schema` always returns `[]`, but README and docs promise validation (and document a nonexistent `HeaderSchema.new.validate!`). Add a validator (e.g. json_schemer) and implement it, or remove the stub and the claims? Taste says change the code; it's a new runtime dependency, so your call.
 - **agent99 re-lock majors (F-56 + F-70).** A plain re-lock jumps bunny 2→3 *and* json 2→3, and the local bundler writes `4.1.0.beta3` into the lock. Which majors are allowed?
 - **bomberbot tender merge style.** The tender agent's instructions say merge approved PRs with `--rebase` (fallback `--squash`); taste.md says you merge with merge commits. Which should the tender use?
+
+## 2026-11-12 05:45 sqa (BomberBot)
+
+- **Queue still full.** #53/#54/#58 are open, MERGEABLE, unreviewed. #54 and #58 run no CI until #53 merges (the test workflow lives in #53); after #53 merges, #58 needs a rebase to get checks. Next PRs ready once the queue drains: #55, #56, #59, #62, #63, #64, F-50.
+- **F-41 `Strategy#auto_load` is a no-op** (reloads already-required files, adds nothing, warns about redefined constants). Remove it with a deprecation, or make it `add` what it loads? Documented in `docs/strategy.md`.
+- **F-42 unused `lite-statistics` + `tty-table`.** `lib/sqa.rb` requires both (plus the Enumerable monkey patches) but nothing uses them; suite identical without. Dropping them removes ~40 global Array methods users may lean on, so it needs your call and a CHANGELOG note.
+- **F-46** more unreferenced public API (`Store::Market::PRICE_COLUMNS`, `Stock#strategy`, String snake-case aliases) for the F-26 1.0 removal list.
+- **One way to report diagnostics in lib.** About 105 `puts` in `lib/` (74 in `StrategyGenerator`), mixing progress output and swallowed-error warnings. Pick `warn`, a logger, or a `verbose:` flag, then a mechanical sweep makes sqa quiet inside sqa-cli and the web demos.
+- **Hidden minimum-bar-count pattern.** #60, #62 and F-35 are the same bug class: an analyzer silently needs N bars. A `MIN_BARS` constant plus a clear `ArgumentError` per analyzer (Stream, MultiTimeframe, PatternMatcher, strategies) would fix the class instead of one bug at a time.
+- **Local toolchain.** `polars-df` 0.27.1 won't build here under Ruby 4.1.0-preview1 (rb-sys `rb_matchext_struct`), so the tender couldn't run #58's suite. `Gemfile.lock` also has an empty CHECKSUMS entry for `rake`, so `bundle install --frozen` refuses. A refreshed lock would help.
