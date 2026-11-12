@@ -625,3 +625,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Lazy Chrome in `Browser::*` sub-tools (F-32)** would drop the CI `FERRUM_PROCESS_TIMEOUT` workaround and stop leaking Chrome processes; it changes when driver errors surface.
 - **Ruby 4.1 in the CI matrix** once it is released (#9 runs 3.3/3.4/4.0).
 - **Security decisions S-3, S-4, S-11** (held locally; see the 2026-11-12 final report): the auto_execute default vs. the docs, how eval tools are described and loaded, and pinning MCP `npx` packages.
+
+## 2026-11-12 — sqa (third visit)
+
+- **`SQA.init` crashes when sqa-cli is loaded.** `lib/sqa/init.rb:42-44` runs `CLI.run! if defined? CLI`; sqa-cli defines `SQA::CLI` with no `run!`, so `SQA.init` raises NoMethodError. Drop the hook (a −6 line PR with a test), or settle it with F-15 (`argv` ignored)? Your call since F-15 is waiting on you.
+- **Docs-snippet drift check (adoption).** The improver's stdlib script compared every `SQA::X.new(...)`/`SQA::X.m(...)` call in docs/, README and examples/ against real signatures and found 25 mismatches (#57). A rake task or CI step running it (no network needed) would keep docs honest once #53 lands.
+- **Regenerate `docs/api-reference` in the Pages deploy.** `bin/generate_api_docs.rb` in scratch changed 38 files and added missing pages (`SQA::Store`, `Store::Market`, `Store::Portfolio`, `SQA::FMP`, …); would partly close F-11.
+- **Examples that run offline.** Five of nine examples need live AV/FMP/Yahoo; a small price fixture + `SQA::Store::Importer` setup would let new users and CI run them.
+- **Dependency pinning (F-20).** Most runtime deps, including pre-1.0 polars-df, are unconstrained. Add `~>` bounds?
+- **1.0 removal list (F-26).** Unused public constants/methods: top-level `NotImplemented`, `HOME`, `DataFrame.normalize_keys`/`.aofh_to_hofa`/`.sanitize_key`, `Stock#update_the_dataframe` (already marked deprecated). Deprecate-then-remove?
+- **Release.** #47/#48/#49 close only when develop reaches main; RubyGems is still 0.0.38 (2025-11) while develop says 0.4.0 (F-14).
+

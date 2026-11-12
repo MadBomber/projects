@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 02:45 sqa
+
+- `develop` existed (5ea98c8). Since the last visit Dewayne rebase-merged [#44](https://github.com/MadBomber/sqa/pull/44), [#46](https://github.com/MadBomber/sqa/pull/46), [#52](https://github.com/MadBomber/sqa/pull/52) without comment; queue empty, so three new PRs.
+- New PRs (all → `develop`, none stacked, trial merge of all three clean):
+  - [#53](https://github.com/MadBomber/sqa/pull/53) ci: run the test suite on GitHub Actions for Ruby 3.4 and 4.0. Source: **brain** (F-16). CI green on both Rubies (616/0F/0E). `.github/` → not low risk.
+  - [#54](https://github.com/MadBomber/sqa/pull/54) docs: show backtest fractions as percentages. Source: **brain** (F-9 follow-up / adoption). Offline probe proof, clean review. docs/** deploys Pages → not low risk. Builder died on a network timeout after committing; a fresh builder finished and opened it.
+  - [#58](https://github.com/MadBomber/sqa/pull/58) refactor: build Alpha Vantage queries from a params hash. Source: **brain** (backlog). Fail-before/pass-after tests, suite 622/0F/0E, rubocop clean, clean review. lib → not low risk.
+- Merged (low risk): none. Merged after approval: none needed (Dewayne merged the earlier three himself).
+- Tended: deleted merged remote branches for #44/#46/#52 (delete_branch_on_merge is off). Nothing open to tend.
+- Audit: **dependencies** (first run; auditor died on a network timeout and was relaunched). F-19..F-22, bundle-audit clean. Triage/improver added F-23..F-27.
+- Issues answered: none (responder found nothing new to say on #4/#47/#48/#49).
+- Issues filed: [#55](https://github.com/MadBomber/sqa/issues/55) RiskManager integer division, [#56](https://github.com/MadBomber/sqa/issues/56) Portfolio cost-basis truncation, [#57](https://github.com/MadBomber/sqa/issues/57) docs keyword drift.
+
 ## 2026-11-12 02:35 shared_tools
 
 - `develop` existed (1e8ae43, #8 merged by Dewayne 2026-11-07 as a merge commit, no comments). No bot PRs open at start; tender deleted 4 merged `bomber/` branches.

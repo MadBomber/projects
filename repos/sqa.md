@@ -15,35 +15,32 @@ Dependents: sqa-cli, sqa-advisor, sqa-bi, sqa_demo-sinatra.
 
 ## Status
 
-_Second visit (2026-11-10, resumed after a cutoff)._ Shipped the three open-issue fixes: merged
-#50 (F-12/#48 on_signal test) and #51 (F-10/#49 CHANGELOG backfill) as low risk — develop is now
-**795bce1** and lint-clean (`rubocop lib test` 0 offenses) — and opened #52 (F-4/#47 dead Ruby 1.9
-branch in `String#to_constant`) for Dewayne (lib change). Issues #48/#49 stay open until develop→main
-(GitHub only auto-closes `Fixes #N` on the default branch). Quality audit ran (first time): repo is
-clean beyond the resolved F-12 — flog/flay gates pass, only new findings F-17 (reek_check Rakefile gate
-isn't self-contained, needs Dewayne) and F-18 (detect_double_top/_bottom near-dup, needs Dewayne).
-Suite now 616 runs 0F/0E on Ruby 4.0.9 without `FMP_API_KEY`. #44 and #46 from visit 1 still open,
-unreviewed. `VERSION` 0.4.0 vs CHANGELOG/.semver/RubyGems (0.0.38) still disagree (F-14). No
-`Gemfile.lock` committed, no test CI (F-16). Responder posted nothing new on the open issues (nothing
-to add). #4 (API keys) still awaits Dewayne's design call.
+_Third visit (2026-11-12)._ Dewayne rebase-merged #44, #46 and #52 (develop **5ea98c8**), so the queue was empty; opened three backlog PRs: [#53](https://github.com/MadBomber/sqa/pull/53) test CI (F-16, green on 3.4/4.0), [#54](https://github.com/MadBomber/sqa/pull/54) docs/ backtest percentages (F-9 follow-up), [#58](https://github.com/MadBomber/sqa/pull/58) Alpha Vantage/Stooq params hash. None low risk. First dependencies audit (F-19..F-22, bundle-audit clean). Filed #55 (RiskManager integer division), #56 (Portfolio cost-basis truncation), #57 (docs keyword drift). #47-#49 fixed on develop, stay open until develop→main. #4 still awaits a design call.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything
 else in this repo.
 
-- F-16 is now unblocked: F-7 merged as [#45](https://github.com/MadBomber/sqa/pull/45).
-- F-9 README examples: **merged** [#46](https://github.com/MadBomber/sqa/pull/46). Follow-up: docs/ still prints backtest fractions as percent (docs/index.md:84,86; docs/advanced/backtesting.md:27-30,52,64,98-102; docs/strategy.md:273; docs/strategies/bollinger-bands.md:77-80).
-- F-16 test CI workflow (TA-Lib .deb, Ruby 3.4 + 4.0), once F-7 merges.
-- F-4 dead Ruby 1.9 branch in `String#to_constant`: **merged** [#52](https://github.com/MadBomber/sqa/pull/52) (Fixes #47).
-- F-10 CHANGELOG `[Unreleased]` backfill: **merged (low risk)** [#51](https://github.com/MadBomber/sqa/pull/51) (Fixes #49). #46 also touches CHANGELOG `[Unreleased]`; it will need a one-line rebase.
-- F-12 `on_signal` test asserts nothing (+ clears all RuboCop offenses): **merged (low risk)** [#50](https://github.com/MadBomber/sqa/pull/50) (Fixes #48). F-13 unused `$data` fixture in test_helper still open (test-only removal, candidate next visit).
-- F-8 raise `required_ruby_version` to `>= 3.4` (sqa-tai needs it); gemspec, so Dewayne reviews. F-6 `changelog_uri` could fold into the same gemspec PR.
-- S-2 small hardening fix, details held locally.
+- F-16 test CI workflow: **PR open** [#53](https://github.com/MadBomber/sqa/pull/53) (Ruby 3.4 + 4.0, TA-Lib 0.8.3 .deb).
+- F-9 follow-up, docs/ backtest fractions printed as %: **PR open** [#54](https://github.com/MadBomber/sqa/pull/54).
+- S-2: details held locally.
+- Alpha Vantage/Stooq queries from a params hash: **PR open** [#58](https://github.com/MadBomber/sqa/pull/58).
+- [#55](https://github.com/MadBomber/sqa/issues/55) `RiskManager.max_drawdown`/`kelly_criterion` integer division (lib, ~2 lines + test). Good next-visit PR.
+- [#56](https://github.com/MadBomber/sqa/issues/56) `Portfolio` avg cost / P&L integer truncation (lib, ~3 lines + test). Good next-visit PR.
+- [#57](https://github.com/MadBomber/sqa/issues/57) docs examples with wrong keywords (`initial_cash:` → `initial_capital:`, risk-management page). Docs deploy, so not low risk; split per page.
+- F-19 `bin/sqa-console` needs `irb` as a dev dependency on Ruby 4 (gemspec, one line).
+- F-13 unused `$data` fixture in test_helper (test-only removal, low risk).
+- `SQA.init` calls `CLI.run!` if `SQA::CLI` is defined; sqa-cli defines `SQA::CLI` without `run!`, so loading both and calling `SQA.init` raises (improver, 2026-11-12). Fold into F-15's decision.
+- F-8 raise `required_ruby_version` to `>= 3.4` (every native dep needs ≥3.3, sqa-tai ≥3.4); gemspec, so Dewayne reviews. F-6 `changelog_uri` could fold into the same gemspec PR.
 
 ## Open bomberbot PRs
 
-_(visit 3, 2026-11-12, in progress)_
+- [#58](https://github.com/MadBomber/sqa/pull/58) `madbot/av-query-params` → develop. refactor: build Alpha Vantage queries from a params hash (also Stooq, `Stock#merge_overview`, `Stock.top`). 3 lib + 4 test files + CHANGELOG top line. Fail-before/pass-after tests; suite 622/0F/0E on 4.0.9; rubocop clean; 1 clean review round. lib change → for Dewayne.
+- [#54](https://github.com/MadBomber/sqa/pull/54) `madbot/docs-backtest-percent` → develop. docs: show backtest fractions as percentages (10 docs/ files, +24/-24, also fixes ensemble.md `results[:return]`). Offline probe proof; clean review. docs/** deploys Pages, so not low risk.
+- [#53](https://github.com/MadBomber/sqa/pull/53) `madbot/test-ci` → develop. ci: run the test suite on GitHub Actions for Ruby 3.4 and 4.0. `.github/workflows/test.yml` + CHANGELOG bottom line; CI green (616/0F/0E both Rubies). `.github/` → not low risk; labeled needs-dewayne.
+
+Trial merge of all three onto develop 5ea98c8 was clean.
 
 ## Merged bomberbot PRs
 
