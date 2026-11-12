@@ -25,7 +25,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - [dev#10](https://github.com/MadBomber/dev/pull/10): fix(status_report): snap STATUS_WEEK_OF back to Monday (F-28). **PR open**
 - [dev#11](https://github.com/MadBomber/dev/pull/11): feat(quality): add reek_baseline task (F-26). **PR open**
-- [dev#12](https://github.com/MadBomber/dev/pull/12): fix(quality): skip flog, flay, reek, bundler-audit when absent (F-27). Stacks on #11; `/code-review` not yet run. **PR open**
+- [dev#12](https://github.com/MadBomber/dev/pull/12): fix(quality): skip flog, flay, reek, bundler-audit when absent (F-27). Stacks on #11; review loop ended clean at 3 rounds. **PR open**
 
 ## Open bomberbot issues
 
