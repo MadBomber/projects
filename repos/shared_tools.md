@@ -10,7 +10,7 @@ Local tool definitions for Ruby AI frameworks, used by aia. A change to a public
 
 ## Status
 
-_Updated 2026-11-12._ #8 merged; first security audit ran (S-1..S-11 held locally); three PRs open: test CI (#9), README accuracy (#13), disk path normalization (#14). `develop` is 4 merged fixes ahead of v0.7.1 and issue #3 waits on a release.
+_Updated 2026-11-12 07:30._ Second visit today skipped new PRs (queue full: #9, #13, #14 unreviewed, all MERGEABLE). Adoption audit ran (F-36..F-48); issues #15-#17 filed; #14's text reworded to neutral. `develop` is still 4 merged fixes ahead of v0.7.1 and issue #3 waits on a release.
 
 ## Backlog
 
@@ -22,9 +22,15 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Remove broken leftover scripts at the root and in examples/ (F-26, F-27): [issue #11](https://github.com/MadBomber/shared_tools/issues/11)
 - `Git::CheckoutTool` needs `--` after the ref (F-20): [issue #10](https://github.com/MadBomber/shared_tools/issues/10)
 - Docs examples for EvalTool/ComputerTool raise ArgumentError (F-29): [issue #12](https://github.com/MadBomber/shared_tools/issues/12) (docs deploy from develop)
+- `DataScienceKit` median and quartiles are wrong for even row counts (F-48): [issue #15](https://github.com/MadBomber/shared_tools/issues/15)
+- Docs teach the ruby_llm 1.x `param` DSL and `Agent.new(tools:)` (F-36, F-37): [issue #16](https://github.com/MadBomber/shared_tools/issues/16) (docs deploy from develop)
+- Clipboard tests overwrite the real clipboard and fail with no clipboard program (F-50, F-33): [issue #17](https://github.com/MadBomber/shared_tools/issues/17) (test-only)
+- Raw NUL bytes make `process_start_tool.rb` and `search_codebase_tool.rb` binary to git and grep (F-25, widened)
+- Dead Zeitwerk ignore lines and SimpleCov group (F-28): a three-line removal
+- Doc links to renamed `*_example.rb` files, and a missing anchor (F-38, F-46)
 - Open security items S-2, S-5, S-7, S-9 have small fixes (details held locally; neutral titles only)
 
-## Merged
+## Merged bomberbot PRs
 
 - [#8](https://github.com/MadBomber/shared_tools/pull/8): fix(test): pin SimpleCov root and stop tracking test/coverage (merged 2026-11-07, merge commit, no comments)
 - [#7](https://github.com/MadBomber/shared_tools/pull/7): fix(test): read lib files as UTF-8 in the DSL guard test (merged 2026-11-07, no comments)

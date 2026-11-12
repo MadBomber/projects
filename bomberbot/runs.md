@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:30 shared_tools
+
+Second visit today (the first was 02:35). `develop` existed and is unmoved at 1e8ae43; not created this visit.
+
+- **skipped: review queue full.** #9, #13 and #14 are still open after tending: unapproved, no comments from Dewayne, level with `develop`, MERGEABLE/CLEAN. No new PRs.
+- Merged (low risk): none. Merged after approval: none.
+- Tended: #9 (green on 3.3/3.4/4.0), #13 (no checks until #9 merges), #14 (suite rerun on branch: 971 runs, 0F/0E). The main session reworded #14's commit message (now e47529f, code unchanged) and PR body to neutral terms, because both described the weakness the fix closes.
+- Audit: **adoption** (first run, at 1e8ae43): F-36..F-48. Improver leftovers F-50..F-58.
+- Issues answered: none needed on #3/#10/#11; added four newly found failing examples (incl. F-39) to [#12](https://github.com/MadBomber/shared_tools/issues/12) by comment.
+- Issues filed: [#15](https://github.com/MadBomber/shared_tools/issues/15) DataScienceKit median/quartiles (F-48), [#16](https://github.com/MadBomber/shared_tools/issues/16) docs teach the 1.x DSL and `Agent.new(tools:)` (F-36, F-37), [#17](https://github.com/MadBomber/shared_tools/issues/17) clipboard tests overwrite the clipboard and fail with no clipboard program (F-50, F-33).
+
 ## 2026-11-12 07:20 debug_me
 
 Resumed visit (the first session ran out of budget during phase 3). The 2026-11-10 visit was never recorded here; it opened #40 and #41 (merged low risk), #42 (closed as a duplicate of #40) and #43 (merged by Dewayne). develop was not created; it already existed and now contains all of main.

@@ -625,6 +625,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Lazy Chrome in `Browser::*` sub-tools (F-32)** would drop the CI `FERRUM_PROCESS_TIMEOUT` workaround and stop leaking Chrome processes; it changes when driver errors surface.
 - **Ruby 4.1 in the CI matrix** once it is released (#9 runs 3.3/3.4/4.0).
 - **Security decisions S-3, S-4, S-11** (held locally; see the 2026-11-12 final report): the auto_execute default vs. the docs, how eval tools are described and loaded, and pinning MCP `npx` packages.
+- **Docs site covers about 20 of 48 tools (F-40).** One grouped "more tools" page, a page per tool, or a small generator from each tool's `description` and `parameters_schema` (which could also produce `llms.txt`)? The 5 orphan pages just need adding to the nav. (BomberBot, 2026-11-12 second visit)
+- **`DataScienceKit` `confidence_level` (F-47):** compute a confidence interval with it, or drop the parameter? (BomberBot, 2026-11-12)
+- **`Tools::Enabler` (F-57) and the uncalled `ElementFormatter` helpers (F-58):** delete with CHANGELOG "Removed" lines (perhaps with F-5 in one browser dead-code PR), or keep? (BomberBot, 2026-11-12)
+- **CHANGELOG history (F-41 corrects F-30):** 0.5.0 was tagged but never published; 0.2.3/0.3.0/0.3.1 were published without headings; `docs/development/changelog.md` is a stale copy (F-42). Settle at the 0.7.2 release? (BomberBot, 2026-11-12)
+- **Gemspec metadata (F-44):** add `documentation_uri`/`bug_tracker_uri` (easy PR once the queue clears), and decide on `rubygems_mfa_required` and a new summary. (BomberBot, 2026-11-12)
+- **aia's README tells users `aia --require shared_tools/ruby_llm`** (`README.md:1512-1518`), a path deleted from shared_tools; it raises LoadError. An aia docs fix. (BomberBot, 2026-11-12)
+- **The confirmation prompt** accepts only lowercase `y`, doesn't echo or print a newline after `getch`, and writes to stdout shared with aia's spinner (beyond the missing `)` of F-51). Worth an issue before changing input handling? (BomberBot, 2026-11-12)
 
 ## 2026-11-12 — sqa (third visit)
 
