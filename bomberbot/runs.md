@@ -2,6 +2,15 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 04:05 scripts
+
+- `develop` already existed (86201ce, unchanged); not created.
+- **skipped: review queue full.** The tender found #35, #36 and #37 still open, unapproved, MERGEABLE and current with 86201ce (no CI; `ruby -c` of changed files passes). Nothing to rebase, answer or retarget.
+- **New PRs:** none. **Merged (low risk):** none. **Merged after approval:** none.
+- **Audit:** security (focused; the three 2026-11-10 audits tied, security oldest) at 86201ce: ~110 non-`.rb` scripts, the bc51825..86201ce diff, first full-history gitleaks scan (clean). F-60..F-64 public; S-6..S-8 held locally. Improver F-65..F-68, triage F-69.
+- **Issues answered:** none (no comments from anyone but BomberBot on the 13 open issues).
+- **Issues filed:** [#41](https://github.com/MadBomber/scripts/issues/41) (systemu LoadError, F-65), [#42](https://github.com/MadBomber/scripts/issues/42) (JIRA sync script arguments, F-61/F-62), [#43](https://github.com/MadBomber/scripts/issues/43) (rultor `-h` / aip no-args nil crashes, F-40/F-42).
+
 ## 2026-11-12 03:44 aia
 
 - `develop` already existed (22120fa, unchanged); not created.

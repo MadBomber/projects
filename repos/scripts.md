@@ -10,7 +10,7 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-12 (ninth run)._ Dewayne merged #24, #25 and #26 into develop (86201ce). This visit opened #37 (S-2 backlog item), #35 (Fixes #32) and #36 (Fixes #30), all clean one-round reviews but not low risk (script code), ran the overdue dead-code audit (F-52..F-59), and filed [#38](https://github.com/MadBomber/scripts/issues/38), [#39](https://github.com/MadBomber/scripts/issues/39) and [#40](https://github.com/MadBomber/scripts/issues/40). main has one commit develop lacks (e746bef, `ruler`), so the next release needs a sync merge.
+_Updated 2026-11-12 (tenth run)._ Skipped new PRs: review queue full (#35, #36, #37 open, unapproved, current with develop 86201ce). Ran a focused security audit (F-60..F-64, S-6..S-8 held locally), filed [#41](https://github.com/MadBomber/scripts/issues/41), [#42](https://github.com/MadBomber/scripts/issues/42) and [#43](https://github.com/MadBomber/scripts/issues/43). main still has e746bef (`ruler`) that develop lacks.
 
 ## Backlog
 

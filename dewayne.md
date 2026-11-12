@@ -61,7 +61,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Delete merged bot branches on MadBomber/scripts if you want them gone: `bomber/*` (9, plus `bomber/readme-fix-rows` and `bomber/readme-index-complete`, whose content reached develop through #25), `bomberbot/cp-r-spaces`, `bomberbot/land-readme-index`, `bomberbot/sinatra-bind-error`, and the orphan `dependabot/bundler/templates/sinatra_app/tzinfo-1.2.11`. (added 2026-11-12)
 - [ ] Review [scripts#37](https://github.com/MadBomber/scripts/pull/37) (S-2 fix, neutral title; details in `notes/security/scripts.md`). After merge, the next run of `backup_envrc.rb` changes your existing `~/.envrc_backup` to mode 0700, and a failed copy now exits 1 without advancing the timestamp. (added 2026-11-12)
 - [ ] Review [scripts#35](https://github.com/MadBomber/scripts/pull/35) (shc.rb file arg, Fixes #32) and [scripts#36](https://github.com/MadBomber/scripts/pull/36) (yaml2json aliases, Fixes #30). One-line code changes, so not self-merged. (added 2026-11-12)
-- [ ] scripts: S-3, S-4 and new S-5 (low) are held locally in `notes/security/scripts.md`. (added 2026-11-10, updated 2026-11-12)
+- [ ] scripts: S-3, S-4, S-5 and new S-6, S-7, S-8 are held locally in `notes/security/scripts.md`; S-8 (medium-low) is the one to read first. (added 2026-11-10, updated 2026-11-12)
 
 ## sqa
 
