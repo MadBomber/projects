@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Eighth visit (2026-11-12 08:04)._ Skipped building: review queue full (#38, #39, #40 still open, unreviewed, fourth visit waiting). Ran the third **dependencies** audit (F-71, F-72; F-15 now a verified resolve failure). Filed #49 (Rails example `last_result` returns oldest), #50 (`Network#parallel` YARD example fails), #51 (unused dev gems). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
+
 _Seventh visit (2026-11-12 07:08)._ Skipped building: review queue full (#38, #39, #40 still open, unreviewed). Ran the second **security** audit (S-4–S-9 held locally; F-66 public). Filed #46 (`wait_for_key` pipe leak), #47 (`doom_loop_threshold` 0 crash), #48 (Redis `:auto` backend never falls back, changes types). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
 
 _Sixth visit (2026-11-12 04:18)._ Skipped building: review queue full (#38, #39, #40 still open, unreviewed). Ran a full-lib **quality** audit (F-52–F-58). Triage found released 0.6.0 breaks on ruby_llm 2.2.0 (tool approvals, MCP input): filed #43, a fix must ship from `main` (Dewayne's call). Filed #44 (token_budget unflagged after `reset_token_totals`, sync-safe) and #45 (`Robot#call` rescue `TypeError`). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
@@ -51,6 +53,9 @@ else in this repo.
 - F-67 `Memory#wait_for_key` pipe leak: issue [#46](https://github.com/MadBomber/robot_lab/issues/46). Sync-safe hunk; ~3 lines + test.
 - F-68 `doom_loop_threshold` <= 0 crashes mid-run: issue [#47](https://github.com/MadBomber/robot_lab/issues/47). Sync-safe `initialize`; bundle F-69 dedupe if small.
 - F-66 Redis `:auto` backend never falls back / changes types: issue [#48](https://github.com/MadBomber/robot_lab/issues/48). Part (b) `ping` fix after the sync.
+- F-73 Rails example `RobotLabThread#last_result` returns the oldest result: issue [#49](https://github.com/MadBomber/robot_lab/issues/49). Sync-safe one-line `reorder` fix in `examples/18_rails/app/models/robot_lab_thread.rb`; first pick once the queue has room (docs/examples only, likely low risk).
+- F-74 `Network#parallel` YARD example raises `NoMethodError`: issue [#50](https://github.com/MadBomber/robot_lab/issues/50), comment-only, after the sync.
+- F-72 unused dev gems (`state_machines*`, `lumberjack`): issue [#51](https://github.com/MadBomber/robot_lab/issues/51), after the sync.
 
 ## Open bomberbot PRs
 

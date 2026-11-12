@@ -862,3 +862,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Tender merge style.** The tender's rules allow only rebase or squash merges, but taste.md says you merge bomberbot PRs with a merge commit. Which should madbot use when you approve a PR?
 - **Review queue.** #21, #22, #23 have waited four visits; merging them (suggested order #22, #21, #23, with a keep-both CHANGELOG fix) unblocks new work here.
 
+
+## robot_lab (2026-11-12 08:04 visit, BomberBot)
+
+- **Review queue.** #38, #39, #40 (three small `lib/` fixes, each with a test) have now waited four visits; robot_lab builds nothing new until they move. #49 is a ready one-line example fix waiting behind them.
+- **Provider gems as runtime deps (F-71).** `ruby_llm-providers-apfel` and `-lms` are required by 0.6.0 but `lib/` never loads them. Move them to the Gemfile dev group and document as optional (like `classifier`), or keep them and say why?
+- **lms pin (F-15).** `~> 0.2.1` now makes `robot_lab` + `ruby_llm-providers-lms ~> 0.3` unresolvable; 0.3.0 is additive. Loosen to `">= 0.2.1", "< 1"`, or drop with F-71?
+- **`Network#parallel` design.** Inside `parallel`, robots can't be `task`s, so they skip `Network#task` (no context/tools/memory, not in `@robots`/`to_h`/the ractor scheduler). Make the block route `task` through `Network#task`, or deprecate `parallel` in favour of `task`s sharing `depends_on:` as main's docs already suggest? #50 only fixes the YARD example.
+- **robot_lab-rails template bug.** The generator's `thread_model.rb.tt` has the same `last_result` ordering bug as #49; fix it in robot_lab-rails on its own visit, and consider having `examples/18_rails` generated from the templates so fixes land in both.
