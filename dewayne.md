@@ -32,9 +32,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## agent99
 
-- [ ] Review and merge into `develop` [#12](https://github.com/MadBomber/agent99/pull/12) (Fixes #8, lib) and [#13](https://github.com/MadBomber/agent99/pull/13) (Fixes #6, lib), plus the still-open [#10](https://github.com/MadBomber/agent99/pull/10) and [#11](https://github.com/MadBomber/agent99/pull/11) (gemspec). Each adds a CHANGELOG line, so the next tender rebases whatever merges after the first. (added 2026-11-10)
-- [ ] Decide for [#17](https://github.com/MadBomber/agent99/pull/17): do the header helpers (`to_uuid`, `from_uuid`, `event_uuid`, `timestamp`, `type`, `return_address`) stay public? #17 pins them public as they behave today; `header_management.rb` has a commented-out `# private`. Pairs with F-19. (added 2026-11-10)
-- [ ] Issues #3/#4/#5… won't auto-close: `Fixes #N` only fires on merges into `main`. Close #4 by hand now (fixed on develop via #9) or at release. (added 2026-11-10)
+- [ ] Review and merge into `develop` [#27](https://github.com/MadBomber/agent99/pull/27) (Fixes #20, lib), [#28](https://github.com/MadBomber/agent99/pull/28) (Fixes #21, #15, lib) and [#29](https://github.com/MadBomber/agent99/pull/29) (Fixes #23, examples). Their CHANGELOG lines don't collide, so any merge order works. (added 2026-11-12)
+- [ ] Issues #3/#4/#5… won't auto-close: `Fixes #N` only fires on merges into `main`. Close #4 by hand now (fixed on develop via #9) or at release. Now also #3, #5, #6, #8 (fixed on develop by #10–#13). (added 2026-11-10, updated 2026-11-12)
 - [ ] The agent99 docs site is 404 (GitHub Pages disabled, F-25). Before re-enabling Pages, handle the held-local note S-6 for this repo (same one-line `mkdocs.yml` fix as smart_message#9), then redeploy. (added 2026-11-10)
 
 ## trak_flow

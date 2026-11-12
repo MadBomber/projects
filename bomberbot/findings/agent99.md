@@ -11,12 +11,12 @@ Dewayne's decision, issue #N.
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-10 | Second run, develop 5183c92 (first was main 69f0a04, pre-`develop`). bundle-audit DB bc80fbb. S-1..S-7 re-confirmed open (lib/ byte-identical since #9); S-8 fixed by #7's re-lock. New S-9 (vulnerable sinatra/rack/uri chain in the lock; `uri` is core-path), S-10 (`examples` on require_paths executes `kaos_spy` on require), S-11 (unbounded TCP read + `symbolize_names` on untrusted JSON, LOW). All held locally. |
-| dead code | 2026-11-10 (full) | debride lib+examples at develop 5183c92, hand-verified; no dependent repos. F-51, F-52; F-1/F-40/F-41 still open. Live (no finding): `handle_*` via `send`, header helpers (used in examples), `get`/`run`/`discover_agent`/`fetch_all_agents`, `Agent99.version`. |
+| dead code | 2026-11-12 (full) | debride 1.15.2 on lib+examples+test at develop c2b4e49, hand-verified; dependents checked (`agent99_examples` pins 0.0.4, uses none of the candidates; the earlier "no dependent repos" note was wrong). New F-58..F-61; triage/improver added F-62..F-64. F-1 (plus public `Base#agents` question), F-40, F-41, F-51, F-52 still present. Live: `handle_*` via `send`, `HeaderManagement#type` (#17 asserts it public), client setters (tests), `Agent99.version` (docs). |
 | dependencies | 2026-11-10 | Second run, develop 5183c92. Committed lock still un-installable on Ruby 4.0.9 (`core 2.3.0` pins ruby ~> 3.4) and 4.1-preview1; re-resolve succeeds on both, suite green 64/0/0/4 skips. `rbtree` re-resolves to 0.4.7 (clears the 4.1 build failure). Committed lock carries ~34 bundle-audit advisories (held locally as S-12; the re-resolved lock is clean). New F-56 (re-lock jumps bunny 2.24→3.6 major, unguarded by gemspec; needs-decision), F-57 (no Ruby CI). Re-verified present: F-14 (logger undeclared), #7 (lock un-installable/stale). All three (S-12, #7 install, Note #7) close with one re-lock. First run was 2026-11-09, develop 69f0a04: F-10..F-17, improver F-18..F-20. |
 | adoption | 2026-11-10 | First run, develop 5183c92. Docs site 404 (Pages off; gh-pages last deployed 2025-09-03). README agent fails on load (HeaderSchema not loaded, F-23) then crashes silently on every request (F-6); example registry needs rackup and 500s on WEBrick (F-27); API reference documents 13 nonexistent methods (F-26); `mkdocs build --strict` passes. F-23..F-36, S-6; updated F-6/8/9/20/21/22. Improver added F-37, F-38. gem-skill not run (paid API). |
 | quality | 2026-11-10 | First run, develop 5183c92. flog 640.8 (avg 7.7), flay 256 (all AMQP/NATS duplication), reek 83, rubocop default+NewCops 249 lib / 857 test offenses (no repo config). F-42..F-50, F-53, S-7. Triage added S-8 (bundle-audit); improver added F-54, F-55. |
 
-Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
+Dead-code scan last covered commit: c2b4e49 (develop, full pass 2026-11-12)
 
 ## Findings
 
@@ -274,3 +274,18 @@ Dead-code scan last covered commit: 5183c92 (develop, full pass 2026-11-10)
 - F-1/F-51/F-53/F-55 re-verified still present at 5183c92 by the improver (no code change this
   visit); statuses unchanged.
 - Dead-code scan not re-run this visit; last covered commit stays 5183c92.
+
+### 2026-11-12 (seventh visit; dead-code audit, develop c2b4e49)
+
+- Merged since last visit: #10 (#3), #11 (#5), #12 (#8), #13 (#6), #17 (F-2). Those issues are fixed on develop, open until release to main.
+- F-58: `examples/registry.rb:4-5` requires `debug_me` + top-level `include DebugMe` but never calls it (LoadError without the dev gem); `:31` `agent_name` assigned, unused (`ruby -wc` warns). Status: PR'd [#29](https://github.com/MadBomber/agent99/pull/29).
+- F-59: `lib/agent99/tcp_message_client.rb` is loaded by nothing (no `setup`/`delete_queue`, so it can't back `Base`), header says "not ready for prime time", ships via `lib/**/*`; lines 128-183 after `__END__` are a pasted AI-chat transcript; `header_schema.rb:17-19` has a stale line after `__END__`. Status: the `__END__` cleanup is open (comments only, small PR); removing or finishing the class needs Dewayne's decision (inbox).
+- F-60: unused test helpers: `MockRegistryServer#reset` (`test/support/test_infrastructure.rb:44-46`), `TestAgent#clear_received_messages` (`:365-369`); lesser: `attr_reader :thread, :server` (`:9`), `MockQueue#messages` (`:228`). Status: open.
+- F-61: CHANGELOG `[Unreleased]` has three near-duplicate #6 lines (`CHANGELOG.md:12-14`), left by #13's review-loop commits squashed together. Keep line 14. Status: open.
+- F-62 (triage): `bin/console:5` `require "ai_agent"` → LoadError; pairs with F-32. Status: issue [#30](https://github.com/MadBomber/agent99/issues/30).
+- F-63 (improver): six README Key Features anchors (`README.md:22-29`) match no heading. Status: issue [#31](https://github.com/MadBomber/agent99/issues/31).
+- F-64 (improver): `Rakefile` `test_coverage`/`test_verbose` set env vars nothing reads; `simplecov` not a dependency. Status: issue [#32](https://github.com/MadBomber/agent99/issues/32).
+- Re-checked at c2b4e49, still present: F-1 (`add_agent` is the only writer of `@agents`, so public `Base#agents` always returns `{}`; removing `agents` is public API → needs Dewayne's decision), F-40 (`registry_client.rb:43` unused `response`, the only `ruby -w` warning left in lib), F-41, F-51, F-52.
+- #20 PR'd [#27](https://github.com/MadBomber/agent99/pull/27); #21 + #15 PR'd [#28](https://github.com/MadBomber/agent99/pull/28); #23 PR'd [#29](https://github.com/MadBomber/agent99/pull/29).
+- Example registry also needs `rackup` (+ webrick/puma) under Sinatra 4; neither Gemfile nor gemspec lists it (noted by the #29 builder). Status: open, unverified as a docs vs dependency choice.
+

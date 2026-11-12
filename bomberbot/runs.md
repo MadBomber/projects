@@ -14,7 +14,14 @@ Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Ent
 
 ## 2026-11-12 03:45 agent99
 
-- In progress. `develop` existed (c2b4e49); not created. Dewayne merged all open bomberbot PRs (#10, #11, #12, #13, #17) into develop on 2026-11-10, so the queue is empty. Builders started on #21+#15 (`madbot/load-all-constants`), #20 (`madbot/amqp-setup-logger`), and #23 (`madbot/registry-no-rewind`).
+- `develop` existed (c2b4e49); not created. Dewayne had merged all six earlier bomberbot PRs (#9 earlier; #10, #11, #12, #13, #17 on 2026-11-10), so the queue was empty.
+- **New PRs (3, independent, all → develop):** [#27](https://github.com/MadBomber/agent99/pull/27) `madbot/amqp-setup-logger` (issue #20, brain backlog): `AmqpMessageClient#setup` keeps its logger; red→green test, suite 73/0/0/4 on 4.0.9, review clean round 1. [#28](https://github.com/MadBomber/agent99/pull/28) `madbot/load-all-constants` (issues #21 + #15, brain backlog): `require "agent99"` loads `VERSION` and `HeaderSchema`; load test runs a child with the gemspec's VERSION unloaded; suite 73/0/0/4, review clean round 1. [#29](https://github.com/MadBomber/agent99/pull/29) `madbot/registry-no-rewind` (issue #23 + dead code F-58): example registry 500→201 under WEBrick/Rack 3 and runs without `debug_me`; suite 72/0/0/4, review clean in 2 rounds. Test-merged all three together: no CHANGELOG conflict.
+- **Merged (low risk): none.** #27/#28 touch lib; #29 deletes code lines. **Merged after approval: none** (none pending).
+- **Tended:** no open bot PRs. Tender deleted the six merged `bomberbot/*` branches (heads verified equal to the merged PR heads).
+- **Audit: dead code** at develop c2b4e49 (debride on lib+examples+test). F-58..F-61; F-1/F-40/F-41/F-51/F-52 still present; corrected "no dependent repos" (`agent99_examples` pins 0.0.4, unaffected).
+- **Issues answered (7):** "fixed on develop" on #3, #5, #6, #8; re-verified repros on #18, #21, #23.
+- **Issues filed (3):** [#30](https://github.com/MadBomber/agent99/issues/30) (`bin/console` requires `ai_agent`), [#31](https://github.com/MadBomber/agent99/issues/31) (six dead README anchors), [#32](https://github.com/MadBomber/agent99/issues/32) (no-op Rakefile coverage/verbose tasks).
+- Process: the fresh clone left `src/` on `main`; corrected to `origin/develop` a few minutes in and told the agents (already a taste rule from sqa). `/simplify` and `/code-review` weren't available to builders as skills; they reviewed by hand plus a code-review agent, and say so in each PR.
 
 ## 2026-11-12 03:22 smart_message
 
