@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-12 05:30 (eighth visit)._ Review queue full: #27–#29 still open, unapproved and MERGEABLE, so no new PRs; ran the overdue security audit (F-65, S-13..S-15 held locally) and filed [#33](https://github.com/MadBomber/agent99/issues/33) (`bin/test` false PASS) and [#34](https://github.com/MadBomber/agent99/issues/34) (test/README globs run nothing). develop still c2b4e49. No test CI; "green" = local suite on Ruby 4.0.9 with a locally re-resolved lock (put `~/.rbenv/versions/4.0.9/bin` first on PATH; the committed lock doesn't install, #7).
+_Updated 2026-11-12 08:40 (ninth visit)._ Review queue full: #27–#29 still open, unapproved and MERGEABLE, so no new PRs; ran the quality audit (F-71..F-76) and filed [#35](https://github.com/MadBomber/agent99/issues/35) (`discover_agent` NoMethodError), [#36](https://github.com/MadBomber/agent99/issues/36) (`get` drops `false`) and [#37](https://github.com/MadBomber/agent99/issues/37) (gemspec tests fail outside git). develop still c2b4e49. No test CI; "green" = local suite on Ruby 4.0.9 with a locally re-resolved lock (put `~/.rbenv/versions/4.0.9/bin` first on PATH; the committed lock doesn't install, #7).
 
 
 ## Backlog
@@ -59,6 +59,11 @@ else in this repo.
 - [#33](https://github.com/MadBomber/agent99/issues/33) F-66: `bin/test` says PASSED and exits 0 on failures (~10 lines + test). Filed 2026-11-12.
 - [#34](https://github.com/MadBomber/agent99/issues/34) F-67: `test/README.md` commands glob `*_test.rb` and run zero tests (docs-only, low-risk candidate). Filed 2026-11-12.
 - F-68: drop four unused dev deps (`mocha`, `hashdiff`, `amazing_print`, `tocer`) → #7 on Ruby 4.0 without the bunny major. **needs Dewayne's decision** (minitest 6 vs `~> 5.25`).
+- [#36](https://github.com/MadBomber/agent99/issues/36) F-74: `get(:field)` replaces an explicit `false` with the schema example. One PR with #14 (same two methods). Filed 2026-11-12.
+- [#35](https://github.com/MadBomber/agent99/issues/35) F-72: `discover_agent` raises NoMethodError on an unreachable registry (one line + test). Filed 2026-11-12.
+- F-71: `RegistryClient` never sets `use_ssl` for `https://` URLs. Bundle with F-65 (same lines).
+- [#37](https://github.com/MadBomber/agent99/issues/37) F-75: gemspec file-list tests fail outside a git checkout (tests-only skip; after F-13). Filed 2026-11-12.
+- F-73 (`Base#capabilities` always nil) and F-76 (header helpers public): **needs Dewayne's decision**.
 
 ## Open bomberbot PRs
 

@@ -895,3 +895,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **`db:*` tasks ignore config.** Postgres `db:create`/`db:drop` hard-code `ragdoll_development` and create a `ragdoll` role; `db:truncate` only clears two of the tables. A small rewrite around `Ragdoll.config.database` pairs with #36 and F-62 (drop MySQL branches).
 - **Retire `lib/ragdoll.rb`'s ~20 hand-written delegators** in favour of `SingleForwardable` to `Ragdoll::Core`: same public API, ~200 fewer lines, and no more doc drift (F-31, F-63). Public surface, so your call.
 - **F-60:** `configure_ruby_llm` advertises `:azure`/`:huggingface`, which ruby_llm doesn't support. Remove them or raise a clear error?
+
+## agent99 (2026-11-12 08:40 visit)
+
+- **F-73: what should `Base#capabilities` return?** `attr_reader :capabilities` shadows `AgentDiscovery#capabilities`, so it is always nil now that 0.0.4 moved capabilities into `info`. Options: return `info[:capabilities]` (my pick), keep the module's `[]` default, or drop the reader and the ivar. Public API, so your call. — BomberBot
+- **F-76: header helpers are public by accident** (`header_management.rb:7` has `# private` commented out). Restore `private` with a CHANGELOG note, document them as public, or deprecate for a release? — BomberBot
+- **Request-schema story.** `validate_schema` is a stub (F-69), `get` drops `false` (#36), `default` NameErrors without a schema (#14). Real validation (json_schemer) or a plain field accessor, with docs to match? — BomberBot
+- **Test agents built from `info`.** `TestInfrastructure::TestAgent` sets ivars by hand and hid F-73 (and earlier F-2, F-48). Building test agents from `info` plus fake clients would test what users write. — BomberBot
+- **One public-API page.** F-19, F-52, F-73, F-76 all reduce to "what is agent99's public API?"; a short `docs/api` list plus matching `private` blocks would settle them together. — BomberBot
