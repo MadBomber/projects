@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-12 | Second audit, develop 0d7fb14 (develop now contains all of main). bundler-audit clean. Findings 38-39, S-36, S-37. |
-| dead code | 2026-11-12 | 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
+| dead code | 2026-11-12 | Second visit: improver read 0d7fb14..200c10f, nothing removable; two never-failing tests (#45) PR'd. 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
 | dependencies | 2026-11-12 | Full audit, develop 0d7fb14. `bundle outdated`: only minitest 5.27 → 6.1, held by gemspec `~> 5.0` (#8; suite passes on 6.1.0). Finding 40 (actions/checkout@v4 on Node 20, issue #46), 41 (Ruby 3.2 floor EOL, needs decision). |
-| adoption | 2026-11-09 | develop 3a4651e. mkdocs `--strict` clean; #3/#4 confirmed fixed on develop (api-reference 10000 / DEBUG_ME_VERSION); #5 verified vs real output (`TIMESTAMP TAG Source:  file:line:in 'meth'`), the non-api-reference docs pages still printed the never-emitted `TAG [TIMESTAMP] file:line` format — PR'd for the four sync-safe pages ([#38](https://github.com/MadBomber/debug_me/pull/38)). New: #36 (no llms.txt/skill, sync-safe, needs decision — already in inbox), #37 (gemspec no `documentation_uri`, http homepage — not sync-safe; issue [#39](https://github.com/MadBomber/debug_me/issues/39)). gem-skill readiness unverified (LLM generator needs a key). Earlier first run 2026-11-06: README, docs site (mkdocs builds), CHANGELOG, gemspec packaging. |
+| adoption | 2026-11-12 | develop 200c10f. mkdocs `--strict` clean; README examples run correctly; gem-skill sources step verified (metadata+README+CHANGELOG). Fixed: #5, #6, #24. New: #53-#58. Previous run 2026-11-09 (develop 3a4651e). |
 | quality | 2026-11-09 | First quality audit, develop e4858c9. reek/flog/flay/rubocop in a scratch GEM_HOME; suite green on Ruby 4.1.0preview1, no library deprecations. flog 171 on the one 82-line method; flay 0. New findings 31-35. Repo has no .rubocop.yml/.reek.yml. |
 
-Dead-code scan last covered commit: 0d7fb14 (develop, 2026-11-12)
+Dead-code scan last covered commit: 200c10f (develop, 2026-11-12)
 
 ## Findings
 
@@ -153,3 +153,22 @@ Triage/improver extras (not audit findings):
 51. **The `:backtrace` frame format differs on Ruby 3.2/3.3 (`` `meth' ``) vs 3.4+ (`'Class#meth'`);** the docs show only 3.4+. Status: open.
 52. **mkdocs-material reaches end of life in May 2027.** Status: open (watch).
 
+
+### 2026-11-12 adoption audit (develop 200c10f; second visit of the day)
+
+Re-checks at 200c10f: #5, #6, #24 fixed on develop. Still open: #7, #46, #48, #50, #51. mkdocs `--strict` clean; README examples run as documented on Ruby 4.1.0preview1; every ruby fence parses except deliberate signature notation.
+
+53. **The live docs site, GitHub landing README and `changelog_uri` are all stale.** `origin/main` is 87ef4b7 (66 behind develop); the deploy workflow fires only on pushes to `main` and last deployed 10d92b1 (on neither branch). The live site still shows fixed bugs (#3, #5). Fix: sync/release develop to main, or `workflow_dispatch` the deploy. Status: needs Dewayne's decision (inbox).
+54. **README puts shell commands inside ruby fences** (README.md:25, :46, :52) and has the heading "Examples Usage". Status: PR'd (see 2026-11-12 run).
+55. **README never links to the docs site.** Status: PR'd (see 2026-11-12 run).
+56. **Contributing docs don't name a target branch; README.md:348 has a `[my-github-username]` placeholder fork URL.** The placeholder is PR'd; whether outside PRs should target `develop` needs Dewayne's decision (inbox).
+57. **gem-skill readiness verified at the deterministic stage:** `gem_skill.rb sources debug_me` uses metadata + README + CHANGELOG only (14,805 chars); docs/ never feeds the skill. Status: informational; depends on README/CHANGELOG findings.
+58. **The docs deploy workflow has dead parts:** an unreachable `else` arm in the Deploy step, unused pip installs (`mkdocs-macros-plugin`, `mike`), and an unread `extra.version: 1.1.4` in mkdocs.yml:93. Status: open; deploy config is never low risk, fold into #53's decision.
+
+Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing removable in 0d7fb14..200c10f):
+
+59. **docs/changelog.md lists invented releases** (0.1.0–0.9.0, a 1.0.0 dated 2024-01-01) and CHANGELOG.md has wrong dates for 1.0.4–1.1.2 plus no 1.1.3 section (extends #7/#50). Status: needs Dewayne's decision (which file is the source of truth; inbox).
+60. **'produces no output when $DEBUG_ME is false' can't see output** (passes `file: nil`); mutation-proven. Status: PR'd with #45 (see 2026-11-12 run).
+61. **Four docs pages say `debug_me {}` shows "all local variables"** (README:91, getting-started.md:93-101, usage.md:39-47, api-reference.md:108-109); at top level it also dumps constants. Status: README half PR'd; the rest waits on #22's decision.
+62. **`v.to_s == 'backtrace'` (lib/debug_me.rb:74, :90) treats any object whose to_s is "backtrace" as the backtrace marker,** unlike line 99's Symbol/String check. Status: open (edge case).
+63. **docs/contributing.md mentions a nonexistent PR template and shows a Minitest::Test skeleton while every test is spec style.** Status: open, low value.
