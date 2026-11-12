@@ -563,3 +563,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Release due.** `develop` holds fixes for 17 issues and #1 (Ruby 4 `LoadError`) still hits every 0.0.1 user; a 0.0.2 or 0.1.0 would close them via `Fixes #N` and let RubyGems show the corrected CHANGELOG.
 - **`Channel#publish` extraction (F-21)** gets more worthwhile after #30; once F-15/F-11 settle, pulling out `build_delivery`/`record_nack`/`dispatch` makes the nack rules testable alone.
 
+
+## 2026-11-12 robot_lab (fourth visit)
+
+- **The main→develop sync is now the only thing blocking robot_lab adoption work.** Everything the adoption audit found (README `param` DSL and `tool.call({})` examples, #35; `llms.txt`; test CI #30; `documentation_uri` #31) touches files that differ between the branches. Each visit until then can only work the ~13 lib files that are identical.
+- **CHANGELOG for 0.6.0 (F-27/F-28).** v0.6.0 is released but its changes still sit under `[Unreleased]`; 0.5.0's body says "0.4.0", 0.2.7 has no entry, and `[0.2.1]` appears twice. Your file, so your call.
+- **Budget boundary (F-44).** Should a budget consumed exactly to its limit refuse the next call (`>=`, as the Ledger docs imply) or allow it (`>`, today)?
+- **One source of truth for token budget.** `enforce_token_budget!` checks the robot's own token totals while reservations check `ledger.consumed[:tokens]`. Folding both into the ledger would put the leak/boundary rules in one place. After the sync (robot files differ).
+- **Ledger exposes live internals.** `Ledger#limits`/`#consumed` return the internal hashes without the mutex; frozen copies would be safer but change what callers get.
+- **simple_flow should declare `tsort`** (#36): the root fix for Ruby 4.1 is in simple_flow's gemspec, which bomberbot can do on simple_flow's next visit.
+- **Docs say TF-IDF, code does TF** (`Convergence`, `TextAnalysis` headers). Fold into the F-17/F-18 decision.
+- **CRLF SKILL.md (F-41)** is a one-line fix (`start_with?("---\n", "---\r\n")`), held back as possible speculative robustness. Say the word and it ships.

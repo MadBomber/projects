@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 01:17 robot_lab
+
+- develop already existed (9d407dd); nothing created. Dewayne merged #26, #27 and #34 on 2026-11-10 without comment, so the queue was empty. The tender deleted their branches. No test CI (#30).
+- **New PRs** (three independent builders run in parallel; none stacked; none low risk, as all touch `lib/`; every touched file is identical on main and develop, except `hooking.rb`, where a test merge of main is conflict-free):
+  - [#40](https://github.com/MadBomber/robot_lab/pull/40) `madbot/release-budget-on-failure`: a failed LLM call no longer strands the budget reservation. Source: judgment (triage, F-31). Fails before (`Expected 1000, Actual 0`), passes after; suite 1303/0F; review clean round 1.
+  - [#39](https://github.com/MadBomber/robot_lab/pull/39) `madbot/skill-bad-front-matter`: a SKILL.md with a date or alias in its front matter is skipped with a warning instead of crashing the catalog. Source: judgment (improver, F-40). Fails before, passes after; suite 1303/0F; review clean.
+  - [#38](https://github.com/MadBomber/robot_lab/pull/38) `madbot/manifest-enumerable-count`: `ToolManifest#count` honours a block and an argument. Source: judgment (improver, F-42). Fails before, passes after; suite 1303/0F; review clean.
+- **Merged (low risk):** none. **Merged after approval:** none pending.
+- **Audit:** adoption (first run), F-24–F-30. Triage F-31; improver F-40–F-44; builders F-45. Visit 3's cut-off brain write (F-22/F-23, #34) was reconstructed and committed here.
+- **Issues answered:** #33 (BomberBot noted it's fixed on develop by #34 at 9d407dd).
+- **Issues filed:** [#35](https://github.com/MadBomber/robot_lab/issues/35) (F-24/F-25), [#36](https://github.com/MadBomber/robot_lab/issues/36) (F-26), [#37](https://github.com/MadBomber/robot_lab/issues/37) (F-43).
+- **Notes:** builders need `PATH=~/.rbenv/versions/4.0.9/bin:$PATH` (RBENV_VERSION alone didn't take), and a copy of `robot_lab_project/.rubocop-base.yml` to run RuboCop (F-45).
+
 ## 2026-11-12 01:20 typed_bus
 
 - develop already existed; it was 0f94a6c at the start of the visit. Dewayne merged #22/#23/#24 (04:41Z) and then pushed six direct commits (e148a51..0f94a6c) fixing #4, #5, #10-#15 and #17-#21. CI on `develop` is green, including the new Tests workflow.
