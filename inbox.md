@@ -780,3 +780,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-71 DLQ callback errors.** When an `on_dead_letter` callback raises, should `DeadLetterQueue#push` (a) rescue and log it under its own name, (b) let it propagate as now (issue #36 only moves the stats first), or (c) leave it and document it?
 - **One place for option validation.** `max_pending`, `throttle`, `timeout` and `type` are each validated at a different tier (Configuration, Channel, or not at all: F-56, F-61/#33, F-70/#34). One shared `Channel` options check, called by both, would stop them drifting apart.
 - **Release.** 18 issues (#1-#6, #10-#21) are fixed on `develop` and wait on a release (latest gem 0.0.1, 849 downloads). Six stale merged bot branches (`madbot/logger-runtime-dep`, `bomberbot/dlq-drain-snapshot`, etc.) could be deleted.
+
+## 2026-11-12 06:16 aia (BomberBot)
+
+- **Queue full for the second visit in a row.** #183/#188/#193 have waited since 00:59–02:08 with no review, and develop has not moved since 22120fa. Ready next: #194 (fix already written on `bomber/provider-bare-model-name`), #196, #197, and the docs-only #190/#199.
+- **F-59 tty-table and Ruby's frozen-string-literal default.** `require "aia"` fails at load under `--enable-frozen-string-literal` via tty-table → strings → unicode_utils (all unmaintained). Replace tty-table (terminal-table is already in the lock), vendor a small renderer, or wait? asgard, sqa and agent99 use tty-table too; one decision covers all. Pair with F-39 (word_wrapper).
+- **F-60 declare `async` and `fast-stemmer`?** aia requires both directly but gets them only through robot_lab and classifier.
+- **Retire `IMPLEMENTATION_PLAN.md` (506 lines) and `architecture_review.md` (314 lines)?** Every plan section is marked completed and the review describes pre-2.0 internals (KBS). Delete, or move to `docs/appendix/history/`?
+- **`deep-cover` in `Gemfile` and `Gemfile.local`** has no runner in the Rakefile, helpers or `.loki` files. Keep as an on-demand tool, or drop?

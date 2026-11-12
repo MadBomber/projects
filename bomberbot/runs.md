@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 06:16 aia
+
+- `develop` existed (22120fa, unchanged since 02:14); not created.
+- **skipped: review queue full.** The tender found [#183](https://github.com/MadBomber/aia/pull/183), [#188](https://github.com/MadBomber/aia/pull/188) and [#193](https://github.com/MadBomber/aia/pull/193) unchanged since the 03:44 rebase: MERGEABLE, unapproved, no review threads, no rebase needed. #193 is still stacked on #188.
+- **New PRs:** none. **Merged (low risk):** none. **Merged after approval:** none. **Tended:** #183, #188, #193 (checked; nothing pushed, no comments).
+- **Audit: dependencies** (develop 22120fa): bundle-audit clean, same 4 transitive outdated gems, hermetic suite 2003/0 on Ruby 4.0.9 and 4.1.0-preview1. New F-58 (debug_me runtime dep), F-59 (tty-table chain fails under frozen string literals, needs Dewayne), F-60 (async/fast-stemmer transitive only, needs Dewayne). Improver: F-61 (zsh/fish completion broken), F-62 (dead kramdown-man Rakefile block), F-63 (`mcp_servers/README.md` drift).
+- **Issues answered:** [#181](https://github.com/MadBomber/aia/issues/181#issuecomment-6823415208) (linked PR #183). Responder re-confirmed #190/#191/#192/#194/#195/#196 on develop; #194's 9a58ed1 lib/test diff still applies cleanly (suite 2008/0 patched).
+- **Issues filed:** [#197](https://github.com/MadBomber/aia/issues/197) zsh/fish completion (F-61), [#198](https://github.com/MadBomber/aia/issues/198) debug_me runtime dep (F-58), [#199](https://github.com/MadBomber/aia/issues/199) mcp_servers README (F-63).
+- **Next visit:** #194 (cherry-pick 9a58ed1's lib/test), #196, #197; docs-only #190/#199/F-50 as low-risk self-merges once the queue has room.
+
 ## 2026-11-12 06:25 typed_bus
 
 - `develop` existed (0f94a6c, unchanged since the 05:10 visit); not created.

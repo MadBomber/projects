@@ -10,11 +10,12 @@ AI Assistant CLI gem; depends on prompt_manager and shared_tools.
 
 ## Status
 
-_Updated 2026-11-12 (03:44 visit)._ **Skipped new PRs: the review queue is full.** The tender rebased #183, #188 and #193 onto 22120fa (all CLEAN, suites green), and none is approved yet. Filed [#194](https://github.com/MadBomber/aia/issues/194) (`--provider` ignored for bare slug names; F-19 was never actually merged, and its fix is stranded on `bomber/provider-bare-model-name`), [#195](https://github.com/MadBomber/aia/issues/195) (`--fuzzy` broken) and [#196](https://github.com/MadBomber/aia/issues/196) (`--require` spaces). The adoption audit found F-49..F-53 and S-3.
+_Updated 2026-11-12 (06:16 visit)._ **Skipped new PRs again: the review queue is full.** #183, #188 and #193 are unchanged, MERGEABLE and unapproved, and develop is still 22120fa. Filed [#197](https://github.com/MadBomber/aia/issues/197) (zsh/fish completion broken, F-61), [#198](https://github.com/MadBomber/aia/issues/198) (`debug_me` runtime dep, F-58) and [#199](https://github.com/MadBomber/aia/issues/199) (`mcp_servers/README.md` drift, F-63). The dependencies audit is clean apart from F-58..F-60; F-59 (tty-table breaks under frozen string literals) needs Dewayne.
+
+_Prior (2026-11-12 03:44 visit)._ **Skipped new PRs: the review queue is full.** The tender rebased #183, #188 and #193 onto 22120fa (all CLEAN, suites green), and none is approved yet. Filed [#194](https://github.com/MadBomber/aia/issues/194) (`--provider` ignored for bare slug names; F-19 was never actually merged, and its fix is stranded on `bomber/provider-bare-model-name`), [#195](https://github.com/MadBomber/aia/issues/195) (`--fuzzy` broken) and [#196](https://github.com/MadBomber/aia/issues/196) (`--require` spaces). The adoption audit found F-49..F-53 and S-3.
 
 _Prior (2026-11-12 02:08 visit)._ Opened #188 (removes `TurnState#active_mcp_servers`, Fixes #187), #189 (README `--log-level`, Fixes #186) and #193 (shared `Utility.model_id_of`, Fixes #182, stacked on #188). **#189 merged low risk by madbot**, so develop is now 22120fa. The security audit found nothing new, but it showed that **develop is 6 commits behind main and lacks the released `--paint` fix** (F-45/F-46, in the inbox for Dewayne). Filed #190-#192. Suite 2001/0 on #188 and 2002/0 on #193.
 
-_Prior (2026-11-12 00:59 visit)._ Dewayne rebase-merged #172/#176/#177 before the visit, so the queue was empty. Opened three PRs from the Backlog issues: [#184](https://github.com/MadBomber/aia/pull/184) (README aliases, Fixes #180) and [#185](https://github.com/MadBomber/aia/pull/185) (VERSION warnings, Fixes #179) were **merged low risk by madbot**, so develop is now 2c1d77b. [#183](https://github.com/MadBomber/aia/pull/183) (dedupe `model_opts`, Fixes #181) is open for Dewayne. Ran the dead-code audit (F-43 → issue #187); the improver found that the README documents removed log flags (F-44 → issue #186). The responder posted "fixed on develop" notes on #164/#165/#169/#170/#174/#175. Suite 2003/0. The repo has no test CI, so PRs show zero checks.
 
 ## Backlog
 
@@ -27,6 +28,10 @@ Well-defined items a single small PR could close. Bomberbot works these before a
   - F-50 (README `just` commands → rake/mkdocs) and F-49 (README config reference gaps): docs-only, low-risk candidates, not filed yet.
   - [#190](https://github.com/MadBomber/aia/issues/190): README tool/MCP examples point at deleted files (F-47, docs-only, low-risk candidate).
   - [#192](https://github.com/MadBomber/aia/issues/192): `utility_test` prints `method redefined` warnings (F-48, test-only, low-risk candidate). #193 also edits `test/aia/utility_test.rb`, so build it after #193 merges or stack it on #193.
+  - [#197](https://github.com/MadBomber/aia/issues/197): zsh and fish completion scripts never complete prompt IDs (F-61, lib shell scripts; the fixes were checked in improver scratch). User-facing, about 35 lines plus a skip-if-missing test.
+  - [#198](https://github.com/MadBomber/aia/issues/198): `debug_me` is required at runtime but dev-only in the gemspec (F-58, one line, gemspec so never low risk; check the merge against `main` first).
+  - [#199](https://github.com/MadBomber/aia/issues/199): `mcp_servers/README.md` names a deleted `imcp.json`, covers 3 of 7 files, has dead links (F-63, docs/examples, low-risk candidate).
+  - F-62: dead kramdown-man block in `Rakefile:10-15` warns on every rake run (removal, build tooling so not low risk; not filed).
   - [#191](https://github.com/MadBomber/aia/issues/191): `--tools` files load twice and their warnings print twice (F-33, lib).
 - Already in PRs: #187 → **PR open** [#188](https://github.com/MadBomber/aia/pull/188); #182 → **PR open** [#193](https://github.com/MadBomber/aia/pull/193) (stacked on #188); #181 → **PR open** [#183](https://github.com/MadBomber/aia/pull/183).
 - Quality DRY refactors still un-filed, all re-verified on 2c1d77b by triage:
