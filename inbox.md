@@ -553,3 +553,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - aia (2026-11-12): decide the F-13 batch. These public methods and constants are used only by tests: `PromptHandler::SHORTHAND_KEYS`, `store_results_in_memory`, `build_pipeline_network`, `ModelAliasRegistry.resolve_multiple`/`.all_aliases`, `load_role_for_model`, `record_model_switch`, `record_user_feedback`, `to_facts`, `SpawnHandler#cleanup!`, `fingerprint_from_tools`, `MCPConnectionManager#any_tools?`/`#connected_server_names`/`#failed_server_names`, `ModelSpec#duplicate?`. The options are to remove them with their tests, keep them as planned API, or decide one by one.
 - aia (2026-11-12): seven bomberbot issues (#163, #164, #165, #169, #170, #174, #175) are fixed on develop but stay open until a release reaches main, because `Fixes #N` only closes on the default branch. Close them by hand, or let the next release close them.
 - aia (2026-11-12): if you miss the short `--info`/`--error` log flags, they could come back as one-line aliases of `--log-level`. #186 proposes only fixing the README.
+
+## typed_bus (2026-11-12, visit 7, madbot)
+
+- **Gemspec tests need a git checkout (F-51).** `gemspec_test.rb` shells out to `git ls-files`, so `rake test` from a source tarball fails 2 tests. Skip them when there is no `.git`, or keep the hard failure?
+- **Add a `.rubocop.yml` (F-52)?** With no config, RuboCop's defaults (single quotes etc.) flag the house style, so "zero new offenses" can't be met; #30 adds 11 such offenses. A small config encoding double quotes and the Ruby floor would make lint a real gate. OK to PR?
+- **Validate `timeout` like `max_pending` (F-56)?** `timeout: "5"` is accepted and never fires; `0` and `-1` nack immediately. Should the rule be "nil or a positive Numeric", or is `0` allowed?
+- **Killed drain (from #29's review).** If the thread/fiber running `drain` is killed mid-block, the current entry now counts as handled and is not put back (a kill looks like `break` to `ensure`). Detecting it needs `Thread.current.status == "aborting"`. Worth it?
+- **Release due.** `develop` holds fixes for 17 issues and #1 (Ruby 4 `LoadError`) still hits every 0.0.1 user; a 0.0.2 or 0.1.0 would close them via `Fixes #N` and let RubyGems show the corrected CHANGELOG.
+- **`Channel#publish` extraction (F-21)** gets more worthwhile after #30; once F-15/F-11 settle, pulling out `build_delivery`/`record_nack`/`dispatch` makes the nack rules testable alone.
+

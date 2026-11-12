@@ -12,7 +12,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | adoption | 2026-11-10 | First run, at develop 5be35a6. `mkdocs build --strict` clean; README API tables accurate; examples 01-04 run green. New: F-23 no LICENSE file (gemspec says MIT) → issue #11, F-24 thin gemspec metadata + duplicate source_code_uri `gem build` warning → issue #12, F-25 no llms.txt (needs decision), F-26 docs "run all examples" loop hangs on interactive example 15. Pre-existing adoption items F-6/F-7/F-10/F-11/F-14 unchanged. |
 | dependencies | 2026-11-10 | First run, at develop 5be35a6. `bundle outdated` (async 2.36→2.46, suite green on 2.46), bundler-audit, Dependabot state. New: F-28 (no dependabot.yml, alerts off → issue #15), F-29 (stale async lock → issue #14), F-30 (unused dev dep debug_me — NOT filed; debug_me is Dewayne's standing debug tool), F-31 (heavy dev deps aigcm/ratatui_ruby dominate the tree — needs decision). S-32 held locally (8 dev-tree advisories, shipped gem clean). |
 | security | 2026-11-11 | Second run, at develop 0fe5860. bundle-audit: S-32 unchanged (runtime tree clean). No eval/shell/YAML/Marshal/ENV in lib/. F-1/F-9 confirmed fixed; #8 fixed F-18 but regressed drain-and-retry (F-46). S-1..S-3 unchanged. New S-33, S-34 held locally. |
-| quality | 2026-11-09 | First run, at main be4018d. RuboCop 1.92.2 and reek 6.6.0 (default configs; none in the repo), flog, flay, on Ruby 4.0.9. Suite 201 runs, 0 failures, 100% line+branch. 449 of 479 RuboCop offenses are auto-fixable Layout/Style. Found F-15..F-22: verified bugs F-15/F-17/F-18, lifecycle leak F-16, three tests that can't fail (F-19). |
+| quality | 2026-11-12 | Second run, at develop 0f94a6c (16 commits since be4018d). Ruby 4.0.9; RuboCop 1.92.2 + reek 6.6.0 default configs; flog; flay. Suite 224 runs, 0F, 100% line+branch (3/3 green). RuboCop 494→564 (+70 in changed files, mostly house-style Layout/Style), reek 55→55, flay 0, flog 430.3→446.7. F-15 still present (now also on the throttle path), F-17 still present. New: F-49..F-52. First run: 2026-11-09 at main be4018d (F-15..F-22). |
 
 Dead-code scan last covered commit: 5be35a6 (develop, 2026-11-10, full: lib + examples + test + docs references + local dependents)
 
@@ -99,3 +99,23 @@ Dewayne merged #7/#8/#9 into develop on 2026-11-10. F-1 and F-9 confirmed fixed 
 - F-48 (triage/improver): CHANGELOG `[Unreleased]` lines from bomberbot PRs end "Found and fixed by BomberBot." Status: needs Dewayne's decision (keep the credit in committed CHANGELOG text, or drop it) → inbox.
 - S-33: security finding, details held locally. Status: open.
 - S-34: security finding, details held locally. Status: PR'd neutrally with F-46 (informational).
+
+### 2026-11-12 (seventh visit; quality audit + improver, develop 0f94a6c)
+
+Dewayne merged #22/#23/#24 (squash/rebase, 04:41Z), then fixed every other open issue directly on `develop` (e148a51, 48e5bf7, 9bfc6e2, 4f26122, 876ac69, 0f94a6c). Fixed on develop, closing on release: F-2 (#5), F-3 (#4), F-5 test-CI half (#20), F-8 (#21), F-10/F-33/F-44 (#19), F-19 (#18), F-23 (#11), F-24 (#12), F-27 (#10), F-28 (#15), F-29 (#14), F-31 partly (ratatui_ruby/aigcm moved to an optional `:extras` group), F-32 (#13), F-40 (#17), F-41 (#16, via #22), F-46 (via #23), F-6 (#3, via #24). The responder left a "fixed on develop in <sha>" note on #3-#5 and #10-#21. No new security findings; S-1..S-3, S-32..S-34 unchanged.
+
+- F-15 (re-check): still present and now on two paths: a publisher blocked on backpressure, or sleeping in the throttle, still delivers after `close`. Status: PR'd [#30](https://github.com/MadBomber/typed_bus/pull/30).
+- F-17 (re-check): still present (`message_bus.rb:57`). Still needs Dewayne's decision.
+- F-21 (re-check): unchanged, `publish` flog 57.1.
+- F-26: still present, and now also a `LoadError` on the default bundle since ratatui_ruby moved to `:extras`. Status: issue [#25](https://github.com/MadBomber/typed_bus/issues/25).
+- F-47: still present. Status: issue [#26](https://github.com/MadBomber/typed_bus/issues/26).
+- F-49 (auditor): `DeadLetterQueue#drain` puts the entry being handled back in the queue on `break`/early return, not only on a raise (`ensure` + `yielded += 1` after `yield`, `dead_letter_queue.rb:51-58`), so a handled entry is processed twice; the "drained N" log is skipped. Our own code (#8/#23). Status: PR'd [#29](https://github.com/MadBomber/typed_bus/pull/29).
+- F-50 (auditor/triage): CHANGELOG `[Unreleased]` drain bullet still describes #8's behaviour, #23 has no line, the #3 bullet says "once a LICENSE is added", and F-7's `[0.1.0]` heading is still wrong (0.0.1 shipped 2026-02-07 with the rename and throttle). Status: PR'd [#28](https://github.com/MadBomber/typed_bus/pull/28), together with F-7.
+- F-51 (auditor): `test/typed_bus/gemspec_test.rb` fails outside a git checkout (`git ls-files`), so `rake test` on a source tarball gives 2 failures. Status: needs Dewayne's decision (skip without `.git`, or keep the hard failure) → inbox.
+- F-52 (auditor): no `.rubocop.yml`, so "zero new offenses" can't be met against house style (29 `Style/StringLiterals`, 21 `Layout/EmptyLineBetweenDefs` of the +70). Fix: a runnable config encoding double quotes and the Ruby floor. Status: open; candidate PR for a later visit (encodes style choices, so ask first → inbox).
+- F-53 (improver): `timeout: nil` (never auto-nack) works but is undocumented, and the channel/bus log lines print `timeout=s`. Status: issue [#27](https://github.com/MadBomber/typed_bus/issues/27).
+- F-54 (improver): `wait_for_capacity` logs "backpressure: waiting for capacity" at DEBUG on every bounded publish, even when it does not wait (`channel.rb:220-226`). Fix: return early when under capacity. Status: open (small lib PR candidate).
+- F-55 (improver): `test_close_all_on_empty_bus` (`message_bus_test.rb:287`) is the last assertion-free test. Fold into F-35. Status: open.
+- F-56 (improver): `timeout` is not validated: `timeout: "5"` is accepted and never fires; `0`/`-1` nack immediately. Status: needs Dewayne's decision (is 0 allowed?) → inbox.
+- Still open, re-confirmed: F-11, F-12, F-13, F-14, F-16, F-20, F-22, F-34, F-35, F-43, F-45, F-48.
+

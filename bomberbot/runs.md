@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 01:20 typed_bus
+
+- develop already existed; it was 0f94a6c at the start of the visit. Dewayne merged #22/#23/#24 (04:41Z) and then pushed six direct commits (e148a51..0f94a6c) fixing #4, #5, #10-#15 and #17-#21. CI on `develop` is green, including the new Tests workflow.
+- **Tended:** none were open. The "review #22/#23/#24" step in `dewayne.md` is done, and the #24 file-list and dev-dependency (F-31) steps are resolved by his commits.
+- **New PRs** (three independent builders run in parallel; none stacked; none low risk):
+  - [#30](https://github.com/MadBomber/typed_bus/pull/30) `madbot/publish-closed-recheck`. Source: brain backlog/audit (F-15). Review clean after 1 round; suite 226/0F; CI green.
+  - [#29](https://github.com/MadBomber/typed_bus/pull/29) `madbot/drain-break-keeps-handled`. Source: audit (F-49, our own #8/#23 code). Review 1 round, with one finding rejected and explained in the PR; suite 225/0F; CI green.
+  - [#28](https://github.com/MadBomber/typed_bus/pull/28) `madbot/changelog-accuracy`. Source: adoption/brain (F-50, F-7). Review clean; CI green. Not low risk because it rewrites a released heading.
+  - The three merge together cleanly. #28 and #30 both edit CHANGELOG, in separate hunks.
+- **Merged (low risk):** none.
+- **Audit:** quality (second run, develop 0f94a6c), producing F-49..F-52. The improver added F-53..F-56. No new security findings.
+- **Issues answered:** the responder left a "fixed on develop in <sha>" note on #3-#5 and #10-#21 (15 comments). #1, #2 and #6 already had one.
+- **Issues filed:** [#25](https://github.com/MadBomber/typed_bus/issues/25) (F-26), [#26](https://github.com/MadBomber/typed_bus/issues/26) (F-47), [#27](https://github.com/MadBomber/typed_bus/issues/27) (F-53).
+
 ## 2026-11-12 00:59 aia
 
 - develop already existed (c04ce8e); it is now 2c1d77b.
