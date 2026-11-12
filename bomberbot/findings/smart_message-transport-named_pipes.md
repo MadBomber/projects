@@ -181,3 +181,4 @@ llms.txt; gem-skill not run (gem uninstallable/unpublished). No new security fin
   separate constant). F-8: README advises SIGTERM/SIGINT for graceful shutdown — true only after
   #12. Issue #7 resolved on develop by #9 (BomberBot commented; closing is Dewayne's).
 - Dead-code scan: no new dead code at b2042fc (F-1 removed by #8).
+- Status updates (visit 4): F-11/#11 → merged low-risk [#16](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/16) at 6725e5c; F-15/#13 → PR [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20); F-16/#15 → PR [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) (stacked on #20).

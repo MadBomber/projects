@@ -13,7 +13,7 @@ files: the transport, a committed test stub `transport/base.rb`, and a `version.
 
 ## Status
 
-_Updated 2026-11-12 01:10 (visit 4): Dewayne merged all five visit-1/2 PRs (#4/#5/#8/#9/#10) without comment, so new work ran. **Merged (low risk)** [#16](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/16) (examples nested-def hoist, Fixes #11) at `6725e5c`; opened [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) (Fixes #13) and a stacked #15 fix. First **adoption** audit (F-24…F-32, +F-33): README/examples use an `attribute` DSL no smart_message has; filed [#17](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/17) (connect after disconnect), [#18](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/18) (silent message loss), [#19](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/19) (README Related Projects)._
+_Updated 2026-11-12 01:10 (visit 4): Dewayne merged all five visit-1/2 PRs (#4/#5/#8/#9/#10) without comment, so new work ran. **Merged (low risk)** [#16](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/16) (examples nested-def hoist, Fixes #11) at `6725e5c`; opened [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) (Fixes #13) and stacked [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) on it (Fixes #15). First **adoption** audit (F-24…F-32, +F-33): README/examples use an `attribute` DSL no smart_message has; filed [#17](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/17) (connect after disconnect), [#18](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/18) (silent message loss), [#19](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/19) (README Related Projects)._
 
 **Visit 3 (2026-11-10):** **skipped new work — review queue full** (#4/#5/#8/#9/#10
 still open, unreviewed; `develop` unmoved at 2a49fcc). First **dependencies** audit (F-14…F-23):
@@ -61,7 +61,7 @@ Well-defined items a single small PR could close.
 - **F-3:** `mode` / `buffer_size` options are documented but inert → implement or remove (inbox).
 - **F-15 / [#13](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/13):** `unsubscribe` uses the Class, not `to_s`, as the dispatcher key → tears down a still-used pipe. One-line fix + test; ready PR when the queue clears. **PR open [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20).**
 - **F-22 / [#14](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/14):** unsubscribe/disconnect stall ~2s per idle channel; wake the blocked reader with a nonblocking write-open + per-channel stop flag.
-- **F-16 / [#15](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/15):** add `unsubscribe!` override that removes the pipe and stops the reader.
+- **F-16 / [#15](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/15):** add `unsubscribe!` override that removes the pipe and stops the reader. **PR open [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21)** (stacked on #20).
 - **F-11 / [#11](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/11):** responder verified the hoist is behaviour-neutral (~56 lines across both examples, `ruby -wc` clean).
 - **F-14 / F-18 / F-19:** README transport API vs real Base; smart_message's own unpinned deps; Ruby floor — Dewayne's decisions (inbox).
 - **F-10:** newline framing corrupts multi-line payloads → wire-format decision (inbox).
@@ -75,6 +75,8 @@ Well-defined items a single small PR could close.
 ## Open bomberbot PRs
 
 - [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) `madbot/unsubscribe-key` — `unsubscribe` looks up subscribers by `String(message_class)` (as smart_message 0.0.17's Dispatcher keys them); test stub now registers handlers the same way. Base `develop`, CI green 3.2–3.4, review clean round 1, suite 47/0F/9S. Fixes #13. lib → not low risk, awaiting Dewayne. Source: brain/issue (F-15).
+
+- [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) `madbot/unsubscribe-bang` — **Stacks on #20** (base `madbot/unsubscribe-key`). New `unsubscribe!` override + shared private `release_channel`; stub gains `unsubscribe!`/`drop_all` keyed like 0.0.17. CI green 3.2–3.4, review clean round 1, suite 48/0F/9S. Fixes #15. Retarget to `develop` once #20 merges (repo has delete-branch-on-merge off, so GitHub won't auto-retarget). Source: brain/issue (F-16).
 
 ## Merged bomberbot PRs
 

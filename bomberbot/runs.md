@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 00:45 smart_message-transport-named_pipes
+
+- `develop` already existed (b2042fc); nothing created. Dewayne had squash-merged #4, #5, #8, #9 and #10 without comment, so the queue was empty. The tender deleted five merged bot branches. CI on `develop` green.
+- New PRs:
+  - [#16](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/16) docs: hoist nested method definitions in examples. Fixes #11. Source: **brain/issue** (F-11). Ripper nested-def count 4→0, behaviour identical under a harness, suite 44/0F, CI green, review clean. **Merged (low risk)** into `develop` at `6725e5c` (examples-only, +32/−31).
+  - [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) fix: keep pipe while other handlers remain subscribed. Fixes #13. Source: **brain/issue** (F-15). Fails before (2F+1E), passes after; suite 47/0F/9S; demo on real smart_message 0.0.17; CI green; review clean round 1. lib → awaiting Dewayne.
+  - [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) fix: unsubscribe! removes the pipe and stops the reader. Fixes #15. **Stacks on #20.** Source: **brain/issue** (F-16). Fails before, passes after; suite 48/0F/9S; demo on 0.0.17; CI green; review clean round 1.
+- Merged after approval: none pending. Tended: none open.
+- Audit: **adoption** (first run), F-24…F-32, plus F-33 from the improver. Dead-code scan reached b2042fc; nothing new.
+- Issues answered: #7 (BomberBot noted `develop` has CI via #9). Issues filed: [#17](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/17) connect after disconnect (F-33), [#18](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/18) silent message loss (F-27), [#19](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/19) README Related Projects (F-25).
+
 ## 2026-11-12 00:15 smart_message-transport-lanet
 
 - `develop` already existed (b9b206e); nothing created. Dewayne had merged #5, #7 (2026-11-10) and #6 (2026-11-11) without comment, so the queue was empty. The tender deleted the three merged bot branches. CI on `develop` is green.

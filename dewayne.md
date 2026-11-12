@@ -79,7 +79,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## smart_message-transport-named_pipes
 
-- [ ] Review [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) (Fixes #13: `unsubscribe` dispatcher key; lib). Merge it before the stacked #15 PR, which then needs retargeting to `develop`. Close #13 by hand after merge (Fixes only auto-closes on `main`). (added 2026-11-12)
+- [ ] Review [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) (Fixes #13: `unsubscribe` dispatcher key; lib). Then review [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) (Fixes #15: `unsubscribe!` leaks pipe+reader; stacked on #20, retarget to `develop` after #20 merges). Close #13 by hand after merge (Fixes only auto-closes on `main`). (added 2026-11-12)
 - [ ] Close [#11](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/11) (fixed on develop by low-risk [#16](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/16)) and [#7](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/7) (fixed on develop by #9) when you see fit. (added 2026-11-12)
 - [ ] Decide F-24/F-14: README Complete Example and both examples use `attribute :x, :type`, which no smart_message provides; rewrite them to the verified framework path (`from`/`property`/`config { transport }`/`Msg.subscribe`)? Also F-26 (gem never released, docs say it is) and F-30 (throughput claim 10–100× off). Options in `inbox.md`. (added 2026-11-12)
 
