@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 01:45 scripts
+
+- develop already existed (86201ce); not created. Phase-1 agents and the three builders ran in parallel, because the picks came from brain's Backlog and open issues, which outrank anything phase 1 could return.
+- New PRs (none stacked, none low risk: each changes script code):
+  - [#37](https://github.com/MadBomber/scripts/pull/37) fix(backup_envrc): copy with FileUtils, keep backups private. Source: brain (Backlog S-2, security, neutral title). Review: round 1 found a real issue (old backup lost on read failure), fixed with temp-file + rename; round 2 clean.
+  - [#35](https://github.com/MadBomber/scripts/pull/35) fix(shc): read the filename argument instead of stdin. Source: issue #32 (F-38). Review clean in one round.
+  - [#36](https://github.com/MadBomber/scripts/pull/36) fix(yaml2json): allow YAML aliases and merge keys. Source: issue #30 (F-31). Review clean in one round.
+- Audit: dead code (most overdue) at develop 86201ce. New F-52, F-53; F-10/F-17/F-18/F-23 re-verified. Leads: F-54..F-59, S-5 (held locally).
+- PRs merged by Dewayne since last visit: #24, #25, #26 (2026-11-10, merge commits, no comments). Merged by madbot: none. Tended: none open.
+- Issues answered: none (responder found no comments from anyone but BomberBot on the open issues). Issues filed: [#38](https://github.com/MadBomber/scripts/issues/38) (json usage crash), [#39](https://github.com/MadBomber/scripts/issues/39) (wl prints nothing), [#40](https://github.com/MadBomber/scripts/issues/40) (copy_latest_voice_memo `-h`).
+- Noted: main has e746bef (`ruler`) that develop lacks; #19/#23 stay open until develop reaches main.
+
 ## 2026-11-12 01:17 robot_lab
 
 - develop already existed (9d407dd); nothing created. Dewayne merged #26, #27 and #34 on 2026-11-10 without comment, so the queue was empty. The tender deleted their branches. No test CI (#30).

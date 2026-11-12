@@ -17,8 +17,9 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | dead code | 2026-11-09 (**first full pass**) | Whole-tree pass at develop 543c66a (171 top-level `*.rb` + `lib/`). Suite is `ruby -c` only (no `test/`, no CI, no root Rakefile; nothing enumerates script names). Re-verified F-10/F-17/F-18 — each present, referenced only by itself + one README row, `ruby -c`-green to remove. New F-23 (`estimate_tokens.rb`, inert never-called snippet). No other new dead code. Archive dirs (`_old_stuff_and_1offs`, `retirement_home`) are the owner's deliberate graveyard, not targets. |
 | dependencies | 2026-11-10 (**first full pass**) | Full pass at develop bc51825: `ruby -c`/`-wc` across 208 tracked Ruby files (archives excluded; only `templates/class.rb` placeholder "fails"), grep sweep for Ruby 3.x/4.x removed/deprecated APIs (all clean — #14/#15 hold), 114-name require-loadability probe (uninstalled personal gems expected, not relics), and Psych-4 `YAML.load` readiness. No root Gemfile → bundle-audit n/a. Ruby 4.1.0preview1 runs everything except the uncovered `YAML.load` sites. Filed F-31..F-33. |
 | quality | 2026-11-10 | Runtime-defect pass at develop bc51825, not style. All 171 top-level `*.rb` run three ways (no args, `-h`, missing-file arg) under a `sandbox-exec` profile (no network, writes only to scratch/tmp, no signals). Every crash was read by hand and seven fixes were confirmed on a scratch copy. New F-38..F-48. **Two scripts are destructive on `-h` (F-44 normalize_pathnames, F-45 uninstall_all_gems): never run them unsandboxed.** The dead-code quick scan 543c66a..bc51825 found nothing removable. Dead-code scan last covered commit: bc51825. |
+| dead code | 2026-11-12 | Quick scan bc51825..86201ce (#24, #25, #26): nothing removable; #26 left no orphaned code. F-10/F-17/F-18/F-23 re-checked: still there, each referenced only by itself and one README row (now L249/L119/L251/L109). Sweep of `lib/` (all file types) and of top-level methods referenced only once: new F-52 (unused pyvis JS/CSS assets in `lib/`, ~740 KB) and F-53 (`-v` flag that does nothing in csv_reader/docx_style_fixer/new.rb, plus unused `csv2json` `header?`). Archive dirs excluded on purpose. |
 
-Dead-code scan last covered commit: bc51825 (develop, 2026-11-10; quick scan 543c66a..bc51825, nothing removable)
+Dead-code scan last covered commit: 86201ce (develop, 2026-11-12; quick scan bc51825..86201ce, nothing removable)
 
 ## Findings
 
@@ -159,3 +160,22 @@ Quality audit (runtime defects, not style) at develop bc51825, in a sandbox. The
 - F-50 (new, defect, improver, unverified): `set_upstream.rb:82` and `comment_shardfile.rb:86` `rescue Exception` inside per-repo loops, so Ctrl-C prints and moves on. Fix: `rescue StandardError` (or Octokit/Faraday errors). Status: unverified (proposed stub repro not run).
 - F-51 (new, low, improver, unverified): `147.rb off` doesn't reset tab titles and hard-codes `bg=000000`. Status: unverified (needs a manual iTerm2 check).
 - Cleared (not repo defects): categorize_gems `quirks_mode` (json 3.1 in a dependency); cli_helper 0.2.0 `abort_if_errors` nil.chomp on EOF stdin (external gem); create_changelog (environment); network and bundler/inline failures blocked by the sandbox; long-running scripts timing out.
+
+### 2026-11-12
+
+Dead-code audit at develop 86201ce, plus responder/triage/improver leads. Dewayne merged #24/#25/#26 into develop on 2026-11-10 (merge commits, no comments). Three PRs opened this visit: #37 (S-2), #35 (F-38, Fixes #32), #36 (F-31, Fixes #30). Issues filed: #38, #39, #40.
+
+- Status updates: F-6 merged (#24). F-14 merged (#26; #23 stays open until develop reaches main). F-22/F-24 merged (#25; #19 likewise). F-38 PR'd ([#35](https://github.com/MadBomber/scripts/pull/35)). F-31 PR'd ([#36](https://github.com/MadBomber/scripts/pull/36)); F-32/F-33 stay open (other scripts, not covered by #36).
+- S-2: security finding, details held locally. Status: PR'd ([#37](https://github.com/MadBomber/scripts/pull/37)).
+- S-5: security finding, details held locally. Status: open (low).
+- F-10, F-17, F-18, F-23 (re-verified at 86201ce): unchanged, each referenced only by itself and one README row. Status: needs Dewayne's decision (retire or keep).
+- F-52 (new, dead code): `lib/bindings/utils.js`, `lib/tom-select/`, `lib/vis-9.1.2/` (~740 KB, 5 files) are pyvis HTML support files committed in 5d4554e ("adding end of year leftovers"). Nothing in the repo or in `~/scripts` loads them (`git grep -e tom-select -e vis-network -e vis-9 -e bindings/utils` outside lib/ is empty; only tracked HTML is templates/html5.html). Only `lib/find_repo_dir.rb` in lib/ is used. Status: needs Dewayne's decision (delete, or keep and .gitignore if he still generates pyvis graphs into ~/scripts).
+- F-53 (new, low, dead code): `-v/--verbose` documented and parsed but never read in `csv_reader.rb` (verbose? L36), `docx_style_fixer.rb` (L29), `new.rb` (L29); `csv2json.rb:17` `header?` never called. Status: open (low; removing `-v` changes the documented CLI, so not obvious-yes).
+- F-54 (new, defect, verified): extensionless `json` script calls `Pathname#basebane` at L25, so `ruby json` (usage) raises NoMethodError. Status: issue [#38](https://github.com/MadBomber/scripts/issues/38).
+- F-55 (new, defect, verified): `wl` sets `wl=$1` unexported then reads `ENV["wl"]`, so it never prints a word. Status: issue [#39](https://github.com/MadBomber/scripts/issues/39).
+- F-56 (new, defect, verified in sandbox): `copy_latest_voice_memo.rb -h` creates `./-h/` and copies the newest recording into it. Status: issue [#40](https://github.com/MadBomber/scripts/issues/40).
+- F-57 (new, defect, responder, verified): `mbox_finder.rb` splits on `"\r"`, leaving a leading `\n` on each line, so `start_with?('Subject'/'Date')` never matches and the header prints blank. Separate from #29; could fold into the #29 PR with `each_line`/`chomp`. Status: open.
+- F-58 (new, defect, improver, verified): `lflf2lf` uses `sed 's/\n\n/\n/g'`, which never sees two newlines (sed is line-at-a-time), so the file is rewritten unchanged. Fix: `ruby -i -0777 -pe 'gsub(/\n\n/, "\n")'`. Status: open (behaviour choice: collapse pairs vs strip all blank lines).
+- F-59 (new, docs, improver): `fw` and `sw` are byte-identical (`grep $@ ~/Documents/dictionary.txt`) though README describes them differently. Status: needs Dewayne's decision (delete one, or make `fw` "starts with").
+- Noticed by builders: `shc.rb` crashes on empty input (`.max` nil) and its `unless ARGV.empty?` guard is now redundant; `yaml2json.rb` crashes on an empty file (`chomp_the_hash!` on nil); `backup_envrc.rb` has unused `total_file_count`/`modified_file_count`. Status: open (low).
+

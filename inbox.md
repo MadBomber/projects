@@ -574,3 +574,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **simple_flow should declare `tsort`** (#36): the root fix for Ruby 4.1 is in simple_flow's gemspec, which bomberbot can do on simple_flow's next visit.
 - **Docs say TF-IDF, code does TF** (`Convergence`, `TextAnalysis` headers). Fold into the F-17/F-18 decision.
 - **CRLF SKILL.md (F-41)** is a one-line fix (`start_with?("---\n", "---\r\n")`), held back as possible speculative robustness. Say the word and it ships.
+
+## 2026-11-12 scripts
+
+- **Retire or keep the never-run scripts?** F-10 (`s3_uploader.rb`, HipChat stub), F-17 (`find_unused_methods.rb`, unrunnable), F-18 (`seed_with_headers.rb`, missing requires), F-23 (`estimate_tokens.rb`, inert snippet). Re-verified 2026-11-12: each is referenced only by itself and its README row. Say "retire" and bomberbot opens one removal PR per script (or one for all four).
+- **Unused pyvis assets in `lib/` (F-52).** `lib/bindings/utils.js`, `lib/tom-select/`, `lib/vis-9.1.2/` (~740 KB) came in with "adding end of year leftovers" and nothing loads them. Options: delete them (recommended), or keep generating pyvis graphs in `~/scripts` and `.gitignore` the three directories.
+- **`fw` and `sw` are identical files (F-59).** Delete one and fix its README row, or make `fw` "starts with" (`grep "^$1"`) as its README row says?
+- **A syntax check that covers the extensionless scripts.** The "suite" is `ruby -c` on `*.rb`, so typos in extensionless Ruby (`json`, issue #38) and shell bugs (`wl`, #39) go unnoticed. A small `bin/check` (or enabling the commented-out `lefthook.yml`) running `ruby -wc` on every ruby-shebang file and `bash -n`/`sh -n` on shell scripts would catch them. Worth a PR?
+- **Project-notes scripts live in the wrong place?** `copy_latest_voice_memo.rb` and `process_latest_meeting.rb` default to writing next to themselves / `..`, which inside `~/scripts` means the repo (and `$HOME`). Moving them to `templates/notes/` and installing them with `new` would match how they're used.
+- **`-v/--verbose` that does nothing (F-53)** in `csv_reader.rb`, `docx_style_fixer.rb`, `new.rb`: remove the flag, or wire it up? Likely a template habit you may want to keep uniform.
