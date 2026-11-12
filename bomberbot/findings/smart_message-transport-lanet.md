@@ -11,7 +11,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 | security (+dead-code) | 2026-11-10 | c33acdf | S-1…S-6 (4 open, 1 theoretical, 1 dev-lockfile); F-1…F-13. F-1: the gem cannot run against the real `lanet` API |
 | dependencies | 2026-11-12 | b9b206e | F-20…F-24 (+F-16 relock recipe verified on 4.0.9, clears S-6; F-24 floor needs decision); dead-code re-scan @ b9b206e: nothing new |
 | adoption | 2026-11-12 | b9b206e | F-30…F-34 (+F-13 update); README runs on 0.0.17 with F-2/F-10/F-17 workarounds except F-18; no mkdocs/examples/llms.txt; gem-skill fetch-only; dead-code re-scan @ b9b206e: nothing new |
-| quality | — | — | not run yet (RuboCop baseline: 273 offenses, `rake` default task red) |
+| quality | 2026-11-12 | b9b206e | F-35…F-38, S-8 (+F-11 verified → #18; F-15 todo recipe verified; F-2/F-9/F-29/F-30 notes). RuboCop 273 (lib 113), reek 43, flog 342 / 13.7 per method, flay 852 (tests only); dead-code re-scan @ b9b206e: nothing new |
 
 ## 2026-11-10 — bomberbot — security + dead-code (first visit) — develop @ c33acdf
 
@@ -56,7 +56,7 @@ Dead-code scan reached develop @ c33acdf. bundle-audit DB @ bc80fbb (2026-11-09)
   and turns it into `uninitialized constant Lanet::Sender` later on. The deps are unconstrained in the gemspec.
   status: open. The version pin **needs Dewayne's decision** (gemspec), so decide it with F-1.
 - **F-11:** Shared hashes are mutated by three threads with no mutex, yet the README claims "Thread-Safe
-  Operations". status: unverified (a stress run raised no errors).
+  Operations". status: **issue [#18](https://github.com/MadBomber/smart_message-transport-lanet/issues/18)** (verified 2026-11-12, see the quality audit).
 - **F-12:** There is no CI. status: **merged in [#6](https://github.com/MadBomber/smart_message-transport-lanet/pull/6)** (2026-11-11) (CI green on 3.3 and 3.4; 3.2 dropped, see dewayne.md).
 - **F-13:** The README links the MadBomber/lanet fork while the gemspec resolves RubyGems `lanet`
   (davidesantangelo). The gemspec also ships `.envrc` and `COMMITS.md`. status: open; the link depends on F-1,
@@ -110,3 +110,19 @@ Dead-code scan reached develop @ b9b206e (`lib/` unchanged since c33acdf; debrid
 - **F-33:** gemspec metadata gaps: `gem build` warns that `homepage_uri` and `source_code_uri` duplicate; no `bug_tracker_uri`, `documentation_uri` or `rubygems_mfa_required`; `changelog_uri` mis-indented. status: **issue [#16](https://github.com/MadBomber/smart_message-transport-lanet/issues/16)** (gemspec, never low risk).
 - **F-34:** no runnable example and no `llms.txt`; gem-skill's fetcher gets `examples: nil`. status: open, sequenced after F-1 (would document a transport that can't run).
 - **F-28 (update):** the `test_lanet_concurrency.rb:6-13` half is a ready −8-line test-only removal (improver C3: no reader of `@transport` in that file; teardown can never fire; suite stays 58/299). The `puts` half waits for #9.
+
+## 2026-11-12 — bomberbot — quality (+dead-code) — develop @ b9b206e
+
+Dead-code scan reached develop @ b9b206e (`lib/` unchanged since c33acdf; debride's 13 candidates unchanged; nothing new). Tools: RuboCop 1.81.7 with repo config (273 offenses: lib 113, rest test/gemspec), reek 6.6 (43 warnings on lib), flog (342 total, 13.7 per method; worst `perform_node_discovery` 36.3, CC 11), flay (852, all in tests). Repros on Ruby 4.0.9 + real smart_message 0.0.17 with scratch-only F-17/F-1 shims.
+
+- **S-8:** security finding, details held locally. status: open (verified; unreachable while F-1 stands). (The auditor's other security candidate duplicated S-7; the local note was updated.)
+- **F-35:** `unsubscribe!` leaves the Lanet handler registered: Lanet overrides `subscribe`/`unsubscribe` but not `unsubscribe!`, so `Base#unsubscribe!` (smart_message 0.0.17 `transport/base.rb:100`) drops the dispatcher entry but the handler stays in `@message_handlers`; heartbeats keep advertising the type (`lanet.rb:227`) and inbound messages still reach `receive` (`:359`). The test stub Base has no `unsubscribe!`. Fix: override → `super` + `unregister_message_handler`, ~10 lines, after #9 merges. status: **issue [#17](https://github.com/MadBomber/smart_message-transport-lanet/issues/17)**. (Same as the repo-file backlog note "from #9".)
+- **F-36:** `disconnect` returns while its threads are still alive: `lanet.rb:112-113` `Thread#kill` without `join`; alive right after `disconnect` in 200/200 runs. Fix: `&.join(1)` after each kill, plus a test, ~4 lines, after #8 merges. status: open, low; already listed among #3's deferred lifecycle items, so not filed separately.
+- **F-37:** indifferent-key lookups `h[:k] || h['k']` 13× (`lanet.rb:207,211,212,214,320,326,334,339,340,342,343,353,354`) drive the flog/AbcSize hotspots and reek FeatureEnvy/DuplicateMethodCall. Fix: one private `field(hash, key)` helper. status: open, low; fold into the F-1 rewrite (the hash shapes change anyway).
+- **F-38:** three concurrency tests can't detect lost writes: `test_lanet_concurrency.rb:73` (`>= 1` after 20 distinct heartbeats), `:97` (`>= 1` after 5 handlers), `:358` (`> 0`). Fix: exact counts, ~3 test lines; a constant-key mutation of `handle_heartbeat` stays green today. status: **issue [#19](https://github.com/MadBomber/smart_message-transport-lanet/issues/19)**. (improver C3)
+- **F-11 (update):** verified. `cleanup_stale_nodes` (`:243`, `reject!` with a logging block) racing `perform_node_discovery` inserts (`:210`) raises `can't add a new key into hash during iteration` in the discovery thread; the round's remaining nodes are dropped. 97,250 failures in 120,167 rounds over 5 s at `:debug`. Fix: one Mutex (medium; belongs with F-1/F-27). status: issue #18.
+- **F-15 (update):** recipe verified on a scratch copy: `rubocop --auto-gen-config --no-exclude-limit` (222-line `.rubocop_todo.yml`) leaves 1 offense (`test_lanet_integration.rb:317` `Thread.new { }`); adding `EnforcedStyleForEmptyBraces: space` under `Layout/SpaceInsideBlockBraces` in the todo makes RuboCop exit 0, suite 58/0 on 4.0.9. Generate after #8/#9 merge. Never autocorrect `Style/HashEachMethods` at `lanet.rb:231` (`keys.each` is a deliberate snapshot).
+- **F-29 (update):** flay's top hit (mass 576) is the same two-node `@discovered_nodes` fixture copied 6× (`test_lanet.rb:124,137,150`, `test_lanet_integration.rb:28,162,176`); `test_lanet_integration.rb:399` is a `Lint/Void`. Also `test_initialization_with_custom_options` (`test_lanet.rb:30-37`) can't fail (uses `allocate`, asserts only `instance_of`). `test_lanet_integration.rb:366-369` duplicates `test_lanet.rb:14-16`.
+- **F-9 (update):** `handle_smart_message`'s `sender_info` (`:352`) is also unused.
+- **F-2/F-30 (note):** the constructor is written for the stub: `defined?(super)` (`:46`) is always true; `@options ||=` (`:47`) is a no-op after `Base#initialize`; `attr_reader :options` duplicates Base's; `attr_reader :logger` makes public and shadows Base's private `logger`, which already defaults to `SmartMessage::Logger.default`. Dropping that reader and the `Logger.new` fallback may be the smallest F-30 fix (public API: see inbox).
+- **Note (improver):** `connected?` (`:96`) returns `nil` rather than `false` when `@sender` is nil; `!!(…)` plus a test, after #8 merges. Low.

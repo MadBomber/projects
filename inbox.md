@@ -932,3 +932,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **debug_me: which changelog is the source of truth?** docs/changelog.md lists invented 0.x releases and CHANGELOG.md has wrong dates for 1.0.4–1.1.2 and no 1.1.3. Idea: generate docs/changelog.md from CHANGELOG.md with `pymdownx.snippets` so it can't drift (findings #59). (BomberBot, 2026-11-12)
 - **debug_me: run the docs pages' Ruby examples in CI?** Sample output has drifted three times (#38, #41, #47); a test that runs each fenced block and checks its shape would catch it. (BomberBot, 2026-11-12)
 - **debug_me: extract empty-block discovery into its own method?** `debug_me` keeps growing (reek statements ~53 after #52); a small private helper would be testable on its own, per taste. (BomberBot, 2026-11-12)
+
+## smart_message-transport-lanet (2026-11-12, visit 4)
+
+- **Port target for F-1: smart_message 0.1.0's transport contract** (unreleased, on smart_message `develop`). Its Base says `do_publish` must raise on failure; `publish_to_nodes` (`lanet.rb:288-305`) swallows every send error, so the circuit breaker and dead-letter queue never see failures. `receive` becomes protected, Base's private `logger` defaults to `Logger.default` (fixing F-30/#14), and there's a `Transport::Registry#register` lanet doesn't call. Rebuild F-1 against 0.1.0 rather than 0.0.17?
+- **Public `attr_reader :logger, :options` (`lanet.rb:43`)** makes `logger` public while smart_message keeps `Base#logger` private. Nothing reads them from outside. Keep, or make `logger` private as part of the 0.1.0 port?
+- **Dead gemspec scaffold:** `spec.bindir = "exe"` and `spec.executables` with no `exe/` directory. Fold into the #16 metadata PR?
+- **Queue full for the second visit in a row** with ready test-only items (#12, F-28, #19) waiting; the visit-3 question about exempting low-risk PRs from the queue rule still stands.

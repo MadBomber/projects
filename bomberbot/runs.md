@@ -1,6 +1,16 @@
 # Runs
 
-Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
+Newest first. One entry per repo visit, headed `## 2026-11-12 09:07 smart_message-transport-lanet
+
+- `develop` already existed (b9b206e); not created.
+- **skipped: review queue full.** The tender reported #8, #9 and #13 still open (green, MERGEABLE, no reviews or comments), so no builders ran. **Merged:** none (none approved). **Merged (low risk):** none. **Tended:** all three checked, nothing to do; develop CI green at b9b206e.
+- **Audit:** quality (never run before) @ b9b206e → F-35…F-38 and S-8 (held locally), F-11 now verified, F-15 baseline recipe verified. RuboCop 273, reek 43, flog 342, flay 852 (tests only). Dead-code re-scan @ b9b206e: nothing new.
+- **Issues answered:** none; all open issues are bomberbot's own with no outside comments.
+- **Issues filed:** [#17](https://github.com/MadBomber/smart_message-transport-lanet/issues/17) `unsubscribe!` leaves handler registered (F-35), [#18](https://github.com/MadBomber/smart_message-transport-lanet/issues/18) discovery/cleanup race (F-11), [#19](https://github.com/MadBomber/smart_message-transport-lanet/issues/19) concurrency tests can't detect lost writes (F-38).
+- **Ready for next visit:** #12 test fix (triage: drop the local transport and use `@transport` so teardown disconnects; avoids a new MethodLength offense), F-28 dead setup removal, #19, then #15/#10.
+- **Note:** `src/` cloned onto `main` by default; read-only agents used `origin/develop` exports. Future visits should `git checkout --detach origin/develop` in `src/` after cloning.
+
+## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
 ## 2026-11-12 08:54 debug_me
 

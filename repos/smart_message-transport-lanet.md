@@ -14,7 +14,7 @@ entirely against stubs defined in `test/test_helper.rb`.
 
 ## Status
 
-_Updated 2026-11-12 (visit 3): skipped new work because the review queue is full (#8, #9, #13 open, green, MERGEABLE, unreviewed). Ran the adoption audit (F-30…F-34) and filed issues #14–#16. #8 and #9 will conflict on one CHANGELOG line once either merges. F-1 still waits on Dewayne._
+_Updated 2026-11-12 (visit 4): skipped new work again because the review queue is full (#8, #9, #13 open, green, MERGEABLE, unreviewed). Ran the quality audit (F-35…F-38) and filed issues #17–#19. F-1 still waits on Dewayne._
 
 ## Backlog
 
@@ -28,14 +28,17 @@ Well-defined items a single small PR could close.
 - **F-23 / [#10](https://github.com/MadBomber/smart_message-transport-lanet/issues/10):** blank `LANET_*` env vars become 0. Small helper plus a test.
 - **F-20 / [#11](https://github.com/MadBomber/smart_message-transport-lanet/issues/11):** `logger` isn't declared in the gemspec. One gemspec line (never self-merged).
 - **F-25 / [#12](https://github.com/MadBomber/smart_message-transport-lanet/issues/12):** a configure test leaks live threads. About 3 test lines.
-- **F-15:** RuboCop baseline (`.rubocop_todo.yml`). The default `rake` task is red with 273 offenses. Regenerate after #13 merges.
+- **F-15:** RuboCop baseline (`.rubocop_todo.yml`). The default `rake` task is red with 273 offenses. Recipe verified 2026-11-12 (see findings); generate after #8/#9/#13 merge.
 - **F-21:** move to minitest 6 (`~> 6.0` plus `minitest-mock`). After #13.
 - **F-7 / [#15](https://github.com/MadBomber/smart_message-transport-lanet/issues/15):** drop the `message.to_s` payload fallback in `handle_smart_message`. 1 lib line + a fail-before test (improver verified). Not in #9's hunk.
 - **F-30 / [#14](https://github.com/MadBomber/smart_message-transport-lanet/issues/14):** the default logger is `SmartMessage::Logger.new` (a module) → `NoMethodError`. Default to `SmartMessage::Logger.default`; build with/after #3, check local security note first.
 - **F-33 / [#16](https://github.com/MadBomber/smart_message-transport-lanet/issues/16):** gemspec metadata (bug tracker, docs, MFA URIs). Gemspec, never self-merged.
 - **F-28 (half):** remove dead `setup`/`teardown` in `test_lanet_concurrency.rb:6-13` (−8 lines, test only, low-risk self-merge candidate).
 - **Next visit when the queue drains:** #12 fix (test-only, ~2 lines, low-risk self-merge) is ranked first by triage and improver.
-- **New (from #9):** `unsubscribe!` isn't overridden, so its handler stays in `@message_handlers` and keeps being advertised in heartbeats.
+- **F-35 / [#17](https://github.com/MadBomber/smart_message-transport-lanet/issues/17):** `unsubscribe!` isn't overridden, so its handler stays in `@message_handlers` and keeps being advertised in heartbeats. ~10 lines, after #9 merges.
+- **F-38 / [#19](https://github.com/MadBomber/smart_message-transport-lanet/issues/19):** three concurrency tests assert `>= 1` and can't catch lost writes. ~3 test lines, low-risk self-merge candidate.
+- **F-11 / [#18](https://github.com/MadBomber/smart_message-transport-lanet/issues/18):** verified race between stale-node cleanup and discovery inserts; needs a Mutex, best done with F-1.
+- **F-36:** `disconnect` kills threads without joining (part of #3's lifecycle items); `&.join(1)` + test, after #8 merges.
 
 ## Open bomberbot PRs
 
