@@ -42,7 +42,7 @@ Dead-code scan reached develop @ c33acdf. bundle-audit DB @ bc80fbb (2026-11-09)
   58 green tests can't catch F-1 or F-2. status: **needs Dewayne's decision** (tied to F-1).
 - **F-5:** Subscription keys don't match. `subscribe` keys by the raw Class but inbound lookup uses `.to_s`
   (`:85`, `:308` vs `:359`, and `:94`), so the README's `subscribe(ChatMessage, …)` never receives.
-  status: **issue #2**.
+  status: **issue #2, PR open [#9](https://github.com/MadBomber/smart_message-transport-lanet/pull/9)** (2026-11-12).
 - **F-6:** You can't reconnect after `disconnect`: `@shutdown` is never reset (`:109`). status: **issue #4, PR open [#8](https://github.com/MadBomber/smart_message-transport-lanet/pull/8)** (2026-11-12).
 - **F-7:** `handle_smart_message` falls back to `message.to_s` when the payload is missing (`:354`). That passes
   the envelope's `inspect` string to `receive` and makes the guard at `:356` dead. status: open (small fix; moot
@@ -86,15 +86,15 @@ Dead-code scan reached develop @ c33acdf. bundle-audit DB @ bc80fbb (2026-11-09)
 Dead-code scan reached develop @ b9b206e (`lib/` unchanged since c33acdf; debride's 13 candidates are all public API or Base hooks; nothing new beyond F-9). bundle-audit DB @ 4d71b12 (2026-11-11).
 
 - **F-16 (update):** still reproduces at b9b206e (`unicode-emoji-4.1.0 requires ruby version < 4.0`; breaker_machines 0.7.0's native build fails on 4.0.9). A naive relock on Ruby 4 picks breaker_machines ≥ 0.18 and chrono_machines ≥ 0.9.1, which need Ruby ≥ 4.0 and would break 3.3/3.4 CI. Verified recipe: temporarily pin breaker_machines 0.17.0 (and chrono_machines 0.8.0 if it moves), `bundle lock --conservative --update …`, unpin, `bundle lock`. Installs and passes on 4.0.9; clears S-6.
-- **F-20:** `lanet.rb:4` requires `logger`, which isn't a default gem on Ruby 4.0, and the gemspec doesn't declare it; it loads only through transitive dependencies. Fix: `spec.add_dependency "logger"`. Low. Gemspec, so never self-merged. status: open.
+- **F-20:** `lanet.rb:4` requires `logger`, which isn't a default gem on Ruby 4.0, and the gemspec doesn't declare it; it loads only through transitive dependencies. Fix: `spec.add_dependency "logger"`. Low. Gemspec, so never self-merged. status: **issue [#11](https://github.com/MadBomber/smart_message-transport-lanet/issues/11)**.
 - **F-21:** the Gemfile pins `minitest ~> 5.16` while 6.1.0 is current; with `~> 6.0` plus `gem "minitest-mock"` the suite runs green (58/299 on 4.0.9). Low. Sequence after F-16. status: open.
 - **F-22:** the CI matrix leaves out Ruby 4.0, and its comment (`ci.yml:23-24`) blames unicode-emoji 4.1.0, a reason the F-16 relock removes. status: folded into the F-16 PR.
-- **F-23:** blank numeric env vars become zero: `DEFAULT_CONFIG` (`lanet.rb:30-37`) uses `ENV['X']&.to_i || default`, and `""` isn't nil. `LANET_HEARTBEAT_INTERVAL=` gives `0.0`, so the heartbeat loop spins with `sleep(0)` and `cleanup_stale_nodes` evicts every node. Fix: a small helper that treats blank as unset. Low. status: open.
+- **F-23:** blank numeric env vars become zero: `DEFAULT_CONFIG` (`lanet.rb:30-37`) uses `ENV['X']&.to_i || default`, and `""` isn't nil. `LANET_HEARTBEAT_INTERVAL=` gives `0.0`, so the heartbeat loop spins with `sleep(0)` and `cleanup_stale_nodes` evicts every node. Fix: a small helper that treats blank as unset. Low. status: **issue [#10](https://github.com/MadBomber/smart_message-transport-lanet/issues/10)**.
 - **F-24:** smart_message's dependency chain (breaker_machines ≥ 0.18, chrono_machines ≥ 0.9.1) now needs Ruby ≥ 4.0. Keeping 3.3/3.4 means holding those gems back. The gemspec says `>= 3.2.0` and `.rubocop.yml` targets 3.2. status: **needs Dewayne's decision** (floor 3.3 or 4.0; see dewayne.md).
 
 ### Other verified items (phase 1, 2026-11-12)
 
-- **F-25:** `test_configure_initializes_lanet_components` (`test_lanet.rb:65-79`) calls `configure` on a local transport and never disconnects it, so the real `Lanet-Discovery` and `Lanet-Heartbeat` threads outlive the suite (seen with `Minitest.after_run { Thread.list }`). Fix: `ensure transport.disconnect`, or build it through the setup/teardown `@transport`. status: open. (improver C1)
+- **F-25:** `test_configure_initializes_lanet_components` (`test_lanet.rb:65-79`) calls `configure` on a local transport and never disconnects it, so the real `Lanet-Discovery` and `Lanet-Heartbeat` threads outlive the suite (seen with `Minitest.after_run { Thread.list }`). Fix: `ensure transport.disconnect`, or build it through the setup/teardown `@transport`. status: **issue [#12](https://github.com/MadBomber/smart_message-transport-lanet/issues/12)**. (improver C1)
 - **F-26:** the README's "Error Handling" section says failed node connections are "logged and retried", but `publish_to_nodes` (`lanet.rb:299-301`) only logs a warning. Nothing retries. status: **needs Dewayne's decision** (retry policy belongs with the F-1 rewrite; taste: change the code, not the docs).
 - **F-27:** two tests in `test_lanet_concurrency.rb` (`:14-40`, `:309-359`) exercise a plain Hash under the GVL, not transport code, and so lend false support to the README's "Thread-Safe" claim (F-11). status: open; decide together with F-11. (improver C5)
 - **F-28:** dead test setup: `test_lanet_concurrency.rb:6-12` assigns `@transport`, which no test reads, and `test_lanet_integration.rb:53` uses `puts` in a never-called handler. status: open, low. (improver C3)

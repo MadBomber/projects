@@ -40,6 +40,8 @@ Well-defined items a single small PR could close.
 
 - [#8](https://github.com/MadBomber/smart_message-transport-lanet/pull/8) `bomberbot/reconnect-after-disconnect`, "fix: allow connect after disconnect". Fixes #4 (F-6). Resets `@shutdown` in `configure`; 1 lib line + 2 tests + CHANGELOG. CI green; review hit the 3-round cap with no open defects. Touches `lib/`, so not low risk. (2026-11-12)
 
+- [#9](https://github.com/MadBomber/smart_message-transport-lanet/pull/9) `bomberbot/class-subscribe-key`, "fix: key Lanet message handlers by class name". Fixes #2 (F-5). Handler keys are normalized to the class-name String; `network_topology[:active_subscriptions]` now returns Strings. lib +5/-7, 4 tests, CHANGELOG. CI green; review hit the 3-round cap (rounds 2 and 3 contradicted each other). Touches `lib/`, so not low risk. (2026-11-12)
+
 ## Merged bomberbot PRs
 
 - **merged by Dewayne** [#5](https://github.com/MadBomber/smart_message-transport-lanet/pull/5) `bomberbot/drop-ostruct`, "test: load suite on Ruby 4 and minitest 6". Replaces the one `OpenStruct` with a `Struct` and requires `minitest/mock`. Touches test files and CHANGELOG only, 6 lines. Review clean after 2 rounds. Not self-merged, because round 1 deferred an out-of-scope note (an unused dispatcher stub), which counts as open under the sqa#46 rule. Source: finding F-3.
