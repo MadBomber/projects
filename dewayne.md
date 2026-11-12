@@ -63,9 +63,6 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## sqa
 
-- [ ] Review [sqa#44](https://github.com/MadBomber/sqa/pull/44) (remove two stray root files). Not merged as low risk because it addresses S-1; see `notes/security/sqa.md` for the decisions only you can make (history and already-published gems). (added 2026-11-10)
-- [ ] Review [sqa#46](https://github.com/MadBomber/sqa/pull/46) (README examples match the API). Docs only, but its review round left 3 out-of-scope findings open, so it wasn't self-merged. (added 2026-11-10)
-- [ ] Review [sqa#52](https://github.com/MadBomber/sqa/pull/52) (drop dead Ruby 1.9 branch + dead `|| const_missing` in `String#to_constant`; Fixes #47). Lib change so not self-merged; rubocop clean, suite 616/0F/0E on 4.0.9, regression test added. (added 2026-11-10)
 - [ ] Decide the design for [sqa#4](https://github.com/MadBomber/sqa/issues/4) (API keys in config: env var name vs value vs close); see inbox. (added 2026-11-10)
 
 ## robot_lab
