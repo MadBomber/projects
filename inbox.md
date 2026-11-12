@@ -772,4 +772,3 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Docs link to `tree/main/examples`** (`docs/getting-started/examples.md:7-10`) while `main` still has the 0.0.x examples. Sync main, point at develop, or wait for the release?
 - **`SmartMessage.configure` without a block** raises LocalJumpError (`lib/smart_message.rb:30-33`); `yield(configuration) if block_given?` would allow `SmartMessage.configure.transport = …`. Your call on style.
 - **F-93 with #20:** should `subscribe('X.y') { }` (handler and block both given) raise ArgumentError?
-

@@ -153,4 +153,3 @@ Tools (scratch GEM_HOME): flog 3055 total / 6.8 avg; flay 124; RuboCop defaults 
 - F-92: `config.dlq_path = nil` or `''` expands to the cwd (`configuration.rb:118-120`), so every DLQ write then fails with `Errno::EISDIR`. Reproduced. Status: issue [#29](https://github.com/MadBomber/smart_message/issues/29).
 - F-93: `subscribe('Mailer.handle') { ... }` silently uses the block and drops the String handler (`subscription.rb:131-132`). Status: fold into #20 (subscribe-time handler checks); needs Dewayne's decision with #20.
 - Security: nothing new; S-9/S-12 still held locally.
-
