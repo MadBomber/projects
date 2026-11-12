@@ -656,3 +656,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **`asgard test` is broken for robot_lab** (`.loki:9` `gem_version` NameError, F-51).
 - **Stale branches** `free_will`, `refactor_config`, `rethink_network`, `update-rubyllm-v2.0.0` have no commits that aren't on main; safe to delete if you want.
 
+
+## 2026-11-12 03:15 sqa (BomberBot)
+
+- **F-39 `Strategy::MP`/`MR` always hold**: no vector the library builds sets `market_profile` or `mr`, and `Ensemble#select_strategy` picks MR for every sideways regime. Compute the keys, deprecate both, or document that callers supply them?
+- **F-40 `Strategy::Consensus` is random votes**: label it a demo in YARD, or deprecate?
+- **F-33 require-time deprecation warning** can't be silenced by following its advice; settle with F-15 (`SQA.init` argv / `CLI.run!`).
+- **Shared vector schema** (adoption/reliability idea): Backtest, Stream, MultiTimeframe and KBS each build their own OpenStruct keys (`sma` vs `sma_20` vs `sma_short`, `volume` vs `volumes`), the root of #59. One documented `SQA::Vector.build(prices:, volumes:, highs:, lows:)` would stop the drift.
+- **`Stream#lazy_indicator` isn't lazy**: computes 9 indicators per update (stoch twice, bbands three times). Make it lazy or memoize; needs benchmark numbers.
+- **`SeasonalAnalyzer#detect_seasonality?`** threshold (`std_dev > 2.0` on averaged daily % returns ≈ ±0.2) almost never fires; needs a definition choice.
+- **`SectorAnalyzer` default `db_dir: '/tmp/sqa_sectors'`** persists facts across runs; unknown sector → NoMethodError instead of ArgumentError.
+- **API reference regen (F-31)** is a large generated docs diff; want a bot PR for it, or will you regen at release?

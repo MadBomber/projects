@@ -15,7 +15,9 @@ Dependents: sqa-cli, sqa-advisor, sqa-bi, sqa_demo-sinatra.
 
 ## Status
 
-_Third visit (2026-11-12)._ Dewayne rebase-merged #44, #46 and #52 (develop **5ea98c8**), so the queue was empty; opened three backlog PRs: [#53](https://github.com/MadBomber/sqa/pull/53) test CI (F-16, green on 3.4/4.0), [#54](https://github.com/MadBomber/sqa/pull/54) docs/ backtest percentages (F-9 follow-up), [#58](https://github.com/MadBomber/sqa/pull/58) Alpha Vantage/Stooq params hash. None low risk. First dependencies audit (F-19..F-22, bundle-audit clean). Filed #55 (RiskManager integer division), #56 (Portfolio cost-basis truncation), #57 (docs keyword drift). #47-#49 fixed on develop, stay open until develop→main. #4 still awaits a design call.
+_Fourth visit (2026-11-12 03:15)._ Queue still full (#53, #54, #58 open, none approved), so no new PRs. First adoption audit (F-28..F-33); improver found Stream/KBS stochastic+volume bug and MultiTimeframe short-data crash. Filed #59, #60, #61.
+
+_Previous: third visit (2026-11-12)._ Dewayne rebase-merged #44, #46 and #52 (develop **5ea98c8**), so the queue was empty; opened three backlog PRs: [#53](https://github.com/MadBomber/sqa/pull/53) test CI (F-16, green on 3.4/4.0), [#54](https://github.com/MadBomber/sqa/pull/54) docs/ backtest percentages (F-9 follow-up), [#58](https://github.com/MadBomber/sqa/pull/58) Alpha Vantage/Stooq params hash. None low risk. First dependencies audit (F-19..F-22, bundle-audit clean). Filed #55 (RiskManager integer division), #56 (Portfolio cost-basis truncation), #57 (docs keyword drift). #47-#49 fixed on develop, stay open until develop→main. #4 still awaits a design call.
 
 ## Backlog
 
@@ -32,7 +34,10 @@ else in this repo.
 - F-19 `bin/sqa-console` needs `irb` as a dev dependency on Ruby 4 (gemspec, one line).
 - F-13 unused `$data` fixture in test_helper (test-only removal, low risk).
 - `SQA.init` calls `CLI.run!` if `SQA::CLI` is defined; sqa-cli defines `SQA::CLI` without `run!`, so loading both and calling `SQA.init` raises (improver, 2026-11-12). Fold into F-15's decision.
-- F-8 raise `required_ruby_version` to `>= 3.4` (every native dep needs ≥3.3, sqa-tai ≥3.4); gemspec, so Dewayne reviews. F-6 `changelog_uri` could fold into the same gemspec PR.
+- F-8 raise `required_ruby_version` to `>= 3.4` (every native dep needs ≥3.3, sqa-tai ≥3.4); gemspec, so Dewayne reviews. F-6 `changelog_uri` could fold into the same gemspec PR. F-32 (`documentation_uri`, `bug_tracker_uri`) folds in too.
+- [#59](https://github.com/MadBomber/sqa/issues/59) Stream vectors give KBS no stochastic/volume facts (F-34; lib ~3 lines + 2 tests). Good next PR.
+- [#60](https://github.com/MadBomber/sqa/issues/60) MultiTimeframe raises with < ~2 years of data (F-35; lib ~10 lines + test).
+- [#61](https://github.com/MadBomber/sqa/issues/61) README KBS rule + indicator examples fail (F-28/F-29; README-only, low-risk candidate; F-30 SQLite README note could ride along).
 
 ## Open bomberbot PRs
 
