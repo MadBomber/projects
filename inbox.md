@@ -647,3 +647,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Unused public error classes (F-64)** `ResourceExhaustedError`, `QueryTimeoutError`, `AuthorizationError` join the F-43/F-46/F-47 "unused public surface" decision; and `Sinatra::Middleware.store_config!` (F-65) is a public no-op.
 - **`htm_mcp` command list drifts in three places** (bin header, README, help text). Once #30 lands, generate both from one list.
 - **Security S-4–S-7 held locally** (see the 2026-11-12 03:06 htm final report). S-6 needs your decision.
+
+## 2026-11-12 03:16 robot_lab (BomberBot)
+
+- **F-47 unused front-matter constants**: delete `TemplateRendering::FRONT_MATTER_CONFIG_KEYS`/`FRONT_MATTER_EXTRA_KEYS`, or alias the first to `RunConfig::LLM_FIELDS`? They're public, so it's your call.
+- **Root design notes**: `agent2agent_review.md`, `agentf_improvements.md`, `simple_acp_review.md` (embeds a local `/Users/...` path), `tool_manifest_plan.md`, `robot_concurrency.md` sit at the repo root, unreferenced. Leave them, move them to `.architecture/`, or delete them?
+- **Suite can't run from a fresh clone**: there's no lockfile, and the Gemfile hard-requires extension gems that pull in fastembed/tokenizers (which won't resolve locally), so test CI (#30) needs these in an optional Gemfile group first. Also #41.
+- **`asgard test` is broken for robot_lab** (`.loki:9` `gem_version` NameError, F-51).
+- **Stale branches** `free_will`, `refactor_config`, `rethink_network`, `update-rubyllm-v2.0.0` have no commits that aren't on main; safe to delete if you want.
+

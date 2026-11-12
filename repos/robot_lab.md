@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Fifth visit (2026-11-12 03:16)._ Skipped building: review queue full (#38, #39, #40 open, green locally, unreviewed). Ran a full **dead-code** audit at develop 9d407dd incl. 16 dependent repos (F-46, F-47); filed #41 (test_helper `rescue LoadError` modifier, F-48) and #42 (dead `compact_if_over_context_window`, F-46). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
+
 _Fourth visit (2026-11-12)._ Dewayne merged #26, #27 and #34 without comment, so the queue was empty. Ran the first **adoption** audit (F-24–F-30; all fixes wait for the sync except the simple_flow `tsort` root cause). Opened three independent `lib/` fixes, none low risk: **PR #40** (budget reservation leak on a failed call, F-31), **PR #39** (bad SKILL.md front matter crashes the catalog, F-40), **PR #38** (`ToolManifest#count` ignores its block, F-42). Filed #35, #36, #37. Visit 3's uncommitted brain write (F-22/F-23, #34) was folded into this record. `develop` 9d407dd still 31 behind `main`.
 
 _Third visit (2026-11-10, same day)._ Tender rebased #26/#27 onto develop again (still unapproved, 2 open). Ran the never-run **quality** audit (flog/flay/reek, scoped to the 12 sync-safe lib files): surface is clean; new F-22/F-23 are both about the Asgard-owned gate being unrunnable from a bare clone (needs-decision → inbox). Opened **PR #34** (madbot/fix-delegation-spurious-wakeup → develop) fixing the `DelegationFuture#value` spurious-wakeup timeout, `Fixes #33`: **the bug IS provable** — `Thread#wakeup` forces an early return from `ConditionVariable#wait`, so F-16's "unprovable" note was wrong. Not self-merged (touches `lib/`), awaiting Dewayne. No new issues filed (everything new is needs-decision or already tracked). `develop` (0304617) still 31 behind `main`; only sync-safe files touched; docs PRs still wait for the sync.
@@ -35,7 +37,10 @@ else in this repo.
 - F-16 `DelegationFuture#value` spurious-wakeup timeout: issue [#33](https://github.com/MadBomber/robot_lab/issues/33), fixed on develop by #34 (9d407dd); closes with the sync or by hand.
 - F-24/F-25 README tool examples: issue [#35](https://github.com/MadBomber/robot_lab/issues/35), after the sync.
 - F-26 `tsort` on Ruby 4.1: issue [#36](https://github.com/MadBomber/robot_lab/issues/36); root fix in simple_flow's gemspec.
-- F-43 `Narrator.enable!` double registration: issue [#37](https://github.com/MadBomber/robot_lab/issues/37) (narrator.rb sync-safe; test in a new file).
+- F-43 `Narrator.enable!` double registration: issue [#37](https://github.com/MadBomber/robot_lab/issues/37) (narrator.rb sync-safe; test in a new file). Reproduced 2026-11-12 03:16 (`registrations=2`); first pick once the queue has room.
+- F-48 test_helper `rescue LoadError` modifier never fires: issue [#41](https://github.com/MadBomber/robot_lab/issues/41), after the sync.
+- F-46 dead `Robot#compact_if_over_context_window`: issue [#42](https://github.com/MadBomber/robot_lab/issues/42), after the sync.
+- F-49 `Convergence` header says TF-IDF but uses TF only (comment fix, sync-safe; low-risk candidate).
 
 ## Open bomberbot PRs
 

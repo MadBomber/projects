@@ -11,12 +11,12 @@ Dewayne's decision, issue #N.
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-10 | First run, at main ee0d562 (develop 8ec1d6e is 31 behind; findings checked against it). No lockfile committed; resolved in scratch on 4.1.0-preview1; bundle-audit clean. YAML via safe_load; ScriptTool uses argv + Shellwords; const_get gated to RubyLLM::Tool / RubyLLM::MCP. S-1..S-3 held locally. |
-| dead code | 2026-11-10 (lib only, brief) | debride over `lib/` at main ee0d562: ~120 candidates, all public API or extension hooks; nothing provably dead. Dependent extension gems not checked. |
+| dead code | 2026-11-12 | Full pass: debride + manual reference check (send/symbol/string) over lib/ at develop 9d407dd, cross-checked main ee0d562 and 16 dependent repos (14 robot_lab-* gems, robot_lab_project, robot_wars). 146 candidates; 41 used only by tests or nowhere, 37 of them public API (left alone). F-46, F-47; no sync-safe PR. |
 | dependencies | 2026-11-10 (v2) | First run at develop 83b27c4 / main ee0d562. bundle-audit clean on main's 0.6.0 lockfile; develop's stale `ruby_llm ~> 1.12` resolves to 1.16.0 with 3 High ReDoS CVEs (fixed >= 2.0.0.rc1), resolved by the pending sync (main already on 2.1.1). Ruby floor >= 4.0.9 justified (prompt_manager 1.2.0 requires it). No Dependabot. F-13/14/15. |
 | adoption | 2026-11-12 | First run, at main ee0d562 (v0.6.0) / develop 9d407dd, Ruby 4.1.0-preview1. 43 README blocks run in forked processes, no keys: 7 OK, 26 stop at provider config (expected), 10 dependent fragments, 4 real failures (F-24 `param` DSL, also ~60× in docs/; F-25 `tool.call({})`; F-26 `tsort` LoadError on 4.1). CHANGELOG lacks [0.6.0] (F-27), history drift (F-28). `mkdocs build --strict` passes. Examples not run, no LM Studio (F-29). All fixes wait for the sync except F-26 (simple_flow). |
 | quality | 2026-11-10 (v3) | First run on the third visit, scoped to the 12 sync-safe lib files: surface clean. F-22/F-23: the Asgard-owned quality gate can't run from a bare clone (needs Dewayne's decision). Reconstructed 2026-11-12: visit 3's brain write was cut off. |
 
-Dead-code scan last covered commit: ee0d562 (main, 2026-11-10; `lib/` only, brief). develop 8ec1d6e not scanned separately.
+Dead-code scan last covered commit: develop 9d407dd (2026-11-12, full; dependent repos checked; main ee0d562 cross-checked).
 
 ## Findings
 
@@ -75,3 +75,14 @@ Dead-code scan last covered commit: ee0d562 (main, 2026-11-10; `lib/` only, brie
 
 Dead-code scan: not rerun (develop moved only by #26/#27/#34). Improver found nothing provably dead in the 13 sync-safe lib files.
 - F-45 (note): the repo `.rubocop.yml` inherits `../.rubocop-base.yml`, which exists only in `robot_lab_project/`, so RuboCop can't run from a fresh clone (builders copied the base file into the run dir). Same class as F-22/F-23. Status: needs Dewayne's decision.
+
+### 2026-11-12 03:16 (fifth visit; dead-code audit + improver + triage, develop 9d407dd / main ee0d562)
+
+- F-46: `Robot#compact_if_over_context_window` (private, `robot.rb:1056` develop) has no caller since f7fc346 inlined its body into `maybe_compact`; only three `send` tests reach it, so tests cover the dead copy. Fix: one shared helper called from `maybe_compact`, tests retargeted. After the sync (robot.rb, robot_test.rb differ). Status: issue [#42](https://github.com/MadBomber/robot_lab/issues/42).
+- F-47: `Robot::TemplateRendering::FRONT_MATTER_CONFIG_KEYS` / `FRONT_MATTER_EXTRA_KEYS` are referenced nowhere (lib, tests, docs, sig, 16 dependent repos); the first duplicates `RunConfig::LLM_FIELDS`. `from_front_matter` also hardcodes `%i[mcp tools]` instead of `RunConfig::TOOL_FIELDS`. Status: needs Dewayne's decision (public constants: delete, or alias to `RunConfig::LLM_FIELDS`).
+- F-48: `test/test_helper.rb:26` `require 'robot_lab/document_store' rescue LoadError` never rescues (modifier catches StandardError only), so the suite dies without the extension gem. Fix: begin/rescue block, after the sync (test_helper differs). Status: issue [#41](https://github.com/MadBomber/robot_lab/issues/41).
+- F-49: `convergence.rb:4,26` header says "TF-IDF" but the method doc (`:46-53`) and code use TF only (`tf_cosine_similarity`); `text_analysis.rb:4` similar. Comment-only, sync-safe. Status: open (low-risk PR candidate next visit).
+- F-50: `MCPError` and `ToolError` in `error.rb` duplicate the `retryable` reader + initializer (~8 lines). Status: open (low; tidy-up only).
+- F-51 (note): `asgard test` fails with `NameError: undefined local variable or method 'gem_version'` at `.loki:9` (tender). Same class as F-22/F-23/F-45. Status: needs Dewayne's decision (Asgard-owned).
+- Notes: `Memory#create_semantic_cache` and develop's `sandbox*.rb` look dead on develop only because develop trails main; the sync resolves them. robot_lab-sandbox pins `robot_lab ~> 0.3.0` (same as #29). Root design notes (`agent2agent_review.md`, `agentf_improvements.md`, `simple_acp_review.md` with a local path, `tool_manifest_plan.md`, `robot_concurrency.md`) → inbox. Stale branches `free_will`, `refactor_config`, `rethink_network`, `update-rubyllm-v2.0.0` have nothing not on main (triage).
+
