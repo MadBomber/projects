@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-12 05:15._ Review queue still full (#30–#32 open, none approved), so no PRs were opened. Ran the second quality audit (F-66–F-73, one item held locally) and filed #38 (`db:reset` fails), #39 (per-connection timeout), and #40 (`recall` YARD default).
+_Updated 2026-11-12 07:20._ Review queue still full (#30–#32 open, none approved), so no PRs were opened. Ran the second adoption audit (F-74–F-84), the improver added F-85–F-89, and filed #41 (timeframe phrases never cover the past), #42 (`forget`/`restore` string ids) and #43 (stale YARD reference).
 
 ## Backlog
 
@@ -35,6 +35,13 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-66: session settings applied to one pooled connection only. Issue [#39](https://github.com/MadBomber/htm/issues/39). The `connect_sqls` half is small; the per-instance timeout needs a decision.
 - F-69: MCP tools use `instance_variable_get(:@long_term_memory)` instead of the reader (small swap).
 - F-8: gemspec `required_ruby_version` floor is unreachable (plus the undeclared `logger`, F-36). Issue [#29](https://github.com/MadBomber/htm/issues/29).
+- F-85: `TimeframeExtractor` builds future ranges for "this month/week/year" and "since X". Issue [#41](https://github.com/MadBomber/htm/issues/41). About 8 lib lines plus pure tests, no DB. Strong next PR.
+- F-83: `HTM#forget`/`#restore` send non-integer ids to SQL. Issue [#42](https://github.com/MadBomber/htm/issues/42). Two lines plus tests; touches `lib/htm.rb` (overlaps #32 file).
+- F-79: `rake examples:status` always says "Database connected: No" (calls removed `ActiveRecordConfig`). About six Rakefile lines.
+- F-80: `examples/02_config_file_example/show_config.rb` requires `amazing_print`, which it never uses and the Gemfile lacks. One line; examples-only, so low risk.
+- F-78 (examples half): example `# Usage:` headers, `examples_helper.rb`, `00_create_examples_db.rb` and `SETUP.md` still use pre-renumbering paths. Comment/output lines only; low risk. The `docs/` half is docs-deploy.
+- F-86: unreachable `when DateTime` branches and private `normalize_datetime` in `HTM::Timeframe` (DateTime < Date). About 14 lines removed; a removal.
+- F-77: generated YARD reference predates the Sequel migration. Issue [#43](https://github.com/MadBomber/htm/issues/43) (docs-deploy plus `mkdocs.yml`; not self-merged).
 
 ## Open bomberbot PRs
 

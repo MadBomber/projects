@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:20 htm
+
+- `develop` already existed (b7eb5ef, unchanged since 03:06); not created.
+- **skipped: review queue full.** Tender: #30, #31, #32 still open, unapproved, MERGEABLE, 0 behind develop, no reviews or threads (htm has no PR CI). New PRs: none. Merged (low risk): none. Merged after approval: none. Tended: #30, #31, #32 (checked only).
+- **Audit:** adoption, second run (develop b7eb5ef): mkdocs `--strict`, link checks, documented API probed against signatures, examples run on a throwaway PG 18 with no LLM, `rake htm:doc:yard` in scratch; F-74–F-84. Improver added F-85–F-89 (timeframe phrases, dead DateTime branches, JobAdapter wrappers). No new security findings.
+- **Process slips:** `src/` was left on `main` at clone instead of detached at `origin/develop` (the auditor read develop through a scratch worktree, so nothing was affected). The auditor ran `examples/00_create_examples_db.rb`, which hard-codes `localhost:5432`, and reached Dewayne's local `htm_examples` database once: migrations reported "already migrated" (reads and session `SET`s only, no writes). Process note added to the findings file.
+- **Issues answered:** none (no new comments; responder flagged that #18/#21 are fixed on develop but open, question in inbox).
+- **Issues filed:** [#41](https://github.com/MadBomber/htm/issues/41) (F-85, timeframe phrases never cover the past), [#42](https://github.com/MadBomber/htm/issues/42) (F-83, `forget`/`restore` non-integer ids), [#43](https://github.com/MadBomber/htm/issues/43) (F-77, stale YARD reference).
+- Next when the queue clears: F-85 (#41), F-67 (#38), F-80 + F-78 examples half (low risk), F-86 removal.
+
 ## 2026-11-12 06:45 smart_message-transport-named_pipes
 
 - `develop` existed (6725e5c); not created. Now at `52f8e45`.

@@ -795,3 +795,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Turn on the 9 skipped "requires full SmartMessage" tests?** A test-only dependency on the real smart_message (0.0.17, or 0.1.0 once released) or a fuller `test/support` Base would exercise the `initialize`/signal/`at_exit` path (F-13). Depends on [#6](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/6).
 - **CHANGELOG `[0.0.1]` and README:161 say "Non-blocking I/O to prevent deadlocks"; the I/O is blocking.** Fold into the F-26 release-notes decision.
 - **Sibling `smart_message-transport-nats` README is still the `bundle gem` template** although lib has ~270 lines; none of lanet/email/rabbitmq/nats are on RubyGems (noticed while building #22).
+
+## htm (2026-11-12 07:20 visit, BomberBot)
+
+- **F-88: `:active_job`/`:sidekiq` job backends wrap jobs in anonymous classes, so an out-of-process worker can't find them.** With any real Rails queue adapter, embeddings, tags and propositions never get generated (the Railtie picks `:active_job` outside test). Which shape: (a) named runner classes with an `HTM::Jobs::*` allowlist, (b) make the jobs ActiveJob/Sidekiq classes when those libraries load, or (c) document inline/thread/fiber only and drop auto-detection?
+- **F-89: intended spans for "5 days ago", "before X", "between X and Y".** They misparse today (1-second range; "before yesterday" means yesterday). Decide the spans, and one issue plus PR can follow.
+- **Unify the two timeframe parsers?** The MCP server's `parse_timeframe` and the library's `HTM::Timeframe` behave differently. After #41, routing MCP through `Timeframe.normalize` gives one behaviour to test.
+- **#18 and #21 are fixed on `develop` (#24, #25) but stay open** because GitHub closes `Fixes #N` only on the default branch. Close them at release, or now with a pointer?
+- **F-82: docs disagree on the Ruby floor (3.0+/3.1+/3.2+) and call 3.3.0 "latest stable".** Waits on the #29 floor; then one docs sweep recommending Ruby 4.0.
