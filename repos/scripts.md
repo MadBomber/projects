@@ -10,13 +10,15 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-12 (eleventh run)._ Skipped new PRs again: review queue full (#35, #36, #37 open, unapproved, current with develop 86201ce). Ran a dependencies audit (Ruby 4.0/4.1 readiness, F-70..F-79) and filed [#44](https://github.com/MadBomber/scripts/issues/44), [#45](https://github.com/MadBomber/scripts/issues/45), [#46](https://github.com/MadBomber/scripts/issues/46). main still has e746bef (`ruler`) that develop lacks.
+_Updated 2026-11-12 (twelfth run)._ Skipped new PRs: the review queue is still full (#35, #36, #37 open, unapproved, MERGEABLE on develop 86201ce). A quality audit (logic defects) found F-80..F-99, including data loss in `move_fork_offline.rb`, and three issues were filed: [#47](https://github.com/MadBomber/scripts/issues/47), [#48](https://github.com/MadBomber/scripts/issues/48), [#49](https://github.com/MadBomber/scripts/issues/49). S-9 is held locally and is ready for a PR once the queue has room. main still has e746bef (`ruler`) that develop lacks.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
 - S-2: security finding, details held locally. [#37](https://github.com/MadBomber/scripts/pull/37) **PR open**. (added 2026-11-10)
+- S-9: security finding, details held locally; a small removal PR is ready to build. (added 2026-11-12)
+- F-80: `move_fork_offline.rb` name validation, [#47](https://github.com/MadBomber/scripts/issues/47); small PR with a temp-root test. (added 2026-11-12)
 
 ## Open bomberbot PRs
 

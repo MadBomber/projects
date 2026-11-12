@@ -2,6 +2,15 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:46 scripts
+
+- `develop` already existed (86201ce, unchanged since 2026-11-10); not created.
+- **skipped: review queue full.** Tender: #35, #36, #37 still open, unapproved, MERGEABLE/CLEAN, one commit ahead of develop and zero behind; no reviews or comments. No CI, so the only check was `ruby -c` on each changed file: OK. **Merged:** none. **Merged (low risk):** none (all three touch code).
+- **Audit:** quality (logic-defect pass, the most overdue) at 86201ce: F-80..F-97. Improver: F-98, F-99, plus S-9 (held locally). The improver's top two candidates matched audit findings F-96 and F-83. Triage and responder re-reproduced the open backlog issues; nothing new from outside.
+- **Issues answered:** none. All 17 open issues are BomberBot's own, and no one else has commented.
+- **Issues filed:** [#47](https://github.com/MadBomber/scripts/issues/47) `move_fork_offline.rb` data loss (F-80), [#48](https://github.com/MadBomber/scripts/issues/48) `Gem::Specification.all` NOTE in nine scripts (F-96), [#49](https://github.com/MadBomber/scripts/issues/49) `github_clone_my_repos.rb --dryrun` empty fork dirs (F-83). The main session reread the code or reran each one before filing.
+- Tender again flagged that its merge-method rule (`--rebase`) disagrees with taste (merge commits); the question is already in `inbox.md`.
+
 ## 2026-11-12 07:45 simple_flow
 
 Sixth visit (last 07:24). `develop` existed and is unmoved at 5132c88; not created this visit.

@@ -20,6 +20,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | dead code | 2026-11-12 | Quick scan bc51825..86201ce (#24, #25, #26): nothing removable; #26 left no orphaned code. F-10/F-17/F-18/F-23 re-checked: still there, each referenced only by itself and one README row (now L249/L119/L251/L109). Sweep of `lib/` (all file types) and of top-level methods referenced only once: new F-52 (unused pyvis JS/CSS assets in `lib/`, ~740 KB) and F-53 (`-v` flag that does nothing in csv_reader/docx_style_fixer/new.rb, plus unused `csv2json` `header?`). Archive dirs excluded on purpose. |
 | security | 2026-11-12 (focused) | Second pass at develop 86201ce: ~110 non-`.rb`/extensionless scripts (sh/bash/perl/python/extensionless Ruby, sql/, config/, database_dumps/, committed .envrc), diff bc51825..86201ce (clean), first full-history secret scan (gitleaks, 541 commits: one false positive in minified vis-network.min.js). bundle-audit n/a. S-6..S-8 held locally; F-60..F-64 public. Dead-code scan last covered commit: 86201ce (develop unchanged). |
 | dependencies | 2026-11-12 | Ruby 4.0/4.1 readiness pass at develop 86201ce: bundled/default-gem moves across 3.4.6, 4.0.9, 4.1.0-preview1; load probe of every bundled or removed library; `ruby -wc` on 4.0.9 and 3.4.6; sandboxed `-W:deprecated` runs (no args, `-h`) on 4.0.9; Bundler/`bundler/inline` scripts; template Gemfiles. No root Gemfile, so bundle outdated/audit n/a. New F-70..F-76; F-45 and F-66 extended. Dead-code scan last covered commit: 86201ce (develop unchanged). |
+| quality | 2026-11-12 | Logic-defect pass at develop 86201ce over ~95 scripts no earlier finding names (top-level `.rb`, extensionless Ruby, shell, `lib/`, `templates/`); archives excluded. Every candidate reproduced under `sandbox-exec` (scratch copies, stub brew/Octokit, in-process Rack, throwaway git repos). New F-80..F-97 (improver F-98, F-99; S-9 held locally). **F-80 (`move_fork_offline.rb`) is data loss.** Dead-code scan last covered commit: 86201ce (develop unchanged). |
 
 Dead-code scan last covered commit: 86201ce (develop, 2026-11-12; quick scan bc51825..86201ce, nothing removable)
 
@@ -218,3 +219,43 @@ Dependencies audit (Ruby 4.0/4.1 readiness) at develop 86201ce, plus improver le
 - F-66 extended: `rawk.rb:1` also uses `#!/usr/bin/ruby` (Apple Ruby 2.6).
 - F-45 extended: on 3.4+/4.0, `gem uninstall -a -I -x` also removes bundled gems (csv, ostruct, logger, fiddle, readline, rexml), breaking ~16 scripts until reinstalled.
 - Low, style: `aip.rb:149/159` redefines `FZF_OPTIONS`; `rpp:121` duplicated range in a character class; `ripfzf` header says it opens Sublime (only `ripfzfsubl` does).
+
+### 2026-11-12, fourth run
+
+Quality audit (logic defects in about 95 scripts no earlier finding names: top-level `.rb`, extensionless Ruby, shell, `lib/`, `templates/`) at develop 86201ce, plus improver leads. Everything ran under `sandbox-exec` against scratch copies or stubs. The queue was full (#35/#36/#37), so no PRs; three issues filed.
+
+- F-80 (new, defect, **data loss**, verified in scratch): `move_fork_offline.rb` `validate!` (L56-67) uses the name as given. `f/` makes `File.symlink?` follow an already-moved fork, so `copy_fork` `rm_rf`s the only offline copy. `.` with `--force` wipes every other offline fork. Fix: reject names where `name != File.basename(name)` or the name is `.`/`..`, and `chomp('/')`. Status: issue [#47](https://github.com/MadBomber/scripts/issues/47).
+- F-81 (new, defect, verified in a temp repo): `fix_perms.rb` `fix_dir` recurses into `.git/`, which strips `+x` from hooks. Run from a subdirectory, `git diff --name-only` returns root-relative paths, so tracked modes are never restored. Fix: skip `.git`, and run the restore step from the repo top level. Status: open (small PR).
+- F-82 (new, defect, verified): `prepend_relative_path_as_comment.rb` writes the header above the shebang and magic comment, drops the executable bit (tmp file plus `mv`), and prepends again on a rerun. Status: open (small PR).
+- F-83 (new, defect, verified with a stub Octokit; improver found it too): `github_clone_my_repos.rb:98-100` runs `mkdir` for forks even under `--dryrun`, so later runs treat the fork as cloned. Status: issue [#49](https://github.com/MadBomber/scripts/issues/49).
+- F-84 (new, defect, verified with a stub brew): `brew_not_installed` keys on the first word of `brew bundle dump` lines (`brew`/`cask`/`tap`), so `--install` runs `brew install brew cask tap`. `--install` given as the first argument is taken as the path, and every run writes temp files into the cwd. Status: open (casks and taps need Dewayne's call).
+- F-85 (new, defect, verified): `list_top_leve_gems.rb:19` and `create_install_gemset:36` count development dependencies, so 92 gems that are only someone's dev dependency are excluded. Fix: `.runtime_dependencies`. Status: open (one word per file).
+- F-86 (new, defect, verified): `load_gems_from_file.rb:70-74` marks `(…, development)` dependency lines as installed. Status: open (one line).
+- F-87 (new, defect, verified): `create_gems_used_report.rb` has five problems:
+  - it includes development dependencies;
+  - it prints all dependencies instead of the runtime `deps`;
+  - it crashes on a `ruby` line in the Gemfile and drops `group` blocks;
+  - it reports whichever gem version it saw last;
+  - it raises NoMethodError when `pg` is missing.
+  Status: open (small PR).
+- F-88 (new, defect, verified): `image_rotater.rb:92` has a leftover `degrees += 15`, so the 2nd and 3rd files rotate by 105 and 120. L80 `gsub('.')` breaks paths that contain dots. The banner says "Resize". Status: open (small PR).
+- F-89 (new, defect, verified): `resize_images.rb:87` opens the basename instead of `filepath`, so any image outside the cwd raises ENOENT. Status: open (one line).
+- F-90 (new, defect, verified by running the regex): `s3_downloader.rb:171` turns the glob into an unanchored, unescaped regex (`*.txt` matches `x.txt.bak`), and L180 doesn't create subfolders. Fix: `File.fnmatch`, plus `dirname.mkpath`. Status: open (gated by aws-sdk).
+- F-91 (new, defect, verified with Rack::MockRequest): `mock_web_app.rb` reads `request.body` twice, so logged bodies are empty, and a non-JSON body returns 500 despite the "always 200" promise. Status: open (small PR).
+- F-92 (new, defect, verified): `magic_8_ball.rb:42` `system "say '#{answer}'"` breaks on "Don't count on it". Fix: `system("say", answer)`. Status: open (one line).
+- F-93 (new, defect, verified with osacompile): `tell:19` pastes `$msg` into an AppleScript string literal, so any message containing `"` fails to compile. `echo`/`say` are unquoted. Fix: pass the text through `on run argv`. Status: open (small PR).
+- F-94 (new, docs-vs-code, verified): `templates/big_ruby_project/README.md` describes the template being copied into the current project root, but `new.rb:153` copies the template's directory into a subdirectory instead. Status: needs Dewayne's decision (fixing the code changes every directory template).
+- F-95 (new, low, verified): `find_stuff_between_blank_lines.rb:58-71` doesn't clamp its range: a match on line 0 prints `-1: LAST LINE`. Status: open.
+- F-96 (new, Ruby 4/RubyGems 4.1, verified on 4.1.0preview1; improver found it too): `Gem::Specification.all` prints a NOTE on every call, at nine sites including `gemt:143`, the second most-used script. Fix: use the Enumerable methods or `.to_a`. Status: issue [#48](https://github.com/MadBomber/scripts/issues/48).
+- F-97 (new, low, mixed):
+  - `concat_consecutive_non_blank_lines.rb:28` gives each paragraph after the first a leading space;
+  - `kwic.rb` doesn't escape output;
+  - `json2yaml.rb:37` `gsub(extname)`;
+  - `update_jira_json_txt.rb:34` crashes with `nil.split`;
+  - `file_preable_template.rb:38` rewrites every `.txt` under the cwd on any invocation (it only survives because the lib_ruby `inlude_all?` typo crashes it on load);
+  - `github_list_repos.rb:28` has no pagination;
+  - `anagram_code.rb:11` has an unused `table`.
+  Status: open (low).
+- F-98 (new, improver, verified): `camels2snakes2camels.rb` (and the `c2s`/`s2c` wrappers) dies on load under Dewayne's `RUBYLIB`, because of the MadBomber/lib_ruby `mods/string_mods.rb:18` typo `inlude_all?`. It needs only `snakecase`/`camelcase`, and its usage text says "Cpnverts". No history use. Status: needs Dewayne's decision (make it stdlib-only, or retire it).
+- F-99 (new, improver, dead code): `sgem` (a near-duplicate of `pushd_to_gem_directory`, untouched since 2018, 0 history uses) and `freshen_up.rb` (a subset of `freshen_up_git_repos.rb`). Status: needs Dewayne's decision (retire, with F-10/F-17/F-18/F-23/F-79).
+- S-9: security finding, details held locally. Status: open.
