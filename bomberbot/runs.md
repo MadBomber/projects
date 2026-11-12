@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 00:41 kbs
+
+- **Resumed visit.** The first session (00:41) was cut off when the account's API spend limit stopped every agent mid-work; this session (08:38) finished it.
+- New PR [#28](https://github.com/MadBomber/kbs/pull/28), Merge main into develop (sync #19-#27) (source: judgment and triage; Dewayne merged Copilot's #19-#27 into `main`, so `main` was 25 commits ahead and `develop` 39). Seven conflicts resolved: develop's `bindings_for`, Redis test opt-in and README kept, main's `to_s`, zero-arity actions, leading-negation fix and `query_facts` raise brought in, CHANGELOG lines added. Proof: 254 runs, 0 failures, 24 Redis skips; the responder's repro shows main's behaviour; CI green on 3.2-4.0. Review: 2 rounds, ended clean, with round-1 out-of-scope findings deferred (F-39, F-40). Labeled `needs-dewayne`; not low risk.
+- New PR [#32](https://github.com/MadBomber/kbs/pull/32), fix(examples): add csv to Gemfile for Ruby 3.4+ (source: adoption audit F-30). Four examples failed under `bundle exec` with `LoadError`; all four run after. Suite 232/0F/22 skips; CI green; review clean. Not self-merged because it touches the Gemfile.
+- New PR [#33](https://github.com/MadBomber/kbs/pull/33), fix(decompiler): render values captured by condition helpers (source: finding F-27). 6 of 10 new tests fail on develop and pass on the branch; suite 242/0F/22 skips; CI green. Review hit the 3-round cap (round 3 narrowed round 2's widening, and fixed `!=` printing as `==`); opened with the overrun noted per the ragdoll#5 rule. Not low risk.
+- No stacking; all three branch from `develop` cff8e89 and touch disjoint files.
+- Audit: adoption (first run), develop at cff8e89: F-28 to F-37. Improver did not finish (spend limit) and was not re-run, so there was no dead-code scan this visit.
+- Tended PRs: none open. Tender deleted six merged `bomber/` branches; kept `bomber/knowledge-base-engine` (Dewayne's post-merge commit c53e503) and `bomber/leading-negation` (superseded by Copilot #23).
+- PRs merged: none (none qualified as low risk). Issues answered: none (no open issues; discussions off).
+- Issues filed: [#29](https://github.com/MadBomber/kbs/issues/29) (F-28, `rule priority:`), [#30](https://github.com/MadBomber/kbs/issues/30) (F-29, README AI example), [#31](https://github.com/MadBomber/kbs/issues/31) (F-33, gem packaging).
+- Incident: during triage, running `main`'s tests directly flushed DB 15 of the local Redis, because `main` restored the `localhost:6379/15` fallback (F-37). #28 keeps develop's opt-in.
+
 ## 2026-11-12 08:30 ragdoll
 
 - `develop` already existed (53fc937, unchanged since the 08:18 visit); not created.

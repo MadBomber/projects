@@ -129,3 +129,10 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review [dev#10](https://github.com/MadBomber/dev/pull/10) (weekly_report snaps `STATUS_WEEK_OF` to Monday) and [dev#11](https://github.com/MadBomber/dev/pull/11) (`reek_baseline` task). Merge #11 before [dev#12](https://github.com/MadBomber/dev/pull/12) (absent flay/reek/flog/bundler-audit report SKIP), which is stacked on it; the next tender retargets #12 to `develop`. No CI on this repo, so no checks gate them.
 - [ ] `main` is 26 commits behind `develop` (unchanged since 2026-10-30) and still has `schedule.loki`, which fails to load under asgard 0.6.0. Your checkout `~/sandbox/git_repos/madbomber/dev` is on `main`, so every `import_up "dev/..."` consumer runs the old files. Merge `develop` into `main`, or switch that checkout to `develop`.
 - [ ] Your checkout has an uncommitted `release` guard in `gem_tasks.loki`; [dev#7](https://github.com/MadBomber/dev/issues/7) covers the same ground. Bomberbot left `gem_tasks.loki` alone this visit so it won't conflict.
+
+## kbs (2026-11-12)
+
+- [ ] Merge [#28](https://github.com/MadBomber/kbs/pull/28) with a **merge commit** (not squash or rebase), or close it and sync `main` into `develop` yourself. It brings Copilot's #19-#27 to `develop` with 7 conflicts resolved and keeps develop's Redis test opt-in. (added 2026-11-12)
+- [ ] Review [#33](https://github.com/MadBomber/kbs/pull/33) (decompiler inlines captured scalar values). Its review loop hit the 3-round cap and the last fixes got no fourth round, so it was not self-merged. (added 2026-11-12)
+- [ ] Review [#32](https://github.com/MadBomber/kbs/pull/32) (`gem "csv"` in the Gemfile). Not self-merged because it touches the Gemfile. (added 2026-11-12)
+- [ ] `bomber/knowledge-base-engine` still holds your post-merge commit `c53e503` (trims the #10 CHANGELOG line); it never reached `develop`. Keep it or delete the branch. `bomber/leading-negation` (no PR) is superseded by Copilot #23; delete it when you like. (added 2026-11-12)
