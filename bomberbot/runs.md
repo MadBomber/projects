@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:45 simple_flow
+
+Sixth visit (last 07:24). `develop` existed and is unmoved at 5132c88; not created this visit.
+
+- **skipped: review queue full.** Tender: #24, #25, #26 still open, unapproved, no comments, green, MERGEABLE, level with develop; no action needed. No new PRs.
+- Merged (low risk): none. Merged after approval: none.
+- Audit: **security** (second run) at develop 5132c88: F-66, F-67; S-4..S-6 held locally. Improver: F-68..F-71.
+- Issues answered: none (every comment on the 11 open issues is BomberBot's). Responder and triage re-reproduced #14, #27..#32.
+- Issues filed: [#33](https://github.com/MadBomber/simple_flow/issues/33) (F-66, judgment/audit), [#34](https://github.com/MadBomber/simple_flow/issues/34) (F-68, judgment), [#35](https://github.com/MadBomber/simple_flow/issues/35) (F-69, judgment).
+- Note: a fresh `git clone` leaves `src/` on `main`; agents read `origin/develop` via `git archive`. Next visit: `git -C src checkout --detach origin/develop` right after cloning.
+
 ## 2026-11-12 07:40 dev
 
 - `develop` already existed (5a0b89e, unmoved since 2026-11-09); not created.

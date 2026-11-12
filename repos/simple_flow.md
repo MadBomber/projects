@@ -11,7 +11,7 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-12 07:24 (fifth visit): review queue full (#24-#26 open, green, unreviewed), so no new PRs; full dead-code audit; filed #30 (async backend loses step exceptions), #31 (cycles skipped in `call_parallel`), #32 (unused requires and arguments)._ Suite green on Ruby 4.0.9 (203 runs). develop has unreleased user-visible fixes (Ruby 4 load, `call_parallel` skips, Logging `logger:`). Docs deploy on `docs/**` pushes to develop as well as main, so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-12 07:45 (sixth visit): review queue still full (#24-#26 open, green, unreviewed), so no new PRs; security audit; filed #33 (`to_html` needs `json`), #34 (`parallel` drops `activated_steps`), #35 (async-unavailable tests always skip)._parallel`), #32 (unused requires and arguments)._ Suite green on Ruby 4.0.9 (203 runs). develop has unreleased user-visible fixes (Ruby 4 load, `call_parallel` skips, Logging `logger:`). Docs deploy on `docs/**` pushes to develop as well as main, so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
@@ -31,6 +31,10 @@ Well-defined items a single small PR could close.
 - [#32](https://github.com/MadBomber/simple_flow/issues/32) removal: unused `require 'delegate'`, redundant `require_relative 'dependency_graph'`, unused argument/variables (F-30/F-11 halves, F-42..F-44, verified green).
 - [#30](https://github.com/MadBomber/simple_flow/issues/30) parallel step exceptions lost under the async backend; one-word `Sync` fix verified (F-60/F-61). Top pick next visit.
 - [#31](https://github.com/MadBomber/simple_flow/issues/31) `call_parallel` silently skips `depends_on` cycles (F-62).
+- [#33](https://github.com/MadBomber/simple_flow/issues/33) `to_html` raises `NoMethodError` unless `json` is loaded (F-66); land with the held S-5 fix.
+- [#34](https://github.com/MadBomber/simple_flow/issues/34) `parallel` blocks drop `activated_steps` (F-68); after #24.
+- [#35](https://github.com/MadBomber/simple_flow/issues/35) async-unavailable tests always skip (F-69); test-only.
+- F-70: silence `-w` warnings and Instrumentation output in the test run (test-only).
 - F-25: add `docs/llms.txt`. F-24: README nits (hard-coded test counts, old inspect format).
 
 ## Open bomberbot PRs

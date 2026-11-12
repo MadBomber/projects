@@ -8,7 +8,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-09 | First run (first visit, which was cut off before it wrote brain), at develop 915656e. The released gem has zero runtime dependencies, no shell-outs, no deserialization, no regexps in lib. S-1, S-2 held locally. |
+| security | 2026-11-12 | Second run, at develop 5132c88 (audited a git-archive of origin/develop). Lib still has no shell-outs, deserialization, ENV reads or file IO; `instance_eval` only for the DSL. bundle-audit: dev-only hits (S-3). Found F-66, F-67; S-4..S-6 held locally (S-4/S-5 widen S-1-era notes). Earlier: 2026-11-09 First run (first visit, which was cut off before it wrote brain), at develop 915656e. The released gem has zero runtime dependencies, no shell-outs, no deserialization, no regexps in lib. S-1, S-2 held locally. |
 | dead code | 2026-11-12 | Full scan (lib, examples, benchmarks, bin, test; dependents fact_db, htm, robot_lab, robot_lab-cyborg, robot_lab-ractor) at develop 5132c88, Ruby 4.0.9, debride 1.15.2 + RuboCop unused cops + SimpleCov (497/502). Every debride lib candidate is public API or a TSort callback. New: F-42..F-44 (one verified removal, issue #32), F-45/F-46 need a decision; stale remote branches noted. Earlier: 2026-11-09 lib-only brief pass at e8196cc. |
 | dependencies | 2026-11-12 | First run, at develop 5132c88, Ruby 4.0.9 (4.1.0-preview1 without Bundler: 203/203 pass). Runtime deps logger/tsort correct, guarded by gemspec_test. CI lacks 4.0 (F-33, issue #27). Full dev refresh green (F-34, F-36, issue #28). aigcm unused (F-35). Dependabot off (F-37). Actions majors behind (F-38). io-event pin can't restore 3.2 (F-17 update). S-3 held locally. Earlier note: | See F-19 (logger/tsort runtime deps) from the 2026-11-10 adoption audit. Triage noted: Dependabot alerts disabled; dev-group minor bumps available (async 2.46, rubocop 1.92); minitest 6 and simplecov 1.x are majors. |
 | adoption | 2026-11-10 | First run, at develop f58e221, Ruby 4.0.9. 13/13 examples exit 0; README snippets run with stubs; `mkdocs build --strict` passes (INFO: dagwood-concepts.md not in nav; Material for MkDocs EOL May 2027); CHANGELOG complete for v0.1.0-v0.4.0; no llms.txt. Found F-19..F-27; F-19 (gem won't load on Ruby 4.0 under Bundler) also covers the Ruby 4 part of a dependencies audit. |
@@ -95,3 +95,15 @@ Dead-code scan last covered commit: 5132c88 (develop, 2026-11-12)
 - F-64 (improver): an empty `parallel {}` block raises `NoMethodError` at `pipeline.rb:325`. Status: needs Dewayne's decision (raise at declaration, or no-op).
 - F-65 (improver): failing parallel steps are noisy on stderr (async "unhandled exception" warning; threads' `report_on_exception`). Status: inbox (changes visible output).
 - Triage: F-16 absolute paths confirmed in 7 docs files besides `testing.md` (#25 fixes that one); F-18 `StepTracker` doc example still calls `with_continue`/`continue`, which don't exist. Both still open, good candidates once the queue drains.
+
+### 2026-11-12 07:45 (sixth visit; security audit, develop 5132c88; improver F-68..F-71)
+
+- F-66 (auditor, improver): `DependencyGraphVisualizer#to_html` raises `NoMethodError` unless `json` is already loaded (nothing in lib requires it; async loads it as a side effect). Verified. Fix with or after S-5. Status: issue #33.
+- F-67 (auditor): `call_parallel(max_concurrent:)` is silently ignored on the threads backend, including `:auto` without async (6 steps, cap 2: threads peak 6, async peak 2). Status: needs Dewayne's decision (implement a thread cap, or warn/raise).
+- F-68 (improver): a `parallel` block drops incoming `activated_steps` under `call`/`:explicit` (`pipeline.rb:325`); verified `[:x]` vs `[]`. Build after #24 (same lines). Status: issue #34.
+- F-69 (improver): the two "async unavailable" tests in `concurrency_parameter_test.rb` always skip, so `pipeline.rb:292` is uncovered. Status: issue #35.
+- F-70 (improver): `rake test` prints two `-w` warnings (`middleware_test.rb:27` indentation, `parallel_execution_test.rb:37` unused `result`) and Instrumentation output from `simple_flow_test.rb`. Test-only fix, ~8 lines. Status: open.
+- F-71 (improver): `MiddleWare::Instrumentation` times with `Time.now`, not a monotonic clock. Status: open (touches the F-14 file).
+- S-4: security finding, details held locally. Status: needs Dewayne's decision.
+- S-5: security finding, details held locally. Status: open.
+- S-6: security finding, details held locally. Status: needs Dewayne's decision.
