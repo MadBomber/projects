@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 00:59 aia
+
+- develop already existed (c04ce8e); it is now 2c1d77b.
+- **Tended:** none were open. Dewayne had rebase-merged #172, #176 and #177 since the last visit, which completes the dewayne.md "Review aia#172" step.
+- **New PRs** (all three were built in parallel with phase 1 to fit the time budget; they came from the Backlog, which outranks phase-1 finds):
+  - [#184](https://github.com/MadBomber/aia/pull/184) docs: README aliases for /paste and /available_models. Source: brain backlog/issue #180. **Merged (low risk)** → 1b1f227. Review clean in 1 round.
+  - [#185](https://github.com/MadBomber/aia/pull/185) test: VERSION constant stubs without redefinition warnings. Source: brain backlog/issue #179. **Merged (low risk)** → 2c1d77b. Review clean in 1 round, suite 2003/0.
+  - [#183](https://github.com/MadBomber/aia/pull/183) refactor(spawn): reuse `Crew.model_opts`, a removal. Source: brain backlog/issue #181. **PR open**; it touches lib, so it is not low risk. Review clean in 1 round, suite 2003/0, and a mutation check shows the existing spawn test guards it.
+- **Audit:** dead code (develop c04ce8e) found F-43. The improver found F-44.
+- **Issues answered:** the responder posted "fixed on develop by #N" on #164, #165, #169, #170, #174 and #175.
+- **Issues filed:** [#186](https://github.com/MadBomber/aia/issues/186) (F-44) and [#187](https://github.com/MadBomber/aia/issues/187) (F-43).
+- **Notes:** no test CI, so PRs show 0 checks (F-6 is in the inbox). `asgard test` has no task in a fresh clone, so the builders used `bundle exec rake test`. The #179 repro needs `-w` before `-Itest`.
+
 ## 2026-11-12 00:45 smart_message-transport-named_pipes
 
 - `develop` already existed (b2042fc); nothing created. Dewayne had squash-merged #4, #5, #8, #9 and #10 without comment, so the queue was empty. The tender deleted five merged bot branches. CI on `develop` green.

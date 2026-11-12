@@ -11,7 +11,6 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## aia
 
-- [ ] Review [aia#172](https://github.com/MadBomber/aia/pull/172) (removes two dead `mkdocs.yml` asset lines + the decommissioned polyfill.io CDN, Fixes #169). Not merged as low risk because `mkdocs.yml` is the config the docs site deploys from. The docs deploy runs on push to both `main` and `develop`, so the live site changes once this reaches those branches. The open question of whether to drop the whole MathJax/arithmatex stack (no math content found in `docs/`) is in `inbox.md`. (added 2026-11-10)
 
 ## ragdoll
 
