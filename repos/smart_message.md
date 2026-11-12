@@ -17,7 +17,9 @@ Ruby 4.0+. The repo now has its own `CLAUDE.md`; read it before building.
 
 ## Status
 
-_Updated 2026-11-12 (sixth visit)._ Skipped new PRs again (review queue full: #21, #22 and #23 are still open, green and unreviewed; `develop` is unchanged at 07af3d4). Ran the **quality** audit (F-82..F-85; the improver added F-90..F-93) and filed [#27](https://github.com/MadBomber/smart_message/issues/27) (partial subscribe not rolled back), [#28](https://github.com/MadBomber/smart_message/issues/28) (configuration docs set dispatcher limits too late) and [#29](https://github.com/MadBomber/smart_message/issues/29) (nil `dlq_path`).
+_Updated 2026-11-12 (seventh visit)._ Skipped new PRs a third time (review queue full: #21, #22, #23 open, green, unreviewed; `develop` still 07af3d4). Ran the **adoption** audit (F-94..F-98; README, examples, `mkdocs --strict` all clean) and filed [#30](https://github.com/MadBomber/smart_message/issues/30) (unchecked `log_level`/`log_format`), [#31](https://github.com/MadBomber/smart_message/issues/31) (setup errors don't name the class or fix) and [#32](https://github.com/MadBomber/smart_message/issues/32) (gemspec URIs).
+
+_Earlier, 2026-11-12 (sixth visit)._ Skipped new PRs again (review queue full: #21, #22 and #23 are still open, green and unreviewed; `develop` is unchanged at 07af3d4). Ran the **quality** audit (F-82..F-85; the improver added F-90..F-93) and filed [#27](https://github.com/MadBomber/smart_message/issues/27) (partial subscribe not rolled back), [#28](https://github.com/MadBomber/smart_message/issues/28) (configuration docs set dispatcher limits too late) and [#29](https://github.com/MadBomber/smart_message/issues/29) (nil `dlq_path`).
 
 _Earlier, 2026-11-12 (fifth visit)._ Skipped new PRs: review queue full (#21, #22, #23 open,
 green, unreviewed; tender changed nothing). Ran the full **dead code** audit at 07af3d4
@@ -73,6 +75,11 @@ works these before anything else in this repo.
 - [#27](https://github.com/MadBomber/smart_message/issues/27) roll back earlier transports when `subscribe` fails partway (F-82); `lib/` + test.
 - F-83 replace 24 fixed sleeps in three test files with `wait_for_dispatch` (test-only, low risk; pairs with F-48).
 - F-91 add the city_scenario smoke test to `rake examples` with a Redis skip (examples only, low risk).
+- F-98 + F-30 normalise CHANGELOG headings and merge the duplicate `[0.0.1]`; CHANGELOG-only, low risk once #21/#23 have merged (they touch CHANGELOG).
+- [#30](https://github.com/MadBomber/smart_message/issues/30) validate `log_level`/`log_format` at assignment (F-110); `lib/configuration.rb` (same file as #29/#25), ~20 lines + test.
+- [#31](https://github.com/MadBomber/smart_message/issues/31) name the class and the fix in the missing-`from` and `TransportNotConfigured` errors (F-113/F-114); a few strings + test + troubleshooting doc.
+- [#32](https://github.com/MadBomber/smart_message/issues/32) gemspec `homepage`/`documentation_uri` → docs site (F-94); gemspec, pair with #19.
+- F-111 + S-13 short `inspect` for transports and `PublishResult` (neutral title); `lib/`, ~25 lines + test.
 
 ## Open bomberbot PRs
 

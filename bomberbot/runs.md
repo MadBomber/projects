@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:20 smart_message
+
+Seventh visit (last 06:02). `develop` existed and is unmoved at 07af3d4; not created this visit.
+
+- **skipped: review queue full.** Tender: #21, #22, #23 still open, unapproved, no reviews or comments, MERGEABLE/CLEAN, green on 4.0 and 4.1.0-preview1; no action needed. No new PRs.
+- Merged (low risk): none. Merged after approval: none.
+- Audit: **adoption** (3rd run, first since the 0.1.0 rewrite) at 07af3d4: README 5/5 blocks run, `mkdocs build --strict` clean, `rake examples` 21/21, suite 443/1750/0F on 4.0.9 and 4.1-preview1. F-24/25/26/28/35 fixed; new F-94..F-98. Improver: F-110..F-119.
+- Issues answered: none (all 17 open issues carry `bomberbot` and their last comment is BomberBot's). Responder re-reproduced #24, #25, #26, #28, #29 at 07af3d4.
+- Issues filed: [#30](https://github.com/MadBomber/smart_message/issues/30) (F-110, judgment), [#31](https://github.com/MadBomber/smart_message/issues/31) (F-113/F-114, judgment), [#32](https://github.com/MadBomber/smart_message/issues/32) (F-94, adoption).
+- Security: S-13 new, held locally (improver).
+
 ## 2026-11-12 07:30 shared_tools
 
 Second visit today (the first was 02:35). `develop` existed and is unmoved at 1e8ae43; not created this visit.
