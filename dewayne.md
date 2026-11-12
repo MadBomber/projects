@@ -93,8 +93,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## simple_flow
 
-- [ ] Review [simple_flow#22](https://github.com/MadBomber/simple_flow/pull/22) (declares `logger` and `tsort` as runtime deps; gemspec, so not merged as low risk). Released 0.4.0 raises `LoadError` on `require "simple_flow"` in any Ruby 4.0 Bundler app that doesn't list `logger` itself, so users only get the fix with a release from `develop`. If you'd rather keep "zero runtime dependencies", the PR body describes the alternative. (added 2026-11-10)
-- [ ] Review [simple_flow#21](https://github.com/MadBomber/simple_flow/pull/21) (Fixes #12, #13; lib change). It changes behaviour on purpose: a `depends_on:` that names an unknown step, or a parallel group declared later, now raises `ArgumentError` instead of silently skipping the step. (added 2026-11-10)
+- [ ] Review [simple_flow#24](https://github.com/MadBomber/simple_flow/pull/24) (Fixes #18; lib change, so not merged as low risk). Intended behaviour change: a parallel branch that returns a fresh `Result` without errors no longer drops the incoming errors. (added 2026-11-12)
+- [ ] Review [simple_flow#25](https://github.com/MadBomber/simple_flow/pull/25) and [simple_flow#26](https://github.com/MadBomber/simple_flow/pull/26) (docs only, Fixes #20 and #19). Not self-merged because `deploy-github-pages.yml` publishes the docs site on `docs/**` pushes to `develop`. (added 2026-11-12)
 
 ## smart_message-transport-lanet
 

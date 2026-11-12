@@ -686,3 +686,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **`ruler`** (main only): keep the `terminal-size` gem or switch to stdlib `io/console`? It also crashes without a TTY. (F-69)
 - **Tender agent definition** says merge approved PRs with `--rebase`, but taste says you merge with merge commits; the definition should match taste.
 
+
+## simple_flow (2026-11-12)
+
+- **Release 0.4.1?** `develop` holds user-visible fixes 0.4.0 users can't get: the Ruby 4.0 `LoadError` under Bundler (#22), `call_parallel` silently skipping steps (#21, which also closes #12/#13 once it reaches `main`), and Logging's `logger:` keyword (#16). Options: release now, or after #24-#26 merge.
+- **`aigcm` in the Gemfile dev group** (F-35): nothing in the repo uses it and it pulls ~12 gems (ruby_llm, faraday). Drop it, or keep it as your commit-message tool?
+- **Dependabot** (F-37): vulnerability alerts are disabled and there is no `dependabot.yml`. Turn alerts on (repo setting), and optionally add a monthly grouped bundler + github-actions config?
+- **#14 baselines:** regenerate the example baselines only, or also make `examples/regression_test.rb` mask timing lines and parallel output order so they don't drift immediately?
+- **Process:** the responder agent's definition forbids commenting on `bomberbot`-labelled issues unless someone else commented, which blocked "fixed on develop" notes on #12/#13; the main session posted them under the prompt's **Answer issues** rule. Should the responder definition allow "fixed on develop" notes on bot-filed issues?
+- **Adoption:** named parallel groups (`parallel :name, depends_on:`) work under `call` and `call_parallel` since #21 but appear nowhere in the README, docs or examples (F-23/F-41); a short README section plus a `docs/api/pipeline.md` entry would make the feature findable.

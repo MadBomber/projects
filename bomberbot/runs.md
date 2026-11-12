@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 04:40 simple_flow
+
+- `develop` already existed (5132c88); not created.
+- **Merged since last visit (by Dewayne, rebase merges):** [#17](https://github.com/MadBomber/simple_flow/pull/17), [#21](https://github.com/MadBomber/simple_flow/pull/21), [#22](https://github.com/MadBomber/simple_flow/pull/22) (after @copilot resolved a CHANGELOG conflict). **Tended:** none open; develop CI green. **Merged (low risk):** none; #24 changes `lib/`, and #25/#26 are `docs/`, which deploys the public site from `develop`.
+- **New PRs** (all independent, off develop 5132c88, CI green on 3.3/3.4, MERGEABLE):
+  - [#24](https://github.com/MadBomber/simple_flow/pull/24) fix: report inherited errors once after parallel steps. Fixes #18. Source: brain backlog / issue. Proof: 4 new tests fail on develop, pass on branch; suite 209 runs, 0 failures on Ruby 4.0.9; no new RuboCop offenses. `/code-review` clean round 1. Only PR this visit touching CHANGELOG.
+  - [#25](https://github.com/MadBomber/simple_flow/pull/25) docs: drop stale test counts and describe CI accurately. Fixes #20 (installation.md half was already fixed on develop). Source: brain backlog / issue. Proof: every statement checked against test.yml, gemspec, lockfile; `mkdocs build` OK. Review clean round 1.
+  - [#26](https://github.com/MadBomber/simple_flow/pull/26) docs: describe the Ruby thread fallback, not a sequential one. Fixes #19. Source: brain backlog / issue. Proof: before/after grep, snippets run on 4.0.9, thread fallback timed, `mkdocs build --strict` passes. Review clean round 2 of 3.
+- **Audit:** dependencies (first run), develop 5132c88: F-33..F-38, F-17 update, S-3 held locally. Improver added F-39..F-41.
+- **Issues answered:** #12, #13 ("fixed on develop by #21", with repro output; posted by the main session because the responder's definition blocks comments on bot-filed issues).
+- **Issues filed:** [#27](https://github.com/MadBomber/simple_flow/issues/27) Ruby 4.0 missing from Tests CI, [#28](https://github.com/MadBomber/simple_flow/issues/28) dev dependencies behind, [#29](https://github.com/MadBomber/simple_flow/issues/29) benchmark crashes on Ruby 4.0.
+
 ## 2026-11-12 04:05 scripts
 
 - `develop` already existed (86201ce, unchanged); not created.
