@@ -10,7 +10,7 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-12 (tenth run)._ Skipped new PRs: review queue full (#35, #36, #37 open, unapproved, current with develop 86201ce). Ran a focused security audit (F-60..F-64, S-6..S-8 held locally), filed [#41](https://github.com/MadBomber/scripts/issues/41), [#42](https://github.com/MadBomber/scripts/issues/42) and [#43](https://github.com/MadBomber/scripts/issues/43). main still has e746bef (`ruler`) that develop lacks.
+_Updated 2026-11-12 (eleventh run)._ Skipped new PRs again: review queue full (#35, #36, #37 open, unapproved, current with develop 86201ce). Ran a dependencies audit (Ruby 4.0/4.1 readiness, F-70..F-79) and filed [#44](https://github.com/MadBomber/scripts/issues/44), [#45](https://github.com/MadBomber/scripts/issues/45), [#46](https://github.com/MadBomber/scripts/issues/46). main still has e746bef (`ruler`) that develop lacks.
 
 ## Backlog
 

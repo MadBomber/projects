@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 04:53 scripts
+
+- `develop` already existed (86201ce, unchanged since the 04:05 visit).
+- **skipped: review queue full.** #35, #36, #37 still open, unapproved, MERGEABLE, current with develop; none low risk (all touch code). No CI in the repo.
+- **Merged:** none. **Tended:** #35, #36, #37 (checked only; no reviews or comments, nothing to rebase).
+- **Audit:** dependencies (Ruby 4.0/4.1 readiness, tied with quality as most overdue) at 86201ce. New F-70..F-76; improver F-77..F-79; F-45, F-66 extended. No security findings.
+- **Issues answered:** #30 (link to #36 with a sandboxed before/after), #32 (link to #35, same).
+- **Issues filed:** [#44](https://github.com/MadBomber/scripts/issues/44) (Gemfile.erb ruby line, F-70), [#45](https://github.com/MadBomber/scripts/issues/45) (changed_files deleted/renamed lists, F-77), [#46](https://github.com/MadBomber/scripts/issues/46) (`require "cgi"` on Ruby 4.0, F-72).
+- Tender flagged a conflict: its standing instruction says `gh pr merge --rebase`, taste says Dewayne merges with merge commits. Question added to `inbox.md`.
+
 ## 2026-11-12 05:10 typed_bus
 
 - `develop` already existed (0f94a6c); not created.

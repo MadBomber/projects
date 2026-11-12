@@ -726,3 +726,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Ruby 3.2 in CI (F-5):** 0f94a6c keeps 3.2 in the matrix on purpose, against the EOL-Ruby taste rule. Confirm 3.2 stays (and close F-5), or bump the floor?
 - **`llms.txt` (F-25):** you merged prompt_manager#24 (`docs/llms.txt`) without comment. OK to treat typed_bus's as a normal candidate?
 - **Release due (repeat).** 0.0.1 (848 downloads) still has the Ruby 4.0 `LoadError` (#1) and 16 other issues fixed on `develop`.
+
+## 2026-11-12 (scripts, eleventh run)
+- **scripts review queue:** #35/#36/#37 have sat unreviewed through two visits; the last two runs were audit-and-issues only. Many ready one-line fixes are now issues (#38, #39, #33, #34, #44-#46). Review the three, or allow a fourth PR when the queue is all one-liners?
+- **Merge method for approved bomberbot PRs:** the tender's agent definition says `gh pr merge --rebase`; taste.md says you merge with merge commits so branch commits survive. Which should the tender use?
+- **scripts F-74:** `comment_require.rb` tags `csv`/`ostruct` as `# STDLIB`, but they are bundled gems since Ruby 3.4/4.0. Label bundled gems differently (e.g. `# bundled gem (Ruby 3.4+)`), or keep one `# STDLIB` tag?
+- **scripts F-79:** `projxslt.rb` (names a nonexistent caller, needs an uninstalled gem): delete, move to `retirement_home/`, or keep? Same question as F-10/F-17/F-18/F-23.
+- **scripts adoption (improver):** a tiny GitHub Action running `ruby -c` on every `*.rb` and `sh -n`/`bash -n` on shell scripts would have caught several filed defects; six scripts (`c2s`, `s2c`, `camels2snakes2camels.rb`, `erd_for.rb`, …) require `mods/string_mods` from your private `lib/ruby`, so they LoadError for anyone else; overlapping families (`acronym_*`, `note`/`note_v2`, `lipsum`/`loripsum`, `ripfzf`/`ripfzfsubl`) could retire their losers to shrink the README index.
+
