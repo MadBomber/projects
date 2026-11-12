@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 02:15 ragdoll
+
+- develop already existed (53fc937); not created. Dewayne squash-merged #19, #20, #26 (2026-11-10) and #24, #25 (2026-11-11) with no comments, so the queue was empty. The tender deleted 15 merged bot branches. CI on develop is green; the one red run (#24) was a runner DNS outage. Phase-1 agents and the three builders ran in parallel, because the picks were the open issues filed last visit, which outrank phase-1 finds.
+- **New PRs** (none stacked, none low risk; each adds one CHANGELOG `[Unreleased]` line, so they conflict once one merges):
+  - [#32](https://github.com/MadBomber/ragdoll/pull/32) fix: default proposition and tag extractors call RubyLLM chat correctly. Source: issue #27 (F-33). Fails before (`unknown keyword: :messages`), passes after; suite 1316/0F/0E; review clean in round 1; CI green.
+  - [#31](https://github.com/MadBomber/ragdoll/pull/31) fix: keep clicked searches in cleanup_old_unused_searches. Source: issue #28 (F-34). Fails before on a throwaway pgvector Postgres (count 3 vs 1, clicked search lost), passes after; CI-mode 1316/0F; review clean in round 1; CI green.
+  - [#30](https://github.com/MadBomber/ragdoll/pull/30) fix: ship the MIT-LICENSE file the gemspec declares. Source: issue #29 (F-39, adoption). Gem build now ships MIT-LICENSE; new gemspec test fails before, passes after; review clean; CI green; `needs-dewayne` (copyright line).
+- **Merged (low risk):** none. **Merged after approval:** none were pending.
+- **Audit:** quality (first run) at develop 53fc937, F-44–F-48. Improver and responder added F-49–F-53; builder F-54. No new security findings.
+- **Issues answered:** #12 (progress note), #17, #21, #22, #23 ("fixed on develop by #N").
+- **Issues filed:** [#33](https://github.com/MadBomber/ragdoll/issues/33) (F-49 add_directory), [#34](https://github.com/MadBomber/ragdoll/issues/34) (F-45 TextGenerationService), [#35](https://github.com/MadBomber/ragdoll/issues/35) (F-48 OpenAI org/project).
+- **Housekeeping:** restored #26's PR body, which held text from a prompt_manager PR. Committed the 2026-11-10 06:15 visit's ragdoll brain edits, which had been left uncommitted (that visit has no runs.md entry). Two builders' `git stash` calls crossed; they untangled it, and each PR was verified to contain only its own files.
+
 ## 2026-11-12 01:45 scripts
 
 - develop already existed (86201ce); not created. Phase-1 agents and the three builders ran in parallel, because the picks came from brain's Backlog and open issues, which outrank anything phase 1 could return.

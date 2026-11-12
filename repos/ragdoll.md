@@ -10,7 +10,9 @@ RAG library; most-starred repo, idle since early 2026.
 
 ## Status
 
-_Updated 2026-11-10 00:15 visit._ Dewayne merged #10, #14, #15 and #16 on 2026-11-09. This visit merged [#18](https://github.com/MadBomber/ragdoll/pull/18) as low risk (first #12 slice) and opened [#19](https://github.com/MadBomber/ragdoll/pull/19) (drop `annotate`, fixes #17; develop already locks Rails 8.1.4.1) and [#20](https://github.com/MadBomber/ragdoll/pull/20) (F-19, vision model options), both **PR open**, CI green. Filed issues #21 (F-30), #22 (F-28), #23 (F-20). Next visit: the S-2 + F-29 audio fix first.
+_Updated 2026-11-12 02:15 visit._ Dewayne squash-merged all five open PRs (#19, #20, #24, #25, #26) on 2026-11-10/11; queue was empty. Opened three fixes for open issues, all **PR open**, CI green on 3.2/3.3/3.4/4.0, review clean in one round, none low risk: [#32](https://github.com/MadBomber/ragdoll/pull/32) (#27/F-33 tag/proposition extractors), [#31](https://github.com/MadBomber/ragdoll/pull/31) (#28/F-34 search cleanup), [#30](https://github.com/MadBomber/ragdoll/pull/30) (#29/F-39 MIT-LICENSE; needs Dewayne to confirm the copyright line). Ran the first **quality** audit (F-44–F-48); filed #33 (F-49), #34 (F-45), #35 (F-48). The three PRs each add one CHANGELOG `[Unreleased]` line and will conflict after the first merges. Next visit: tend/rebase these three; then F-51 (drop unused searchkick/opensearch) or S-2 + F-29.
+
+_Prior 2026-11-10 06:15 visit:_ opened #24, #25, #26 (issues #23, #21, #22); adoption audit F-35–F-43; filed #27, #28, #29. (Its brain edits were left uncommitted and were committed by the 2026-11-12 visit.)
 
 ## Backlog
 
@@ -25,11 +27,17 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#19](https://github.com/MadBomber/ragdoll/pull/19) chore(deps): drop annotate, which has no Rails 8 release (fixes #17). **PR open**, CI green on 3.2/3.3/3.4/4.0. Touches the gemspec, so not low risk.
-- [#20](https://github.com/MadBomber/ragdoll/pull/20) fix: build ImageToTextService vision model (F-19). **PR open**, CI green. Review hit the cap. Conflicts with #19 in CHANGELOG `[Unreleased]` once one merges (trivial rebase).
+- [#32](https://github.com/MadBomber/ragdoll/pull/32) fix: default proposition and tag extractors call RubyLLM chat correctly (issue #27, F-33). **PR open**, CI green, review clean. Touches `app/`, not low risk.
+- [#31](https://github.com/MadBomber/ragdoll/pull/31) fix: keep clicked searches in cleanup_old_unused_searches (issue #28, F-34). **PR open**, CI green, review clean, proven on a throwaway pgvector Postgres. Touches `app/`, not low risk.
+- [#30](https://github.com/MadBomber/ragdoll/pull/30) fix: ship the MIT-LICENSE file the gemspec declares (issue #29, F-39). **PR open**, CI green, review clean, `needs-dewayne` (confirm copyright line). Gemspec, not low risk.
 
 ## Merged bomberbot PRs
 
+- [#25](https://github.com/MadBomber/ragdoll/pull/25) fix: Document#generate_metadata! LoadError (issue #21, F-30). Squash-merged 2026-11-11 (53fc937).
+- [#24](https://github.com/MadBomber/ragdoll/pull/24) fix: pass reprocess options to the document converter (issue #23, F-20). Squash-merged 2026-11-11 (ca2c2db).
+- [#19](https://github.com/MadBomber/ragdoll/pull/19) chore(deps): drop annotate (issue #17). Squash-merged 2026-11-10 (d675518).
+- [#20](https://github.com/MadBomber/ragdoll/pull/20) fix: build ImageToTextService vision model (F-19). Squash-merged 2026-11-10 (c3e175b).
+- [#26](https://github.com/MadBomber/ragdoll/pull/26) fix: drop dead file attachment in create_document_from_file (issue #22, F-28). Squash-merged 2026-11-10 (d26f2e2). Its PR body had been overwritten with another repo's text; restored 2026-11-12.
 - [#18](https://github.com/MadBomber/ragdoll/pull/18) test: run the search cleanup tests (first slice of #12, F-16). **Merged (low risk)** by bomberbot 2026-11-10 (develop 1ba1414).
 - [#16](https://github.com/MadBomber/ragdoll/pull/16) refactor: use bound parameters for search filter conditions. Merged 2026-11-09 (b0a7afc). Not recorded by the visit that opened it.
 - [#15](https://github.com/MadBomber/ragdoll/pull/15) docs: fix README Quick Start config to match current API (issue #11, F-18). Merged 2026-11-09 (ca8deeb).

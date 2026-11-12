@@ -583,3 +583,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **A syntax check that covers the extensionless scripts.** The "suite" is `ruby -c` on `*.rb`, so typos in extensionless Ruby (`json`, issue #38) and shell bugs (`wl`, #39) go unnoticed. A small `bin/check` (or enabling the commented-out `lefthook.yml`) running `ruby -wc` on every ruby-shebang file and `bash -n`/`sh -n` on shell scripts would catch them. Worth a PR?
 - **Project-notes scripts live in the wrong place?** `copy_latest_voice_memo.rb` and `process_latest_meeting.rb` default to writing next to themselves / `..`, which inside `~/scripts` means the repo (and `$HOME`). Moving them to `templates/notes/` and installing them with `new` would match how they're used.
 - **`-v/--verbose` that does nothing (F-53)** in `csv_reader.rb`, `docx_style_fixer.rb`, `new.rb`: remove the flag, or wire it up? Likely a template habit you may want to keep uniform.
+
+## 2026-11-12 ragdoll
+
+- **Release?** `develop` has about eight user-facing fixes since v0.1.12 (2025-09-24), and six open issues wait on `develop` reaching `main`. Cut 0.1.13, or 0.2.0 (the adoption audit flagged 0.2.0 as un-logged), or keep waiting?
+- **ruby_llm 2.x (S-1 remainder, F-11).** The lockfile's ruby_llm 1.9.1 has three High ReDoS advisories, and the fix is in 2.x only. The gemspec doesn't bound ruby_llm, so gem users already resolve to 2.x while CI tests 1.9.1. Bump the lock to 2.x (and fix any API breaks), or stay?
+- **`logging.level` is ignored (F-52).** `Client` compares a String to Symbols and then forces WARN. Honour the setting (the default dev log level becomes debug), or delete the dead `case` and document WARN?
+- **`Client.new` switches every ActiveJob in the host app to inline (F-53).** Scope it to Ragdoll's own jobs (a `Ragdoll::ApplicationJob` base), set it only when no adapter is configured, or keep it and document it?
+- **Class methods below `private` (F-47).** Moving `Document.stats` and the `TextChunker` helpers above `private` changes nothing. Should the accidental-public helpers (`Embedding.calculate_usage_score` and others) become `private_class_method` (a small API narrowing)?
+- **Duplicate test trees.** Six specs exist both in `test/core/` and in `test/services/ragdoll/` or `test/lib/ragdoll/core/`. Merging them is several PRs; worth scheduling?
+- **Phantom OpenSearch promise.** ragdoll-docs and ragdoll-demo advertise "optional OpenSearch/Elasticsearch integration", but no code uses `searchkick`/`opensearch-ruby` (F-51). Drop the deps and the claim, or is that integration still planned?

@@ -14,8 +14,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## ragdoll
 
-- [ ] Review [ragdoll#19](https://github.com/MadBomber/ragdoll/pull/19) (drops `annotate`; gemspec change, so not merged as low risk). Issue #17 closes only when `develop` reaches `main`; `main` still locks Rails 8.0.3, so 8.1 reaches gem users with the next release. Say if you want the floor raised to `activerecord`/`activejob >= 8.1.4.1`. (added 2026-11-10)
-- [ ] Issues #11 and #13 are fixed on `develop` (#15, #14) but stay open until `develop` is merged to `main`, or close them by hand. (added 2026-11-10)
+- [ ] Before merging [ragdoll#30](https://github.com/MadBomber/ragdoll/pull/30): confirm the `MIT-LICENSE` copyright line, `Copyright (c) 2025 Dewayne VanHoozer` (gemspec author; 2025 is the repo's first commit; wording matches aia and prompt_manager). (added 2026-11-12)
+- [ ] Issues #11, #13, #17, #21, #22 and #23 are fixed on `develop` (#15, #14, #19, #25, #26, #24) but stay open until `develop` is merged to `main`, or close them by hand. `develop` holds about eight user-facing fixes that no release has (last tag v0.1.12). (added 2026-11-10, updated 2026-11-12)
 
 ## debug_me
 
