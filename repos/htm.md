@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-11._ Queue was empty on arrival: Dewayne merged #23, #24 and #25 into `develop`, which is now about 30 commits ahead of `main`. This visit opened three PRs: [#32](https://github.com/MadBomber/htm/pull/32) (Fixes #19), [#31](https://github.com/MadBomber/htm/pull/31) (`HTM_PROPOSITION__ENABLED=false` ignored) and [#30](https://github.com/MadBomber/htm/pull/30) (`htm_mcp help` env vars). It also ran the second dependencies audit (F-34–F-43), filed #28 and #29, and deleted ten merged bot branches. The suite ran 647 green on develop, and 652 with #32 applied.
+_Updated 2026-11-12._ Review queue full (#30–#32 open, none approved), so no PRs were opened. Ran the second dead-code audit (F-44–F-52) and filed #33 (`htm_mcp --config` database check), #34 (docs env var names) and #35 (dead private methods).
 
 ## Backlog
 
@@ -18,13 +18,15 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - F-6: one autocorrectable rubocop offense in `hybrid_search.rb:324`.
 - F-18: extract the duplicated working-memory eviction block in `lib/htm.rb` (improver C2).
-- F-19: `check_database_config!` defined twice (`mcp/cli.rb:140`, `mcp/server.rb:30`) — one shared method.
+- F-19 / F-50: `check_database_config!` defined twice and both ignore config files, so `htm_mcp --config` can't find the database. Issue [#33](https://github.com/MadBomber/htm/issues/33).
 - F-20: `enqueue_tags_job` / `generate_tags_step` re-implement `Node#add_tags` (improver C1). Touches `lib/htm.rb` — stack on #24 or wait until it merges.
 - F-33: add `spec.metadata["documentation_uri"]` to `htm.gemspec` (one line).
 - F-15: re-adding a soft-deleted tag link. Issue [#19](https://github.com/MadBomber/htm/issues/19). [#32](https://github.com/MadBomber/htm/pull/32) **PR open**
 - F-41: `HTM_PROPOSITION__ENABLED=false` doesn't disable extraction. [#31](https://github.com/MadBomber/htm/pull/31) **PR open**
-- F-42: `htm_mcp help` env-var names and defaults are wrong. [#30](https://github.com/MadBomber/htm/pull/30) **PR open**. The same errors in `docs/guides/configuration.md` (lines ~368, 377-378, 409) are a follow-up docs PR (docs-deploy, so not self-merged).
+- F-42: `htm_mcp help` env-var names and defaults are wrong. [#30](https://github.com/MadBomber/htm/pull/30) **PR open**. The docs half, plus wrong single-underscore names in four more pages, is issue [#34](https://github.com/MadBomber/htm/issues/34) (docs-deploy, so not self-merged).
 - F-40: `Tag#restore!` and `RobotNode#restore!` raise; soft-deleted tag names can't be reused. Issue [#28](https://github.com/MadBomber/htm/issues/28).
+- F-44/F-45: three private methods with no callers. Issue [#35](https://github.com/MadBomber/htm/issues/35). A removal; an easy next PR.
+- F-49: `htm:files:info` hand-rolls `FileSource.by_path`.
 - F-8: gemspec `required_ruby_version` floor is unreachable (plus the undeclared `logger`, F-36). Issue [#29](https://github.com/MadBomber/htm/issues/29).
 
 ## Open bomberbot PRs

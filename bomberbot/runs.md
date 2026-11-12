@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 02:20 htm
+
+- `develop` already existed (b7eb5ef, unchanged since the last visit); not created.
+- **Skipped new work: review queue full.** The tender found #30, #31 and #32 still open, unapproved, MERGEABLE, no reviews, no CI on PRs. A trial merge of all three in order has no CHANGELOG conflict.
+- New PRs: none. Merged (low risk): none. Merged after approval: none. Tended: #30, #31, #32 checked, no changes needed.
+- Audit: dead code, second run (debride over lib/bin plus cf7ec39..b7eb5ef), F-44–F-49; the improver and phase-1 agents added F-50–F-52. Scan reached b7eb5ef. No security findings.
+- Issues answered: none. Every open issue is BomberBot's own with no third-party comment, or a design question for Dewayne (#8, #12, #13).
+- Issues filed: [#33](https://github.com/MadBomber/htm/issues/33) (`htm_mcp` ignores a database set in a config file, F-50/F-19; judgment, reproduced), [#34](https://github.com/MadBomber/htm/issues/34) (docs list ignored `HTM_*` env var names, F-51/F-42 docs half; adoption), [#35](https://github.com/MadBomber/htm/issues/35) (three private methods with no callers, F-44/F-45; dead code).
+- Inbox: unused public API decision, generated env-var reference, ADR 009, `htm_mcp verify` config source, issues fixed on develop still open.
+- Note: triage and the improver ran `bundle` in `src/`, which wrote the gitignored `Gemfile.lock` there; harmless, but brief them to copy `Gemfile*` into `scratch/` first.
+
 ## 2026-11-12 02:15 ragdoll
 
 - develop already existed (53fc937); not created. Dewayne squash-merged #19, #20, #26 (2026-11-10) and #24, #25 (2026-11-11) with no comments, so the queue was empty. The tender deleted 15 merged bot branches. CI on develop is green; the one red run (#24) was a runner DNS outage. Phase-1 agents and the three builders ran in parallel, because the picks were the open issues filed last visit, which outrank phase-1 finds.

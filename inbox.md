@@ -593,3 +593,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Class methods below `private` (F-47).** Moving `Document.stats` and the `TextChunker` helpers above `private` changes nothing. Should the accidental-public helpers (`Embedding.calculate_usage_score` and others) become `private_class_method` (a small API narrowing)?
 - **Duplicate test trees.** Six specs exist both in `test/core/` and in `test/services/ragdoll/` or `test/lib/ragdoll/core/`. Merging them is several PRs; worth scheduling?
 - **Phantom OpenSearch promise.** ragdoll-docs and ragdoll-demo advertise "optional OpenSearch/Elasticsearch integration", but no code uses `searchkick`/`opensearch-ruby` (F-51). Drop the deps and the claim, or is that integration still planned?
+
+## 2026-11-12 htm
+
+- **One decision for htm's unused public API (F-43, F-46, F-47).** `HTM::MAX_KEY_LENGTH`, the two `Observability::POOL_*_THRESHOLD` constants, `QueryCache::METHOD_PREFIX`, and about 15 public methods with no caller or test (list in `bomberbot/findings/htm.md`, F-47). Options: keep and add tests, deprecate for a release then remove, or remove now. One answer covers them all.
+- **Generate the env-var reference from `defaults.yml`.** Hand-written env tables have drifted in five places (`htm_mcp help`, configuration guide, MCP guide, rake/setup pages, seed-data README; #30, #34). A small rake task that walks `defaults.yml` and prints `HTM_<SECTION>__<KEY>` with its default would end this class of bug, and `htm_mcp help` could print the same list.
+- **ADR 009 ("never forget") and the architecture pages describe a removed API** (key-based `forget("key")`, `undo_forget`, confirmation always required). Since `forget` is now a soft delete by default, add a "superseded" note or rewrite? ADRs are history, so your call.
+- **`htm_mcp verify` could show where config came from** (e.g. "config: ~/.config/htm/htm.yml, db: htm_development"); `Config.active_xdg_config_file` already exists. Best after #33.
+- **#18 and #21 are still open though #24/#25 merged into `develop`.** `Fixes #N` only auto-closes on the default branch. Close them now with a "fixed on develop" note, or let the next `develop` → `main` merge close them? #19 will be the same once #32 merges.
