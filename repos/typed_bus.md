@@ -23,6 +23,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [#4](https://github.com/MadBomber/typed_bus/issues/4) unsubscribe-during-publish leaks a pending tracker (F-3).
 - [#5](https://github.com/MadBomber/typed_bus/issues/5) validate `max_pending` (F-2).
 - [#6](https://github.com/MadBomber/typed_bus/issues/6) `DeadLetterQueue#drain` must keep unprocessed entries when the block raises (F-18). **Merged into develop ([#8](https://github.com/MadBomber/typed_bus/pull/8)); issue closes on release. Regression F-46 follow-up below.**
+- F-46: DLQ `drain` re-drains entries pushed back during the drain (regression from #8, breaks the documented retry pattern). **PR open: [#23](https://github.com/MadBomber/typed_bus/pull/23).**
 - [#11](https://github.com/MadBomber/typed_bus/issues/11) add a LICENSE file to match the MIT gemspec (F-23).
 - [#12](https://github.com/MadBomber/typed_bus/issues/12) enrich gemspec metadata, drop the duplicate `source_code_uri` (F-24).
 - [#10](https://github.com/MadBomber/typed_bus/issues/10) remove stray `examples/temp.md` (F-27).
@@ -41,6 +42,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 ## Open bomberbot PRs
 
 - [#22](https://github.com/MadBomber/typed_bus/pull/22) `bomberbot/subscribe-requires-block`: `Channel#subscribe` without a block raises `ArgumentError`. Fixes #16 (F-41). Base `develop`, review clean (1 round), suite 205/0F, 100% coverage. Awaiting Dewayne (lib change).
+- [#23](https://github.com/MadBomber/typed_bus/pull/23) `bomberbot/dlq-drain-snapshot`: `DeadLetterQueue#drain` yields a snapshot so entries re-queued during a drain are not drained again (the documented retry pattern no longer loops). Follow-up to #8 (F-46). Base `develop`, review clean (2 rounds), suite 207/0F, 100% coverage. No CHANGELOG line (regression is unreleased). Awaiting Dewayne (lib change).
 
 ## Merged bomberbot PRs
 
