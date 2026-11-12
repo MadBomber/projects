@@ -15,7 +15,9 @@ Dependents: sqa-cli, sqa-advisor, sqa-bi, sqa_demo-sinatra.
 
 ## Status
 
-_Fifth visit (2026-11-12 05:45)._ Queue still full (#53, #54, #58 open, none approved), so no new PRs. First full dead-code audit (F-41..F-48) plus improver F-49/F-50. Filed #62 (Stream window < 30 silent), #63 (mp_test dead rescue), #64 (orphan examples/F.csv).
+_Sixth visit (2026-11-12 08:12)._ Queue still full (#53, #54, #58 open, none approved, develop unchanged at 5ea98c8), so no new PRs. Second quality audit (F-51..F-56) plus improver F-57..F-63. Filed #65 (Yahoo `Stock.new` NameError), #66 (`lazy_update` not coerced), #67 (Sortino denominator).
+
+_Previous: fifth visit (2026-11-12 05:45)._ Queue still full (#53, #54, #58 open, none approved), so no new PRs. First full dead-code audit (F-41..F-48) plus improver F-49/F-50. Filed #62 (Stream window < 30 silent), #63 (mp_test dead rescue), #64 (orphan examples/F.csv).
 
 _Previous: fourth visit (2026-11-12 03:15)._ Queue still full (#53, #54, #58 open, none approved), so no new PRs. First adoption audit (F-28..F-33); improver found Stream/KBS stochastic+volume bug and MultiTimeframe short-data crash. Filed #59, #60, #61.
 
@@ -42,6 +44,10 @@ else in this repo.
 - [#61](https://github.com/MadBomber/sqa/issues/61) README KBS rule + indicator examples fail (F-28/F-29; README-only, low-risk candidate; F-30 SQLite README note could ride along).
 - [#62](https://github.com/MadBomber/sqa/issues/62) Stream never emits signals with `window_size` < 30 (F-49; lib ~5 lines + 2 tests; raise ArgumentError). F-50 `puts`→`warn` in the same file could be its own 1-line PR.
 - [#63](https://github.com/MadBomber/sqa/issues/63) mp_test dead `rescue NoMethodError; skip` (F-43; test-only, low-risk candidate).
+- [#65](https://github.com/MadBomber/sqa/issues/65) `Stock.new(source: :yahoo_finance)` raises NameError, no `YahooFinance::TRANSFORMERS` (F-51; lib ~15 lines + test, also dedups the 3 copies). **Best next PR**: the documented example crashes.
+- [#66](https://github.com/MadBomber/sqa/issues/66) `Config` `lazy_update` not coerced, `SQA_LAZY_UPDATE=0` turns it on (F-57; lib 1 line + test).
+- [#67](https://github.com/MadBomber/sqa/issues/67) `RiskManager.sortino_ratio` wrong downside denominator (F-53; 1 line + test; numbers change, say so in CHANGELOG).
+- F-59 PatternMatcher empty clusters take cluster 0's centroid (lib 2 lines + test). F-55 Backtest gives strategies no volume (lib ~8 lines + test).
 - [#64](https://github.com/MadBomber/sqa/issues/64) orphan 710 KB `examples/F.csv` (F-45; pure deletion; ships in the gem).
 
 ## Open bomberbot PRs

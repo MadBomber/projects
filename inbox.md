@@ -870,3 +870,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **lms pin (F-15).** `~> 0.2.1` now makes `robot_lab` + `ruby_llm-providers-lms ~> 0.3` unresolvable; 0.3.0 is additive. Loosen to `">= 0.2.1", "< 1"`, or drop with F-71?
 - **`Network#parallel` design.** Inside `parallel`, robots can't be `task`s, so they skip `Network#task` (no context/tools/memory, not in `@robots`/`to_h`/the ractor scheduler). Make the block route `task` through `Network#task`, or deprecate `parallel` in favour of `task`s sharing `depends_on:` as main's docs already suggest? #50 only fixes the YARD example.
 - **robot_lab-rails template bug.** The generator's `thread_model.rb.tt` has the same `last_result` ordering bug as #49; fix it in robot_lab-rails on its own visit, and consider having `examples/18_rails` generated from the templates so fixes land in both.
+
+## sqa (2026-11-12 08:12)
+
+- **Review queue.** #53 (test CI, green), #54, #58 have now waited three visits; sqa builds nothing new until they move. Merging #53 first gives #54/#58 CI. Ready next PRs once it moves: #65 (Yahoo `Stock.new` crash), #66, #67, #59, #55, #56.
+- **Config file coercion (F-58).** Values from `Config#from_file` skip the type coercion env/constructor values get (JSON `"debug": "false"` is truthy; `log_level` a String from JSON/TOML). Coerce file values too?
+- **PortfolioOptimizer weight bounds (F-61).** `max_weight`/`min_weight` aren't honoured after renormalizing. Redistribute the excess, or reject infeasible samples? Raise on infeasible bounds?
+- **SeasonalAnalyzer threshold (F-62).** `detect_seasonality?` can't fire on daily data; use month-over-month returns or recalibrate the 2.0 threshold?
+- **Silent fallbacks for unknown options** in PatternMatcher (`detect_chart_pattern(:typo)` → `[]`, `find_similar(method: :dwt)` → euclidean). Raise `ArgumentError` listing valid values?
