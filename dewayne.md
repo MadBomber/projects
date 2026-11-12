@@ -103,8 +103,10 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Security: the first audit found S-1…S-6, held locally in `notes/security/smart_message-transport-lanet.md`. All are latent while F-1 stands, and the gem is unpublished, but any F-1 rewrite must cover S-1…S-4. S-6 is advisories in the dev lockfile, fixed by a relock. (added 2026-11-10)
 - [ ] Review [#7](https://github.com/MadBomber/smart_message-transport-lanet/pull/7) (README examples match the smart_message 0.0.17 API; README only). Also decide F-19: should a node receive its own published messages? `publish_to_nodes` never delivers locally. (added 2026-11-10)
 
-## htm (2026-11-10)
+## htm (2026-11-11)
 
-- [ ] Review [htm#25](https://github.com/MadBomber/htm/pull/25) (Fixes #21; branches the rake `unload` task on `result.positive?`, adds the repo's first rake-task test). Touches `lib/tasks/files.rake`, so not self-merged. 646 tests green on 4.0.9. After merge, the orphan branch `bomber/rake-unload-unknown-file` can be deleted. (added 2026-11-10)
-- [ ] Review [htm#24](https://github.com/MadBomber/htm/pull/24) (Fixes #18; `unload_file` now evicts the unloaded chunks from working memory, mirroring `forget`). Touches `lib/htm.rb`, so not self-merged. 645 tests green. (added 2026-11-10)
-- [ ] Review [htm#23](https://github.com/MadBomber/htm/pull/23) (adoption: hand-authored `docs/llms.txt`). Not self-merged because the docs-deploy workflow fires on `docs/**` pushes to `develop`, so merging triggers a site deploy. (added 2026-11-10)
+- [ ] Review [htm#32](https://github.com/MadBomber/htm/pull/32) (Fixes #19; adds `NodeTag.link`, which restores a soft-deleted link or creates one, fixes `NodeTag#restore!`, and swaps the six `find_or_create` call sites). Touches `lib/`, so not self-merged. 652 tests green. (added 2026-11-11)
+- [ ] Review [htm#31](https://github.com/MadBomber/htm/pull/31) (makes `HTM_PROPOSITION__ENABLED=false` actually disable extraction; config coercion plus test). Touches `lib/htm/config.rb`, so not self-merged. 648 tests green. (added 2026-11-11)
+- [ ] Review [htm#30](https://github.com/MadBomber/htm/pull/30) (`htm_mcp help` text: `HTM_CHUNKING__CHUNK_SIZE/CHUNK_OVERLAP`, the proposition default, the `fiber` backend and the connection timeout; plus a test). Touches `lib/htm/mcp/cli.rb`, so not self-merged. 650 tests green. (added 2026-11-11)
+- [ ] Optional: turn on "Automatically delete head branches" for htm. Merged bot branches pile up otherwise; this visit deleted ten. (added 2026-11-11)
+

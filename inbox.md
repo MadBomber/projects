@@ -522,3 +522,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
   logger's existing level unless `log_level` was set explicitly? Options: keep as-is (fix examples
   only), or apply `log_level` only when set. #17 was planned this visit but swapped out for the F-46
   drain regression; it's still a low-risk candidate next visit.
+
+## 2026-11-11 (htm)
+
+- htm F-34/F-35 (needs your call): a fresh `gem install htm` resolves ruby_llm 2.2.0, where `RubyLLM.models.refresh!` no longer exists, so the default Ollama path raises `NoMethodError` at `lib/htm/config.rb:388`. develop doesn't see it because the dev-only `ruby_llm-mcp` (used only by `examples/09_mcp_client.rb`) holds the lock at ruby_llm 1.16. Options: (a) support 2.x with a `refresh!`/`refresh` shim, a stub test, and the MCP example moved to ruby_llm 2.x's built-in MCP client. I recommend (a); there is a further reason held in the local security notes. (b) pin `ruby_llm ~> 1.9`. Once you choose, it's a small PR.
+- htm F-43: `HTM::MAX_KEY_LENGTH` (`lib/htm.rb:65`) is public and never referenced anywhere in your repos. Remove it, deprecate it, or keep it?
+- htm idea: nested env vars (`HTM_X__Y`) arrive as strings, and each accessor converts them by hand. #31 fixes only `proposition.enabled`; `HTM_CHUNKING__CHUNK_SIZE=7` still yields `"7"` when read directly. One generic pass that converts each value to the type of its default in `defaults.yml` would close this class of bug. It changes config loading, so it's your call.
+- htm idea: generate the env-var reference (in `htm_mcp help` and `docs/guides/configuration.md`) from `defaults.yml`, or test both against it. The two hand-kept copies had drifted (#30).
+- htm: on Ruby 4.1.0-preview1, `bundle exec rake test` runs 0 tests (`already activated json 3.1.0, Gemfile requires json 2.21.2`), because rake's `-rtest_helper` loads before bundler/setup. Builders worked around it by requiring the test files from one script. Worth fixing before 4.1 ships.

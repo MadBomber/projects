@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-11 21:20 htm
+
+- `develop` already existed (b7eb5ef); nothing was created. The queue was empty: Dewayne merged #23, #24 and #25 on 2026-11-10. The tender found no open PRs and no comments.
+- New PRs. All three target `develop`, are independent, and change `lib/`, so none was self-merged:
+  - [#32](https://github.com/MadBomber/htm/pull/32) Fixes #19, re-link soft-deleted tag links. Source: brain/issue. 652 green, review clean.
+  - [#31](https://github.com/MadBomber/htm/pull/31) `HTM_PROPOSITION__ENABLED=false` was ignored. Source: judgment (improver). 648 green, review clean.
+  - [#30](https://github.com/MadBomber/htm/pull/30) `htm_mcp help` listed wrong env vars and defaults. Source: judgment (improver). 650 green, review clean.
+- Audit: dependencies (second run). Findings F-34–F-43. S-1 re-confirmed locally.
+- Merged: none (none low risk, none approved). Tended: none open. Deleted ten merged or superseded bot branches.
+- Issues answered: none (all open issues are bomberbot's or need Dewayne's design call). Issues filed: #28 (restore! on Tag/RobotNode) and #29 (Ruby floor). #27 (lockfile) was filed in error and closed the same visit: the lockfile is gitignored.
+
 ## 2026-11-11 21:30 typed_bus
 
 - `develop` existed (0fe5860); nothing created. Dewayne merged #7/#8/#9 into `develop` on 2026-11-10, so the review queue was empty.
