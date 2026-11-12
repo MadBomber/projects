@@ -879,7 +879,7 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **SeasonalAnalyzer threshold (F-62).** `detect_seasonality?` can't fire on daily data; use month-over-month returns or recalibrate the 2.0 threshold?
 - **Silent fallbacks for unknown options** in PatternMatcher (`detect_chart_pattern(:typo)` → `[]`, `find_similar(method: :dwt)` → euclidean). Raise `ArgumentError` listing valid values?
 
-## smart_message-transport-named_pipes (2026-11-12 08:35 visit 6, BomberBot)
+## smart_message-transport-named_pipes (2026-11-12 08:22 visit 6, BomberBot)
 
 - **Review queue.** #20, #21 (stacked on #20), #22, #27 are all rebased, green and MERGEABLE; nothing new is built until they move. Ready next once they do: #24 (cleanup:false readers), #28 (ENV at require), #23 (raising `receive`), #25+#30 (CI perms + Ruby 4.0).
 - **Pub/sub or work queue? (F-40).** One FIFO per message class means several subscribers to one class *share* messages (20 publishes split 13/7) instead of each getting all of them, though the README calls the gem pub/sub. Fan out (a FIFO per subscriber, publisher writes to each) or document it as a work queue? This also decides who owns cleanup of a shared FIFO (#29).

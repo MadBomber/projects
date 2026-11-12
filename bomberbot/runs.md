@@ -2,7 +2,7 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
-## 2026-11-12 08:35 smart_message-transport-named_pipes
+## 2026-11-12 08:22 smart_message-transport-named_pipes
 
 - **skipped: review queue full.** 4 bomberbot PRs open after tending (#20, #21, #22, #27), none approved; no new PRs, no merges.
 - Tended: rebased [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) (36fe37d), [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) (ea8bc56, still stacked on #20; first body line now says merge #20 first, then retarget) and [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22) (ae5ac38) onto `develop` 52f8e45; [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27) already current. All MERGEABLE, CI green 3.2–3.4, suites 0F.
