@@ -11,7 +11,7 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-12 04:40 (fourth visit): Dewayne merged #17, #21 and #22 (rebase merges); opened [#24](https://github.com/MadBomber/simple_flow/pull/24) (Fixes #18), [#25](https://github.com/MadBomber/simple_flow/pull/25) (Fixes #20) and [#26](https://github.com/MadBomber/simple_flow/pull/26) (Fixes #19); filed #27-#29; first dependencies audit._ Suite green on Ruby 4.0.9 (203 runs). develop has unreleased user-visible fixes (Ruby 4 load, `call_parallel` skips, Logging `logger:`). Docs deploy on `docs/**` pushes to develop as well as main, so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-12 07:24 (fifth visit): review queue full (#24-#26 open, green, unreviewed), so no new PRs; full dead-code audit; filed #30 (async backend loses step exceptions), #31 (cycles skipped in `call_parallel`), #32 (unused requires and arguments)._ Suite green on Ruby 4.0.9 (203 runs). develop has unreleased user-visible fixes (Ruby 4 load, `call_parallel` skips, Logging `logger:`). Docs deploy on `docs/**` pushes to develop as well as main, so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
@@ -28,7 +28,9 @@ Well-defined items a single small PR could close.
 - [#27](https://github.com/MadBomber/simple_flow/issues/27) add Ruby 4.0 to the Tests CI matrix (F-33).
 - [#28](https://github.com/MadBomber/simple_flow/issues/28) dev-dependency refresh with simplecov `skip` (F-34, F-36).
 - [#29](https://github.com/MadBomber/simple_flow/issues/29) `benchmarks/parallel_vs_sequential.rb` crashes on Ruby 4.0 (F-39).
-- Removal: unused `require 'delegate'` in `lib/simple_flow.rb` and redundant `require_relative 'dependency_graph'` in `pipeline.rb` (F-30/F-11 halves, verified green).
+- [#32](https://github.com/MadBomber/simple_flow/issues/32) removal: unused `require 'delegate'`, redundant `require_relative 'dependency_graph'`, unused argument/variables (F-30/F-11 halves, F-42..F-44, verified green).
+- [#30](https://github.com/MadBomber/simple_flow/issues/30) parallel step exceptions lost under the async backend; one-word `Sync` fix verified (F-60/F-61). Top pick next visit.
+- [#31](https://github.com/MadBomber/simple_flow/issues/31) `call_parallel` silently skips `depends_on` cycles (F-62).
 - F-25: add `docs/llms.txt`. F-24: README nits (hard-coded test counts, old inspect format).
 
 ## Open bomberbot PRs

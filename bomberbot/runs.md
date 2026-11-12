@@ -2,6 +2,14 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 07:24 simple_flow
+
+- `develop` already existed (5132c88); not created.
+- **skipped: review queue full.** The tender found #24, #25 and #26 still open, unapproved, green on 3.3/3.4, MERGEABLE, current with develop and not conflicting with each other. Nothing to merge, rebase or answer. **Merged (low risk):** none (#24 is lib; #25/#26 are `docs/`, which deploys from develop). **Merged after approval:** none.
+- **Audit:** dead code (full scan, lib plus examples/benchmarks/tests and five dependent repos) at develop 5132c88: F-42..F-46. Improver F-60..F-65 (top: async backend loses step exceptions). No security findings.
+- **Issues answered:** [#29](https://github.com/MadBomber/simple_flow/issues/29#issuecomment-6824951588) (main session: `require "benchmark"` fails under Bundler; `Process.clock_gettime` works). The responder found no comments from anyone but BomberBot on the open issues.
+- **Issues filed:** [#30](https://github.com/MadBomber/simple_flow/issues/30) parallel step exceptions lost under the async backend (F-60/F-61), [#31](https://github.com/MadBomber/simple_flow/issues/31) `call_parallel` skips `depends_on` cycles (F-62), [#32](https://github.com/MadBomber/simple_flow/issues/32) unused requires, argument and variables (F-30/F-11/F-42..F-44).
+
 ## 2026-11-12 07:20 smart_message
 
 Seventh visit (last 06:02). `develop` existed and is unmoved at 07af3d4; not created this visit.

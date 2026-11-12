@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-09 | First run (first visit, which was cut off before it wrote brain), at develop 915656e. The released gem has zero runtime dependencies, no shell-outs, no deserialization, no regexps in lib. S-1, S-2 held locally. |
-| dead code | 2026-11-09 (lib only, brief) | develop e8196cc. Nothing dead in lib. `DependencyGraph#subgraph`/`#merge`/`#reverse_order` are called only from tests but are public API (F-12). Generated `pipeline_graph.*` files tracked at the repo root (F-8). |
+| dead code | 2026-11-12 | Full scan (lib, examples, benchmarks, bin, test; dependents fact_db, htm, robot_lab, robot_lab-cyborg, robot_lab-ractor) at develop 5132c88, Ruby 4.0.9, debride 1.15.2 + RuboCop unused cops + SimpleCov (497/502). Every debride lib candidate is public API or a TSort callback. New: F-42..F-44 (one verified removal, issue #32), F-45/F-46 need a decision; stale remote branches noted. Earlier: 2026-11-09 lib-only brief pass at e8196cc. |
 | dependencies | 2026-11-12 | First run, at develop 5132c88, Ruby 4.0.9 (4.1.0-preview1 without Bundler: 203/203 pass). Runtime deps logger/tsort correct, guarded by gemspec_test. CI lacks 4.0 (F-33, issue #27). Full dev refresh green (F-34, F-36, issue #28). aigcm unused (F-35). Dependabot off (F-37). Actions majors behind (F-38). io-event pin can't restore 3.2 (F-17 update). S-3 held locally. Earlier note: | See F-19 (logger/tsort runtime deps) from the 2026-11-10 adoption audit. Triage noted: Dependabot alerts disabled; dev-group minor bumps available (async 2.46, rubocop 1.92); minitest 6 and simplecov 1.x are majors. |
 | adoption | 2026-11-10 | First run, at develop f58e221, Ruby 4.0.9. 13/13 examples exit 0; README snippets run with stubs; `mkdocs build --strict` passes (INFO: dagwood-concepts.md not in nav; Material for MkDocs EOL May 2027); CHANGELOG complete for v0.1.0-v0.4.0; no llms.txt. Found F-19..F-27; F-19 (gem won't load on Ruby 4.0 under Bundler) also covers the Ruby 4 part of a dependencies audit. |
 | quality | 2026-11-09 | First run, at develop e8196cc, Ruby 4.0.9. Suite 193 runs, 0 failures, 2 skips. Found F-1..F-7, mostly `call_parallel` silently skipping steps. |
 
-Dead-code scan last covered commit: e8196cc (develop, 2026-11-09)
+Dead-code scan last covered commit: 5132c88 (develop, 2026-11-12)
 
 ## Findings
 
@@ -72,7 +72,26 @@ Dead-code scan last covered commit: e8196cc (develop, 2026-11-09)
 - F-37: Dependabot is off: no `.github/dependabot.yml` and vulnerability alerts disabled. Status: needs Dewayne's decision (repo setting; possible PR noise).
 - F-38: Workflows pin `actions/checkout@v4` (latest v7) and `actions/setup-python@v5` (deploy workflow). Status: open (bump `test.yml` alone; leave the deploy workflow to Dewayne).
 - F-17 update: the `test.yml` comment's alternative (pin `io-event < 1.15`) wouldn't restore 3.2: locked async 2.39 and rubocop's `parallel` also need >= 3.3. Strengthens the floor bump. Status: still open, Dewayne's call.
-- F-39 (improver): `benchmarks/parallel_vs_sequential.rb:82` crashes on Ruby 4.0 under Bundler: `undefined method 'realtime' for module Benchmark` (benchmark-ips doesn't load stdlib `benchmark`, a bundled gem on 4.0). Status: issue #29.
+- F-39 (improver): `benchmarks/parallel_vs_sequential.rb:82` crashes on Ruby 4.0 under Bundler: `undefined method 'realtime' for module Benchmark` (benchmark-ips doesn't load stdlib `benchmark`, a bundled gem on 4.0). Status: issue #29. 2026-11-12: `require "benchmark"` fails under Bundler (not in the lockfile); the working fix is `Process.clock_gettime` deltas, posted on #29.
 - F-40 (improver): `pipeline.rb:381-382` (error concat in the `call_parallel` dependency-graph path) had 0 coverage. Status: PR'd [#24](https://github.com/MadBomber/simple_flow/pull/24) (its new tests cover the rewritten merge).
 - F-41 (improver): `docs/api/pipeline.md:171` typo `:concurrency: :async`; named parallel groups still undocumented (F-23). Status: open.
-- Dead-code note: F-30's unused `require 'delegate'` (`lib/simple_flow.rb:12`) and the F-11 redundant `require_relative 'dependency_graph'` (now `pipeline.rb:329`) are still present at 5132c88; the improver verified deleting both keeps the suite green. Status: open (small removal PR candidate next visit).
+- Dead-code note: F-30's unused `require 'delegate'` (`lib/simple_flow.rb:12`) and the F-11 redundant `require_relative 'dependency_graph'` (now `pipeline.rb:329`) are still present at 5132c88; the improver verified deleting both keeps the suite green. Status: issue #32 (with F-42..F-44).
+
+### 2026-11-12 07:24 (fifth visit; full dead-code audit, develop 5132c88; improver F-60..F-64)
+
+- F-42: `build_active_dependencies` takes an `executed_steps` argument it never uses (`pipeline.rb:417`, only caller `:338`; RuboCop `Lint/UnusedMethodArgument`). Status: issue #32.
+- F-43: `find_next_executable_group` assigns `ready_steps` only to return it (`pipeline.rb:446-453`, `Style/RedundantAssignment`). Status: issue #32.
+- F-44: `benchmarks/pipeline_overhead.rb:13-14` defines `simple_op` and never uses it. Status: issue #32.
+- Removal bundle (F-30 `delegate` half, F-11 require half, F-42..F-44) verified in a scratch clone: 3 files, +3/-10, suite green alone (203 runs) and merged with #24 (209 runs), RuboCop 175 → 172 offenses, none new. Touches lib, not low risk.
+- F-45: `Pipeline#apply_middleware` is public though documented "Internal"; `ParallelBlock#step` calls it via `send` (`pipeline.rb:496,503`) and writes `@named_steps` via `instance_variable_get` (`:498`) despite a public `named_steps` reader. No caller in tests, examples, README or the five dependents. Status: needs Dewayne's decision (make private, or keep public and drop the `send`).
+- F-46: public readers with no caller anywhere: `Pipeline#middlewares`, `Pipeline#named_steps`, `DependencyGraphVisualizer#graph`. Public API, so not dead. Status: needs Dewayne's decision; recommend keep (as F-12).
+- F-30 update: the `else step_def.call(res)` branch (`pipeline.rb:192-193`) still has 0 coverage; once gone, `call` and `execute_with_explicit_parallelism` are the same reduce.
+- F-12 update: `subgraph`/`merge`/`reverse_order` are still test-only; none of the five dependents call them. F-6 update: `ParallelBlock#step`'s `depends_on:` is still accepted and ignored (`pipeline.rb:491`).
+- Housekeeping: merged bot branches still on the remote (`bomberbot/declare-logger-tsort`, `bomberbot/call-parallel-skips`, `bomber/run-version-test`, five 0-ahead `bomber/*`); `delete_branch_on_merge` is off. Old `claude/*` branches (one 8 ahead) and `optional_step` are Dewayne's call. Open PRs #24-#26 use `madbot/` branches (allowed prefix).
+- F-60 (improver): `ParallelExecutor.execute_with_async` (`parallel_executor.rb:46`) uses top-level `Async do`, which neither waits nor re-raises; a raising parallel step surfaces as `NoMethodError: undefined method 'value' for nil` instead of its own error (reproduced by the main session). One-word fix `Sync do`, trial green (203 runs) and still parallel. Status: issue #30.
+- F-61 (improver): same root cause; parallel execution inside an existing reactor (Falcon, async-job, `Sync {}`) crashes with the same `NoMethodError` once steps do I/O. Status: issue #30.
+- F-62 (improver): `call_parallel` silently skips steps in a `depends_on` cycle or a self-dependency (reproduced: context `{c: 1}`, `:a`/`:b` never ran); `validate_dependencies!` only checks unknown names. Fix: rescue `TSort::Cyclic` into `ArgumentError`, as #21 did for unknown deps. Status: issue #31.
+- F-63 (improver): `to_dot` interpolates node IDs unquoted, so names like `:"fetch-user"` or `:save?` produce DOT that Graphviz rejects. Small `dot_id` quoting helper keeps ordinary output byte-identical. Status: open.
+- F-64 (improver): an empty `parallel {}` block raises `NoMethodError` at `pipeline.rb:325`. Status: needs Dewayne's decision (raise at declaration, or no-op).
+- F-65 (improver): failing parallel steps are noisy on stderr (async "unhandled exception" warning; threads' `report_on_exception`). Status: inbox (changes visible output).
+- Triage: F-16 absolute paths confirmed in 7 docs files besides `testing.md` (#25 fixes that one); F-18 `StepTracker` doc example still calls `with_continue`/`continue`, which don't exist. Both still open, good candidates once the queue drains.
