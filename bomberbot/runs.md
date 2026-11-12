@@ -8,7 +8,7 @@ Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Ent
 - New PRs (all → `develop`, none stacked):
   - [#21](https://github.com/MadBomber/smart_message/pull/21) test(dispatcher): assert routed messages reach both processors. Fixes #14. Source: **issue/brain** (F-33/F-34, F-61). Fails under a no-op `route` probe where develop's test passes; suite 443/1760/0F/0E/0S; CI green. Review hit the 3-round cap, no open defects → not low risk, awaiting Dewayne.
   - [#22](https://github.com/MadBomber/smart_message/pull/22) docs: match DLQ replay notes to the code. Source: **judgment** (improver, F-62). 2 lines; repro scripts; `mkdocs build --strict` clean; CI green. Review hit the cap with nothing open on the diff → not self-merged (cap rule).
-  - [#23](https://github.com/MadBomber/smart_message/pull/23) fix(dlq): replay a dead letter only as the class it was stored for. Source: **security** (S-8, neutral title). Fails on develop (2F+1E), passes on branch; suite 447/1776/0F; examples 21/21; CI green. Review cap hit, no defects open. `lib/` → awaiting Dewayne.
+  - [#23](https://github.com/MadBomber/smart_message/pull/23) fix(dlq): replay a dead letter only as the class it was stored for. Source: **audit**. Fails on develop (2F+1E), passes on branch; suite 447/1776/0F; examples 21/21; CI green. Review cap hit, no defects open. `lib/` → awaiting Dewayne.
 - Merged (low risk): none (both docs/test PRs hit the review cap). Merged after approval: none this visit (#9–#11 were merged by Dewayne before it).
 - Tended: nothing open before this visit.
 - Audit: **security** (2nd run, at 07af3d4): S-8–S-12 held locally; F-60.
