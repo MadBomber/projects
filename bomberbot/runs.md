@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 02:08 aia
+
+- `develop` already existed (2c1d77b); it is now 22120fa.
+- **Tended:** [#183](https://github.com/MadBomber/aia/pull/183), rebased onto 2c1d77b, suite 2003/0, still awaiting Dewayne. No approvals, no comments, and nothing closed unmerged.
+- **New PRs:**
+  - [#189](https://github.com/MadBomber/aia/pull/189) docs: README `--log-level`. Source: brain backlog/issue #186. **Merged (low risk)** → 22120fa. Review clean in 2 rounds (round 1 fixed a wrong `mcp` logger bullet).
+  - [#188](https://github.com/MadBomber/aia/pull/188) refactor: remove write-only `TurnState#active_mcp_servers`. Source: brain backlog/issue #187 (dead code). **PR open**; it touches lib, so it is not low risk. Review clean in 1 round, suite 2001/0. No installed gem references it.
+  - [#193](https://github.com/MadBomber/aia/pull/193) refactor: shared `Utility.model_id_of`. Source: brain backlog/issue #182. **Stacks on #188.** **PR open**. The new tests failed before the change (4 errors) and pass after; suite 2002/0; review clean in 1 round.
+- **Audit:** security (develop 2c1d77b). Nothing new, and S-2 re-verified by probe. Incidental finds: F-45/F-46, develop lacks main's 6 commits including the released `--paint` fix (inbox).
+- **Issues answered:** #180 and #179 (responder: fixed on develop by #184/#185).
+- **Issues filed:** [#190](https://github.com/MadBomber/aia/issues/190) (F-47, README dead example paths), [#191](https://github.com/MadBomber/aia/issues/191) (F-33, tool files load twice), [#192](https://github.com/MadBomber/aia/issues/192) (F-48, utility_test method-redefined warnings).
+- **Notes:** builders 1-2 ran in parallel with phase 1 to fit the time budget. The `src/` clone checks out main, so the agents read `origin/develop` via exports. aia has no PR CI, so PRs show 0 checks. The builder for #193 flagged that ruby_llm 2.2 `Message#model_id` may return a `Model` object instead of a string (unverified, not filed).
+
 ## 2026-11-12 02:20 htm
 
 - `develop` already existed (b7eb5ef, unchanged since the last visit); not created.

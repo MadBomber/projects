@@ -11,6 +11,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## aia
 
+- [ ] Merge [aia#188](https://github.com/MadBomber/aia/pull/188) before [aia#193](https://github.com/MadBomber/aia/pull/193), which is stacked on it; the tender retargets #193 to develop afterwards (a trivial CHANGELOG conflict is possible). (added 2026-11-12)
+- [ ] Decide how aia's `develop` gets main's 6 post-release commits, including the `--paint` fix (F-45/F-46; options in inbox.md). (added 2026-11-12)
 
 ## ragdoll
 

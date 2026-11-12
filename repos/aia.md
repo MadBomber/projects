@@ -10,25 +10,39 @@ AI Assistant CLI gem; depends on prompt_manager and shared_tools.
 
 ## Status
 
-_Updated 2026-11-12 (00:59 visit)._ Dewayne rebase-merged #172/#176/#177 before the visit, so the queue was empty. Opened three PRs from the Backlog issues: [#184](https://github.com/MadBomber/aia/pull/184) (README aliases, Fixes #180) and [#185](https://github.com/MadBomber/aia/pull/185) (VERSION warnings, Fixes #179) were **merged low risk by madbot**, so develop is now 2c1d77b. [#183](https://github.com/MadBomber/aia/pull/183) (dedupe `model_opts`, Fixes #181) is open for Dewayne. Ran the dead-code audit (F-43 → issue #187); the improver found that the README documents removed log flags (F-44 → issue #186). The responder posted "fixed on develop" notes on #164/#165/#169/#170/#174/#175. Suite 2003/0. The repo has no test CI, so PRs show zero checks.
+_Updated 2026-11-12 (02:08 visit)._ Opened #188 (removes `TurnState#active_mcp_servers`, Fixes #187), #189 (README `--log-level`, Fixes #186) and #193 (shared `Utility.model_id_of`, Fixes #182, stacked on #188). **#189 merged low risk by madbot**, so develop is now 22120fa. The security audit found nothing new, but it showed that **develop is 6 commits behind main and lacks the released `--paint` fix** (F-45/F-46, in the inbox for Dewayne). Filed #190-#192. Suite 2001/0 on #188 and 2002/0 on #193.
 
-_Prior (2026-11-10 09:11 visit)._ Skipped new work because the review queue was full. Tended #172/#176/#177 and filed #180-#182.
+_Prior (2026-11-12 00:59 visit)._ Dewayne rebase-merged #172/#176/#177 before the visit, so the queue was empty. Opened three PRs from the Backlog issues: [#184](https://github.com/MadBomber/aia/pull/184) (README aliases, Fixes #180) and [#185](https://github.com/MadBomber/aia/pull/185) (VERSION warnings, Fixes #179) were **merged low risk by madbot**, so develop is now 2c1d77b. [#183](https://github.com/MadBomber/aia/pull/183) (dedupe `model_opts`, Fixes #181) is open for Dewayne. Ran the dead-code audit (F-43 → issue #187); the improver found that the README documents removed log flags (F-44 → issue #186). The responder posted "fixed on develop" notes on #164/#165/#169/#170/#174/#175. Suite 2003/0. The repo has no test CI, so PRs show zero checks.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- Open issues a PR can resolve: [#182](https://github.com/MadBomber/aia/issues/182) (share `extract_model_id`, F-30; touches mention_router/chat_loop/session_tracker), [#186](https://github.com/MadBomber/aia/issues/186) (README removed `--info/--warn/--error/--fatal` → `--log-level`, F-44, docs-only, low-risk candidate), [#187](https://github.com/MadBomber/aia/issues/187) (remove write-only `TurnState#active_mcp_servers`, F-43, removal). #181 → **PR open** [#183](https://github.com/MadBomber/aia/pull/183).
-- Quality DRY refactors still un-filed: F-28 (config `reset_section`/`merge_into_section` identical), F-31 (output-append idiom), F-33 (tool-path require loop, `tool_loader.rb:62-72` vs `validator.rb:383-395`), F-36 (network_builder setup), F-32 has a taste caveat. Re-verified on c04ce8e by triage. Do them one at a time, because sibling CHANGELOG `[Unreleased]` lines conflict on rebase.
-- `PromptHandler::SHORTHAND_KEYS` (part of F-13) is verified test-only. Removing it is a public-constant change, so it goes in the F-13 batch decision (inbox).
+- Open issues a PR can resolve:
+  - [#190](https://github.com/MadBomber/aia/issues/190): README tool/MCP examples point at deleted files (F-47, docs-only, low-risk candidate).
+  - [#192](https://github.com/MadBomber/aia/issues/192): `utility_test` prints `method redefined` warnings (F-48, test-only, low-risk candidate). #193 also edits `test/aia/utility_test.rb`, so build it after #193 merges or stack it on #193.
+  - [#191](https://github.com/MadBomber/aia/issues/191): `--tools` files load twice and their warnings print twice (F-33, lib).
+- Already in PRs: #187 → **PR open** [#188](https://github.com/MadBomber/aia/pull/188); #182 → **PR open** [#193](https://github.com/MadBomber/aia/pull/193) (stacked on #188); #181 → **PR open** [#183](https://github.com/MadBomber/aia/pull/183).
+- Quality DRY refactors still un-filed, all re-verified on 2c1d77b by triage:
+  - F-28: config `reset_section`/`merge_into_section` (`config.rb:363-383`).
+  - F-31: output-append idiom repeated in 5 places. `content_extractor` writes `"\nAI:"` but `pipeline_orchestrator` writes `"AI:"`, so keep the strings as they are.
+  - F-36: network_builder setup.
+  - F-32 has a taste caveat.
+  Do them one at a time, because sibling CHANGELOG `[Unreleased]` lines conflict on rebase.
+- **Blocked on Dewayne:** F-45/F-46, the main→develop sync (inbox). Hold any `pipeline_orchestrator.rb` PR until it is decided.
+- `PromptHandler::SHORTHAND_KEYS` (part of F-13) is verified test-only. Removing it changes a public constant, so it belongs in the F-13 batch decision (inbox).
 - F-5: redundant per-file `require 'ostruct'`/`require_relative` lines in test files. Low value.
+- Builder notes: aia has no `exe/`; the executable is `bin/aia`. `.rubocop.yml` inherits `../.rubocop-base.yml`, which is not in the repo; builders copied one to `~/sandbox/bomberbot/aia/build/`. The `src/` clone checks out `main`, so always base work on `origin/develop` with absolute worktree paths.
 
 ## Open bomberbot PRs
 
-- [#183](https://github.com/MadBomber/aia/pull/183) refactor(spawn): reuse `Crew.model_opts` in SpawnHandler (Fixes #181/F-29). **PR open**, awaiting Dewayne. It is a lib change, so not low risk. Review clean in 1 round, suite 2003/0.
+- [#183](https://github.com/MadBomber/aia/pull/183) refactor(spawn): reuse `Crew.model_opts` in SpawnHandler (Fixes #181/F-29). **PR open**, awaiting Dewayne. The tender rebased it onto 2c1d77b (suite 2003/0).
+- [#188](https://github.com/MadBomber/aia/pull/188) refactor: remove write-only `TurnState#active_mcp_servers` (Fixes #187/F-43). **PR open**. It touches lib, so it is not low risk. Review clean in 1 round, suite 2001/0.
+- [#193](https://github.com/MadBomber/aia/pull/193) refactor: share one model-id lookup (`AIA::Utility.model_id_of`) (Fixes #182/F-30). **PR open**, **stacks on #188**. Review clean in 1 round, suite 2002/0. Retarget to develop once #188 merges.
 
 ## Merged bomberbot PRs
 
+- [#189](https://github.com/MadBomber/aia/pull/189) docs: README `--log-level` replaces removed log flags (merged low risk by madbot 2026-11-12 → 22120fa, resolves #186/F-44)
 - [#185](https://github.com/MadBomber/aia/pull/185) test: swap VERSION constants without redefinition warnings (merged low risk by madbot 2026-11-12 → 2c1d77b, resolves #179/F-40)
 - [#184](https://github.com/MadBomber/aia/pull/184) docs: README aliases for /paste and /available_models (merged low risk by madbot 2026-11-12 → 1b1f227, resolves #180/F-41)
 - [#176](https://github.com/MadBomber/aia/pull/176) fix: case-insensitive `state_setting?` (rebase-merged by Dewayne 2026-11-10, resolves #174)
