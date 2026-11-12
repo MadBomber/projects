@@ -703,3 +703,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-32 CHANGELOG 0.0.1:** the `[0.0.1] - 2025-09-03` entry is the bundler scaffold placeholder and predates the first commit. Fold it into `[Unreleased]` or rewrite it at release time? Decide with F-31.
 - **Adoption, after F-1:** a two-node loopback `examples/` demo, then `llms.txt` (F-34). Documenting today's API would describe code that can't run.
 - **Defaults read at require time:** `DEFAULT_CONFIG` reads ENV and the hostname at load, so dotenv-style late env is ignored. Compute in `default_options` while keeping the constant (whoever fixes #10 could do it).
+
+## 2026-11-12 04:18 robot_lab (BomberBot)
+
+- **ruby_llm 2.2.0 breaks released 0.6.0 ([robot_lab#43](https://github.com/MadBomber/robot_lab/issues/43)).** Options: (a) cap `ruby_llm ">= 2.1.1", "< 2.2"` and release 0.6.1 from `main` (1 line, stops new installs breaking now); (b) move `ToolCallGating` to `pending_questions`/`approval?`/`decline` and decide whether MCP tool errors should still reach hooks as `tool_error` now that ruby_llm catches them; (c) (a) now, (b) folded into the sync. Recommend (c). Develop's gemspec still pins `~> 1.12`, so the sync must pick the ruby_llm range deliberately.
+- **What should `reset_token_totals` mean for a budgeted robot?** README sells it as "start a fresh cost batch", but the ledger keeps the old consumption, so a budgeted robot is still refused after a reset. Leave it (the #44 fix makes it consistent), reset the ledger too, or add `reset_budget!`. Pairs with F-44.
+- **`Budget::Ledger#consumed` returns its live internal hash**: callers can mutate it and reads bypass the mutex. A frozen snapshot is safer; public API, low urgency.
+- **F-52 `BusPoller` full-queue hang**: what should a full delivery queue do: raise `BusError`, log and drop, or block outside the mutex?
+- **F-54 follow-up**: `Robot#call` rescues `Exception`, so Ctrl-C becomes an error result and the network keeps going. Narrow it to let `Interrupt`/`SignalException` through?
+- **F-65 `RobotLab.build(name: nil)`** gives a robot named `""` though YARD says "auto-generated". Fix the doc, generate a name from `names.rb`, or raise?
+

@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Sixth visit (2026-11-12 04:18)._ Skipped building: review queue full (#38, #39, #40 still open, unreviewed). Ran a full-lib **quality** audit (F-52–F-58). Triage found released 0.6.0 breaks on ruby_llm 2.2.0 (tool approvals, MCP input): filed #43, a fix must ship from `main` (Dewayne's call). Filed #44 (token_budget unflagged after `reset_token_totals`, sync-safe) and #45 (`Robot#call` rescue `TypeError`). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
+
 _Fifth visit (2026-11-12 03:16)._ Skipped building: review queue full (#38, #39, #40 open, green locally, unreviewed). Ran a full **dead-code** audit at develop 9d407dd incl. 16 dependent repos (F-46, F-47); filed #41 (test_helper `rescue LoadError` modifier, F-48) and #42 (dead `compact_if_over_context_window`, F-46). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
 
 _Fourth visit (2026-11-12)._ Dewayne merged #26, #27 and #34 without comment, so the queue was empty. Ran the first **adoption** audit (F-24–F-30; all fixes wait for the sync except the simple_flow `tsort` root cause). Opened three independent `lib/` fixes, none low risk: **PR #40** (budget reservation leak on a failed call, F-31), **PR #39** (bad SKILL.md front matter crashes the catalog, F-40), **PR #38** (`ToolManifest#count` ignores its block, F-42). Filed #35, #36, #37. Visit 3's uncommitted brain write (F-22/F-23, #34) was folded into this record. `develop` 9d407dd still 31 behind `main`.
@@ -40,7 +42,10 @@ else in this repo.
 - F-43 `Narrator.enable!` double registration: issue [#37](https://github.com/MadBomber/robot_lab/issues/37) (narrator.rb sync-safe; test in a new file). Reproduced 2026-11-12 03:16 (`registrations=2`); first pick once the queue has room.
 - F-48 test_helper `rescue LoadError` modifier never fires: issue [#41](https://github.com/MadBomber/robot_lab/issues/41), after the sync.
 - F-46 dead `Robot#compact_if_over_context_window`: issue [#42](https://github.com/MadBomber/robot_lab/issues/42), after the sync.
-- F-49 `Convergence` header says TF-IDF but uses TF only (comment fix, sync-safe; low-risk candidate).
+- F-49 `Convergence` header says TF-IDF but uses TF only (comment fix, sync-safe; low-risk candidate). Bundle with F-63 (`error.rb:62` stale `ToolLoopError` message example).
+- F-60 `token_budget` unflagged after `reset_token_totals`: issue [#44](https://github.com/MadBomber/robot_lab/issues/44). Sync-safe (`robot/budget.rb`, new test file); fix proven in scratch (1302 green). Touches the same file as PR #40, different hunks: build after #40 merges or stack on it.
+- F-59 released 0.6.0 breaks on ruby_llm 2.2.0: issue [#43](https://github.com/MadBomber/robot_lab/issues/43). Fix ships from `main`; needs Dewayne's choice (cap `< 2.2` + 0.6.1, or adapt `ToolCallGating`).
+- F-54 `Robot#call` rescue `TypeError` on bad context: issue [#45](https://github.com/MadBomber/robot_lab/issues/45), after the sync.
 
 ## Open bomberbot PRs
 
