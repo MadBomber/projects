@@ -17,12 +17,12 @@ _Updated 2026-11-10 04:55 (fifth visit): tend-and-record only again, because the
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo, once `develop` exists.
 
-- [#1](https://github.com/MadBomber/typed_bus/issues/1) declare `logger` as a runtime dependency (F-9). **PR open: [#7](https://github.com/MadBomber/typed_bus/pull/7).**
-- [#2](https://github.com/MadBomber/typed_bus/issues/2) throttle must not sleep(Infinity) at full capacity (F-1). **PR open: [#9](https://github.com/MadBomber/typed_bus/pull/9).**
+- [#1](https://github.com/MadBomber/typed_bus/issues/1) declare `logger` as a runtime dependency (F-9). **Merged into develop ([#7](https://github.com/MadBomber/typed_bus/pull/7)); issue closes on release.**
+- [#2](https://github.com/MadBomber/typed_bus/issues/2) throttle must not sleep(Infinity) at full capacity (F-1). **Merged into develop ([#9](https://github.com/MadBomber/typed_bus/pull/9)); issue closes on release.**
 - [#3](https://github.com/MadBomber/typed_bus/issues/3) allowlist `spec.files` (F-6).
 - [#4](https://github.com/MadBomber/typed_bus/issues/4) unsubscribe-during-publish leaks a pending tracker (F-3).
 - [#5](https://github.com/MadBomber/typed_bus/issues/5) validate `max_pending` (F-2).
-- [#6](https://github.com/MadBomber/typed_bus/issues/6) `DeadLetterQueue#drain` must keep unprocessed entries when the block raises (F-18). **PR open: [#8](https://github.com/MadBomber/typed_bus/pull/8).**
+- [#6](https://github.com/MadBomber/typed_bus/issues/6) `DeadLetterQueue#drain` must keep unprocessed entries when the block raises (F-18). **Merged into develop ([#8](https://github.com/MadBomber/typed_bus/pull/8)); issue closes on release. Regression F-46 follow-up below.**
 - [#11](https://github.com/MadBomber/typed_bus/issues/11) add a LICENSE file to match the MIT gemspec (F-23).
 - [#12](https://github.com/MadBomber/typed_bus/issues/12) enrich gemspec metadata, drop the duplicate `source_code_uri` (F-24).
 - [#10](https://github.com/MadBomber/typed_bus/issues/10) remove stray `examples/temp.md` (F-27).
@@ -31,7 +31,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [#15](https://github.com/MadBomber/typed_bus/issues/15) add a `bundler` `.github/dependabot.yml` (F-28).
 - F-15: re-check `@closed` after backpressure/throttle waits in `publish` (after #2/#4).
 - [#18](https://github.com/MadBomber/typed_bus/issues/18) make the three assertion-free async tests able to fail (F-19); fold in the `async_typed_bus_test.rb` rename (F-35).
-- [#16](https://github.com/MadBomber/typed_bus/issues/16) `subscribe` without a block must raise (F-41).
+- [#16](https://github.com/MadBomber/typed_bus/issues/16) `subscribe` without a block must raise (F-41). **PR open: [#22](https://github.com/MadBomber/typed_bus/pull/22).**
 - [#17](https://github.com/MadBomber/typed_bus/issues/17) logging examples 11-14 must actually log at DEBUG (F-40). Examples only, so a low-risk candidate.
 - F-33/F-44: example-15 dead code and `.gitignore` gaps; fold into the F-10 examples PR.
 - F-10: dead `require "csv"` breaks example 15 on Ruby 3.4+.
@@ -40,10 +40,10 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#9](https://github.com/MadBomber/typed_bus/pull/9) `madbot/throttle-full-capacity` — fix throttled channel hang at full capacity. Fixes #2 (F-1). Base `develop`, clean review, suite 202/0F. Awaiting Dewayne (lib change).
-- [#8](https://github.com/MadBomber/typed_bus/pull/8) `madbot/dlq-drain-raise` — retain entries when drain block raises. Fixes #6 (F-18). Base `develop`, clean review, suite 202/0F. Awaiting Dewayne (lib change).
-- [#7](https://github.com/MadBomber/typed_bus/pull/7) `madbot/logger-runtime-dep` — declare `logger` runtime dependency. Fixes #1 (F-9). Base `develop`, clean review, suite 201/0F. Awaiting Dewayne (gemspec change).
+- [#22](https://github.com/MadBomber/typed_bus/pull/22) `bomberbot/subscribe-requires-block`: `Channel#subscribe` without a block raises `ArgumentError`. Fixes #16 (F-41). Base `develop`, review clean (1 round), suite 205/0F, 100% coverage. Awaiting Dewayne (lib change).
 
 ## Merged bomberbot PRs
 
-- (none)
+- [#7](https://github.com/MadBomber/typed_bus/pull/7) `madbot/logger-runtime-dep`: declare `logger` runtime dependency (F-9, #1). Merged by Dewayne into `develop` 2026-11-10 (merge commit 2a4a373).
+- [#8](https://github.com/MadBomber/typed_bus/pull/8) `madbot/dlq-drain-raise`: retain DLQ entries when the drain block raises (F-18, #6). Merged by Dewayne 2026-11-10 (7975b22). Introduced regression F-46.
+- [#9](https://github.com/MadBomber/typed_bus/pull/9) `madbot/throttle-full-capacity`: throttled channel hang at full capacity (F-1, #2). Merged by Dewayne 2026-11-10 (0fe5860).

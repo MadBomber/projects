@@ -507,3 +507,18 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
   `docs/reference/directives.md` is the complete, accurate list. One decision settles both F-25 and
   F-42: should the README tables enumerate every registered directive (then it's an obvious-yes docs
   PR), or stay a curated subset that points at the reference page (then close F-25/F-42 as by-design)?
+- **typed_bus CHANGELOG credit lines (F-48, 2026-11-11).** The three bomberbot fixes merged into
+  `develop` (#7/#8/#9) each end their `[Unreleased]` CHANGELOG line with "Found and fixed by
+  BomberBot." That is credit text in a committed file, which sits awkwardly with your "never take
+  credit in commits" rule (the prompt asks for BomberBot credit in PRs/issues/comments, not
+  CHANGELOG). Options: (1) keep it as-is; (2) strip it before release and have bomberbot stop adding it
+  to CHANGELOG lines in every repo. This visit's #16 PR follows the existing pattern until you decide.
+- **typed_bus `DeadLetterQueue#retry(channel)` (improver, 2026-11-11).** "Drain and reprocess" is the
+  main documented DLQ pattern, and it's easy to get wrong: our own #8 made it loop forever (fixed by
+  this visit's drain-snapshot PR). A built-in `retry(channel)` that republishes a drained batch and
+  returns the failures would make the pattern safe by construction. New public API, so your call.
+- **typed_bus `Configuration#logger=` overwrites the caller's level (#17 follow-up).** Issue #17's fix
+  is examples-only (set `log_level` after the logger). The deeper question: should `logger=` keep a
+  logger's existing level unless `log_level` was set explicitly? Options: keep as-is (fix examples
+  only), or apply `log_level` only when set. #17 was planned this visit but swapped out for the F-46
+  drain regression; it's still a low-risk candidate next visit.
