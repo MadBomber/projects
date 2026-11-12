@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 03:44 aia
+
+- `develop` already existed (22120fa, unchanged); not created.
+- **skipped: review queue full.** The tender rebased #183, #188 and #193 (each was 1 behind) onto 22120fa. All three are CLEAN/MERGEABLE, suites 2003/0, 2001/0 and 2002/0; none is approved. #193 is still stacked on #188.
+- **New PRs:** none. **Merged (low risk):** none. **Merged after approval:** none. **Tended:** #183, #188, #193 (rebased, commented).
+- **Audit:** adoption (develop 22120fa): F-49..F-53, plus S-3 held locally. Improver: F-54..F-57. Triage: **F-19 was never merged.** Its fix is stranded on `bomber/provider-bare-model-name` with no PR; brain is corrected.
+- **Issues answered:** none (nothing new from anyone since the last visit).
+- **Issues filed:** [#194](https://github.com/MadBomber/aia/issues/194) `--provider` ignored for bare slug names (F-19), [#195](https://github.com/MadBomber/aia/issues/195) `--fuzzy` can't start fzf (F-54), [#196](https://github.com/MadBomber/aia/issues/196) `--require` keeps spaces (F-55, mentions F-56).
+- **Next visit:** #194 (cherry-pick 9a58ed1's lib/test), #195, then the docs-only F-50/#190/#192.
+
 ## 2026-11-12 03:45 agent99
 
 - In progress. `develop` existed (c2b4e49); not created. Dewayne merged all open bomberbot PRs (#10, #11, #12, #13, #17) into develop on 2026-11-10, so the queue is empty. Builders started on #21+#15 (`madbot/load-all-constants`), #20 (`madbot/amqp-setup-logger`), and #23 (`madbot/registry-no-rewind`).
