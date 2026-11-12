@@ -10,7 +10,7 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-12 (fourth run)._ Dewayne merged dev#4–#6; opened dev#10 (weekly_report week snap, F-28) and dev#11 (reek_baseline task, F-26), with SKIP-for-absent-tools (F-27) stacked on #11; filed issues #7–#9. `develop` (5a0b89e) is 26 commits ahead of `main`.
+_Updated 2026-11-12 (fourth run)._ Dewayne merged dev#4–#6; opened dev#10 (weekly_report week snap, F-28) and dev#11 (reek_baseline task, F-26), with dev#12 (SKIP for absent tools, F-27) stacked on #11; filed issues #7–#9. `develop` (5a0b89e) is 26 commits ahead of `main`.
 
 ## Backlog
 
@@ -25,6 +25,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - [dev#10](https://github.com/MadBomber/dev/pull/10): fix(status_report): snap STATUS_WEEK_OF back to Monday (F-28). **PR open**
 - [dev#11](https://github.com/MadBomber/dev/pull/11): feat(quality): add reek_baseline task (F-26). **PR open**
+- [dev#12](https://github.com/MadBomber/dev/pull/12): fix(quality): skip flog, flay, reek, bundler-audit when absent (F-27). Stacks on #11; `/code-review` not yet run. **PR open**
 
 ## Open bomberbot issues
 
