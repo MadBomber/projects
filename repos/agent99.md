@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-12 (seventh visit)._ Dewayne merged all six earlier bomberbot PRs (#9–#13, #17) into `develop` (now c2b4e49), so the queue cleared and this visit opened three: [#27](https://github.com/MadBomber/agent99/pull/27) (#20), [#28](https://github.com/MadBomber/agent99/pull/28) (#21+#15), [#29](https://github.com/MadBomber/agent99/pull/29) (#23+F-58). The three merge together without CHANGELOG conflicts. Dead-code audit at c2b4e49 (F-58..F-61); filed #30–#32. No test CI; "green" = local suite on Ruby 4.0.9 with a locally re-resolved lock (put `~/.rbenv/versions/4.0.9/bin` first on PATH; the committed lock doesn't install, #7).
+_Updated 2026-11-12 05:30 (eighth visit)._ Review queue full: #27–#29 still open, unapproved and MERGEABLE, so no new PRs; ran the overdue security audit (F-65, S-13..S-15 held locally) and filed [#33](https://github.com/MadBomber/agent99/issues/33) (`bin/test` false PASS) and [#34](https://github.com/MadBomber/agent99/issues/34) (test/README globs run nothing). develop still c2b4e49. No test CI; "green" = local suite on Ruby 4.0.9 with a locally re-resolved lock (put `~/.rbenv/versions/4.0.9/bin` first on PATH; the committed lock doesn't install, #7).
 
 
 ## Backlog
@@ -54,6 +54,11 @@ else in this repo.
 - [#31](https://github.com/MadBomber/agent99/issues/31) F-63: six README Key Features links point to missing anchors.
 - [#32](https://github.com/MadBomber/agent99/issues/32) F-64: `rake test_coverage`/`test_verbose` do nothing (no simplecov, env vars unread).
 - F-60: four unused test helpers in `test/support/test_infrastructure.rb` (tests-only removal).
+- F-65: `RegistryClient` drops the path of `AGENT99_REGISTRY_URL` (`registry_client.rb:14-17`). Small lib PR with a unit test.
+- S-13, S-14, S-15: security findings, details held locally; small neutral-titled fixes once the queue clears.
+- [#33](https://github.com/MadBomber/agent99/issues/33) F-66: `bin/test` says PASSED and exits 0 on failures (~10 lines + test). Filed 2026-11-12.
+- [#34](https://github.com/MadBomber/agent99/issues/34) F-67: `test/README.md` commands glob `*_test.rb` and run zero tests (docs-only, low-risk candidate). Filed 2026-11-12.
+- F-68: drop four unused dev deps (`mocha`, `hashdiff`, `amazing_print`, `tocer`) → #7 on Ruby 4.0 without the bunny major. **needs Dewayne's decision** (minitest 6 vs `~> 5.25`).
 
 ## Open bomberbot PRs
 

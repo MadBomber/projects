@@ -743,3 +743,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **htm `Database.migrate/.migration_status/.seed(db_url)` ignore their argument (F-68).** Honor it like `drop` does, or remove it (public API)?
 - **htm `QueryCache` and `SqlBuilder` have no unit tests.** Both are pure Ruby. Hold the `QueryCache` tests until S-8 (held locally) is settled.
 
+
+- **agent99 queue full again (eighth visit, 2026-11-12).** #27/#28/#29 are open, MERGEABLE, unreviewed since 03:45. Ready next once they merge: the registry-URL path fix (F-65), `bin/test` false PASS (#33), test/README commands (#34).
+- **agent99 #7 smaller path (F-68).** Dropping four unused dev deps (`mocha`, `hashdiff`, `amazing_print`, `tocer`) makes the committed lock install on Ruby 4.0 with bunny staying at 2.24 (sidesteps F-56); only minitest jumps 5.25.5 → 6.1.0 (5.25.5 needs Ruby < 4), or pin `~> 5.25` → 5.27.0. Suite 72/0/0/4 either way. Which minitest do you want? BomberBot recommends `~> 5.25` for now.
+- **agent99 schema validation is a stub (F-69).** `validate_schema` always returns `[]`, but README and docs promise validation (and document a nonexistent `HeaderSchema.new.validate!`). Add a validator (e.g. json_schemer) and implement it, or remove the stub and the claims? Taste says change the code; it's a new runtime dependency, so your call.
+- **agent99 re-lock majors (F-56 + F-70).** A plain re-lock jumps bunny 2→3 *and* json 2→3, and the local bundler writes `4.1.0.beta3` into the lock. Which majors are allowed?
+- **bomberbot tender merge style.** The tender agent's instructions say merge approved PRs with `--rebase` (fallback `--squash`); taste.md says you merge with merge commits. Which should the tender use?
