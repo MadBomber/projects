@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 06:02 smart_message
+
+- `develop` already existed (07af3d4, unchanged since the 0.1.0 push); not created.
+- **skipped: review queue full.** #21, #22 and #23 are still open, MERGEABLE, CI green, 0 behind, with no reviews or comments. The tender changed nothing.
+- **New PRs:** none. **Merged (low risk):** none. **Merged after approval:** none. **Tended:** #21, #22, #23 (checked only).
+- **Audit:** quality (full, at develop 07af3d4, post-rewrite): F-82..F-85; most earlier quality findings were fixed by the rewrite. Improver: F-90..F-93; every README/docs snippet runs on 0.1.0.
+- **Issues answered:** none (no new comments from anyone; the responder re-verified #20, #24, #25 and #26 still reproduce).
+- **Issues filed:** [#27](https://github.com/MadBomber/smart_message/issues/27) partial subscribe (F-82), [#28](https://github.com/MadBomber/smart_message/issues/28) dispatcher settings order in docs (F-90), [#29](https://github.com/MadBomber/smart_message/issues/29) nil `dlq_path` (F-92). The main session reproduced all three.
+- **Note:** the shell's Ruby is 4.1.0-preview1; brief builders to pin 4.0 with the version manager.
+- **Next visit:** once the queue has room, #24 (silent message loss), #28 (docs, low risk) and F-71+F-72 / F-83 (test-only).
+
 ## 2026-11-12 05:45 sqa
 
 - `develop` existed (5ea98c8, unchanged since 02:45); not created.

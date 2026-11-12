@@ -17,7 +17,9 @@ Ruby 4.0+. The repo now has its own `CLAUDE.md`; read it before building.
 
 ## Status
 
-_Updated 2026-11-12 (fifth visit)._ Skipped new PRs: review queue full (#21, #22, #23 open,
+_Updated 2026-11-12 (sixth visit)._ Skipped new PRs again (review queue full: #21, #22 and #23 are still open, green and unreviewed; `develop` is unchanged at 07af3d4). Ran the **quality** audit (F-82..F-85; the improver added F-90..F-93) and filed [#27](https://github.com/MadBomber/smart_message/issues/27) (partial subscribe not rolled back), [#28](https://github.com/MadBomber/smart_message/issues/28) (configuration docs set dispatcher limits too late) and [#29](https://github.com/MadBomber/smart_message/issues/29) (nil `dlq_path`).
+
+_Earlier, 2026-11-12 (fifth visit)._ Skipped new PRs: review queue full (#21, #22, #23 open,
 green, unreviewed; tender changed nothing). Ran the full **dead code** audit at 07af3d4
 (F-71..F-77) and filed [#24](https://github.com/MadBomber/smart_message/issues/24) (decode
 errors skip the DLQ), [#25](https://github.com/MadBomber/smart_message/issues/25) (Pathname
@@ -66,6 +68,11 @@ works these before anything else in this repo.
 - F-39 declare `logger` as a runtime dependency; F-42/F-43 drop `mutex_m`, `shoulda` → `shoulda-context`: gemspec PRs.
 - F-46 redundant `require 'set'` (`utilities.rb:5`, `transport/redis_transport.rb:7`); trivial.
 - F-31 add `docs/llms.txt` (prompt_manager#24 precedent).
+- [#28](https://github.com/MadBomber/smart_message/issues/28) reorder the dispatcher settings in `docs/core-concepts/configuration.md` and example 14, and add an `Example.check` (F-90); docs and examples only, so low risk.
+- [#29](https://github.com/MadBomber/smart_message/issues/29) fall back to the default DLQ path for a nil or blank `dlq_path` (F-92); `lib/`, about 2 lines plus a test.
+- [#27](https://github.com/MadBomber/smart_message/issues/27) roll back earlier transports when `subscribe` fails partway (F-82); `lib/` + test.
+- F-83 replace 24 fixed sleeps in three test files with `wait_for_dispatch` (test-only, low risk; pairs with F-48).
+- F-91 add the city_scenario smoke test to `rake examples` with a Redis skip (examples only, low risk).
 
 ## Open bomberbot PRs
 

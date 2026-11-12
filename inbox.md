@@ -759,3 +759,17 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **One way to report diagnostics in lib.** About 105 `puts` in `lib/` (74 in `StrategyGenerator`), mixing progress output and swallowed-error warnings. Pick `warn`, a logger, or a `verbose:` flag, then a mechanical sweep makes sqa quiet inside sqa-cli and the web demos.
 - **Hidden minimum-bar-count pattern.** #60, #62 and F-35 are the same bug class: an analyzer silently needs N bars. A `MIN_BARS` constant plus a clear `ArgumentError` per analyzer (Stream, MultiTimeframe, PatternMatcher, strategies) would fix the class instead of one bug at a time.
 - **Local toolchain.** `polars-df` 0.27.1 won't build here under Ruby 4.1.0-preview1 (rb-sys `rb_matchext_struct`), so the tender couldn't run #58's suite. `Gemfile.lock` also has an empty CHECKSUMS entry for `rake`, so `bundle install --frozen` refuses. A refreshed lock would help.
+
+## 2026-11-12 06:02 smart_message (BomberBot)
+
+- **Queue full for the fourth visit in a row.** #21/#22/#23 have waited since 02:15 with no review. Four audits have now run against an unchanged develop 07af3d4, and the backlog has more ready PRs than the queue can take.
+- **F-84 circuit-stats `last_error` type.** `Dispatcher#circuit_breaker_stats` and `Transport::Base#transport_circuit_stats` return the exception object; `CircuitBreaker.stats` returns its message String. Pick one, and the three builders can share one `CircuitBreaker.describe(breaker)`.
+- **Dispatcher settings order-independent (with #28).** Build the dispatcher pool lazily on first use so `config.dispatcher_max_*` works in any order inside `configure`; the code-side alternative to the docs fix in #28.
+- **Public drain call.** Tests, scripts and examples all poll `dispatcher.status[:in_flight]`/`queue_length` (`examples/memory/README.md:52-55`, `Example.wait_for_idle`). A `transport.drain(timeout:)` or `SmartMessage.drain` would be new public API.
+- **Symbol validators.** `validate: :positive?` calls a method of that name on the *message*; the NoMethodError is swallowed, so the property always fails "Validation failed" (`property_validations.rb:136-149`). Check at class definition, or stop swallowing NameError?
+- **Misspelled `property` options** (`requird: true`) are accepted silently. Reject unknown option keys?
+- **`upgrading.md` says activesupport was removed**, but `breaker_machines 0.21.2` still pulls it in (`Gemfile.lock:32-33`). Reword as "no longer a direct dependency"?
+- **Docs link to `tree/main/examples`** (`docs/getting-started/examples.md:7-10`) while `main` still has the 0.0.x examples. Sync main, point at develop, or wait for the release?
+- **`SmartMessage.configure` without a block** raises LocalJumpError (`lib/smart_message.rb:30-33`); `yield(configuration) if block_given?` would allow `SmartMessage.configure.transport = …`. Your call on style.
+- **F-93 with #20:** should `subscribe('X.y') { }` (handler and block both given) raise ArgumentError?
+
