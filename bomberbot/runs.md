@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 06:25 typed_bus
+
+- `develop` existed (0f94a6c, unchanged since the 05:10 visit); not created.
+- **skipped: review queue full.** The tender found [#28](https://github.com/MadBomber/typed_bus/pull/28), [#29](https://github.com/MadBomber/typed_bus/pull/29), [#30](https://github.com/MadBomber/typed_bus/pull/30) still open, unapproved, MERGEABLE, all checks green, 0 behind; nothing to tend.
+- New PRs: none. Merged (low risk): none. Merged after approval: none. Tended: #28, #29, #30 (checked only).
+- **Audit: dead code** (diff 5be35a6..0f94a6c + confirm pass; debride, `ruby -wc`, mutation; dependents incl. aia): F-64..F-66. Scan reached 0f94a6c. Improver: F-70, F-71.
+- Issues answered: none (all 24 open issues are BomberBot's own, no outside comments; responder re-verified #25-#27, #31-#33).
+- **Issues filed:** [#34](https://github.com/MadBomber/typed_bus/issues/34) non-class `type:` (F-70), [#35](https://github.com/MadBomber/typed_bus/issues/35) stale unsubscribe test (F-64), [#36](https://github.com/MadBomber/typed_bus/issues/36) DLQ callback drops stats (F-71). Main session reproduced all three on develop 0f94a6c.
+- Note: shell Ruby is 4.1.0-preview1; `RBENV_VERSION=4.0.9` didn't take for one agent.
+
 ## 2026-11-12 06:02 smart_message
 
 - `develop` already existed (07af3d4, unchanged since the 0.1.0 push); not created.

@@ -772,3 +772,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Docs link to `tree/main/examples`** (`docs/getting-started/examples.md:7-10`) while `main` still has the 0.0.x examples. Sync main, point at develop, or wait for the release?
 - **`SmartMessage.configure` without a block** raises LocalJumpError (`lib/smart_message.rb:30-33`); `yield(configuration) if block_given?` would allow `SmartMessage.configure.transport = …`. Your call on style.
 - **F-93 with #20:** should `subscribe('X.y') { }` (handler and block both given) raise ArgumentError?
+
+## 2026-11-12 06:25 typed_bus (BomberBot)
+
+- **Queue full for the second visit in a row.** #28/#29/#30 are green and merge cleanly together. The backlog now has several low-risk docs/test PRs ready (F-35/F-55+#35, F-58/F-59, F-33 remainder) that could self-merge once the queue has room.
+- **F-66 `Configuration.validate_max_pending!`** is new, public, undocumented and unreleased. Mark it `# @api private`, or document it as public API? Cheap to decide before the next release.
+- **F-71 DLQ callback errors.** When an `on_dead_letter` callback raises, should `DeadLetterQueue#push` (a) rescue and log it under its own name, (b) let it propagate as now (issue #36 only moves the stats first), or (c) leave it and document it?
+- **One place for option validation.** `max_pending`, `throttle`, `timeout` and `type` are each validated at a different tier (Configuration, Channel, or not at all: F-56, F-61/#33, F-70/#34). One shared `Channel` options check, called by both, would stop them drifting apart.
+- **Release.** 18 issues (#1-#6, #10-#21) are fixed on `develop` and wait on a release (latest gem 0.0.1, 849 downloads). Six stale merged bot branches (`madbot/logger-runtime-dep`, `bomberbot/dlq-drain-snapshot`, etc.) could be deleted.
