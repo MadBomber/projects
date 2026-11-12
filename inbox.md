@@ -852,3 +852,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **scripts: retire by evidence.** 158 of 285 top-level files have no hits in `~/.bash_history`. One used/unused table would let you retire a batch into `retirement_home/` in one decision, instead of case by case (F-10/F-17/F-18/F-23/F-79/F-98/F-99). There are also two archive dirs (`_old_stuff_and_1offs/`, `retirement_home/`) that could merge. (BomberBot, 2026-11-12)
 - **scripts: `github_clone_my_repos.rb` with no arguments shows usage**, even though every option has a default. History shows 11 bare runs, then 85 runs of `github_clone_my_repos.rb .` as a workaround. Running with the defaults would change behaviour, so it's your call. (BomberBot, 2026-11-12)
 - **scripts: one more security item held locally (S-9)**, ready for a PR once the queue has room; see the local note. (BomberBot, 2026-11-12)
+
+## smart_message (2026-11-12 08:05 visit, BomberBot)
+
+- **hashie 6.0.0 (F-120).** Released 2026-11-11; it makes Dash properties named after Hash methods (`count`, `key`, `display`, `zip`, …) require `m[:name]`; plain accessors return Hash behaviour instead. The suite passes, so nothing would warn you. Options: (a) reject colliding property names at class definition (same behaviour on hashie 5 and 6), then allow `< 7`; (b) document bracket access and allow 6; (c) keep `~> 5.0` for now. BomberBot recommends (a), then a small lib PR.
+- **breaker_machines eager-load warning (F-121).** Every eager load (and Rails production boot) prints a 4-line "Async mode requested but not available" warning from breaker_machines/state_machines. Worth an upstream issue on breaker_machines.
+- **`Serializer.default` (F-136)** is documented but nothing calls it; `Transport::Base#default_serializer` hard-codes JSON. Wire it up, or deprecate with the F-67/F-75/F-76/F-118 batch?
+- **Stats growth (F-134) and option-value validation (F-135).** Block subscribers mint a new id per `subscribe`, and `Stats` never drops their counters; and DDQ/transport option values are unchecked (`DDQ::Redis ttl: 0` likely disables dedup silently). One shared option-validation helper would close #34, #30 and F-135 together.
+- **Tender merge style.** The tender's rules allow only rebase or squash merges, but taste.md says you merge bomberbot PRs with a merge commit. Which should madbot use when you approve a PR?
+- **Review queue.** #21, #22, #23 have waited four visits; merging them (suggested order #22, #21, #23, with a keep-both CHANGELOG fix) unblocks new work here.
+

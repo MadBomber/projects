@@ -11,6 +11,17 @@ Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Ent
 - **Issues filed:** [#47](https://github.com/MadBomber/scripts/issues/47) `move_fork_offline.rb` data loss (F-80), [#48](https://github.com/MadBomber/scripts/issues/48) `Gem::Specification.all` NOTE in nine scripts (F-96), [#49](https://github.com/MadBomber/scripts/issues/49) `github_clone_my_repos.rb --dryrun` empty fork dirs (F-83). The main session reread the code or reran each one before filing.
 - Tender again flagged that its merge-method rule (`--rebase`) disagrees with taste (merge commits); the question is already in `inbox.md`.
 
+## 2026-11-12 08:05 smart_message
+
+Eighth visit (last 07:20). `develop` existed and is unmoved at 07af3d4; not created this visit.
+
+- **skipped: review queue full.** Tender: #21, #22, #23 still open, unapproved, no reviews or comments, MERGEABLE/CLEAN, green on 4.0 and 4.1.0-preview1; no action needed. No new PRs.
+- Merged (low risk): none. Merged after approval: none.
+- Audit: **dependencies** (2nd run, first since 0.1.0) at 07af3d4: suite/examples green on current lock, `bundle update --all` (4.0.9, 4.1-preview1), lowest versions and hashie 6.0.0. F-38 fixed; new F-120..F-123 (F-120 hashie 6 breaks properties named after Hash methods: needs decision). Improver: F-130..F-136. No new security findings.
+- Issues answered: none (no comments from anyone but BomberBot). Responder re-reproduced #19, #20, #24..#32.
+- Issues filed: [#33](https://github.com/MadBomber/smart_message/issues/33) (F-131, judgment), [#34](https://github.com/MadBomber/smart_message/issues/34) (F-130/F-133, judgment), [#35](https://github.com/MadBomber/smart_message/issues/35) (F-132, judgment). Main session reran all repros before filing.
+- Note: `git -C src worktree add tend` put the tend worktree at `src/tend/`; bundler in `src` then loads two gemspecs and warns about `SmartMessage::VERSION`. Next visit: `git -C src worktree add ../tend`.
+
 ## 2026-11-12 07:45 simple_flow
 
 Sixth visit (last 07:24). `develop` existed and is unmoved at 5132c88; not created this visit.

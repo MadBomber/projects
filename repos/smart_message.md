@@ -17,7 +17,9 @@ Ruby 4.0+. The repo now has its own `CLAUDE.md`; read it before building.
 
 ## Status
 
-_Updated 2026-11-12 (seventh visit)._ Skipped new PRs a third time (review queue full: #21, #22, #23 open, green, unreviewed; `develop` still 07af3d4). Ran the **adoption** audit (F-94..F-98; README, examples, `mkdocs --strict` all clean) and filed [#30](https://github.com/MadBomber/smart_message/issues/30) (unchecked `log_level`/`log_format`), [#31](https://github.com/MadBomber/smart_message/issues/31) (setup errors don't name the class or fix) and [#32](https://github.com/MadBomber/smart_message/issues/32) (gemspec URIs).
+_Updated 2026-11-12 (eighth visit)._ Skipped new PRs a fourth time (review queue full: #21, #22, #23 open, green, unreviewed; `develop` still 07af3d4). Ran the **dependencies** audit (F-120..F-123: dependencies healthy on 4.0 and 4.1, but keep `hashie ~> 5.0`; see F-120) and filed [#33](https://github.com/MadBomber/smart_message/issues/33) (`clear_ddq!` hits nested classes), [#34](https://github.com/MadBomber/smart_message/issues/34) (transport options that hang) and [#35](https://github.com/MadBomber/smart_message/issues/35) (`pretty_print` with Integer keys).
+
+_Earlier, 2026-11-12 (seventh visit)._ Skipped new PRs a third time (review queue full: #21, #22, #23 open, green, unreviewed; `develop` still 07af3d4). Ran the **adoption** audit (F-94..F-98; README, examples, `mkdocs --strict` all clean) and filed [#30](https://github.com/MadBomber/smart_message/issues/30) (unchecked `log_level`/`log_format`), [#31](https://github.com/MadBomber/smart_message/issues/31) (setup errors don't name the class or fix) and [#32](https://github.com/MadBomber/smart_message/issues/32) (gemspec URIs).
 
 _Earlier, 2026-11-12 (sixth visit)._ Skipped new PRs again (review queue full: #21, #22 and #23 are still open, green and unreviewed; `develop` is unchanged at 07af3d4). Ran the **quality** audit (F-82..F-85; the improver added F-90..F-93) and filed [#27](https://github.com/MadBomber/smart_message/issues/27) (partial subscribe not rolled back), [#28](https://github.com/MadBomber/smart_message/issues/28) (configuration docs set dispatcher limits too late) and [#29](https://github.com/MadBomber/smart_message/issues/29) (nil `dlq_path`).
 
@@ -80,6 +82,10 @@ works these before anything else in this repo.
 - [#31](https://github.com/MadBomber/smart_message/issues/31) name the class and the fix in the missing-`from` and `TransportNotConfigured` errors (F-113/F-114); a few strings + test + troubleshooting doc.
 - [#32](https://github.com/MadBomber/smart_message/issues/32) gemspec `homepage`/`documentation_uri` → docs site (F-94); gemspec, pair with #19.
 - F-111 + S-13 short `inspect` for transports and `PublishResult` (neutral title); `lib/`, ~25 lines + test.
+- [#33](https://github.com/MadBomber/smart_message/issues/33) build `ddqs_of` from the class's own subscriptions, not a string prefix (F-131); `lib/dispatcher.rb`, ~10 lines + test.
+- [#34](https://github.com/MadBomber/smart_message/issues/34) reject `max_messages` ≤ 0 and non-positive `poll_interval` in transport `configure` (F-130/F-133); `lib/`, ~20 lines + tests.
+- [#35](https://github.com/MadBomber/smart_message/issues/35) `deep_symbolize_keys` keeps keys that don't respond to `to_sym` (F-132); one line + test.
+- F-122 (+F-39, F-123) one gemspec dev-dependency batch: drop `mutex_m`/`minitest-power_assert`/`minitest-mock`, `shoulda` → `shoulda-context`, declare `logger`, `zeitwerk ~> 2.7`; verified green; gemspec, never low risk.
 
 ## Open bomberbot PRs
 
