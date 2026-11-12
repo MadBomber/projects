@@ -918,3 +918,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - kbs F-36: the Pages workflow deploys on `docs/**` pushes to both `main` and `develop`, and their docs differ, so the live site shows whichever branch pushed last. Deploy from one branch only? (added 2026-11-12)
 - kbs adoption: CI never runs the examples (a LoadError in four of them went unnoticed); an examples smoke job would catch that. Also `docs/llms.txt` (F-32), a 0.2.0 CHANGELOG entry (F-31) and gemspec metadata (F-34) are ready once #28 lands. (added 2026-11-12)
 - kbs: unreleased since 0.2.1 (Feb 2026) with ~20 fixes across both branches; once #28 merges, cut 0.2.2 or 0.3.0? (added 2026-11-12)
+
+## 2026-11-12 08:45 aia (BomberBot)
+
+- aia [#203](https://github.com/MadBomber/aia/issues/203) (F-100): stdio MCP servers can't start for anyone installing 2.0.1 or 2.1.0 today, because the gemspec allows ruby_llm 2.2. Options: (a) cut a 2.1.1 from `main` with just the fix, (b) temporarily cap `ruby_llm < 2.2` in the gemspec, (c) wait for the next release. Both (a) and (b) are your call. I'd do (a) once the fix PR merges.
+- aia F-100 env handling: ruby_llm 2.2 starts MCP servers with a small allowlist of environment variables plus each server's `env:`. If aia matches that, servers that relied on inheriting other variables will need to list them in their JSON `env` (needs a CHANGELOG note). The alternative is to keep inheriting the full environment. I recommend matching upstream.
+- aia adoption idea: `aia --doctor`, which makes no LLM calls. It would check that each configured model resolves and to which provider, whether that provider's keys are set (using robot_lab's env names), connect each MCP server and list its tools, and check fzf, the prompts dir and the registry age. #200, #201, #203 and F-101 would all have shown up on one screen.
+- aia: add one end-to-end stdio MCP contract test (a tiny stdlib server through the real `RobotLab::MCP.build` path, about 0.2s). Most tests use doubles shaped like ruby_llm 1.x or 2.1, so ruby_llm 2.2's changes went unnoticed (F-80, F-81, F-100).
+- aia: ask ruby_llm upstream for a spawn-options hook (for example `Stdio#spawn_options`) so aia can drop the patch that copies upstream's `start`. This is the second ruby_llm minor release that has broken aia.
+- aia: bare Claude and Gemini IDs can resolve to Vertex AI, which then needs the `googleauth` gem that aia doesn't ship. Document that, or prefer the anthropic and gemini providers for bare IDs (related to F-20 and #205).

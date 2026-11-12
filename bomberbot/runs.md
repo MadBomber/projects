@@ -15,6 +15,17 @@ Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Ent
 - Issues filed: [#29](https://github.com/MadBomber/kbs/issues/29) (F-28, `rule priority:`), [#30](https://github.com/MadBomber/kbs/issues/30) (F-29, README AI example), [#31](https://github.com/MadBomber/kbs/issues/31) (F-33, gem packaging).
 - Incident: during triage, running `main`'s tests directly flushed DB 15 of the local Redis, because `main` restored the `localhost:6379/15` fallback (F-37). #28 keeps develop's opt-in.
 
+## 2026-11-12 08:45 aia
+
+Fourth aia visit today (the last was 07:30). `develop` existed and is unmoved at 22120fa; not created this visit.
+
+- **skipped: review queue full.** Tender: #183, #188 and #193 are still open, unapproved, MERGEABLE/CLEAN, with no reviews and no comments except BomberBot's. Nothing to rebase. No new PRs.
+- Merged (low risk): none. Merged after approval: none. Tended: #183, #188, #193 (checked only).
+- Audit: **dead code** (develop 22120fa; the previous scan reached c04ce8e): F-86..F-90, all leftovers from the KBS removal. Improver: F-100..F-103, plus S-5 (held locally). Triage re-verified F-64/F-82, F-68, F-69, F-83, F-49 and F-50.
+- Issues answered: none needed (no new outside comments).
+- Issues filed: [#203](https://github.com/MadBomber/aia/issues/203) stdio MCP servers fail to start under ruby_llm 2.2 (F-100, judgment/dependency; neutral wording, S-5 kept local), [#204](https://github.com/MadBomber/aia/issues/204) `/config` `=` stripping and nested-key `nil` (F-64+F-82, brain), [#205](https://github.com/MadBomber/aia/issues/205) README model IDs and the missing Quick Start key step (F-102, adoption). The main session reran the #203 and #205 repros before filing.
+- Next when the queue clears: #203 (top), #194, #202, #204.
+
 ## 2026-11-12 08:30 ragdoll
 
 - `develop` already existed (53fc937, unchanged since the 08:18 visit); not created.
