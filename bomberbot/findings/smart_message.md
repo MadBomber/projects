@@ -10,8 +10,8 @@ Dewayne's decision, issue #N.
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-10 | First run, at develop 9371456. bundler-audit flags 2 activesupport advisories in the dev lockfile. No shell-outs, string eval, YAML/Marshal or ENV reads in `lib/`. S-1..S-6 held locally. |
-| dead code | 2026-11-10 (lib only, brief) | debride over `lib/` at develop 9371456. True dead: F-1, F-2. Public-API orphans need a decision (F-6). Dependent `sm-transport-*` gems checked. |
+| security | 2026-11-12 | 2nd run, at develop 07af3d4 (0.1.0 rewrite). bundler-audit: 2 activesupport advisories, lockfile only (transitive via breaker_machines/shoulda-matchers). No shell-outs, YAML or Marshal in lib/bin/Rakefile; one ENV read (DLQ path). S-1, S-3, S-4 fixed by the rewrite; S-2 now documented design; new S-8..S-12 held locally (S-8, S-9 probe-verified against Redis); F-60 Redis subscriber reliability. (1st run 2026-11-10 at 9371456.) |
+| dead code | 2026-11-10 (lib only, brief) — superseded by 07af3d4, re-run next | debride over `lib/` at develop 9371456. True dead: F-1, F-2. Public-API orphans need a decision (F-6). Dependent `sm-transport-*` gems checked. |
 | dependencies | 2026-11-10 (3rd visit) | First run, at develop 9371456. Suite green on 4.0.9 (current lock), 4.1 (all gems updated), and with breaker_machines 0.13.2. Zeitwerk eager-load NameError on DDQ (F-38, issue #15); undeclared bundled gem `logger` (F-39); lock bump clean (F-40, after #11); beta bundler pin (F-41); unused mutex_m and shoulda→shoulda-context (F-42/43); F-10 floor evidence (lib parses at 3.3); optional redis (F-44). No lib deprecation warnings under -W:deprecated; suite passes with frozen string literals forced on. |
 | adoption | 2026-11-10 (2nd visit) | First run, at develop 9371456. `mkdocs build --strict` clean; memory examples run. `:redis_queue` transport + `examples/redis_queue/` + `docs/transports/redis-queue.md` all documented but nonexistent (F-24/25/26, needs decision); FileTransport unregistered so `create(:file)`→nil (F-27, issue #12); README `Serializer::JSON` casing NameError (F-28); CHANGELOG/tag drift + dup `[0.0.1]` (F-29/30); no llms.txt (F-31). Broken `<string>` docs homepage tag (F-32, issue #13); dead test debug code (F-33/34, issue #14). Obvious-yes: F-27, F-30, F-32, F-33/34. |
 | quality | 2026-11-10 (3rd visit, brief) | flog/flay/rubocop Lint (default config); reek not run. Flaky timing test (F-48); triplicated transport `logger` (F-49); dup circuit-stats hash (F-50); dead branch (F-51); empty metaclass (F-52). Hotspots: Messaging#publish 117.6, Base#initialize 98.9, Dispatcher#route 92.6. Improver read dispatcher/DDQ/circuit breaker: F-53–F-59. |
@@ -99,3 +99,28 @@ Dead-code scan last covered commit: 9371456 (develop, 2026-11-10; `lib/` only, b
 - F-58: public `Dispatcher#worker_task_completed` (`dispatcher.rb:71-73`) looks like a getter but increments the pool's completed counter; no callers. Status: needs Dewayne's decision (remove vs deprecate).
 - F-59: undocumented debug helpers `Dispatcher#pool` (instance_variable_get), `#what_can_i_do?`, and `#status`'s dead NoMethodError fallback (`dispatcher.rb:43-64`). Status: needs Dewayne's decision (keep vs remove with F-58).
 - Note: no new security findings; S-1..S-7 unchanged. F-40's lock bump would move activesupport past S-5's versions, but S-5's real fix is the unpinned runtime dep.
+
+### 2026-11-12 (fourth visit; security audit + triage/improver re-check, develop 07af3d4)
+
+Dewayne's 0.1.0 rewrite (07af3d4) landed between visits. Re-check at 07af3d4:
+
+- **Fixed by 07af3d4:** F-1, F-2, F-3, F-4, F-5, F-7, F-8, F-10 (`>= 4.0`), F-11, F-12, F-13/F-23 (per-run tmpdir), F-14, F-17, F-18, F-19, F-20, F-22, F-27, F-37, F-38, F-45, F-49, F-52, F-53, F-54/F-56 (Redis DDQ rewritten), F-55, F-57, F-58, F-59. Issues #6, #7, #8, #12, #13, #15, #16, #17 fixed on develop (BomberBot commented on each; Dewayne to close).
+- **Partly fixed:** F-6 (`configure_entity_circuit`, `graceful_degradation` remain); F-33/F-34 / #14 (monkeypatch gone, three stray `debug_me` calls and a dead `DebugMeDefaultOptions` block remain; PR this visit); F-36 (`ReceivedMessageNotSubscribed` never raised).
+- **Still open:** F-30 (dup `[0.0.1]`, now `CHANGELOG.md:712`/`:758`), F-39, F-41, F-42, F-43, F-44, F-46 (`require 'set'` in 2 files), F-48 (passed 5/5 today), MathJax/macros unused in `mkdocs.yml`.
+- S-1: fixed (residual path = S-8). S-2: still true, now documented design; needs Dewayne's decision (close, or opt-in validation on receive). S-3, S-4: fixed. S-5: narrowed to the dev lockfile (activesupport now transitive). S-6: FIFO part gone; remainder documented design. S-7: fixed on develop (#9) but `main` still serves the old docs config until a release; needs Dewayne.
+- S-8: security finding, details held locally. Status: PR'd (link held locally).
+- S-9: security finding, details held locally. Status: open (small-PR candidate).
+- S-10: security finding, details held locally. Status: needs Dewayne's decision.
+- S-11: security finding, details held locally. Status: needs Dewayne's decision.
+- S-12: security finding, details held locally. Status: open (small-PR candidate).
+- F-60: `RedisTransport` subscriber thread exits for good after `reconnect_attempts` failed reconnects (`transport/redis_transport.rb` `subscriber_loop`), while `connected?` pings only the publish connection and stays true. Status: issue [#18](https://github.com/MadBomber/smart_message/issues/18).
+- F-61: `test_dispatcher_routing` cannot fail (processors `puts` on mismatch, never assert); `test/test_helper.rb:47-58` `DebugMeDefaultOptions` block is dead (debug_me 1.1.3 defines the constant). Status: PR'd with #14 (see runs.md).
+- F-62: `docs/reference/dead-letter-queue.md:119-121` says replay calls `publish` and a failed replay writes a new entry; code (`dead_letter_queue.rb:365-382`) replays directly and keeps the one entry. Status: PR'd (see runs.md).
+- F-63: no LICENSE file and no `spec.license`, though README says MIT; `gem build` warns. Status: issue [#19](https://github.com/MadBomber/smart_message/issues/19).
+- F-64: `subscribe` accepts unresolvable String/Symbol handlers; failure only shows as a DLQ entry. Status: issue [#20](https://github.com/MadBomber/smart_message/issues/20).
+- F-65: `.github/workflows/test.yml` runs only `rake test`, not `rake examples` (21/21 pass locally in ~10 s). Status: open, small-PR candidate (CI file: not low risk; push needs `workflow` scope).
+- F-66: `activesupport` 8.1.4 → 8.1.4.1 in `Gemfile.lock` via `bundle update --conservative activesupport`; suite green. Status: open, small-PR candidate (lockfile: not low risk).
+- F-67: public API with no callers anywhere, cheapest to drop before 0.1.0 is published: `InheritableSettings#setting?`, `required_property_names`, `validate_all`, `property_validator`, `Subscription.call_proc_handler`, `Versioning#validate_header_version!`, `Dispatcher#drop_all!`, `Errors::ReceivedMessageNotSubscribed`. Status: needs Dewayne's decision.
+- F-68: DLQ replay publishes to every transport of the class, including the ones that already succeeded (`dead_letter_queue.rb:376` ignores the entry's `transport`). Status: needs Dewayne's decision (how to identify transport instances).
+- F-69: unknown transport options are silently ignored (`Transport.create(:memory, bogus: 1)`); a `namspace:` typo would merge environments. Status: open, idea (inbox).
+- F-70: dev tooling: no RuboCop config, Dependabot alerts disabled, `hashie` 6.0.0 blocked by `~> 5.0`; chrono_machines 0.12.x adds a native extension. Status: needs Dewayne's decision (lock bump scope).

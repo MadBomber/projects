@@ -1,11 +1,12 @@
 # smart_message
 
-A Ruby gem (v0.0.18 on `develop`; 0.0.17 on RubyGems, 2025-09-12) that turns messages
-into self-describing `Hashie::Dash` objects which validate, address (from/to/reply_to),
-version, and route themselves over pluggable transports (memory, stdout, file, FIFO,
-Redis; RabbitMQ and others live in separate `sm-transport-*` gems). It adds a dispatcher
-with filters, deduplication, a circuit breaker, and a file-backed dead letter queue.
-README calls it alpha.
+A Ruby gem (0.1.0 on `develop`, unreleased; 0.0.17 on RubyGems, 2025-09-12) that turns
+messages into self-describing `Hashie::Dash` objects which validate, address
+(from/to/reply_to), version, and route themselves over pluggable transports (memory,
+stdout, append-only JSON Lines file, Redis; others live in separate `sm-transport-*`
+gems). It adds a bounded dispatcher with per-handler circuit breakers and deduplication,
+a `PublishResult` per publish, and a locked, file-backed dead letter queue. Requires
+Ruby 4.0+. The repo now has its own `CLAUDE.md`; read it before building.
 
 ## Links
 
@@ -16,68 +17,52 @@ README calls it alpha.
 
 ## Status
 
-_Updated 2026-11-10 (third visit)._ Review queue still full (#9, #10, #11 unreviewed, `develop`
-unmoved at 9371456), so no new PRs. Ran the first **dependencies** audit plus a brief quality
-pass and an improver read of the dispatcher, DDQ, and circuit breaker (F-38–F-59). Filed
-[#15](https://github.com/MadBomber/smart_message/issues/15) (gem can't be eager-loaded: Zeitwerk
-expects `Ddq`), [#16](https://github.com/MadBomber/smart_message/issues/16) (subclass dedup
-silently off), [#17](https://github.com/MadBomber/smart_message/issues/17)
-(`CircuitBreaker.stats`/`available?` always raise).
+_Updated 2026-11-12 (fourth visit)._ Dewayne merged #9, #10 and #11, then pushed the 0.1.0
+rewrite (07af3d4, "feat!: release 0.1.0 with reliable delivery and a smaller API") to
+`develop`. It fixes almost the whole old backlog, including issues #6, #7, #8, #12, #13, #15,
+#16 and #17; BomberBot commented on each with evidence, and Dewayne can close them. Suite
+443 runs / 1750 assertions / 0F/0E/0S, `rake examples` 21/21, CI green on develop. Ran the
+second **security** audit (S-8–S-12 held locally) and filed
+[#18](https://github.com/MadBomber/smart_message/issues/18) (Redis subscriber gives up for good),
+[#19](https://github.com/MadBomber/smart_message/issues/19) (no LICENSE) and
+[#20](https://github.com/MadBomber/smart_message/issues/20) (unresolvable handlers accepted).
+Opened #21, #22 and #23 (see below). `main` is still at the 2025-09-12 state, 11 commits
+behind; 0.0.18 and 0.1.0 are untagged.
 
-_Second visit (2026-11-10).__ Verification-only visit: Dewayne hasn't reviewed,
-merged, or commented on any of the three open bomberbot PRs (#9, #10, #11) yet, so with
-3 unapproved PRs open and none low-risk-mergeable the **review queue was full** — no new
-PRs this visit. `develop` still at 9371456, unmoved. Ran the **adoption audit** (first
-ever): docs promote a `:redis_queue` transport, a MessagePack serializer, and an
-`examples/redis_queue/` suite that don't exist (F-24–F-26); `FileTransport` is documented
-but unregistered (F-27). Filed issues [#12](https://github.com/MadBomber/smart_message/issues/12)
-(FileTransport not registered → `create(:file)` nil), [#13](https://github.com/MadBomber/smart_message/issues/13)
-(broken `<string>` tag on docs homepage), [#14](https://github.com/MadBomber/smart_message/issues/14)
-(dead `debug_me` code in tests). Findings F-24–F-37.
-
-_First visit (2026-11-10)._ `develop` (9371456) is 6 commits ahead of `main`;
-0.0.18 (Ruby 4.1 support, `to_h` fix) is unreleased. Bomberbot opened three PRs against
-`develop`: test CI ([#11](https://github.com/MadBomber/smart_message/pull/11), green on Ruby 4.0 and 4.1.0-preview1 with Redis),
-a DLQ `inspect_messages` fix ([#10](https://github.com/MadBomber/smart_message/pull/10)) and a docs-site script removal ([#9](https://github.com/MadBomber/smart_message/pull/9)).
-Filed issues #6 to #8. Suite green on 4.1.0-preview1: 316 runs, 940 assertions,
-0F/0E/27 skips. The locked gems need Ruby 4.0, but the gemspec still says `>= 3.0.0`.
+_Earlier visits (2026-11-10, three of them)._ First visit opened #9–#11 and filed #6–#8;
+the second and third ran adoption and dependency audits with the review queue full and
+filed #12–#17. All superseded by 0.1.0; see `bomberbot/findings/smart_message.md`.
 
 ## Backlog
 
-Well-defined items a single small PR could close. Bomberbot works these before anything
-else in this repo.
+Well-defined items a single small PR could close, re-checked at develop 07af3d4. Bomberbot
+works these before anything else in this repo.
 
-- F-11 `DeadLetterQueue#inspect_messages(limit:)` returns `[]` past the limit. **PR open** [#10](https://github.com/MadBomber/smart_message/pull/10).
-- [#6](https://github.com/MadBomber/smart_message/issues/6) `replay_all` loses an entry whose replay fails (F-12, F-8): bound the loop to the starting size, plus a raw re-append helper. Top pick next visit (same file as #10; stack or wait).
-- [#7](https://github.com/MadBomber/smart_message/issues/7) README quick start/examples fail (`Serializer::JSON`, class-level `serializer`, `publish` vs `do_publish`) (F-16).
-- [#8](https://github.com/MadBomber/smart_message/issues/8) gem ships `.idea/`, a `.backup` transport, and a 1.7 MB DLQ log (F-7): `git rm` only.
-- Gemspec floor `>= 3.0.0` is wrong: breaker_machines 0.21.2 / chrono_machines 0.11.0 in the lock need Ruby 4.0 (CI proved it on #11). Raise to `>= 4.0` or loosen those deps; Dewayne's call (F-10).
-- F-13/F-23: the suite writes `dead_letters.jsonl`, `file*.log`, `messages.log`, `log/` into the repo root and shares `/tmp/test_dlq.jsonl`; a tests-only tmpdir PR (low risk).
-- F-1 duplicate `TransportNotConfigured`; F-2 dead private `Logger::Default#message_summary`/`#truncate`: one small removal PR.
-- F-17 `examples/README.md` index: all 18 paths wrong (docs only, low risk).
-- F-3 `Serializer::Base#do_encode` should raise `NotImplemented`.
-- F-20 `gem build smart_message.gemspec` fails with a relative path (`Dir.chdir(__dir__)`), F-18 gemspec URIs point at `/blob/master/`: one gemspec PR.
-- MathJax loads on every docs page though no page uses math (builder note on #9).
-- [#12](https://github.com/MadBomber/smart_message/issues/12) `FileTransport` is documented but never registered, so `Transport.create(:file)` returns nil (F-27): one-line `register(:file, FileTransport)` fix.
-- [#13](https://github.com/MadBomber/smart_message/issues/13) docs homepage opens with a broken `<string>` tag so the lead sentence never renders bold (F-32): `docs/index.md:10`, docs only.
-- [#14](https://github.com/MadBomber/smart_message/issues/14) dead `debug_me` code in the test suite — `Object#debug_me_context` monkeypatch + 3 stray `debug_me` calls (F-33/F-34): pure removal.
-- F-30 duplicate `## [0.0.1]` CHANGELOG section (`CHANGELOG.md:651` and `:697`): renumber/merge one, docs only.
-- [#15](https://github.com/MadBomber/smart_message/issues/15) gem can't be eager-loaded (F-38): one `loader.inflector.inflect("ddq" => "DDQ")` line plus an eager-load test. Top pick when the queue frees (Rails production boot breaks).
-- [#16](https://github.com/MadBomber/smart_message/issues/16) `enable_deduplication!` on a subclass leaves dedup off (F-53): default fallbacks in `ddq_config`/builder plus a test.
-- [#17](https://github.com/MadBomber/smart_message/issues/17) `CircuitBreaker.stats`/`available?` always raise (F-55): rewrite on the BreakerMachines API `transport_circuit_stats` uses.
-- F-39 declare `logger` as a runtime dependency (bundled gem since Ruby 4.0); gemspec, one line.
-- F-48 flaky wall-clock test `test_concurrent_proc_handler_execution`: test-only fix; rule out a pool cause first.
-- F-42/F-43 drop unused `mutex_m`, swap `shoulda` for `shoulda-context`: one dev-deps PR.
-- F-40 lock bump (all green): after #11 merges.
-- F-54 Redis DDQ never evicts its lookup SET; F-56 Redis DDQ ignores `redis_url:`/`redis_db:`.
+- [#14](https://github.com/MadBomber/smart_message/issues/14) stray `debug_me` calls and a routing test that can't fail (F-61). **PR open** [#21](https://github.com/MadBomber/smart_message/pull/21).
+- F-62 DLQ reference page misdescribes replay. **PR open** [#22](https://github.com/MadBomber/smart_message/pull/22).
+- DLQ replay should rebuild an entry as the class it was stored under. **PR open** [#23](https://github.com/MadBomber/smart_message/pull/23).
+- No end-to-end test of a channelless transport (file) through the DLQ to replay; `statistics[:by_class]` buckets `A::Order` and `B::Order` together (`split("::").last`).
+- `test/publish_test.rb:25-40` and `test/proc_handler_test.rb:33` processors only `puts`, so nothing checks the messages arrived (same pattern as #14); `subscribe_test` never shuts its dispatcher down. Test-only; after #21.
+- [#18](https://github.com/MadBomber/smart_message/issues/18) Redis subscriber gives up after `reconnect_attempts` while `connected?` stays true (F-60).
+- [#19](https://github.com/MadBomber/smart_message/issues/19) add LICENSE.txt (MIT) + `spec.license` (F-63); gemspec, so not low risk.
+- [#20](https://github.com/MadBomber/smart_message/issues/20) validate String/Symbol handlers at `subscribe` (F-64).
+- F-65 run `rake examples` in `.github/workflows/test.yml` (21/21 in ~10 s; push needs the `workflow` OAuth scope).
+- F-66 `bundle update --conservative activesupport` (8.1.4 → 8.1.4.1), suite green; lockfile only.
+- S-9, S-12: security findings, details held locally; each a small neutral-titled PR.
+- F-30 duplicate `## [0.0.1]` CHANGELOG section (`CHANGELOG.md:712` and `:758`): merge the bodies.
+- MathJax (`pymdownx.arithmatex`, `mkdocs.yml:94,131-132`) and the `macros` plugin are unused by any page; `mkdocs.yml`, so never low risk.
+- F-39 declare `logger` as a runtime dependency; F-42/F-43 drop `mutex_m`, `shoulda` → `shoulda-context`: gemspec PRs.
+- F-46 redundant `require 'set'` (`utilities.rb:5`, `transport/redis_transport.rb:7`); trivial.
+- F-31 add `docs/llms.txt` (prompt_manager#24 precedent).
 
 ## Open bomberbot PRs
 
-- [#9](https://github.com/MadBomber/smart_message/pull/9) `bomberbot/drop-polyfill-script` → develop. docs: drop unused polyfill script. Review clean. Labeled `needs-dewayne` (live site changes only via `main`). Security fix, so not merged as low risk.
-- [#10](https://github.com/MadBomber/smart_message/pull/10) `bomberbot/fix-dlq-inspect-limit` → develop. fix(dlq): `inspect_messages` returns the first `limit` entries. New tests fail on develop, pass on branch; suite 319/947/0F/27S. Review clean (2 rounds). Touches `lib/`, so not low risk.
-- [#11](https://github.com/MadBomber/smart_message/pull/11) `bomberbot/test-ci` → develop. ci: test workflow (Ruby 4.0, 4.1.0-preview1, redis:7), deletes `.travis.yml`, adds x86_64-linux to the lock. CI green. Review hit the 3-round cap with no defects left. Ruby 3.3/3.4 dropped from the matrix (locked gems need 4.0).
-- All three add a CHANGELOG `[Unreleased]` line; the second and third to merge need a trivial keep-both conflict fix.
+- [#21](https://github.com/MadBomber/smart_message/pull/21) `bomberbot/assert-dispatcher-routing` → develop. test(dispatcher): assert routed messages reach both processors. Fixes #14. Test-only (+30/−87). New test fails under a no-op `route` and a no-op delivery probe; develop's passes under both. Suite 443/1760/0F/0E/0S; CI green. Review hit the 3-round cap (round 3 caught and reverted a stray CHANGELOG heading rename); no open defects. Cap hit, so not self-merged.
+- [#22](https://github.com/MadBomber/smart_message/pull/22) `bomberbot/dlq-replay-docs` → develop. docs: match DLQ replay notes to the code. 2 lines in `docs/reference/dead-letter-queue.md`. Repro scripts; suite 443/0F; `mkdocs build --strict` clean (macros removed in a scratch copy). CI green. Review hit the 3-round cap with nothing open against the diff. Cap hit, so not self-merged.
+- [#23](https://github.com/MadBomber/smart_message/pull/23) `bomberbot/replay-stored-class` → develop. fix(dlq): replay a dead letter only as the class it was stored for. `lib/` (dead_letter_queue.rb, one line in transport/base.rb), tests, one docs sentence, CHANGELOG line. New tests fail on develop (2F+1E), pass on branch; suite 447/1776/0F/0E/0S; examples 21/21; CI green. Review hit the 3-round cap, no defects open. Touches `lib/`, so not low risk. #21 and #23 each add a CHANGELOG `[Unreleased]` line, so the second to merge needs a keep-both fix.
 
 ## Merged bomberbot PRs
 
-- (none)
+- [#9](https://github.com/MadBomber/smart_message/pull/9) docs: drop unused polyfill script (merge commit, 2026-11-10). Live site still serves `main`'s old `mkdocs.yml` until a release.
+- [#10](https://github.com/MadBomber/smart_message/pull/10) fix(dlq): `inspect_messages` returns the first `limit` entries (squash, 2026-11-10). Kept verbatim through the 0.1.0 rewrite.
+- [#11](https://github.com/MadBomber/smart_message/pull/11) ci: test workflow on Ruby 4.0/4.1.0-preview1 with Redis (squash, 2026-11-11; Dewayne asked Copilot to resolve its CHANGELOG conflict).

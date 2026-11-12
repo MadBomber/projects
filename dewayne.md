@@ -43,10 +43,6 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## smart_message
 
-- [ ] Review [smart_message#9](https://github.com/MadBomber/smart_message/pull/9) (drops an unused third-party script from the docs site; details in the bomberbot final report of 2026-11-10). The docs deploy only from `main`, so the live site changes only after `develop` reaches `main` (or cherry-pick #9's `mkdocs.yml` line to `main`) and the Pages deploy runs. The same line is in the `mkdocs.yml` of agent99, htm, ragdoll-docs, sqa, sqa-cli and sqa-tai. (added 2026-11-10)
-- [ ] Review [smart_message#11](https://github.com/MadBomber/smart_message/pull/11) (test CI; touches `.github/` and `Gemfile.lock`, so not merged as low risk). After merge, make `test (4.0)` and `test (4.1.0-preview1)` required checks on `develop` (and `main`). (added 2026-11-10)
-- [ ] smart_message gemspec floor: `required_ruby_version >= 3.0.0`, but the locked breaker_machines 0.21.2 and chrono_machines 0.11.0 need Ruby 4.0 (CI on #11 failed `bundle install` on 3.3/3.4). Raise the floor to `>= 4.0`, or loosen those two deps if 3.x matters. (added 2026-11-10)
-- [ ] Review [smart_message#10](https://github.com/MadBomber/smart_message/pull/10) (DLQ `inspect_messages` fix; `lib/` change). (added 2026-11-10)
 
 ## gem-skill
 
@@ -114,4 +110,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review [htm#31](https://github.com/MadBomber/htm/pull/31) (makes `HTM_PROPOSITION__ENABLED=false` actually disable extraction; config coercion plus test). Touches `lib/htm/config.rb`, so not self-merged. 648 tests green. (added 2026-11-11)
 - [ ] Review [htm#30](https://github.com/MadBomber/htm/pull/30) (`htm_mcp help` text: `HTM_CHUNKING__CHUNK_SIZE/CHUNK_OVERLAP`, the proposition default, the `fiber` backend and the connection timeout; plus a test). Touches `lib/htm/mcp/cli.rb`, so not self-merged. 650 tests green. (added 2026-11-11)
 - [ ] Optional: turn on "Automatically delete head branches" for htm. Merged bot branches pile up otherwise; this visit deleted ten. (added 2026-11-11)
-
+- [ ] smart_message: close issues [#6](https://github.com/MadBomber/smart_message/issues/6), #7, #8, #12, #13, #15, #16 and #17. Each is fixed on `develop` by your 0.1.0 commit 07af3d4; BomberBot commented with evidence on each. `Fixes #N` only auto-closes from `main`. (added 2026-11-12)
+- [ ] smart_message: the live docs site still serves `main`'s old `mkdocs.yml` (the script #9 removed). It goes away when you merge `develop` → `main` for the 0.1.0 release, or cherry-pick ffa364f to `main` sooner. (added 2026-11-12)
+- [ ] Review [smart_message#21](https://github.com/MadBomber/smart_message/pull/21) (test-only, Fixes #14) and [smart_message#22](https://github.com/MadBomber/smart_message/pull/22) (2-line DLQ docs fix). Both green; review loops hit the 3-round cap, so not self-merged. (added 2026-11-12)
+- [ ] Review [smart_message#23](https://github.com/MadBomber/smart_message/pull/23) (DLQ replay rebuilds an entry as its stored class; `lib/`). Details in the 2026-11-12 bomberbot final report. (added 2026-11-12)

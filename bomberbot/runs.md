@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 02:15 smart_message
+
+- `develop` existed (07af3d4). Since the last visit Dewayne merged #9, #10 and #11 and pushed the 0.1.0 rewrite (07af3d4) to `develop`; CI green.
+- New PRs (all → `develop`, none stacked):
+  - [#21](https://github.com/MadBomber/smart_message/pull/21) test(dispatcher): assert routed messages reach both processors. Fixes #14. Source: **issue/brain** (F-33/F-34, F-61). Fails under a no-op `route` probe where develop's test passes; suite 443/1760/0F/0E/0S; CI green. Review hit the 3-round cap, no open defects → not low risk, awaiting Dewayne.
+  - [#22](https://github.com/MadBomber/smart_message/pull/22) docs: match DLQ replay notes to the code. Source: **judgment** (improver, F-62). 2 lines; repro scripts; `mkdocs build --strict` clean; CI green. Review hit the cap with nothing open on the diff → not self-merged (cap rule).
+  - [#23](https://github.com/MadBomber/smart_message/pull/23) fix(dlq): replay a dead letter only as the class it was stored for. Source: **security** (S-8, neutral title). Fails on develop (2F+1E), passes on branch; suite 447/1776/0F; examples 21/21; CI green. Review cap hit, no defects open. `lib/` → awaiting Dewayne.
+- Merged (low risk): none (both docs/test PRs hit the review cap). Merged after approval: none this visit (#9–#11 were merged by Dewayne before it).
+- Tended: nothing open before this visit.
+- Audit: **security** (2nd run, at 07af3d4): S-8–S-12 held locally; F-60.
+- Issues answered: #6, #7, #8, #12, #13, #15, #16, #17 (fixed on develop by 07af3d4, evidence posted; Dewayne to close); #14 (partly fixed; PR #21).
+- Issues filed: [#18](https://github.com/MadBomber/smart_message/issues/18) Redis subscriber gives up for good (F-60), [#19](https://github.com/MadBomber/smart_message/issues/19) no LICENSE/`spec.license` (F-63), [#20](https://github.com/MadBomber/smart_message/issues/20) unresolvable handlers accepted at subscribe (F-64).
+
 ## 2026-11-12 02:08 aia
 
 - `develop` already existed (2c1d77b); it is now 22120fa.
