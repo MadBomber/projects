@@ -614,3 +614,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Dependency choices (F-70):** hashie 6.0.0 is out but `~> 5.0` blocks it; chrono_machines 0.12.x adds a native (Rust) extension; no RuboCop config, so bomberbot has no lint gate here; Dependabot alerts are off.
 - **Rails eager-load prints a breaker_machines "async not in bundle" warning** since 0.1.0 dropped `async`. Upstream issue in breaker_machines, or accept.
 - **S-2 / S-10 / S-11** (held locally): two need a design call, one is close-or-opt-in. See the 2026-11-12 final report.
+
+## 2026-11-12 shared_tools
+
+- **Cut 0.7.2?** `develop` has four merged fixes (#5–#8) since v0.7.1, including the browser fix for issue #3, which gem users still hit. BomberBot replied on #3 that develop fixes it; close #3 at release.
+- **CHANGELOG has no headings for released 0.5.0, 0.6.0, 0.7.0, 0.7.1 (F-30).** Everything since 0.4.4 sits under `## Unreleased` (tag dates: 0.5.0 2026-07-12, 0.6.0/0.7.0 2026-11-01, 0.7.1 2026-11-02; `tool_name` from 0.7.0 is never mentioned). Split it now, or at the 0.7.2 release? It writes version-stamped history, so BomberBot left it.
+- **`Browser::BaseTool` is verified unused (F-5).** Delete with a CHANGELOG "Removed" line, deprecate then delete, or keep? Its doc comment invites outside subclasses.
+- **Template tools reach the model (F-31).** `SecureToolTemplate` and `ErrorHandlingTool` are eager-loaded, so aia offers them to the LLM. Move them to examples/ or a never-loaded namespace?
+- **`docs/development/changelog.md` is a hand-kept copy that drifts;** snippet-include `CHANGELOG.md` as asgard does.
+- **Lazy Chrome in `Browser::*` sub-tools (F-32)** would drop the CI `FERRUM_PROCESS_TIMEOUT` workaround and stop leaking Chrome processes; it changes when driver errors surface.
+- **Ruby 4.1 in the CI matrix** once it is released (#9 runs 3.3/3.4/4.0).
+- **Security decisions S-3, S-4, S-11** (held locally; see the 2026-11-12 final report): the auto_execute default vs. the docs, how eval tools are described and loaded, and pinning MCP `npx` packages.

@@ -111,3 +111,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] smart_message: the live docs site still serves `main`'s old `mkdocs.yml` (the script #9 removed). It goes away when you merge `develop` → `main` for the 0.1.0 release, or cherry-pick ffa364f to `main` sooner. (added 2026-11-12)
 - [ ] Review [smart_message#21](https://github.com/MadBomber/smart_message/pull/21) (test-only, Fixes #14) and [smart_message#22](https://github.com/MadBomber/smart_message/pull/22) (2-line DLQ docs fix). Both green; review loops hit the 3-round cap, so not self-merged. (added 2026-11-12)
 - [ ] Review [smart_message#23](https://github.com/MadBomber/smart_message/pull/23) (DLQ replay rebuilds an entry as its stored class; `lib/`). Details in the 2026-11-12 bomberbot final report. (added 2026-11-12)
+
+## shared_tools (2026-11-12)
+
+- [ ] Optional, after merging [#9](https://github.com/MadBomber/shared_tools/pull/9): make `test (3.3)`, `test (3.4)` and `test (4.0)` required status checks on `develop` and `main`.

@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 02:35 shared_tools
+
+- `develop` existed (1e8ae43, #8 merged by Dewayne 2026-11-07 as a merge commit, no comments). No bot PRs open at start; tender deleted 4 merged `bomber/` branches.
+- New PRs (all → `develop`, none stacked):
+  - [#9](https://github.com/MadBomber/shared_tools/pull/9) ci: run the Minitest suite on push and pull request. Source: **brain finding F-6**. Green on Ruby 3.3/3.4/4.0 (964 runs, 0F/0E); two red runs led to xclip+xvfb and `FERRUM_PROCESS_TIMEOUT=30`. Review hit the 3-round cap (5 fixed, 14 rejected, 0 open). `.github/` → not low risk.
+  - [#13](https://github.com/MadBomber/shared_tools/pull/13) docs(readme): match examples and facts to the code. Source: **judgment/adoption** (improver, F-19). EvalTool `action:` example, Ruby 3.3 floor, LICENSE link, crmne/ruby_llm URL, optional gems, `-Itest`, coverage note; before/after transcripts; suite 964/0F. Review: 0 open, 3 deferred, 2 rejected → deferred notes block the low-risk self-merge; awaiting Dewayne.
+  - [#14](https://github.com/MadBomber/shared_tools/pull/14) fix(disk): normalize paths before the root check. Source: **audit**. New `local_driver_test.rb` (7 tests) fails on develop (2F+2E), passes on branch; suite 971/0F/0E, also with LANG unset; `resolve!` is protected, aia has no `Disk::` references, so aia's suite was not run. Review hit the cap (0 open, 3 deferred). `lib/` → awaiting Dewayne.
+  - A dead-scripts removal builder was started and stopped before pushing, to make room for #14; it became issue #11.
+- Merged (low risk): none. Merged after approval: none (nothing was approved and open).
+- Audit: **security** (first run, at 1e8ae43): bundle-audit clean; F-20..F-25 and S-1..S-11 (held locally). Improver and builder leftovers F-26..F-35. Dead-code scan reached 1e8ae43.
+- Issues answered: #3 (fixed on develop by #5, not yet released; repro against v0.7.1 and develop).
+- Issues filed: [#10](https://github.com/MadBomber/shared_tools/issues/10) (CheckoutTool ref/file ambiguity, F-20), [#11](https://github.com/MadBomber/shared_tools/issues/11) (broken leftover scripts, F-26/F-27), [#12](https://github.com/MadBomber/shared_tools/issues/12) (docs examples raise ArgumentError, F-29).
+
 ## 2026-11-12 02:15 smart_message
 
 - `develop` existed (07af3d4). Since the last visit Dewayne merged #9, #10 and #11 and pushed the 0.1.0 rewrite (07af3d4) to `develop`; CI green.
