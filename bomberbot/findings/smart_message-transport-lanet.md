@@ -10,7 +10,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 |-------|----------|--------|--------|
 | security (+dead-code) | 2026-11-10 | c33acdf | S-1…S-6 (4 open, 1 theoretical, 1 dev-lockfile); F-1…F-13. F-1: the gem cannot run against the real `lanet` API |
 | dependencies | 2026-11-12 | b9b206e | F-20…F-24 (+F-16 relock recipe verified on 4.0.9, clears S-6; F-24 floor needs decision); dead-code re-scan @ b9b206e: nothing new |
-| adoption | — | — | not run yet |
+| adoption | 2026-11-12 | b9b206e | F-30…F-34 (+F-13 update); README runs on 0.0.17 with F-2/F-10/F-17 workarounds except F-18; no mkdocs/examples/llms.txt; gem-skill fetch-only; dead-code re-scan @ b9b206e: nothing new |
 | quality | — | — | not run yet (RuboCop baseline: 273 offenses, `rake` default task red) |
 
 ## 2026-11-10 — bomberbot — security + dead-code (first visit) — develop @ c33acdf
@@ -45,8 +45,7 @@ Dead-code scan reached develop @ c33acdf. bundle-audit DB @ bc80fbb (2026-11-09)
   status: **issue #2, PR open [#9](https://github.com/MadBomber/smart_message-transport-lanet/pull/9)** (2026-11-12).
 - **F-6:** You can't reconnect after `disconnect`: `@shutdown` is never reset (`:109`). status: **issue #4, PR open [#8](https://github.com/MadBomber/smart_message-transport-lanet/pull/8)** (2026-11-12).
 - **F-7:** `handle_smart_message` falls back to `message.to_s` when the payload is missing (`:354`). That passes
-  the envelope's `inspect` string to `receive` and makes the guard at `:356` dead. status: open (small fix; moot
-  until F-1).
+  the envelope's `inspect` string to `receive` and makes the guard at `:356` dead. status: **issue [#15](https://github.com/MadBomber/smart_message-transport-lanet/issues/15)** (2026-11-12; fail-before test verified by the improver).
 - **F-8:** Documented config options are inert: `connection_timeout`, `max_message_size` and
   `enable_compression` are never read, `network_interface`/`encryption_key`/`signing_key` go only into a hash
   real lanet rejects, and the README's `capabilities:` option is never read either. status: **needs Dewayne's
@@ -99,3 +98,15 @@ Dead-code scan reached develop @ b9b206e (`lib/` unchanged since c33acdf; debrid
 - **F-27:** two tests in `test_lanet_concurrency.rb` (`:14-40`, `:309-359`) exercise a plain Hash under the GVL, not transport code, and so lend false support to the README's "Thread-Safe" claim (F-11). status: open; decide together with F-11. (improver C5)
 - **F-28:** dead test setup: `test_lanet_concurrency.rb:6-12` assigns `@transport`, which no test reads, and `test_lanet_integration.rb:53` uses `puts` in a never-called handler. status: open, low. (improver C3)
 - **F-29:** three near-identical `create_transport` helpers across the test files, each built with `allocate` + `instance_variable_set`. This bypasses `initialize`/`configure`, which is why F-2 stayed hidden. status: open, low. (improver C4; consolidate after #3)
+
+## 2026-11-12 — bomberbot — adoption (+dead-code) — develop @ b9b206e
+
+Dead-code scan reached develop @ b9b206e (`lib/` unchanged since c33acdf; debride's 13 candidates are the same public API / Base hooks; nothing new). README examples were run on Ruby 4.0.9 against real smart_message 0.0.17, with scratch-only workarounds for F-17 (`ap` stub, plain logger), F-10/F-1 (Lanet stand-in) and F-2 (configure/logger shim). Everything the README shows works except `header[:capabilities]=` (F-18). No mkdocs, no examples/. gem-skill: fetch-only (generation sends content to an LLM).
+
+- **F-13 (update):** the built gem now also ships `.github/workflows/ci.yml` (added by #6), alongside `.envrc` and `COMMITS.md`. Still gemspec, still Dewayne's call.
+- **F-30:** the default logger can't be built. `lanet.rb:48` `Logger.new($stdout)` resolves to `SmartMessage::Logger`, a module with no `.new`, so any `Lanet.new` without `logger:` raises `NoMethodError`. Hidden today by F-2; the stub Base sets `@logger` itself. The README's "Logging" section also says the transport uses the SmartMessage logger, which it ignores. Fix: default to `SmartMessage::Logger.default` plus a regression test; build with or after #3 and check the local security note first (don't use `::Logger.new`). status: **issue [#14](https://github.com/MadBomber/smart_message-transport-lanet/issues/14)**.
+- **F-31:** the README's install steps don't work: RubyGems has no such gem (API 404), no tags, no releases. status: **needs Dewayne's decision** (publish 0.0.1, or a "not yet on RubyGems; use `github:`" note until F-1).
+- **F-32:** the CHANGELOG's `## [0.0.1] - 2025-09-03` is the bundler scaffold placeholder, dated before the first commit, never tagged or published, and omits the real implementation. status: **needs Dewayne's decision** (decide with F-31).
+- **F-33:** gemspec metadata gaps: `gem build` warns that `homepage_uri` and `source_code_uri` duplicate; no `bug_tracker_uri`, `documentation_uri` or `rubygems_mfa_required`; `changelog_uri` mis-indented. status: **issue [#16](https://github.com/MadBomber/smart_message-transport-lanet/issues/16)** (gemspec, never low risk).
+- **F-34:** no runnable example and no `llms.txt`; gem-skill's fetcher gets `examples: nil`. status: open, sequenced after F-1 (would document a transport that can't run).
+- **F-28 (update):** the `test_lanet_concurrency.rb:6-13` half is a ready −8-line test-only removal (improver C3: no reader of `@transport` in that file; teardown can never fire; suite stays 58/299). The `puts` half waits for #9.

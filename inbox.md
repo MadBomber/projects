@@ -695,3 +695,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **#14 baselines:** regenerate the example baselines only, or also make `examples/regression_test.rb` mask timing lines and parallel output order so they don't drift immediately?
 - **Process:** the responder agent's definition forbids commenting on `bomberbot`-labelled issues unless someone else commented, which blocked "fixed on develop" notes on #12/#13; the main session posted them under the prompt's **Answer issues** rule. Should the responder definition allow "fixed on develop" notes on bot-filed issues?
 - **Adoption:** named parallel groups (`parallel :name, depends_on:`) work under `call` and `call_parallel` since #21 but appear nowhere in the README, docs or examples (F-23/F-41); a short README section plus a `docs/api/pipeline.md` entry would make the feature findable.
+
+## smart_message-transport-lanet (2026-11-12, visit 3)
+
+- **Queue rule vs. low-risk work:** the "3+ open bomberbot PRs → skip new work" rule blocked a test-only, self-mergeable fix for #12 (~2 lines) that wouldn't have added to your review queue. Should low-risk (self-mergeable) PRs be exempt from the queue cap? Followed the rule as written this visit.
+- **F-31 install steps:** the README says `gem install smart_message-transport-lanet`, but it's not on RubyGems (404), with no tags or releases. Publish 0.0.1, add a "not yet on RubyGems; use `github:`" note, or leave it until F-1? Taste ("change the code, not the docs") points at publishing, but F-1 means the gem can't run against real lanet yet.
+- **F-32 CHANGELOG 0.0.1:** the `[0.0.1] - 2025-09-03` entry is the bundler scaffold placeholder and predates the first commit. Fold it into `[Unreleased]` or rewrite it at release time? Decide with F-31.
+- **Adoption, after F-1:** a two-node loopback `examples/` demo, then `llms.txt` (F-34). Documenting today's API would describe code that can't run.
+- **Defaults read at require time:** `DEFAULT_CONFIG` reads ENV and the hostname at load, so dotenv-style late env is ignored. Compute in `default_options` while keeping the constant (whoever fixes #10 could do it).
