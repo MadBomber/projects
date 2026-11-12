@@ -878,3 +878,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **PortfolioOptimizer weight bounds (F-61).** `max_weight`/`min_weight` aren't honoured after renormalizing. Redistribute the excess, or reject infeasible samples? Raise on infeasible bounds?
 - **SeasonalAnalyzer threshold (F-62).** `detect_seasonality?` can't fire on daily data; use month-over-month returns or recalibrate the 2.0 threshold?
 - **Silent fallbacks for unknown options** in PatternMatcher (`detect_chart_pattern(:typo)` → `[]`, `find_similar(method: :dwt)` → euclidean). Raise `ArgumentError` listing valid values?
+
+## smart_message-transport-named_pipes (2026-11-12 08:35 visit 6, BomberBot)
+
+- **Review queue.** #20, #21 (stacked on #20), #22, #27 are all rebased, green and MERGEABLE; nothing new is built until they move. Ready next once they do: #24 (cleanup:false readers), #28 (ENV at require), #23 (raising `receive`), #25+#30 (CI perms + Ruby 4.0).
+- **Pub/sub or work queue? (F-40).** One FIFO per message class means several subscribers to one class *share* messages (20 publishes split 13/7) instead of each getting all of them, though the README calls the gem pub/sub. Fan out (a FIFO per subscriber, publisher writes to each) or document it as a work queue? This also decides who owns cleanup of a shared FIFO (#29).
+- **One reader-loop rework.** #14, #18, #23, F-38 and F-43 all live in `start_pipe_reader`'s ~30-line blocking-open loop. One designed change (hold the FIFO open `r+` or keep a dummy writer, per-channel stop flag, per-message rescue in an extracted `deliver_lines`) beats four patches on the same lines. OK to do it as one PR after the queue clears?
+- **Shared ENV pattern across transports.** sm-transport-nats (`nats.rb:28-29`) and -rabbitmq (`rabbitmq.rb:23`) also read ENV inside a load-time constant (#28 here). Fix each the same way, or give smart_message's `Transport::Base` an ENV overlay hook?
+- **CI against the real smart_message** once #6 is settled: the stub Base hid F-14/F-15/F-16; a job against the released Base would have caught each.

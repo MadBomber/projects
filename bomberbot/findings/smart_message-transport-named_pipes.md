@@ -9,7 +9,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 | audit | last run | commit | result |
 |-------|----------|--------|--------|
 | security (+dead-code) | 2026-11-12 | 6725e5c | bundle-audit clean; S-7 new (local); S-5 resolved by #4; S-1–S-4, S-6 still hold; F-34 (failing receive drops buffered messages) → #23, F-35 (CI token perms) → #25; dead-code: none new (F-1 resolved #8; F-2/F-3 hold); +F-36 → #24, F-37 → merged #26 |
-| quality | 2026-11-10 | 2a49fcc | F-8…F-13 (RuboCop 137 offenses baseline; 9 test skips); F-8→issue #12, F-11→issue #11 |
+| quality | 2026-11-12 | 52f8e45 | RuboCop 137→124 (82 autocorrectable); 44 runs/0F/9 skips, -w clean; flog 306.9 (start_pipe_reader 92.9); F-39 shared FIFO deleted under other subscribers → #29, F-40 competing-consumer vs pub/sub (Dewayne), F-41 duplicate test + setup, F-42 no RuboCop baseline, F-43 reader untestable in isolation, F-44 CI lacks Ruby 4.0 → #30; +F-45 (improver) ENV read at require → #28 |
 | dependencies | 2026-11-10 | 2a49fcc | F-14…F-21 (+F-22/F-23 from triage/improver); stub checked against real smart_message 0.0.17 — framework path works, README transport API doesn't; minitest 6.1.0 blocked by `~> 5.16`; Ruby floor 3.2 is EOL. F-15→#13, F-22→#14, F-16→#15 |
 | adoption | 2026-11-12 | b2042fc | F-24…F-32 (README/examples never ran against any smart_message — `attribute` DSL; Related Projects names nonexistent gems; gem unpublished/untagged; silent EPIPE message loss); +F-33 (improver) connect-after-disconnect; no mkdocs; no llms.txt; gem-skill blocked by #6 |
 
@@ -217,3 +217,41 @@ resolved by #8; F-2, F-3 hold (needs Dewayne's decision); F-4 lib part resolved 
 still hardcodes `"0.0.1"` (requiring version.rb first → superclass mismatch); F-12 holds.
 F-8 note: every `NamedPipes.new` adds an `at_exit` hook holding the instance and re-sets the
 traps; folds into the #12 fix.
+
+## 2026-11-12 (visit 6) — bomberbot — quality audit — develop @ 52f8e45
+
+RuboCop 1.92.2: 124 offenses / 8 files (was 137 at 2a49fcc: −4 NestedMethodDefinition and −3
+MethodLength/AbcSize via #16, −3 UselessAssignment via #26). Tests 44 runs / 0F / 9 skips; `ruby -w`
+clean (was 3 warnings). flog 306.9 total, `start_pipe_reader` 92.9. reek 37 warnings. flay 358.
+Clean probes (not findings): reader latency with a held-open writer (0.00s); concurrent `subscribe`
+made no duplicate readers in 30 trials. Dead-code scan not re-run (develop unchanged since 52f8e45).
+
+- **F-39:** two subscribers to one class share a FIFO; only its creator tracks it, so the creator's
+  `disconnect` unlinks it (`cleanup_pipes` :320-323) and the survivor's reader loops ENOENT→sleep
+  while publishers drop every message silently. A leftover FIFO from a crash is never cleaned.
+  Probe `two_subs.rb`: after A disconnects, B gets 0 of 10 new messages, publish errors=0.
+  Ownership semantics depend on F-40. status: **issue [#29](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/29)**.
+- **F-40:** one FIFO per channel makes multiple subscribers *compete* (20 publishes split 13/7)
+  rather than each getting every message, though README says pub/sub and examples/README.md:84
+  suggests multiple subscribers per type. Fan-out per subscriber, or document as a work queue?
+  status: **needs Dewayne's decision** (inbox).
+- **F-41:** `test_timeout_on_write_to_blocked_pipe` (errors_test:50-68) and
+  `test_pipe_timeout_when_no_reader` (integration_test:96-113) are the same test (each waits a real
+  timeout); setup/teardown copied across all three test files. Fix: drop the integration copy,
+  share setup in test_helper. status: open, verified — test-only PR once #20/#21/#27 land.
+- **F-42:** RuboCop runs in the default `rake` task with no baseline: 124 offenses (82
+  safe-autocorrectable; 26 `Style/StringLiterals`). `.rubocop.yml` lacks `NewCops:`; examples have
+  shebangs without the exec bit. status: open, verified; autocorrect one area per PR after the lib PRs land.
+- **F-43:** the whole read/dispatch/rescue loop is inline in `start_pipe_reader`'s `Thread.new`
+  block (flog 92.9), untestable in isolation (cause of 2 skips). Extract `deliver_lines(io, klass)`
+  as part of the #23 fix. status: open; fold into #23/#14/#18.
+- **F-44:** CI matrix is 3.2/3.3/3.4 only, no Ruby 4.0; suite passes on 4.0.9 and 4.1.0-preview1.
+  status: **issue [#30](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/30)** (same file as #25).
+- **F-45:** (improver) `DEFAULT_CONFIG` reads `SMART_MESSAGE_PIPE_BASE`/`SMART_MESSAGE_NAMESPACE`
+  at require time; set later they're ignored (verified: `base_path` stays `/tmp/smart_message/pipes`).
+  The two env tests only assert non-empty strings. Fix: `default_options` merges ENV at call time.
+  status: **issue [#28](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/28)**.
+
+Re-confirmed at 52f8e45: F-2, F-3, F-10, F-12, F-13, F-21/F-38 hold; F-8 unchanged. Also
+(improver) gemspec `spec.bindir = "exe"`/`spec.executables` are dead (no `exe/`) — fold into an F-12
+packaging PR.

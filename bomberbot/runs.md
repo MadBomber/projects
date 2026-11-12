@@ -2,6 +2,15 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 08:35 smart_message-transport-named_pipes
+
+- **skipped: review queue full.** 4 bomberbot PRs open after tending (#20, #21, #22, #27), none approved; no new PRs, no merges.
+- Tended: rebased [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) (36fe37d), [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) (ea8bc56, still stacked on #20; first body line now says merge #20 first, then retarget) and [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22) (ae5ac38) onto `develop` 52f8e45; [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27) already current. All MERGEABLE, CI green 3.2–3.4, suites 0F.
+- Audit: **quality** (F-39…F-44, +F-45 from improver). RuboCop 137→124; 44 runs/0F/9S; `-w` clean.
+- Issues answered: [#11](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/11#issuecomment-6826045013) (fixed on `develop` by #16).
+- Issues filed: [#28](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/28) ENV read at require (F-45), [#29](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/29) shared FIFO deleted under other subscribers (F-39), [#30](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/30) CI lacks Ruby 4.0 (F-44).
+- Note: brief said branch prefix `bomberbot/`; existing PRs here use `madbot/` and were tended as-is.
+
 ## 2026-11-12 08:12 sqa
 
 - `develop` already existed (5ea98c8, unchanged since the 05:45 visit); not created.
