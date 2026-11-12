@@ -8,13 +8,13 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-10 | develop b0a7afc. bundle-audit (ruby_llm only, S-1 remainder), shell-outs, YAML/Marshal, ENV, file/upload paths, raw SQL, outbound HTTP. S-2 reconfirmed open; #16's search-filter hardening verified. New F-28, F-29, S-3. |
+| security | 2026-11-12 | develop 53fc937. bundle-audit (ruby_llm only, S-1 remainder, 3 advisories), shell-outs, YAML/Marshal/eval, ENV, file/upload paths, raw SQL, outbound HTTP. S-1/S-2/S-3 still open (S-3 re-found and folded back); S-4 not re-checked. New S-5. |
 | dead code | 2026-11-10 | develop 1ba1414. Improver fresh pass: F-21/F-31/F-32 confirmed dead; F-23 `examples/temp.rb` confirmed unreferenced + not shipped. Nothing else provably orphaned. |
 | dependencies | 2026-11-12 | develop 53fc937, Ruby 4.0.9. bundle outdated, bundle-audit (ruby_llm only, S-1 remainder), gemspec vs lock, runtime-dep usage grep, full-relock suite (green CI-mode, DB skipped), Ruby 4.1 load test. F-51 re-verified; F-11 updated (ruby_llm 2.2.0); new F-55–F-60. |
 | adoption | 2026-11-10 | First formal run @ develop 1ba1414. F-35–F-43 raised; F-23 re-confirmed. README markets a Unified arch the client API doesn't use; several README API examples inaccurate; no LICENSE file; no llms.txt; version 0.2.0 un-logged. |
 | quality | 2026-11-12 | First run @ develop 53fc937. flog/flay/RuboCop Lint (rubycritic/reek not run, time-box). F-44–F-48: hybrid-search helpers duplicated in the workflow; TextGenerationService RubyLLM setup always fails; hybrid fulltext arm ignores filters; class methods under `private` are public; OpenAI org/project setters misnamed. Top flog: workflow `build_pipeline`s (238, 200), `SearchEngine#search_similar_content` (128). |
 
-Dead-code scan last covered commit: 53fc937 (2026-11-12 08:18 improver pass: F-55 ruby-progressbar, F-62 MySQL branches; earlier 2026-11-12 pass: F-51 unused runtime deps, F-50, `Embedding.cosine_similarity`; F-31/F-32/F-23 still present)
+Dead-code scan last covered commit: 53fc937 (2026-11-12 08:30 improver pass: F-72 dead duplicate check, F-73 no-op Embedding callback; 2026-11-12 08:18 improver pass: F-55 ruby-progressbar, F-62 MySQL branches; earlier 2026-11-12 pass: F-51 unused runtime deps, F-50, `Embedding.cosine_similarity`; F-31/F-32/F-23 still present)
 
 ## Findings
 
@@ -122,3 +122,21 @@ Status check on 53fc937, Ruby 4.0.9, committed lock: CI-mode suite green (1314 r
 - **F-64** open (low, needs DB test). `Client#hybrid_search` records `options.slice(:limit, :candidate_limit)` (`client.rb:208`), but `limit` is a named keyword so it never reaches `options`.
 - **F-65** needs Dewayne's decision. `rake db:rollback` is listed in `rake -T` but only prints "not yet implemented". Implement via `MigrationContext#rollback`, remove, or leave?
 - **S-4** open (low). Security finding, details held locally.
+
+### 2026-11-12 (08:30 visit): security audit (develop 53fc937), plus improver, triage, responder
+
+Status check on 53fc937 (no code change since 08:18): S-1 remainder still flagged by bundle-audit; S-2 still present; S-3 re-found by the auditor and folded back into S-3; F-29 still present. YAML loads are all `safe_load`; no Marshal, `eval`, or user-driven `constantize`; secrets from ENV are not logged. Triage: develop and main CI green; one develop run on #24 failed on a runner apt/DNS flake (not a test failure).
+
+- **S-5** open (low). Security finding, details held locally.
+- **F-66** issue [#39](https://github.com/MadBomber/ragdoll/issues/39) (improver, reproduced without DB). `Client#add_tags` (`client.rb:377-383`) passes keywords to `TagService.add_tags_to_document`, which takes `document_id, tags` positionally (`tag_service.rb:106`): `ArgumentError` on every call.
+- **F-67** issue [#40](https://github.com/MadBomber/ragdoll/issues/40) (improver, read from code + `respond_to?` check). `DocumentEnrichmentWorkflow` calls `TextGenerationService.summarize`/`.extract_keywords` as class methods (`document_enrichment_workflow.rb:174,196`); only instance methods exist, so enrichment never stores a summary or keywords. Fix also closes F-32.
+- **F-68** open (improver, reproduced on pgvector). `ExtractKeywordsJob` (`extract_keywords_job.rb:17-20`) joins the keyword array into a String and writes it to a `text[]` column: `%w[ruby rag vectors]` stored as `["uby", " rag"]`. Fix: `update!(keywords: keywords_array)`. One-line PR candidate.
+- **F-69** issue [#41](https://github.com/MadBomber/ragdoll/issues/41) (improver, reproduced on pgvector). `Search` validates `search_type` in `%w[semantic hybrid fulltext]` (`search.rb:18`) but code records `hybrid_rrf`, `full_text`, `text_fallback`, `semantic_with_keywords`; `query_embedding` is `null: false` while hybrid/fallback pass nil. Every non-semantic search is dropped (rescued).
+- **F-70** open (improver, reproduced against a scratch DB). `rake db:migrate`, `migrate_status`, `schema`, `stats`, `truncate` call `Database.setup({auto_migrate: false})` (`db.rake:166,187,226,296,351`), which ignores configured `database.*` and hits `ragdoll_development`. Fix: merge `Ragdoll::Core.configuration.database_config`. Sequence after F-61/F-62 (same file).
+- **F-71** open (improver). `Database.migration_paths` (`database.rb:148-150`) resolves outside the gem; `migrate!` (`:29-32`) and `db.rake:195` each build their own correct path. Tests only check the string contains `db/migrate`. Small no-DB PR candidate.
+- **F-72** open (improver, removal). `find_duplicate_document` (`document_management.rb:170-175`) re-queries `find_by(location:, file_modified_at:)` after `find_by(location:)` already returned nil: can never match. 6 lines.
+- **F-73** open (improver, removal). `Embedding` `before_save :update_vector_columns` (`embedding.rb:45,265-268`) has an empty body; filter-building block duplicated at `:64-89` and `:97-122`.
+- **F-74** open (improver, reproduced on pgvector). `Client#add_text` uses `title` as location (`client.rb:284`), so two texts with the same title dedupe to the first. Fix needs a small choice (`text://<sha256>` location or `force: true`).
+- **F-75** needs Dewayne's decision. `Ragdoll::ExtractTextJob` calls `document.file_attached?`/`extract_text_from_file` (`extract_text_job.rb:11,16`), which have never existed. Public and documented in ragdoll-docs. Rebuild on `DocumentProcessor.parse`, deprecate and remove, or leave?
+- **F-76** needs Dewayne's decision (extends F-24). `Ragdoll::Core::SearchError` is never raised. Keep as API or deprecate?
+- **F-77** needs Dewayne's decision. `Tag#hierarchy[:depth]` is 1-based (`tag.rb:82`), the `depth` column 0-based (`:141`). Align (behaviour change) or document?

@@ -903,3 +903,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Request-schema story.** `validate_schema` is a stub (F-69), `get` drops `false` (#36), `default` NameErrors without a schema (#14). Real validation (json_schemer) or a plain field accessor, with docs to match? — BomberBot
 - **Test agents built from `info`.** `TestInfrastructure::TestAgent` sets ivars by hand and hid F-73 (and earlier F-2, F-48). Building test agents from `info` plus fake clients would test what users write. — BomberBot
 - **One public-API page.** F-19, F-52, F-73, F-76 all reduce to "what is agent99's public API?"; a short `docs/api` list plus matching `private` blocks would settle them together. — BomberBot
+
+## ragdoll (2026-11-12 08:30 visit)
+
+- **Default config can't store embeddings.** `defaults.yml` uses ollama `nomic-embed-text` (768 dims) but every vector column is fixed at 1536 (`create_ragdoll_embeddings.rb:12`, searches, propositions); pgvector rejects the insert. Switch the default model, use dimensionless `vector` columns, or make the dimension a migration-time setting? Likely behind many "doesn't work out of the box" experiences.
+- **F-75 `ExtractTextJob` has never worked** (calls methods that never existed). Rebuild on `DocumentProcessor.parse`, deprecate and remove, or leave?
+- **F-76 `Ragdoll::Core::SearchError` is never raised.** Keep or deprecate (with the F-24 list)?
+- **F-77 tag depth:** `Tag#hierarchy[:depth]` is 1-based, the column 0-based. Align or document?
+- **`GenerateEmbeddingsJob` ignores `chunk_size:`/`chunk_overlap:`**; fixing it changes `generate_embeddings!` across five content classes. Worth a planned refactor.
+- **`Ragdoll` facade gaps:** `Ragdoll::Core` delegates `add_tags`, `get_tags`, `extract_propositions`, `get_propositions`, `enrich_document`, `embed_multimodal`; `Ragdoll.*` exposes none, and `Ragdoll.client` ignores its argument. Fold into the delegator-retirement idea.
+- **ragdoll-rails drift:** it references `::Ragdoll::VERSION`, `::Ragdoll::Client`, and `Ragdoll.add_text(..., title:)`, none of which exist in core. A `Ragdoll::VERSION = Core::VERSION` alias is cheap; the rest belongs in ragdoll-rails.
+- **CI job timeout:** a runner DNS flake on develop (#24 push) burned 35 minutes; `timeout-minutes` on the job would fail fast. Low priority. — BomberBot

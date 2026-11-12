@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 08:30 ragdoll
+
+- `develop` already existed (53fc937, unchanged since the 08:18 visit); not created.
+- **skipped: review queue full.** Tender: #30, #31, #32 still open, unapproved, CI green 3.2/3.3/3.4/4.0, MERGEABLE, 0 behind develop, no reviews or comments. New PRs: none. Merged (low risk): none. Merged after approval: none. Tended: #30, #31, #32 (checked only).
+- **Audit:** security (oldest base commit), develop 53fc937. S-1 remainder, S-2, S-3 still open; new S-5 (held locally). The auditor first stopped on a Bash denial for `git archive`; the main session exported develop to scratch and resumed it.
+- **Improver:** F-66–F-77 (six reproduced, four on a throwaway pgvector DB). Triage: nothing new; develop/main green.
+- **Issues answered:** none (no comments from anyone but BomberBot).
+- **Issues filed:** [#39](https://github.com/MadBomber/ragdoll/issues/39) (F-66, judgment), [#40](https://github.com/MadBomber/ragdoll/issues/40) (F-67, judgment), [#41](https://github.com/MadBomber/ragdoll/issues/41) (F-69, judgment).
+- **Inbox:** default embedding dimension mismatch, F-75, F-76, F-77, chunk options, facade gaps, ragdoll-rails drift, CI timeout.
+
 ## 2026-11-12 08:40 agent99
 
 - `develop` already existed (c2b4e49, unchanged since 2026-11-10); not created.
