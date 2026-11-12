@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Seventh visit (2026-11-12 07:08)._ Skipped building: review queue full (#38, #39, #40 still open, unreviewed). Ran the second **security** audit (S-4–S-9 held locally; F-66 public). Filed #46 (`wait_for_key` pipe leak), #47 (`doom_loop_threshold` 0 crash), #48 (Redis `:auto` backend never falls back, changes types). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
+
 _Sixth visit (2026-11-12 04:18)._ Skipped building: review queue full (#38, #39, #40 still open, unreviewed). Ran a full-lib **quality** audit (F-52–F-58). Triage found released 0.6.0 breaks on ruby_llm 2.2.0 (tool approvals, MCP input): filed #43, a fix must ship from `main` (Dewayne's call). Filed #44 (token_budget unflagged after `reset_token_totals`, sync-safe) and #45 (`Robot#call` rescue `TypeError`). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
 
 _Fifth visit (2026-11-12 03:16)._ Skipped building: review queue full (#38, #39, #40 open, green locally, unreviewed). Ran a full **dead-code** audit at develop 9d407dd incl. 16 dependent repos (F-46, F-47); filed #41 (test_helper `rescue LoadError` modifier, F-48) and #42 (dead `compact_if_over_context_window`, F-46). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
@@ -46,6 +48,9 @@ else in this repo.
 - F-60 `token_budget` unflagged after `reset_token_totals`: issue [#44](https://github.com/MadBomber/robot_lab/issues/44). Sync-safe (`robot/budget.rb`, new test file); fix proven in scratch (1302 green). Touches the same file as PR #40, different hunks: build after #40 merges or stack on it.
 - F-59 released 0.6.0 breaks on ruby_llm 2.2.0: issue [#43](https://github.com/MadBomber/robot_lab/issues/43). Fix ships from `main`; needs Dewayne's choice (cap `< 2.2` + 0.6.1, or adapt `ToolCallGating`).
 - F-54 `Robot#call` rescue `TypeError` on bad context: issue [#45](https://github.com/MadBomber/robot_lab/issues/45), after the sync.
+- F-67 `Memory#wait_for_key` pipe leak: issue [#46](https://github.com/MadBomber/robot_lab/issues/46). Sync-safe hunk; ~3 lines + test.
+- F-68 `doom_loop_threshold` <= 0 crashes mid-run: issue [#47](https://github.com/MadBomber/robot_lab/issues/47). Sync-safe `initialize`; bundle F-69 dedupe if small.
+- F-66 Redis `:auto` backend never falls back / changes types: issue [#48](https://github.com/MadBomber/robot_lab/issues/48). Part (b) `ping` fix after the sync.
 
 ## Open bomberbot PRs
 

@@ -10,7 +10,7 @@ Dewayne's decision, issue #N.
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-10 | First run, at main ee0d562 (develop 8ec1d6e is 31 behind; findings checked against it). No lockfile committed; resolved in scratch on 4.1.0-preview1; bundle-audit clean. YAML via safe_load; ScriptTool uses argv + Shellwords; const_get gated to RubyLLM::Tool / RubyLLM::MCP. S-1..S-3 held locally. |
+| security | 2026-11-12 (v2) | Second pass at main ee0d562 (develop 9d407dd cross-checked); resolved fresh on Ruby 4.0.9 incl. ruby_llm 2.2.0. bundle-audit clean (DB 2026-11-11, 1359 advisories). Covered MCP config/transports, ScriptTool + robot_lab-sandbox 0.3.0, skills, paths, Memory/Redis, deserialization, SSRF (none in core), logging, tracked secrets. S-4..S-9 held locally; F-66 public. S-1/S-2 unchanged. |
 | dead code | 2026-11-12 | Full pass: debride + manual reference check (send/symbol/string) over lib/ at develop 9d407dd, cross-checked main ee0d562 and 16 dependent repos (14 robot_lab-* gems, robot_lab_project, robot_wars). 146 candidates; 41 used only by tests or nowhere, 37 of them public API (left alone). F-46, F-47; no sync-safe PR. |
 | dependencies | 2026-11-10 (v2) | First run at develop 83b27c4 / main ee0d562. bundle-audit clean on main's 0.6.0 lockfile; develop's stale `ruby_llm ~> 1.12` resolves to 1.16.0 with 3 High ReDoS CVEs (fixed >= 2.0.0.rc1), resolved by the pending sync (main already on 2.1.1). Ruby floor >= 4.0.9 justified (prompt_manager 1.2.0 requires it). No Dependabot. F-13/14/15. |
 | adoption | 2026-11-12 | First run, at main ee0d562 (v0.6.0) / develop 9d407dd, Ruby 4.1.0-preview1. 43 README blocks run in forked processes, no keys: 7 OK, 26 stop at provider config (expected), 10 dependent fragments, 4 real failures (F-24 `param` DSL, also ~60× in docs/; F-25 `tool.call({})`; F-26 `tsort` LoadError on 4.1). CHANGELOG lacks [0.6.0] (F-27), history drift (F-28). `mkdocs build --strict` passes. Examples not run, no LM Studio (F-29). All fixes wait for the sync except F-26 (simple_flow). |
@@ -103,3 +103,18 @@ Dead-code scan: not rerun (develop moved only by #26/#27/#34). Improver found no
 - F-64 (improver C-4): README "Token & Cost Tracking" never mentions `token_budget`/`cost_budget`/`BudgetExceeded`/`Narrator` (0.6.0 features). Status: open, after the sync (adoption).
 - F-65 (improver): `RobotLab.build(name: nil)` yields a robot named `""` though YARD says "auto-generated if nil" (`robot.rb:562` `name.to_s`). Status: needs Dewayne's decision (fix doc / generate a name / raise).
 - Notes: `Budget::Ledger#consumed` returns its live internal hash (inbox). Agents briefly switched `src/` checkouts (no file changes); future briefs should say "read via `git show origin/<branch>:path`, never checkout in src/".
+
+### 2026-11-12 07:08 (seventh visit; security audit v2 + improver + triage, main ee0d562 / develop 9d407dd)
+
+- S-4: security finding, details held locally. Status: needs Dewayne's decision.
+- S-5: security finding, details held locally. Status: open.
+- S-6: security finding, details held locally. Status: open.
+- S-7: security finding, details held locally. Status: needs Dewayne's decision.
+- S-8: security finding, details held locally. Status: open.
+- S-9: security finding, details held locally. Status: needs Dewayne's decision.
+- F-66 (auditor): with `redis` loaded and `REDIS_URL` set, `Memory` `backend: :auto` (a) JSON-parses every stored String on read (`"42"` → `42`, `Message` → Hash) and (b) never falls back to a Hash: `Redis.new` connects lazily, so the rescue in `create_redis_backend` (main `memory.rb:727-733`) never fires and `Memory.new` raises `Redis::CannotConnectError`, contrary to `docs/api/core/memory.md:308`. (b) is a one-line `ping` fix. After the sync (memory.rb differs). Status: issue [#48](https://github.com/MadBomber/robot_lab/issues/48).
+- F-67 (improver C-1): `Memory#wait_for_key` creates a `Waiter` (pipe, 2 fds) before the double-check; the early `return` skips `waiter.close` (fds 7 → 207 over 100 runs with GC off). Hunk identical on both branches (develop :794, main :816). Fix: create the waiter after the check, or `ensure waiter.close`. Status: issue [#46](https://github.com/MadBomber/robot_lab/issues/46).
+- F-68 (improver C-2): `DoomLoopDetector` threshold `0` → `ZeroDivisionError`, `-1` → `ArgumentError: negative array size`, mid-run inside tool execution. `initialize` identical on both branches. Fix: validate Integer >= 1 in `initialize`. Status: issue [#47](https://github.com/MadBomber/robot_lab/issues/47).
+- F-69 (improver C-3): `DoomLoopDetector#doom_loop?` and `#detect_period` duplicate the period scan (~-12 lines if `doom_loop?` reuses it). Bundle with #47. Status: open.
+- F-70 (improver): `Streaming` module (`lib/robot_lab/streaming/*`, 289 lines + 230-line test + `docs/api/streaming/*`) has no caller in lib, examples, 16 dependent repos, or aia; main's docs call it "not wired in"; `defaults.yml` still ships `streaming_enabled`, `max_iterations`, `max_tool_iterations`, `chat:` with no effect; develop README shows `streaming_enabled #=> true` as live. Public API. Status: needs Dewayne's decision (deprecate in 0.7 / wire it in / keep but drop dead config keys).
+- Notes: no issue needed a reply; no new CI, dependency releases, or outside activity since 04:18. Responder could not run develop's code (develop's gemspec wants ruby_llm 1.x; global gems have 2.2.0): a develop-specific scratch bundle is needed for repros until the sync.

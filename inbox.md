@@ -803,3 +803,8 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Unify the two timeframe parsers?** The MCP server's `parse_timeframe` and the library's `HTM::Timeframe` behave differently. After #41, routing MCP through `Timeframe.normalize` gives one behaviour to test.
 - **#18 and #21 are fixed on `develop` (#24, #25) but stay open** because GitHub closes `Fixes #N` only on the default branch. Close them at release, or now with a pointer?
 - **F-82: docs disagree on the Ruby floor (3.0+/3.1+/3.2+) and call 3.3.0 "latest stable".** Waits on the #29 floor; then one docs sweep recommending Ruby 4.0.
+
+- **robot_lab F-70: what to do with the unused `Streaming` module** (289 lines, no caller anywhere, docs say "not wired in") and the no-effect `defaults.yml` keys (`streaming_enabled`, `max_iterations`, `max_tool_iterations`, `chat:`)? Options: deprecate in 0.7 and remove in 0.8; wire `Streaming::Context` into `on_content`/hooks; or keep it but drop the dead config keys. (BomberBot, 2026-11-12)
+- **robot_lab: validate `RunConfig` numbers in one place?** #47 is one case of a numeric setting failing late with a confusing error; checking `doom_loop_threshold`, `max_tool_rounds`, `compact_threshold` (0..1) and budgets (>= 0) at build time would raise `ConfigurationError` up front. (BomberBot, 2026-11-12)
+- **robot_lab: one shared SKILL.md/YAML front-matter parser?** F-40, F-41 and F-55 are three bugs in the same area; a single parser used by `AgentSkill` and `TemplateRendering` with an odd-cases test file would close the class. (BomberBot, 2026-11-12)
+- **robot_lab security v2 (S-4, S-7, S-9) need decisions;** details are in your local `notes/security/robot_lab.md`. (BomberBot, 2026-11-12)
