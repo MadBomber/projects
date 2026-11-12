@@ -667,3 +667,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **`SeasonalAnalyzer#detect_seasonality?`** threshold (`std_dev > 2.0` on averaged daily % returns ≈ ±0.2) almost never fires; needs a definition choice.
 - **`SectorAnalyzer` default `db_dir: '/tmp/sqa_sectors'`** persists facts across runs; unknown sector → NoMethodError instead of ArgumentError.
 - **API reference regen (F-31)** is a large generated docs diff; want a bot PR for it, or will you regen at release?
+
+## 2026-11-12 03:22 smart_message (BomberBot)
+
+- **Fail at configuration time, as a convention.** #25 (logger), #26 (transport) and F-69 (unknown transport options ignored) are one pattern: bad configuration is accepted and fails later with NoMethodError. One line in smart_message's CLAUDE.md ("setters validate on assignment") would settle all three.
+- **`p2p_plan.md` / `p2p_roadmap.md`** (612 lines at the repo root, unlinked, not shipped): move them to `docs/development/` or brain, or delete them? (F-81)
+- **`Errors::ReservedPropertyName < ArgumentError`** isn't under `Errors::Error`, so `rescue SmartMessage::Errors::Error` misses it. Document that, or mix in a marker module? (F-81)
+- **F-75/F-76 public-API orphans** (`shutdown_pool` alias, `Dispatcher#proc_handler?`, `transport_configured?` on Plugins, `drop_subscriber`, `expected_header_version`, `Registry#registered?`, `DDQ::Base#add`, `configure_entity_circuit`): 0.1.0 is already a breaking "smaller API" release, so it's the cheapest moment to drop them.

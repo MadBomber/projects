@@ -17,7 +17,13 @@ Ruby 4.0+. The repo now has its own `CLAUDE.md`; read it before building.
 
 ## Status
 
-_Updated 2026-11-12 (fourth visit)._ Dewayne merged #9, #10 and #11, then pushed the 0.1.0
+_Updated 2026-11-12 (fifth visit)._ Skipped new PRs: review queue full (#21, #22, #23 open,
+green, unreviewed; tender changed nothing). Ran the full **dead code** audit at 07af3d4
+(F-71..F-77) and filed [#24](https://github.com/MadBomber/smart_message/issues/24) (decode
+errors skip the DLQ), [#25](https://github.com/MadBomber/smart_message/issues/25) (Pathname
+logger) and [#26](https://github.com/MadBomber/smart_message/issues/26) (Symbol transport).
+
+_Earlier, 2026-11-12 (fourth visit)._ Dewayne merged #9, #10 and #11, then pushed the 0.1.0
 rewrite (07af3d4, "feat!: release 0.1.0 with reliable delivery and a smaller API") to
 `develop`. It fixes almost the whole old backlog, including issues #6, #7, #8, #12, #13, #15,
 #16 and #17; BomberBot commented on each with evidence, and Dewayne can close them. Suite
@@ -43,6 +49,12 @@ works these before anything else in this repo.
 - DLQ replay should rebuild an entry as the class it was stored under. **PR open** [#23](https://github.com/MadBomber/smart_message/pull/23).
 - No end-to-end test of a channelless transport (file) through the DLQ to replay; `statistics[:by_class]` buckets `A::Order` and `B::Order` together (`split("::").last`).
 - `test/publish_test.rb:25-40` and `test/proc_handler_test.rb:33` processors only `puts`, so nothing checks the messages arrived (same pattern as #14); `subscribe_test` never shuts its dispatcher down. Test-only; after #21.
+- [#24](https://github.com/MadBomber/smart_message/issues/24) wrap non-SmartMessage errors in `Envelope.decode` as `DecodeError` so `receive` dead-letters them (F-78); `lib/`, ~6 lines + tests.
+- [#25](https://github.com/MadBomber/smart_message/issues/25) accept `Pathname` in `config.logger=`/Lumberjack, reject non-loggers (F-79).
+- [#26](https://github.com/MadBomber/smart_message/issues/26) reject a non-transport value in the `transport` setter (F-80).
+- F-71 + F-72 delete two dead test helpers and two unused test requires; test-only, low risk (after #23).
+- F-73 + F-74 delete 77 lines of uncalled city_scenario dashboard builders and example leftovers; examples-only, low risk.
+- F-77 tests for documented `replay_batch`, `configure_default`, `reset_logger`; test-only (after #23).
 - [#18](https://github.com/MadBomber/smart_message/issues/18) Redis subscriber gives up after `reconnect_attempts` while `connected?` stays true (F-60).
 - [#19](https://github.com/MadBomber/smart_message/issues/19) add LICENSE.txt (MIT) + `spec.license` (F-63); gemspec, so not low risk.
 - [#20](https://github.com/MadBomber/smart_message/issues/20) validate String/Symbol handlers at `subscribe` (F-64).

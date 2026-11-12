@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-12 03:22 smart_message
+
+- `develop` already existed (07af3d4, unchanged); not created.
+- **skipped: review queue full.** #21, #22 and #23 are still open, CLEAN/MERGEABLE, CI green, 0 behind develop, with no reviews or comments. The tender changed nothing.
+- **New PRs:** none. **Merged (low risk):** none. **Merged after approval:** none. **Tended:** #21, #22, #23 (checked only).
+- **Audit:** dead code (full pass, develop 07af3d4, five dependent repos freshly cloned): F-71..F-77. Improver: F-78..F-81 (it also re-found S-11, held locally; nothing new).
+- **Issues answered:** none (no comments from anyone else since the 02:15 visit).
+- **Issues filed:** [#24](https://github.com/MadBomber/smart_message/issues/24) decode errors skip the DLQ (F-78), [#25](https://github.com/MadBomber/smart_message/issues/25) Pathname/Symbol logger (F-79), [#26](https://github.com/MadBomber/smart_message/issues/26) Symbol transport (F-80). All three were reproduced on develop by the main session.
+- **Note:** a plain `git clone` leaves `src/` on `main`. Agents read `origin/develop` via `git show`/archive; future briefs should say so, or `src/` should be checked out at `origin/develop`.
+- **Next visit:** once the queue has room, #24 (silent message loss; small `lib/` fix), F-71+F-72 and F-73+F-74 (low-risk removals).
+
 ## 2026-11-12 03:16 robot_lab
 
 - develop already existed (9d407dd); nothing created.
