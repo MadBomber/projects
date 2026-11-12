@@ -2,6 +2,22 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-11 21:30 typed_bus
+
+- `develop` existed (0fe5860); nothing created. Dewayne merged #7/#8/#9 into `develop` on 2026-11-10, so the review queue was empty.
+- New PRs, all against `develop` and independent; they merge together cleanly (combined suite 211/0F):
+  - [#23](https://github.com/MadBomber/typed_bus/pull/23) `bomberbot/dlq-drain-snapshot`. Source: judgment/audit. It fixes F-46, a regression from our own #8: since #8, the documented DLQ retry pattern loops forever. Review clean after 2 rounds; suite 207/0F, 100% coverage.
+  - [#22](https://github.com/MadBomber/typed_bus/pull/22) `bomberbot/subscribe-requires-block`. Source: brain/issue, Fixes #16 (F-41). Review clean after 1 round; suite 205/0F, 100% coverage.
+  - [#24](https://github.com/MadBomber/typed_bus/pull/24) `bomberbot/gemspec-files-allowlist`. Source: brain/issue/adoption, Fixes #3 (F-6). Gem goes from 19.9 MB to 15 KB. Review hit the 3-round cap and the overrun is written up in the PR; labelled `needs-dewayne`.
+- Merged as low risk: none (all three touch `lib/` or the gemspec). Merged after approval: none pending; #7/#8/#9 were already merged by Dewayne.
+- Tended: nothing open. Answered: none (the fixed-on-develop notes on #1/#2/#6 already existed).
+- Audit: security, second run (S-33/S-34 held locally; F-46 confirmed).
+- Issues filed: [#19](https://github.com/MadBomber/typed_bus/issues/19) (example 15 fails on Ruby 3.4+, F-10/F-33/F-44), [#20](https://github.com/MadBomber/typed_bus/issues/20) (no test CI), [#21](https://github.com/MadBomber/typed_bus/issues/21) (empty `initialize_copy`, F-8).
+- Process notes:
+  - Builders started after the responder reported but before triage, auditor and improver finished, to save time on the 45-minute budget.
+  - The #17 builder was stopped before its first commit and replaced with the F-46 regression fix once the improver found it.
+  - Run directory removed at the end.
+
 ## 2026-11-10 09:11 aia
 
 - **Skipped new work: review queue full.** develop existed (9a00307); not created. Tender found all three bomberbot PRs (#172, #176, #177) still open and unapproved (reviewDecision empty) since the 02:45 visit, all MERGEABLE, none low-risk self-mergeable. Per the phase-2 gate (3+ open after tending → no new work), opened no PRs. Phase 1 still ran in full.
