@@ -985,3 +985,8 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **simple_flow masks parallel errors (F-79).** A raised task in a parallel step surfaces as `undefined method 'value' for nil` at `pipeline.rb:394`; fix on simple_flow's next visit.
 - **gem-skill (F-80).** Its verifier source bundle fills alphabetically and drops robot.rb/network.rb/tool.rb for robot_lab; prioritising files the README names would fix it for every large gem.
 - **Dev bundle on Ruby 4.1-preview.** `robot_lab-document_store` → fastembed → `tokenizers` won't build; consider an optional Gemfile group (pairs with #60).
+- **asgard #17 scope (2026-11-13).** `truncate_log --lines M` shipped as "Refs #17"; the issue also asks for `--days N`, run-start timestamp headers, an all-in-one `asgard logs truncate`, `changes/*.json` cleanup and a `log_retention` DSL setting. Close, rewrite, or keep as the tracker?
+- **asgard version vs. semver (2026-11-13).** develop's `VERSION` is 0.6.1 (bumped in 84a357e), but `[Unreleased]` now holds a new command (`truncate_log`) and a user-visible error change, which semver would call 0.7.0. Your release call.
+- **asgard scheduled-truncation example (2026-11-13).** A copy-paste `docs/examples.md` snippet that schedules `asgard schedule truncate_log --lines 5000` daily would show the feature off; `docs/schedule.md` says it "does not run on its own".
+- **asgard F-28 (2026-11-13).** `Doctor::ImportTracer` reaches private `record_import` via `send`; making it public adds a method to `Asgard::Doctor`. Fold into the F-3 question of whether Doctor is public API.
+

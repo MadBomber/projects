@@ -5,9 +5,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## asgard
 
-- [ ] Review [asgard#16](https://github.com/MadBomber/asgard/pull/16) (jobs start race: a start right after a job ends could say "already running" and start nothing; this is what turns macOS CI red on `develop`). Lib change, so not merged as low risk. (added 2026-11-10)
-- [ ] Review [asgard#12](https://github.com/MadBomber/asgard/pull/12) (`--doctor` reports `exit`/`abort` during `.loki` load instead of dying). Lib change. (added 2026-11-10)
-- [ ] Review [asgard#11](https://github.com/MadBomber/asgard/pull/11) (`docs/llms.txt`). Not merged as low risk: merging deploys the docs site (Pages runs on `docs/**` pushes to `develop`) and its review loop hit the cap. After merge, check https://madbomber.github.io/asgard/llms.txt is live. (added 2026-11-10)
+- [ ] Review [asgard#20](https://github.com/MadBomber/asgard/pull/20) (README, CHANGELOG and `docs/files.md` list your new `truncate_log`). Docs only, green, but not merged as low risk: merging deploys the docs site (Pages runs on `docs/**` pushes to `develop`). (added 2026-11-13)
+- [ ] Review [asgard#21](https://github.com/MadBomber/asgard/pull/21) (the dependency-arity error names the declaring task, `(needed by c)`, same wording as your 621df2e for #14). Lib change. Merges cleanly alongside #20. (added 2026-11-13)
+- [ ] Decide [asgard#17](https://github.com/MadBomber/asgard/issues/17): close it as done by `truncate_log --lines`, or keep it open for `--days N` / `changes/*.json` cleanup / `log_retention`? (added 2026-11-13)
 
 ## aia
 

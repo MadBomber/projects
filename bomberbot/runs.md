@@ -14,6 +14,20 @@ Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Ent
 - **Issues answered:** none needed a reply. **Issues filed:** [#67](https://github.com/MadBomber/robot_lab/issues/67) (F-77, adoption), [#68](https://github.com/MadBomber/robot_lab/issues/68) (F-78, adoption), [#69](https://github.com/MadBomber/robot_lab/issues/69) (F-82, judgment).
 - Notes: suites run on Ruby 4.0.9 (4.1-preview can't build `tokenizers`); RuboCop needed a temp copy of `robot_lab_project/.rubocop-base.yml`. Triage misread Dewayne's 14 PRs as bomberbot's queue; the skip rule counts only `bomberbot` PRs.
 
+## 2026-11-13 01:18 asgard
+
+- `develop` existed (4f3add1); not created. develop moved since 2026-11-10: Dewayne merged #11/#12/#16 (merge commits) and fixed #13 (26fe4e0), #14 (621df2e), #15 (b9f134a) himself, and added `truncate_log` (4f3add1, Refs #17). CI on develop green.
+- **New PRs (2, both independent, base `develop`, both await Dewayne):**
+  - [#20](https://github.com/MadBomber/asgard/pull/20) docs: list truncate_log in README, CHANGELOG and files.md. Source: **adoption/judgment** (triage + improver: a new command documented only on deep pages). +11/-1, docs only. Proof: every line checked against `bin/asgard <group> help truncate_log`; `mkdocs build --strict` clean; suite 640 runs 0 failures; CI 4/4 green. Review: code-review agent 1 round, clean. **Not merged as low risk:** touches `docs/**`, and Pages deploys on `docs/**` pushes to `develop` (htm#23 precedent).
+  - [#21](https://github.com/MadBomber/asgard/pull/21) fix(deps): name declaring tasks in dependency arity errors. Source: **brain finding F-24** (sibling of #14, whose output change Dewayne accepted in 621df2e). Refs #14. Shared private `_dep_declarers` helper; docs quoting the message updated; one CHANGELOG `### Fixed` line. Proof: new test red with fix reverted, green with it; suite 641 runs 0 failures; RuboCop clean; repro before/after; no match in dev. Review: code-review agent 1 round, clean. Not low risk (lib). Merges cleanly together with #20 (checked locally).
+- Merged (low risk): none. Merged after approval: none (queue was empty; #11/#12/#16 had been merged by Dewayne 2026-11-10).
+- **Tended:** 0 open bomberbot PRs on arrival; tender deleted seven leftover merged bot branches from origin (`bomber/*` ×4, `bomberbot/*` ×3).
+- **Audit: quality (first run)** at develop 4f3add1. All gates clean (RuboCop 0, flog under 50, flay 0, ArchSpec, bundle-audit, typos); Reek/Fasterer advisory only. New F-27 to F-30. Dead-code quick scan e206c49..4f3add1: nothing removable; reached 4f3add1.
+- **Issues answered (3):** #13, #14, #15. BomberBot noted that each is fixed on `develop` (with the commit) but not yet on `main`. #17 left alone (design call, to `dewayne.md`).
+- **Issues filed (2):** [#18](https://github.com/MadBomber/asgard/issues/18) `truncate_log NAME` "no such log" for a not-yet-run entry + per-group help mismatch (F-29); [#19](https://github.com/MadBomber/asgard/issues/19) three duplicated ancestor walks, `Pathname#ascend` (F-27).
+- No third PR: the #18 fix is marginal on brand-new code Dewayne tends to finish himself, and F-27 touches the same walk as the pending S-2 decision.
+- Notes: builders could not run `/simplify` or `/code-review` slash commands and used the code-review agent instead. asgard has no Rakefile (suite: `ruby -Ilib:test test/parallel_runner.rb`).
+
 ## 2026-11-13 01:10 typed_bus
 
 - `develop` already existed (97c56f1); not created.
