@@ -132,9 +132,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Decide on [dev#25](https://github.com/MadBomber/dev/pull/25): should `STATUS_DATE` / `STATUS_WEEK_OF` accept only YYYY-MM-DD? Today words like `tuesday` silently become a nearby date; #25 keeps that.
 - [ ] `main` is 36 commits behind `develop` (unchanged since 2026-10-30) and still has `schedule.loki`, which fails to load under asgard 0.6.0. Your checkout `~/sandbox/git_repos/madbomber/dev` is on `main`, so every `import_up "dev/..."` consumer runs the old files. Merge `develop` into `main`, or switch that checkout to `develop`.
 
-## kbs (2026-11-12)
+## kbs (2026-11-13)
 
-- [ ] Merge [#28](https://github.com/MadBomber/kbs/pull/28) with a **merge commit** (not squash or rebase), or close it and sync `main` into `develop` yourself. It brings Copilot's #19-#27 to `develop` with 7 conflicts resolved and keeps develop's Redis test opt-in. (added 2026-11-12)
-- [ ] Review [#33](https://github.com/MadBomber/kbs/pull/33) (decompiler inlines captured scalar values). Its review loop hit the 3-round cap and the last fixes got no fourth round, so it was not self-merged. (added 2026-11-12)
-- [ ] Review [#32](https://github.com/MadBomber/kbs/pull/32) (`gem "csv"` in the Gemfile). Not self-merged because it touches the Gemfile. (added 2026-11-12)
 - [ ] `bomber/knowledge-base-engine` still holds your post-merge commit `c53e503` (trims the #10 CHANGELOG line); it never reached `develop`. Keep it or delete the branch. `bomber/leading-negation` (no PR) is superseded by Copilot #23; delete it when you like. (added 2026-11-12)
+- [ ] Review and merge [#37](https://github.com/MadBomber/kbs/pull/37) (`rule "x", priority: N` keyword, Fixes #29). Touches `lib/`, so not self-merged. (added 2026-11-13)
+- [ ] Review and merge [#39](https://github.com/MadBomber/kbs/pull/39) (gem ships only lib/ + README/CHANGELOG/LICENSE, 314 KB to 31 KB, Fixes #31). Changes the published package, so not self-merged. At release, add a CHANGELOG line for it (left out to avoid a conflict with #37). (added 2026-11-13)
+

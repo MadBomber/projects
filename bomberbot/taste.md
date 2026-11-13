@@ -197,4 +197,6 @@ Short rules distilled from Dewayne's merges, rejections, and review comments. Ne
 - simple_flow: Dewayne rebase-merged #24-#26 with no edits, so a review fix-up commit lands on `develop` forever (#25 and #26 each landed two commits). Builders squash to one commit before opening. (2026-11-13)
 - He files lint and cleanup changes under CHANGELOG `### Maintenance` and test-only changes under `### Tests`, not `### Fixed` (#28, #32, #35). (2026-11-13)
 - A bot fix can break an input shape its own tests never used: #24's error merge assumed a `Result` input and broke the raw-data calls the README shows (F-72 → #41). Brief builders to run the README's own examples against a lib change. (proposed 2026-11-13)
+- kbs: Dewayne merged the whole queue (#28 sync, #32 Gemfile, #33 decompiler at the review cap) within 70 s on 2026-11-12, merge commits, no comments, and asked on #30 for local-LLM examples to use LM Studio (`lms`) rather than Ollama. Prefer LM Studio for local-LLM examples across repos until he says otherwise. ([kbs#30 comment](https://github.com/MadBomber/kbs/issues/30), proposed 2026-11-13)
+- Running `lms ls` can start the LM Studio service as a side effect; builders that touch it check `lms status` before and after and restore the state they found. (process rule, kbs#38, 2026-11-13)
 

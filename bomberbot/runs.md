@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 03:19 kbs
+
+`develop` existed (2dc666f); not created this visit. Queue was empty: Dewayne merged #28, #32, #33 on 2026-11-12.
+
+- New PR [#37](https://github.com/MadBomber/kbs/pull/37), fix(dsl): accept priority: keyword in rule and defrule (source: issue #29 / F-28). 4 new tests error on develop and pass on the branch; suite 268/0F/24 skips; docs' quick-start example runs; CI green 3.2-4.0; review 1 round, clean. Not low risk (lib). Firing order is out of scope (Refs #35).
+- New PR [#39](https://github.com/MadBomber/kbs/pull/39), fix(gemspec): package only lib/ and top-level docs (source: issue #31 / F-33). test_gemspec 2 failures on develop, 0 after; suite 267/0F/24 skips; gem 119 files/314 KB to 35 files/31 KB, installed into an empty GEM_HOME and ran a rule; CI green; review clean. Not low risk (gemspec). No CHANGELOG line, to avoid conflicting with #37.
+- New PR [#38](https://github.com/MadBomber/kbs/pull/38), docs(readme): AI example on LM Studio (source: issue #30 / F-29, Dewayne's comment). Before: `Ollama provider is not configured`; after: real reply from local LM Studio (gpt-oss-20b), server restored to off. CI green; review clean. **Merged (low risk)** into develop as b52b35e: README-only, +11/-3.
+- No stacking; all three branched from develop 2dc666f, disjoint files.
+- Audit: quality (first run), develop at 2dc666f: F-41 to F-49 (+F-50 from #39's builder). Dead-code check 27b1689..2dc666f: nothing new.
+- Tended: none open. Tender deleted merged `bomberbot/sync-main`, `bomberbot/gemfile-csv`, `bomberbot/decompiler-captured-values`. CI on develop green.
+- Issues answered: #30 (LM Studio wiring for ruby_llm, answering Dewayne's comment). #29 and #31 still reproduced; no comment (nothing new to add).
+- Issues filed: [#34](https://github.com/MadBomber/kbs/issues/34) (F-41, late rule double-fires), [#35](https://github.com/MadBomber/kbs/issues/35) (F-42, priority ignored), [#36](https://github.com/MadBomber/kbs/issues/36) (F-38, decompiler `&&`/`||`).
+
 ## 2026-11-13 03:40 simple_flow
 
 Seventh visit (last 2026-11-12 07:45). `develop` existed (dc6725c); not created.
