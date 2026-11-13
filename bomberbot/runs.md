@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 00:41 debug_me
+
+Resumed visit: the first session was cut off at the budget while the BasicObject builder was mid-review; the resume (06:44) re-spawned it to finish. `develop` already existed (733fe6d); not created. Last visit 2026-11-12 08:54.
+
+- Tended: nothing open. Dewayne merged #48, #51, #52 (rebase) and fixed #46, #53, #54 himself (#55–#57). CI on develop green.
+- New PRs:
+  - [#62](https://github.com/MadBomber/debug_me/pull/62) test: read every assigned local so ruby -w stays quiet. Source: **judgment** (findings #25, rest of issue #53). Warnings 17 → 0, 85 runs green both modes, review clean in 2 rounds. **Merged (low risk)** → develop fb0b2ea (tests only, +17/−14).
+  - [#61](https://github.com/MadBomber/debug_me/pull/61) test: cover the time and strftime options. Source: **judgment** (improver mutation: suite stayed green with the timestamp deleted). Mutation-proven; review hit the 3-round cap → awaits Dewayne.
+  - [#63](https://github.com/MadBomber/debug_me/pull/63) fix: print BasicObject values instead of raising. Source: **audit** (findings #64). 5 new tests error on develop, pass on branch; 93 runs green both modes; review hit the cap → lib, awaits Dewayne.
+  - None stacked.
+- Audit: **quality** (second; develop 733fe6d). Findings #64–#70. Dead-code scan reached 733fe6d, nothing removable. S-36 re-confirmed (held locally).
+- Issues answered: none (no open issues). Issues filed: [#58](https://github.com/MadBomber/debug_me/issues/58), [#59](https://github.com/MadBomber/debug_me/issues/59), [#60](https://github.com/MadBomber/debug_me/issues/60).
+
 ## 2026-11-13 06:37 scripts
 
 Fourteenth visit (last 2026-11-13 05:23). `develop` already existed (a35981f); not created.

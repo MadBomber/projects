@@ -12,9 +12,9 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | dead code | 2026-11-12 | Second visit: improver read 0d7fb14..200c10f, nothing removable; two never-failing tests (#45) PR'd. 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
 | dependencies | 2026-11-12 | Full audit, develop 0d7fb14. `bundle outdated`: only minitest 5.27 → 6.1, held by gemspec `~> 5.0` (#8; suite passes on 6.1.0). Finding 40 (actions/checkout@v4 on Node 20, issue #46), 41 (Ruby 3.2 floor EOL, needs decision). |
 | adoption | 2026-11-12 | develop 200c10f. mkdocs `--strict` clean; README examples run correctly; gem-skill sources step verified (metadata+README+CHANGELOG). Fixed: #5, #6, #24. New: #53-#58. Previous run 2026-11-09 (develop 3a4651e). |
-| quality | 2026-11-09 | First quality audit, develop e4858c9. reek/flog/flay/rubocop in a scratch GEM_HOME; suite green on Ruby 4.1.0preview1, no library deprecations. flog 171 on the one 82-line method; flay 0. New findings 31-35. Repo has no .rubocop.yml/.reek.yml. |
+| quality | 2026-11-13 | Second quality audit, develop 733fe6d. flog 192.8 on `debug_me` (was 171.4), flay 0 in lib (92 in tests), reek 15, rubocop 56 lib / 384 lib+tests; suite green under `ruby -w` (17 test-only unused-local warnings, none from lib). New findings 64-69; #12, #34, #47, #62 fixed. Previous: 2026-11-09, develop e4858c9, findings 31-35. |
 
-Dead-code scan last covered commit: 200c10f (develop, 2026-11-12)
+Dead-code scan last covered commit: 733fe6d (develop, 2026-11-13; auditor quick pass and improver read 200c10f..733fe6d, nothing removable)
 
 ## Findings
 
@@ -46,7 +46,7 @@ Dead-code scan last covered commit: 200c10f (develop, 2026-11-12)
 
 - Findings 2, 3, 4 and 6 confirmed still present on develop 3055a9f. Each is a small docs fix and a good next PR.
 
-12. **`tests/env_test.rb` restores `ENV["DEBUG_ME"]` only if its assertion passes (no `ensure`), and shells out to a bare `ruby` from PATH instead of `RbConfig.ruby`.** Raised by `/code-review` on #9. Status: open (low value).
+12. **`tests/env_test.rb` restores `ENV["DEBUG_ME"]` only if its assertion passes (no `ensure`), and shells out to a bare `ruby` from PATH instead of `RbConfig.ruby`.** Raised by `/code-review` on #9. Status: fixed by #37 (env_test now uses `RbConfig.ruby` and clears the env; confirmed 2026-11-13).
 
 ### 2026-11-07 second run (no audit; found by `/code-review` on #10)
 
@@ -80,7 +80,7 @@ Dead-code scan last covered commit: 200c10f (develop, 2026-11-12)
 - Issues #12, #14, #16 and #17 re-verified on develop 7e12714; all still reproduce. Findings 2, 7, 10, 11, 14, 18 and 22 still present and still need Dewayne's decision.
 
 24. **README.md:38 says `DebugMe::debug_me(){}` works with local, instance and class variables, but it raises NoMethodError.** PR #10 fixed the same claim in docs/ only. Status: issue [#20](https://github.com/MadBomber/debug_me/issues/20), closed by Copilot PR #21 on `main` only (code fix, per Dewayne); `develop` waits for the sync (findings #30).
-25. **`ruby -w` on tests/debug_me_test.rb prints 15 warnings** (unused locals at lines 115, 121, 132, 358-381 and 414; constants A, B, C redefined at 244/251). Many of those locals exist so `debug_me` has something to show, so a fix must keep them (for example by referencing them or using distinct constant names). Status: open (low value).
+25. **`ruby -w` on tests/debug_me_test.rb prints 15 warnings** (unused locals at lines 115, 121, 132, 358-381 and 414; constants A, B, C redefined at 244/251). Many of those locals exist so `debug_me` has something to show, so a fix must keep them (for example by referencing them or using distinct constant names). Status: constant half fixed by 80c2441 (#56); the 17 unused-local warnings left at 733fe6d were cleared by [#62](https://github.com/MadBomber/debug_me/pull/62), **merged (low risk)** 2026-11-13 → develop fb0b2ea.
 26. **`bt = caller` in lib/debug_me.rb builds the whole stack on every call even when only `bt[0]` is used.** `caller(1, 1)` for the header, plus a bounded `caller` only when `levels` or `:backtrace` needs it, would avoid that. Status: issue [#26](https://github.com/MadBomber/debug_me/issues/26) (measured 2026-11-08).
 27. **The gemspec's dev dependencies are not in alphabetical order** (`logger` after `rake`), which RuboCop's `Gemspec/OrderedDependencies` flags. Status: open (trivial; could ride along with a gemspec PR).
 
@@ -115,7 +115,7 @@ Dead-code scan last covered commit: 200c10f (develop, 2026-11-12)
 31. **Two constants leak into the global `Object` namespace instead of `DebugMe`.** `DebugMeDefaultOptions` (lib/debug_me.rb:15) and `DEBUG_ME_MAX_BACKTRACE` (lib/debug_me.rb:30) are defined at top level, before `module DebugMe` opens at line 33, so `require 'debug_me'` pollutes every consumer's root namespace (`ruby -Ilib -e 'require "debug_me"; p Object.const_defined?(:DebugMeDefaultOptions)'` => true). Feeds finding #22. Fix: move both inside `module DebugMe`, possibly with a deprecated top-level alias. Status: **needs Dewayne's decision** (`DebugMeDefaultOptions` is loosely public API). In `inbox.md`. Verified.
 32. **`debug_me` is a single ~82-line method over every complexity threshold** (lib/debug_me.rb:34-116; flog 171, Metrics/MethodLength/AbcSize/Cyclomatic/Perceived all over default, reek TooManyStatements ~44, FeatureEnvy). The "methods testable in isolation" taste rule is unmet. Fix: extract private helpers without changing output. Status: **needs Dewayne's decision** (taste also says no wholesale restructuring). In `inbox.md`. Verified.
 33. **The repo has no lint/quality gate config.** No tracked `.rubocop.yml`/`.reek.yml`, so the "zero new offenses against the repo's full config" taste rule has nothing to run, and nothing records which default cops are intentionally off for this eval-heavy gem. Fix: add a minimal `.rubocop.yml` (disable `Security/Eval`, `Style/GlobalVars`, `Style/Documentation`, set the real baseline) plus `.reek.yml`. Status: **needs Dewayne's decision** (the baseline is his). In `inbox.md`. Verified.
-34. **`self.class.send('class_variables')` dispatches a public method through `send` for no reason** (lib/debug_me.rb:79; reek ManualDispatch). `self.class.class_variables` is equivalent and clearer. Status: **open**, trivial but sits in `lib/debug_me.rb` (the main/develop merge-conflict file), so fold into the sync rather than a standalone develop PR that deepens divergence. Verified.
+34. **`self.class.send('class_variables')` dispatches a public method through `send` for no reason** (lib/debug_me.rb:79; reek ManualDispatch). `self.class.class_variables` is equivalent and clearer. Status: **open**, trivial but sits in `lib/debug_me.rb` (the main/develop merge-conflict file), so fold into the sync rather than a standalone develop PR that deepens divergence. Verified. **Fixed** by #52 (e979bdb): now `context_class.class_variables`.
 35. **Style/hygiene cluster on the never-linted files** (version.rb/gemspec lack `frozen_string_literal`; `Style/MutableConstant`+`Layout/HashAlignment` ×13; `debug_me.rb` `Layout/SpaceAfterComma` ×3, `Style/CommentedKeyword` ×3, `Style/FormatStringToken` ×5). The gemspec `Gemspec/OrderedDependencies` here is existing finding #27, re-confirmed at e4858c9. Status: **open**, low value; gate behind #33 so "zero new offenses" is meaningful. Verified.
 
 - Dependency leg: `bundle outdated` = only minitest (held by gemspec `~> 5.0`, = finding #8). Ruby 4.1 readiness clean; `pp` still a default gem (no gemspec runtime dep needed, unlike `logger`).
@@ -149,7 +149,7 @@ Triage/improver extras (not audit findings):
 47. **Suite output is noisy:** WorldView#six writes to stdout (no `file: nil`) and constants A/B/C are redefined with warnings. Status: issue [#53](https://github.com/MadBomber/debug_me/issues/53).
 48. **The `skip1:`/`skip2:` comments in DebugMeDefaultOptions are misleading.** Status: open (fold into a docs PR).
 49. **The gemspec `Dir[]` file list depends on the cwd** (related to S-37). Status: open.
-50. **CHANGELOG has no line for the #38/#41/#47 docs fixes, and docs/changelog.md has drifted from CHANGELOG.md.** Status: open (adoption).
+50. **CHANGELOG has no line for the #38/#41/#47 docs fixes, and docs/changelog.md has drifted from CHANGELOG.md.** Status: CHANGELOG half is issue [#60](https://github.com/MadBomber/debug_me/issues/60) (2026-11-13, with two more `[Unreleased]` inaccuracies); docs/changelog.md half folds into #59's decision.
 51. **The `:backtrace` frame format differs on Ruby 3.2/3.3 (`` `meth' ``) vs 3.4+ (`'Class#meth'`);** the docs show only 3.4+. Status: open.
 52. **mkdocs-material reaches end of life in May 2027.** Status: open (watch).
 
@@ -172,3 +172,19 @@ Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing remova
 61. **Four docs pages say `debug_me {}` shows "all local variables"** (README:91, getting-started.md:93-101, usage.md:39-47, api-reference.md:108-109); at top level it also dumps constants. Status: README half merged ([#50](https://github.com/MadBomber/debug_me/pull/50)); the rest waits on #22's decision.
 62. **`v.to_s == 'backtrace'` (lib/debug_me.rb:74, :90) treats any object whose to_s is "backtrace" as the backtrace marker,** unlike line 99's Symbol/String check. Status: issue [#54](https://github.com/MadBomber/debug_me/issues/54).
 63. **docs/contributing.md mentions a nonexistent PR template and shows a Minitest::Test skeleton while every test is spec style.** Status: open, low value.
+
+### 2026-11-13 quality audit (develop 733fe6d; second quality audit)
+
+- Tools (default configs, scratch GEM_HOME, Ruby 4.1.0preview1, minitest 6.1.0): flog 208.7 total, `DebugMe#debug_me` 192.8; flay 0 in lib; reek 15 (DuplicateMethodCall `block.binding` ×4); rubocop 56 lib / 384 lib+tests. `ruby -w`: lib clean; 17 unused-local warnings in tests (#25).
+- Fixed since the last quality audit: #12 (#37), #34 (#52), #47 (#56), #62 (#55), #48's README half.
+- Still present: #8, #14, #18, #22, #27, #31, #32, #33 (new reason: default `Style/ModuleFunction` autocorrect would turn `extend self` into `module_function` and break the public included method), #35 (plus NumericPredicate/ZeroLengthPredicate `bt_out.size > 0` ×3), #48 (lib comments), #49, #51, #58, #63.
+- The improver found no docs page contradicting #48/#52/#55; every README/docs example ran as shown; `mkdocs build --strict` clean.
+
+64. **A `BasicObject` value crashes `debug_me` with NoMethodError.** `debug_me { bo }` raises in `backtrace_marker` (`is_a?`), `{ :bo }` and ivar discovery raise in `pretty_inspect`. Pre-existing (same at e979bdb^). Fix: `Symbol === v`, `Kernel#class` via `bind_call`, `PP.pp(v, +'')`. Status: PR'd ([#63](https://github.com/MadBomber/debug_me/pull/63), 2026-11-13). Follow-ups noticed by its builder: a BasicObject with a custom `method_missing` that calls `super` still raises, and a forwarding proxy around a String is still evaluated as a name (both as on develop).
+65. **An empty-block dump shows the call stack in place of a local variable named `backtrace`.** Discovered `:backtrace` matches the marker. Pre-existing. Status: issue [#58](https://github.com/MadBomber/debug_me/issues/58).
+66. **With `header: false` and nothing to print, `debug_me` still writes a blank line, so `skip1:` adds nothing** (`f.puts ""`). Low. Status: open (output change; ask first).
+67. **With `header: false`, `:backtrace` drops the call-site frame** (`caller(1)[1..]`), so where `debug_me` was called appears nowhere; tests/debug_me_test.rb:130 pins the drop. Status: needs Dewayne's decision.
+68. **Discovery reads deprecated constants and fires their deprecation warning, attributed to lib/debug_me.rb.** Low. Status: open (no clean API; document or ignore).
+69. **A class that does `include DebugMe` dumps `DEBUG_ME_VERSION` on every `debug_me {}`** (inherited constants). Pre-existing. Also argues against moving more constants into `DebugMe` without `private_constant` (#31). Status: issue [#59](https://github.com/MadBomber/debug_me/issues/59).
+70. **Nothing tests `time:` / `strftime:`;** forcing a wrong format or deleting the timestamp left the suite green (improver mutation). Status: PR'd ([#61](https://github.com/MadBomber/debug_me/pull/61), 2026-11-13).
+- Security: no new finding; S-36 re-confirmed at 733fe6d (details held locally).
