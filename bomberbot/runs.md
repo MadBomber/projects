@@ -2,7 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
-## 2026-11-13 05:15 shared_tools
+## 2026-11-13 05:15 robot_lab
+
+Eleventh visit (last: 02:45 today). `develop` already existed (afd9131); not created. All five phase-1 agents ran.
+
+- **Skipped: review queue full.** #70, #74, #75 still open, unreviewed, MERGEABLE, no red check (no test CI). Tender changed nothing. #74 and #75 conflict with each other only in CHANGELOG `[Unreleased]`; the second to merge needs a rebase.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Audit:** security v3 (targeted at files no audit had read: run_config, state_proxy, hook_context, agent_skill_matching, main's MCP files; bundle-audit clean) plus a dead-code delta c700ba6..afd9131 (nothing). F-90–F-93; S-11 held locally. Corrected the F-53/F-56 link to #75.
+- **Issues answered:** none (no outside comments since last visit). Responder re-reproduced #71 at afd9131.
+- **Issues filed:** [#76](https://github.com/MadBomber/robot_lab/issues/76) `HookContext#to_h` drops inherited readers (F-90), [#77](https://github.com/MadBomber/robot_lab/issues/77) `DotState` bracket access stores the wrong value (F-93).
+- Next pick once the queue has room: #71 (F-85), then #76 + #77 together (one file).## 2026-11-13 05:15 shared_tools
 
 Third visit (last 2026-11-12 07:30). `develop` existed at 337219d; not created this visit. Dewayne had merged #9, #13, #14 and opened his own PRs #18-#23 fixing bot-filed issues #10, #11, #15, #17, #12, #16.
 

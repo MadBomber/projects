@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Eleventh visit (2026-11-13 05:15)._ Skipped building: review queue full (#70, #74, #75 open, unreviewed, MERGEABLE). Ran a targeted **security** v3 audit (run_config, state_proxy, hook_context, agent_skill_matching, main's MCP files) plus a dead-code delta (nothing): F-90–F-93, S-11 held locally. Filed #76 (`HookContext#to_h` drops inherited readers, F-90) and #77 (`DotState` bracket access stores the wrong value, F-93). No issue needed a reply. `develop` afd9131 still 31 behind `main`.
+
 _Tenth visit (2026-11-13 02:45)._ Queue had only #70 (unreviewed). Opened **PR #73** (example 25 require order, Fixes #67), **merged (low risk)** as develop afd9131; **PR #74** (anonymous Hook namespace crash, F-88) and **PR #75** (`RobotResult.from_hash` restores `duration`/`delegated_by`, F-56), both lib so awaiting Dewayne. Quality audit v3 (delta to c700ba6): F-85–F-87. Filed #71 (budget reservation leaks on Timeout/Interrupt, F-85) and #72 (duplicate `hook_registries`, F-87). No issue needed a reply. `develop` afd9131 still 31 behind `main`.
 
 _Ninth visit (2026-11-13 01:15)._ Dewayne merged #38, #39, #40 (rebase, no comment; develop cfae25c) and opened his own PRs #52–#65 for 14 bomberbot issues, so bomberbot's queue was empty. Opened **PR #66** (stale Convergence/ToolLoopError comments, F-49/F-63), **merged (low risk)** as develop c700ba6, and **PR #70** (`Ledger#reserve!` refuses exactly the remaining Float budget, F-81), lib so awaiting Dewayne. Ran the second **adoption** audit (first examples run: F-76–F-80) plus a dead-code delta to cfae25c. Filed #67, #68, #69. No issue needed a reply. `develop` c700ba6 still 31 behind `main`.
@@ -69,6 +71,8 @@ else in this repo.
 - F-88 anonymous `Hook` subclass crashes `Hook.namespace`: [#74](https://github.com/MadBomber/robot_lab/pull/74) **PR open**. #74 and #75 each add a CHANGELOG `[Unreleased]` line; the second to merge needs a trivial rebase.
 - F-85 budget reservation leaks when a run is interrupted (Timeout/Interrupt): issue [#71](https://github.com/MadBomber/robot_lab/issues/71). `robot/hooking.rb` (develop-only hunk, not in Dewayne's PRs); `ensure` + flag, test in `budget_leak_test.rb`. First pick next visit.
 - F-87 duplicate `hook_registries` in `robot.rb`: issue [#72](https://github.com/MadBomber/robot_lab/issues/72), after #57/#59 merge.
+- F-90 `HookContext#to_h` drops inherited readers (incl. `event`) and raises on the base class: issue [#76](https://github.com/MadBomber/robot_lab/issues/76). Hunk-safe (identical hunk on both branches), new test file; ~3 lines. Fix proven in scratch (1307 green). Pick once the queue has room.
+- F-93 `DotState` `ctx.local[:k] = v` silently stores the key name: issue [#77](https://github.com/MadBomber/robot_lab/issues/77). Hunk-safe, same file as F-90 (build together or stack); ~7 lines + test.
 
 ## Open bomberbot PRs
 
