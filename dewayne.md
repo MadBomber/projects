@@ -44,8 +44,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## smart_message
 
-- [ ] Review [#21](https://github.com/MadBomber/smart_message/pull/21) (test), [#22](https://github.com/MadBomber/smart_message/pull/22) (docs) and [#23](https://github.com/MadBomber/smart_message/pull/23) (lib). The queue is full, so bomberbot opens no new smart_message PRs until some merge. #21 and #23 both add CHANGELOG `[Unreleased]` blocks; the second to merge needs a keep-both rebase. (added 2026-11-12) After #21 merges, close #14 by hand: `Fixes #14` auto-closes only on merges to `main`. (noted 2026-11-12 visit 7)
-- [ ] Close #6, #7, #8, #12, #13, #15, #16, #17 when you see fit: fixed on develop by 07af3d4 (BomberBot commented on each). (added 2026-11-12)
+- [ ] Review [#54](https://github.com/MadBomber/smart_message/pull/54) (examples: delete three unused dashboard builders and leftovers; or say "wire them in"), [#55](https://github.com/MadBomber/smart_message/pull/55) (tests for documented DLQ API; 6 commits, squash fine) and [#56](https://github.com/MadBomber/smart_message/pull/56) (tests drain the dispatcher instead of sleeping). All test/examples-only, no CHANGELOG line, green. (added 2026-11-13)
+- [ ] Your #36–#50 conflict with each other once merging starts: CHANGELOG in 79 of 105 pairs, plus #39×#40 (`packaging_test`), #41×#42 and #43×#44 (`configuration.rb`), #44/#45/#48 (`multi_transport_test`). All 15 merged together pass 466/0F (responder's local merge). `Closes #N` won't auto-close on `develop`, so close #18–#35 by hand as they land. On #20, decide whether #46 should also reject an undefined handler class (BomberBot commented). (added 2026-11-13)
 - [ ] Decide F-67/F-75/F-76 (public API with no callers) before 0.1.0 ships: drop them and list them in the upgrade guide, or keep them. List in `bomberbot/findings/smart_message.md`. (added 2026-11-12)
 
 ## gem-skill
