@@ -53,6 +53,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## gem-skill
 
 - [ ] Review and merge into `develop` [gem-skill#26](https://github.com/MadBomber/gem-skill/pull/26) (verify honours `--max-tokens`/`GEMSKIL_MAX_TOKENS`, F-17; lib change, not low risk). Also drops the Apfel docs advice to skip `--verify`. Its CHANGELOG line will conflict with your #20-#24 once they merge; a trivial rebase. (added 2026-11-13)
+- [ ] Review and merge into `develop` [gem-skill#36](https://github.com/MadBomber/gem-skill/pull/36) (Fixes #28, missing Gemfile.lock), [gem-skill#32](https://github.com/MadBomber/gem-skill/pull/32) (Fixes #29, setup exit status) and [gem-skill#31](https://github.com/MadBomber/gem-skill/pull/31) (gemspec doc/bug-tracker URIs). All lib/gemspec, so not low risk; repo has no test CI, proof is the local suite. #36 merges clean with your #23. (added 2026-11-13)
 
 ## scripts
 

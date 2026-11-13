@@ -8,13 +8,13 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-10 | first run at 44a608c; bundle-audit clean (DB 2026-11-09) on a freshly resolved lock (no lockfile tracked); manual review of lib/, plugins.rb, bin/, scripts/; S-1..S-4 held locally; S-1 PR'd 2026-11-10 (#13) |
+| security | 2026-11-13 | second run at develop e55bd4d (delta 44a608c..e55bd4d: #10, #12, #13, #19); bundle-audit clean (DB 2026-11-11, 4d71b12) on a fresh lock; S-1 fix (#13) verified at all Cache/Linker/Lockfile boundaries; F-53, F-54; auditor S-5 is S-2 (held locally) |
 | dead code | 2026-11-12 (quick delta) | 44a608c..741e583 (#9-#13): Validation all called; nothing new removable; SUBCOMMANDS unread (F-37) |
 | dependencies | 2026-11-10 | first run at develop 3e384ad; fresh lock resolves ruby_llm 2.1.1 + json 3.1.0 (F-23 comment verified stale: 2.0.0 pinned json<3, 2.1.1 allows json<4); bundle outdated clean except minitest 5→6 held by ~>5.16 dev pin (F-31); 3 runtime deps unpinned (F-30); lib/ clean on ruby 4.1.0preview1, no removed/deprecated APIs |
 | adoption | 2026-11-13 | second run at develop 866a510; mkdocs --strict clean; all lib env vars documented; CHANGELOG Unreleased complete (F-51 formatting); F-41..F-52 |
 | quality | 2026-11-12 | first run at develop 741e583; develop red (F-32, #9+#12 interaction); coverage 89.9% (F-34); ruby -w 14 test-only redefinition warnings (F-21); F-33, F-35, F-36 |
 
-Dead-code scan last covered commit: 741e583 (2026-11-12 quality audit delta)
+Dead-code scan last covered commit: e55bd4d (2026-11-13 improver recheck: F-28 still dead; F-56 gemspec exe wiring; no full dead-code audit)
 
 ## Findings
 
@@ -26,7 +26,7 @@ Dead-code scan last covered commit: 741e583 (2026-11-12 quality audit delta)
 - **F-4 (PR'd: [#10](https://github.com/MadBomber/gem-skill/pull/10)):** `bundle skill` silently ignores `--temperature`: `parse_options` has no case for it, and the value lands in `remaining`. The repo's CLAUDE.md says it is parsed. The user docs correctly leave it out of `bundle skill`.
 - **F-5 (needs Dewayne's decision):** CHANGELOG has no 0.2.1 or 0.2.2 headings, though tags v0.2.1 and v0.2.2 exist and 0.2.2 is on RubyGems. `[Unreleased]` holds what shipped in 0.2.1. The 0.2.2 changes (ruby_llm 2.0, lms/apfel providers, request timeout 300 to 900 s, Ruby floor to 3.4) are not recorded. Release headings belong to Dewayne.
 - **F-6 (needs Dewayne's decision):** `GEMSKIL_MAX_TOKENS` is spelled with one L, unlike every other `GEMSKILL_*` variable. Options: (a) also read `GEMSKILL_MAX_TOKENS`, keep the old spelling as a fallback, and document both; (b) leave it as is.
-- **F-7 (open, verified):** `gem install --with-skill` (`lib/rubygems_plugin.rb` `generate_one_skill`) calls `Generator#generate` without a block, so it doesn't stream. That is the path `Runner` comments say trips `Net::ReadTimeout` on slow local models.
+- **F-7 (issue [#33](https://github.com/MadBomber/gem-skill/issues/33)):** `gem install --with-skill` (`lib/rubygems_plugin.rb` `generate_one_skill`) calls `Generator#generate` without a block, so it doesn't stream. That is the path `Runner` comments say trips `Net::ReadTimeout` on slow local models.
 - **F-8 (unverified):** `configure_llm!` always sets `config.request_timeout`, which overrides a host app's RubyLLM timeout, although its comment says it is a no-op when RubyLLM is already configured.
 - **F-9 (needs Dewayne's decision):** `parse_model` splits off any registered provider slug, so OpenRouter-style ids like `openai/gpt-oss-20b` go to the direct provider, not OpenRouter. Options: document `openrouter/openai/...`, or limit splitting to an allowlist.
 - **F-10 (merged (low risk): [#27](https://github.com/MadBomber/gem-skill/pull/27), develop e55bd4d; also fixed GEMSKILL_PROJECT_DIR in LinkerTest):** `test_cache_root_is_in_home_dir` fails when `GEMSKILL_DIR` is set in the environment. The other 173 tests pass either way.
@@ -111,11 +111,11 @@ Dead-code scan last covered commit: 741e583 (2026-11-12 quality audit delta)
 ### 2026-11-13 adoption audit (second run, develop at 866a510) + fix pass
 
 - **Status updates:** F-32 → #25 and F-10 → #27 (both merged low risk; develop e55bd4d green, 224 runs, 0 failures, also with `GEMSKILL_DIR` set). F-17 → #26 (open). F-29 partly covered by #25 (stub_generator tests now link for real); `test_install_continues_after_one_gem_fails` still never links (`simple_generator_tracking` writes no cache). F-18 merged (#19). Dewayne opened his own PRs for F-24 (#20), F-27 (#21), F-38 (#22), F-33 (#23), F-39 (#24).
-- **F-41 (issue [#28](https://github.com/MadBomber/gem-skill/issues/28)):** `bundle skill install`/`refresh` with no `Gemfile.lock` prints Bundler's ERROR REPORT TEMPLATE and backtrace: `Lockfile.gems` raises `Gem::Skill::Error` (`lockfile.rb:8`) and `BundlerCommand.run` doesn't rescue it. Land after #23.
+- **F-41 (issue [#28](https://github.com/MadBomber/gem-skill/issues/28); PR'd: [#36](https://github.com/MadBomber/gem-skill/pull/36) 2026-11-13):** `bundle skill install`/`refresh` with no `Gemfile.lock` prints Bundler's ERROR REPORT TEMPLATE and backtrace: `Lockfile.gems` raises `Gem::Skill::Error` (`lockfile.rb:8`) and `BundlerCommand.run` doesn't rescue it. Land after #23.
 - **F-42 (needs Dewayne's decision):** `docs/installation.md:44-49` says `gem update gem-skill` then `gem skill setup` re-registers the plugin, but `register_bundler_plugin` (`gem_command.rb:270-275`) returns early when already registered, so `bundle skill` stays on the old version. Options: (a) reinstall when the version differs, (b) document the real Bundler reinstall command, (c) print a hint.
-- **F-43 (issue [#29](https://github.com/MadBomber/gem-skill/issues/29)):** `gem skill setup` exits 0 when plugin registration fails or the router skill is missing (`gem_command.rb:281`, `:290`). Close to F-40.
+- **F-43 (issue [#29](https://github.com/MadBomber/gem-skill/issues/29); PR'd: [#32](https://github.com/MadBomber/gem-skill/pull/32) 2026-11-13):** `gem skill setup` exits 0 when plugin registration fails or the router skill is missing (`gem_command.rb:281`, `:290`). Close to F-40.
 - **F-44 (needs Dewayne's decision):** the Pages workflow deploys from both `main` and `develop`, so the live site documents unreleased behaviour (bundle flag order, OLLAMA vars) that 0.2.2 users lack; `mike` and `mkdocs-macros-plugin` are installed but unused. Options: (a) deploy only from main, (b) versioned docs with mike, (c) leave.
-- **F-45 (open, small, gemspec):** no `documentation_uri` / `bug_tracker_uri` in `gem-skill.gemspec:20-25`; RubyGems shows neither.
+- **F-45 (PR'd: [#31](https://github.com/MadBomber/gem-skill/pull/31) 2026-11-13):** no `documentation_uri` / `bug_tracker_uri` in `gem-skill.gemspec:20-25`; RubyGems shows neither.
 - **F-46 (needs Dewayne's decision on wording):** gemspec description says skills come from "README, RubyDoc, and changelog"; Fetcher reads no RubyDoc/YARD. Summary, `mkdocs.yml` site_description and `gem skill` help still say "Claude Code" only. Removing "RubyDoc" is a plain fix.
 - **F-47 (needs Dewayne's decision):** no `llms.txt` (repo or site, 404). Options: hand-written `docs/llms.txt`, MkDocs plugin, or skip.
 - **F-48 (issue [#30](https://github.com/MadBomber/gem-skill/issues/30)):** `docs/commands/gem-skill.md:113-118` shows `--version` printing 0.1.3; `:120-127` concurrency paragraph misplaced under `--version`; `docs/index.md:72` lists only three env vars.
@@ -124,3 +124,16 @@ Dead-code scan last covered commit: 741e583 (2026-11-12 quality audit delta)
 - **F-51 (open, small):** CHANGELOG `## [Unreleased]` has two `### Changed` headings (`:8` from #13, `:29`). After #20-#24 merge, or with the release work (F-5).
 - **F-52 (needs Dewayne's decision):** the gem ships `docs/` (a 117 KB jpg is ~72% of the 163 KB gem), `.envrc`, `.github/`, `CLAUDE.md`, `mkdocs.yml`, `scripts/`. Options: (a) extend the `spec.files` exclusions, (b) leave.
 - **New, process:** the repo has no `.rubocop.yml`; global config flags the repo's double-quote and one-blank-line style. Inbox candidate.
+
+### 2026-11-13 06:00 visit: security audit (second run, develop at e55bd4d), triage, improver
+
+- **S-2 rechecked:** security finding, details held locally; still needs Dewayne's decision. The auditor's S-5 was the same item and was not renumbered. S-3 and S-4 unchanged.
+- **F-53 (open, small, hardening):** `Validation.valid_version?` (`validation.rb:21-26`) relies on `Gem::Version.correct?`, which accepts surrounding whitespace, so `" "`, `" 1.0"`, `"1.0 "` and `"1.0\n"` pass and reach Cache path building as padded directory names (no `/` or `..` gets through). Fix: reject when `version != version.strip`, plus tests. After Dewayne's #22 (same file).
+- **F-54 (issue [#35](https://github.com/MadBomber/gem-skill/issues/35)):** `GEMSKILL_REQUEST_TIMEOUT=abc`, `GEMSKIL_MAX_TOKENS=lots`, `GEMSKILL_TEMPERATURE=hot` give `[0, 0, 0.0]` (`skill.rb:59`, `generator.rb:13-14`). Env twin of #18. After #24.
+- **F-55 (issue [#34](https://github.com/MadBomber/gem-skill/issues/34)):** `docs/skill-files.md:70-76` says "up to three sources" (local README+CHANGELOG, RubyGems API, GitHub README); `Fetcher#fetch_all` sends metadata (local gemspec first), readme, changelog, examples, and each is capped at 60,000 chars. From the improver.
+- **F-56 (open, small, removal):** the gemspec sets `spec.bindir = "exe"` and greps `spec.files` for `exe/` (`gem-skill.gemspec:65-66`), but the repo has no `exe/`; `executables` is always `[]`. Low value alone. `gem build` also warns that `homepage_uri` and `source_code_uri` are the same URL.
+- **F-57 (needs Dewayne's decision):** `sig/gem/skill.rbs` is the untouched Bundler template stub (declares only `VERSION`), nothing runs rbs/steep, and it ships in the gem. Options: type the public surface, or delete `sig/`.
+- **F-58 (open, small):** `Frontmatter.strip` (`frontmatter.rb:38`) doesn't match an empty `"---\n---\n"` block, so `build` stacks a new frontmatter on top of it. Rare model output; one-test fix.
+- **F-8 reproduced (needs Dewayne's decision):** with a host app that set `request_timeout=60, openai_api_key="host"`, `configure_llm!` with `OPENAI_API_KEY=env` gives `[900, "env"]`: the "No-op if already configured" comment (`skill.rb:63`, CLAUDE.md:49) is false. Options: (a) only set fields still at RubyLLM defaults; (b) opt-out; (c) fix the comment.
+- **Rechecked at e55bd4d, still open:** F-21 (plus a `SimpleCov.add_filter` deprecation under simplecov 1.3.2), F-28 (fetcher unused `:files/:chars/:truncated`; improver confirmed dead), F-19 (CLAUDE.md env list). Fresh lock resolves ruby_llm 2.2.0; suite 224/0 on it. Dependabot alerts disabled (403). No test CI (F-11): PR "green" means the local suite.
+- **Status updates:** F-43 → #32, F-41 → #36, F-45 → #31, F-7 → issue #33.

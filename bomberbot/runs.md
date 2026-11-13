@@ -2,6 +2,22 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 06:00 gem-skill
+
+Sixth visit (last 2026-11-13 05:01). `develop` existed (e55bd4d); not created. Run directory was fresh. `src/` cloned on `main` (default checkout) and was switched to detached `origin/develop` mid-phase; the readers read `develop` via `git archive` exports, so no effect.
+
+- **New PRs (3, all independent, base `develop`, none stacked; all await Dewayne):**
+  - [#36](https://github.com/MadBomber/gem-skill/pull/36) fix(bundle): report missing Gemfile.lock, exit 1. Source: **brain + issue** (F-41, Fixes #28). +14 lines; new test red on develop, green on branch; suite 225/0; trial merge with Dewayne's #23 clean, merged tree 229/0; repro in an empty dir before/after. Review: 1 round, clean. Not low risk (lib).
+  - [#32](https://github.com/MadBomber/gem-skill/pull/32) fix(setup): exit 1 when a setup step fails. Source: **brain + issue** (F-43, Fixes #29). Both setup steps still run; exit 1 if either failed. 8 new tests (5F+1E on develop, pass on branch); suite 232/0; fake-`bundle` demo exit 0 → 1, router skill still installed. Review: 1 round, clean. Not low risk (lib; also docs, which deploy from develop).
+  - [#31](https://github.com/MadBomber/gem-skill/pull/31) chore(gemspec): add documentation and bug tracker URIs. Source: **brain/adoption** (F-45). +3 lines; `gem spec` shows both keys; both URLs 200; suite 224/0. Review: 1 round, clean. Not low risk (gemspec).
+  - No CI runs tests on PRs (only the Pages deploy), so "green" means the local suite; every PR says so.
+- **Merged:** none (nothing approved; nothing qualified as low risk).
+- **Tended:** #26 rebased onto e55bd4d (228/0), force-pushed, commented. 4 bomberbot PRs now open (#26, #31, #32, #36).
+- **Audit:** security (second run) at e55bd4d → F-53, F-54; auditor's S-5 was S-2 (held locally, not renumbered). Triage + improver → F-55..F-58, F-8 reproduced.
+- **Issues answered:** none (nothing new to add; responder reproduced #28 and #29 for the builders).
+- **Issues filed (labeled `bomberbot`):** [#33](https://github.com/MadBomber/gem-skill/issues/33) `--with-skill` doesn't stream (F-7), [#34](https://github.com/MadBomber/gem-skill/issues/34) docs/skill-files.md wrong sources (F-55), [#35](https://github.com/MadBomber/gem-skill/issues/35) bad numeric env vars become 0 (F-54).
+- **Deviation:** the #29 and F-45 builders started before triage/auditor/improver returned (both were brain backlog items with no overlap), to fit the 45-minute budget.
+
 ## 2026-11-13 06:25 htm
 
 - **Resumed visit.** The 2026-11-12 session was killed after phase 1, before the auditor reported; this session re-ran the auditor from its scratch output, built, and recorded. `develop` already existed (afbc2b7); not created.

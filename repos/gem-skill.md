@@ -10,23 +10,29 @@ Generates Claude Code skills from Ruby gem docs.
 
 ## Status
 
-_Updated 2026-11-13._ `develop` is green again (e55bd4d, 224 runs, 0 failures): madbot merged [#25](https://github.com/MadBomber/gem-skill/pull/25) (F-32 red tests) and [#27](https://github.com/MadBomber/gem-skill/pull/27) (F-10 env-sensitive tests) as low risk; [#26](https://github.com/MadBomber/gem-skill/pull/26) (F-17 verify honours max tokens) awaits Dewayne. Dewayne merged #9-#13 and #19 and opened his own PRs #20-#24 for issues #8, #14, #16, #17, #18. First adoption audit since 2026-11-06 ran (F-41..F-52); issues #28-#30 filed.
+_Updated 2026-11-13 06:00._ madbot opened [#31](https://github.com/MadBomber/gem-skill/pull/31) (gemspec doc/issue URIs, F-45), [#32](https://github.com/MadBomber/gem-skill/pull/32) (setup exit status, Fixes #29) and [#36](https://github.com/MadBomber/gem-skill/pull/36) (missing Gemfile.lock, Fixes #28); all await Dewayne with #26. Second security audit ran (F-53, F-54); issues #33-#35 filed. `develop` green at e55bd4d (224 runs, 0 failures); no test CI, so PR proof is the local suite.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- `bundle skill` without a `Gemfile.lock` shows Bundler's error-report template (F-41, issue [#28](https://github.com/MadBomber/gem-skill/issues/28)). Land after Dewayne's #23 (same file).
-- `gem skill setup` exits 0 on failure (F-43, issue [#29](https://github.com/MadBomber/gem-skill/issues/29)).
+- `bundle skill` without a `Gemfile.lock` shows Bundler's error-report template (F-41, issue [#28](https://github.com/MadBomber/gem-skill/issues/28)). **PR open** [#36](https://github.com/MadBomber/gem-skill/pull/36); merges clean with #23. Land after Dewayne's #23 (same file).
+- `gem skill setup` exits 0 on failure (F-43, issue [#29](https://github.com/MadBomber/gem-skill/issues/29)). **PR open** [#32](https://github.com/MadBomber/gem-skill/pull/32).
 - Docs inaccuracies on the gem-skill/bundle-skill/index pages (F-48, F-50, issue [#30](https://github.com/MadBomber/gem-skill/issues/30)). Land after #21 and #23.
 - Verify ignores `--max-tokens` (F-17). **PR open** [#26](https://github.com/MadBomber/gem-skill/pull/26).
-- Gemspec lacks `documentation_uri`/`bug_tracker_uri` (F-45). Small, but touches the gemspec, so never low risk.
-- Install tip says `bundle plugin install` where docs say `gem skill setup` (F-49). After Dewayne's #24 (same file).
+- Gemspec lacks `documentation_uri`/`bug_tracker_uri` (F-45). **PR open** [#31](https://github.com/MadBomber/gem-skill/pull/31).
+- Install tip says `bundle plugin install` where docs say `gem skill setup` (F-49). Same file as #24 but a different hunk (line 119), so it need not wait.
 - Covered by Dewayne's own open PRs, not bomberbot work: #8 (#20), #14 (#21), #16 (#22), #17 (#23), #18 (#24).
+- `gem install --with-skill` does not stream (F-7, issue [#33](https://github.com/MadBomber/gem-skill/issues/33)). One line in `rubygems_plugin.rb` plus a test.
+- `docs/skill-files.md` lists the wrong generation sources (F-55, issue [#34](https://github.com/MadBomber/gem-skill/issues/34)). Docs only; Pages deploys on `docs/**` pushes to develop.
+- Unparseable numeric env vars become 0 (F-54, issue [#35](https://github.com/MadBomber/gem-skill/issues/35)). After #24.
 
 ## Open bomberbot PRs
 
-- [#26](https://github.com/MadBomber/gem-skill/pull/26) fix(verifier): cap verify output with max_tokens (F-17), opened 2026-11-13
+- [#26](https://github.com/MadBomber/gem-skill/pull/26) fix(verifier): cap verify output with max_tokens (F-17), opened 2026-11-13; rebased onto e55bd4d 2026-11-13 06:00 (228/0)
+- [#31](https://github.com/MadBomber/gem-skill/pull/31) chore(gemspec): add documentation and bug tracker URIs (F-45), opened 2026-11-13
+- [#32](https://github.com/MadBomber/gem-skill/pull/32) fix(setup): exit 1 when a setup step fails (F-43, Fixes #29), opened 2026-11-13
+- [#36](https://github.com/MadBomber/gem-skill/pull/36) fix(bundle): report missing Gemfile.lock, exit 1 (F-41, Fixes #28), opened 2026-11-13
 
 ## Merged bomberbot PRs
 
