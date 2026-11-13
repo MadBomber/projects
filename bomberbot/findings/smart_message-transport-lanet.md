@@ -9,7 +9,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 | audit | last run | commit | result |
 |-------|----------|--------|--------|
 | security (+dead-code) | 2026-11-13 | 3b0abb9 | bundle-audit clean (DB 4d71b12 = upstream HEAD); S-6 fixed by #13; S-1…S-5, S-7, S-8 still reproduce (all unreachable while F-1 stands); #8/#9 add no exposure; no new F/S. Earlier run: 2026-11-10 @ c33acdf (S-1…S-6, F-1…F-13). dead-code @ 3b0abb9: nothing new |
-| dependencies | 2026-11-12 | b9b206e | F-20…F-24 (+F-16 relock recipe verified on 4.0.9, clears S-6; F-24 floor needs decision); dead-code re-scan @ b9b206e: nothing new |
+| dependencies (+dead-code) | 2026-11-13 | 3b0abb9 | F-55, F-56 (+F-15 PR-ready → #32; F-21 lock-only change clean against all of #20–#29, 64/307 on 4.0.9; F-18 0.1.0 note). Lanet 1.0.0 / smart_message 0.0.17 still latest releases; 0.1.0 unreleased on develop. Lock green on 4.0.9 + 4.1.0-preview1. Earlier run: 2026-11-12 @ b9b206e (F-20…F-24). Dead-code @ 3b0abb9: nothing new |
 | adoption | 2026-11-12 | b9b206e | F-30…F-34 (+F-13 update); README runs on 0.0.17 with F-2/F-10/F-17 workarounds except F-18; no mkdocs/examples/llms.txt; gem-skill fetch-only; dead-code re-scan @ b9b206e: nothing new |
 | quality | 2026-11-12 | b9b206e | F-35…F-38, S-8 (+F-11 verified → #18; F-15 todo recipe verified; F-2/F-9/F-29/F-30 notes). RuboCop 273 (lib 113), reek 43, flog 342 / 13.7 per method, flay 852 (tests only); dead-code re-scan @ b9b206e: nothing new |
 
@@ -151,3 +151,15 @@ Dead-code scan reached develop @ 3b0abb9 (`lib/` changed only by #8/#9; debride'
 - **F-53:** #25 adds a public `self.env_number`; `private_class_method :env_number` would keep it off the API. Low.
 - **F-54:** #28 makes `discovered_nodes`/`node_registry` return copies (documented in its CHANGELOG). Note, not a defect.
 - Suggested merge order (improver): #21, #20, #24, #22, #23, #25, #26, #27, #29, #28.
+
+## 2026-11-13 — bomberbot — dependencies (+dead-code, visit 6) — develop @ 3b0abb9
+
+Dead-code scan reached develop @ 3b0abb9 (debride's 13 `lib/` candidates unchanged: public API / Base hooks; no `exe/`; nothing new beyond F-9/F-28). Latest releases: lanet 1.0.0 (unchanged; the MadBomber fork is untagged at 0.5.1), smart_message 0.0.17 (0.1.0 exists only on its `develop`, unreleased, `required_ruby_version >= 4.0`), minitest 6.1.0, rake 13.4.2, rubocop 1.92.2. `bundle outdated`: minitest is the only direct dependency held back by a constraint (F-21). The committed lock installs and passes on 4.0.9 and 4.1.0-preview1 (64/303, no deprecation output). breaker_machines ≥ 0.21's `< 4.1.dev` cap applies only to precompiled builds.
+
+- **F-55:** gemspec leaves `smart_message` unconstrained while an incompatible-at-construction 0.1.0 is coming. Against real smart_message `develop` (0.1.0, Lanet stand-in because of F-1): publish, dispatcher key (#9 holds), inbound `receive` and heartbeat work; construction still fails (F-2); #29 constructs with `logger:` but not without it; #29 plus F-51's `SmartMessage::Logger.default` constructs both ways. Once 0.1.0 ships, Ruby ≥ 4 resolves 0.1.0 and 3.3/3.4 resolve 0.0.17. Proposed: constrain `~> 0.1` and floor 4.0 when 0.1.0 ships, folded into F-24/F-10. status: **needs Dewayne's decision** (inbox).
+- **F-56:** `publish` reports success when every send fails. `publish_to_nodes` (`lanet.rb:283-302`) rescues per node and never raises; smart_message 0.1.0's transport contract says `do_publish` must raise on failure. Probe: 5 publishes to one always-failing node, all `success? == true`, circuit stays `:closed`. Tests cover zero-node and partial cases only. Fix: raise `Error` when `target_nodes` is non-empty and `published_count` is 0, plus one test. status: **issue [#33](https://github.com/MadBomber/smart_message-transport-lanet/issues/33)**; build after #23/#25–#29 merge.
+- **F-15 (update):** baseline exits 0 on develop and on each of #20–#29's heads individually. status: **PR open [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32)**.
+- **F-21 (update):** `Gemfile` `minitest ~> 6.0` + `gem "minitest-mock"`, then `bundle lock --conservative --update minitest`; lock diff is minitest 6.1.0, minitest-mock 5.27.0, DEPENDENCIES; 64/307 green on 4.0.9; `git merge-tree` clean against each of #20–#29 including #22. A major dev-dependency bump that edits `Gemfile.lock`, so still after #22 merges.
+- **F-18 (update):** on 0.1.0 `header[:capabilities] =` still raises; the header `extensions` bag carries it when set at construction, so the code-side fix becomes `header.dig("extensions", "capabilities")` once 0.1.0 is targeted.
+- **F-4 (note):** stub Base sets `SmartMessage::VERSION = "0.1.0"` but models 0.0.17. A suite against real 0.1.0 must set `SMART_MESSAGE_DLQ_PATH` to a temp file, or it writes to the developer's real DLQ.
+- S-2/S-4/S-7: re-probed against 0.1.0; details held locally.

@@ -14,7 +14,7 @@ entirely against stubs defined in `test/test_helper.rb`.
 
 ## Status
 
-_Updated 2026-11-13 (visit 5): Dewayne rebase-merged #8, #9 and #13, then opened his own PRs #20–#29, one per open issue. No bomberbot PR this visit, because those ten PRs touch every lib, test, gemspec, lockfile and CHANGELOG file. Ran the security audit (no new findings; S-6 fixed by #13) and filed #30 (F-36) and #31 (F-15). F-1 still waits on Dewayne._
+_Updated 2026-11-13 (visit 6): no activity since visit 5 (develop still 3b0abb9, #20–#29 open). Opened [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32) (RuboCop baseline, Fixes #31) after confirming the baseline holds on each of #20–#29, ran the dependencies audit (F-55, F-56) and filed [#33](https://github.com/MadBomber/smart_message-transport-lanet/issues/33) (F-56). F-1 still waits on Dewayne._
 
 ## Backlog
 
@@ -32,13 +32,14 @@ Well-defined items a single small PR could close. **Dewayne's own PRs #20–#29 
 - **F-11 / [#18](https://github.com/MadBomber/smart_message-transport-lanet/issues/18):** Dewayne's PR [#28](https://github.com/MadBomber/smart_message-transport-lanet/pull/28).
 - **F-38 / [#19](https://github.com/MadBomber/smart_message-transport-lanet/issues/19):** Dewayne's PR [#20](https://github.com/MadBomber/smart_message-transport-lanet/pull/20).
 - **F-36 / [#30](https://github.com/MadBomber/smart_message-transport-lanet/issues/30):** `disconnect` kills threads without joining (50/50 alive right after). #29's `stop_services` keeps the bug. Next visit after #29 merges: `&.join(1)` in `stop_services` + test.
-- **F-15 / [#31](https://github.com/MadBomber/smart_message-transport-lanet/issues/31):** RuboCop baseline; default `rake` red with 270 offenses. Generate after #20–#29 merge (recipe in findings).
+- **F-15 / [#31](https://github.com/MadBomber/smart_message-transport-lanet/issues/31):** RuboCop baseline. **PR open: [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32)** (holds on each of #20–#29 individually). Follow-ups once it merges: CI runs default `rake` (dewayne.md), add `.rubocop_todo.yml` to the gemspec reject list.
 - **F-21:** move to minitest 6 (`~> 6.0` plus `minitest-mock`); verified green in scratch 2026-11-13. After #22 merges (it touches `Gemfile.lock`).
 - **F-28 (half):** remove dead `setup`/`teardown` in `test_lanet_concurrency.rb:6-13`. After #20/#28 merge. Deletes test code, so not a low-risk self-merge.
+- **F-56 / [#33](https://github.com/MadBomber/smart_message-transport-lanet/issues/33):** `publish` reports success when every send fails. Raise when `target_nodes` is non-empty and none succeeded, plus one test. After #23/#25–#29 merge (same files).
 
 ## Open bomberbot PRs
 
-None.
+- [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32) `bomberbot/rubocop-baseline` → develop, "chore: add RuboCop baseline so default rake passes". Fixes #31 (F-15). `.rubocop.yml` +7, new `.rubocop_todo.yml` (214 lines). CI green, MERGEABLE, `/code-review` clean in 1 round (6 out-of-scope notes rejected). Tooling config, so not low risk; awaiting Dewayne.
 
 ## Merged bomberbot PRs
 

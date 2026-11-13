@@ -106,6 +106,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Optional: turn on "Automatically delete head branches" for this repo (merged bot branches pile up; the tender deletes them by hand). (added 2026-11-12)
 - [ ] Before merging your [#29](https://github.com/MadBomber/smart_message-transport-lanet/pull/29) (constructor ordering), read the 2026-11-13 S-4 entry in local `notes/security/smart_message-transport-lanet.md`, and merge [#27](https://github.com/MadBomber/smart_message-transport-lanet/pull/27) first (F-51). Merge-order notes for #20–#29 are in inbox.md. (added 2026-11-13)
 - [ ] Optional, from the #13 merge: make the breaker_machines hold durable with `gem "breaker_machines", "~> 0.17.0", force_ruby_platform: true`, and make `test (4.0)` a required check. (added 2026-11-12, carried 2026-11-13)
+- [ ] Optional, after [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32) merges: have CI run the default `bundle exec rake` (not just `rake test`) so the RuboCop baseline is enforced, and drop the stale "pre-existing offenses" comment in `ci.yml`. Bots can't push `.github/workflows` changes (no `workflow` scope).
+- [ ] Optional, with [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32): add `.rubocop_todo.yml` to the gemspec's `spec.files` reject list (`.rubocop.yml` is excluded; the todo file isn't).
 
 ## htm (2026-11-11)
 
