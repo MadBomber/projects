@@ -10,7 +10,9 @@ AI Assistant CLI gem; depends on prompt_manager and shared_tools.
 
 ## Status
 
-_Updated 2026-11-13 (02:05 visit)._ Nothing approved or merged; develop still 0d611ef. Bomberbot opened [#228](https://github.com/MadBomber/aia/pull/228) (F-69, #223), [#229](https://github.com/MadBomber/aia/pull/229) (F-103) and [#233](https://github.com/MadBomber/aia/pull/233) (F-101, #224); five bomberbot PRs now await review, so the next visit will skip new work. Filed #230 (F-111), #231 (F-112), #232 (F-62).
+_Updated 2026-11-13 (02:55 visit)._ **Skipped new PRs: the review queue is full.** #226–#229 and #233 are unchanged, unapproved and 0 behind develop, and develop is still 0d611ef. The adoption audit found that TrakFlow fails on a fresh install ([#236](https://github.com/MadBomber/aia/issues/236), F-116) and that the live docs site was rolled back to 2.0.0 by a develop deploy (F-119, needs Dewayne). Also filed [#234](https://github.com/MadBomber/aia/issues/234) (F-130) and [#235](https://github.com/MadBomber/aia/issues/235) (F-131).
+
+_Prior (2026-11-13 02:05 visit)._ Nothing approved or merged; develop still 0d611ef. Bomberbot opened [#228](https://github.com/MadBomber/aia/pull/228) (F-69, #223), [#229](https://github.com/MadBomber/aia/pull/229) (F-103) and [#233](https://github.com/MadBomber/aia/pull/233) (F-101, #224); five bomberbot PRs now await review, so the next visit will skip new work. Filed #230 (F-111), #231 (F-112), #232 (F-62).
 
 _Prior (2026-11-13 00:15 visit)._ Dewayne rebase-merged #183 and #188 into develop (now 0d611ef); #193 merged only into its stacked base, and his own #206 redoes it. He also opened 17 fix PRs, #206–#222, covering nearly every open issue. Bomberbot opened [#226](https://github.com/MadBomber/aia/pull/226) (F-68) and [#227](https://github.com/MadBomber/aia/pull/227) (F-88 removal). A test-CI workflow is built but blocked: the bots' gh token lacks the `workflow` scope (`bomberbot/plans/aia-test-ci.md`). Filed #223 (F-69), #224 (F-101) and #225 (F-50).
 
@@ -29,6 +31,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - **In flight (Dewayne's PRs #206–#222)** cover #154, #182, #190–#192 and #194–#205. Don't build anything touching their files until they merge; afterwards F-49, F-50 (#225), F-83, F-28 and F-31 unblock.
 - **Now in PRs:** F-69 ([#223](https://github.com/MadBomber/aia/issues/223)) → **PR open** [#228](https://github.com/MadBomber/aia/pull/228); F-101 ([#224](https://github.com/MadBomber/aia/issues/224)) → **PR open** [#233](https://github.com/MadBomber/aia/pull/233); F-103 → **PR open** [#229](https://github.com/MadBomber/aia/pull/229).
+- **New picks, no overlap with open PRs (2026-11-13 02:55):** F-116 ([#236](https://github.com/MadBomber/aia/issues/236), `task_board.rb`, about 1 line plus a temp-HOME test; top pick); F-130 ([#234](https://github.com/MadBomber/aia/issues/234), `model_directives.rb:190`, 1 line; proof test in the improver report); F-131 ([#235](https://github.com/MadBomber/aia/issues/235), `plugin_loader.rb`, about 8 lines plus 2 tests; pair F-133 after it); F-132 (`max_tools` removal, about -4). After their overlapping PRs merge: F-117 (after #208) and F-120 (README blog 404s, after #207/#221/#222).
 - **Next picks with no overlap:** F-104 after #226 merges (same file; would also make #228's Hash guard redundant); F-62 ([#232](https://github.com/MadBomber/aia/issues/232), Rakefile, −6); F-71; F-36; the docs half of #205 (`docs/prompts/executable-prompts.md:63`, `docs/prompts/directives.md:91` use `claude-sonnet-4`, which resolves to vertexai; docs-deploy so not low risk); `lib/AGENTS.md` refresh (F-57, not shipped in the gem); the test CI workflow once the token has `workflow` scope.
 - **After their overlapping PR merges:** F-111 ([#230](https://github.com/MadBomber/aia/issues/230), after #208), F-112 ([#231](https://github.com/MadBomber/aia/issues/231), after #210), F-108 (after #206/#217/#218).
 - Open issues a PR can resolve (most now have a PR from Dewayne):
@@ -72,6 +75,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [#228](https://github.com/MadBomber/aia/pull/228) fix(skills): use shared front-matter parser in /skills (F-69, Fixes #223). **PR open**; review clean in 1 round, suite 2004/0. Lib, not low risk.
 - [#229](https://github.com/MadBomber/aia/pull/229) warn about failed MCP servers when stderr is not a terminal (F-103). **PR open**; review clean in 2 rounds, suite 2004/0. Lib, not low risk.
 - [#233](https://github.com/MadBomber/aia/pull/233) fix: name the env var to set when a provider API key is missing (F-101, Fixes #224). **PR open**; review clean in 3 rounds, suite 2005/0. Lib, not low risk.
+- Tender (2026-11-13 02:55): all five are unchanged, MERGEABLE, 0 behind develop, suites green locally (2001–2005/0), no reviews. A scratch merge showed that once #226 and #227 land, #228, #229 and #233 conflict on CHANGELOG only.
 - Tender (2026-11-13 02:05): #226 and #227 up to date with develop, suites green, unreviewed. Each will need a CHANGELOG-only rebase against whichever of Dewayne's #206–#222 lands first.
 
 

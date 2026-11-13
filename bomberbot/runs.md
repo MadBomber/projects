@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 02:55 aia
+
+- `develop` already existed (0d611ef); not created, and it didn't move this visit.
+- **Skipped: review queue full.** Five bomberbot PRs (#226–#229, #233) are open and unapproved, so no new PRs.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** #226, #227, #228, #229 and #233 are MERGEABLE and 0 behind develop, with suites green locally (2001–2005/0) and no reviews or comments; nothing to do. A scratch merge shows CHANGELOG-only conflicts after the first two land.
+- **Audit:** adoption @ 0d611ef → F-116..F-122. Improver → F-130..F-134.
+- **Issues answered:** none (no new outside comments). **Issues filed:** [#234](https://github.com/MadBomber/aia/issues/234) `/available_models` case (F-130), [#235](https://github.com/MadBomber/aia/issues/235) partial plugin load (F-131), [#236](https://github.com/MadBomber/aia/issues/236) TrakFlow fresh install (F-116).
+- Note: triage and another agent collided on `scratch/dev`; give each role its own scratch subdirectory in the brief.
+
 ## 2026-11-13 02:45 robot_lab
 
 Tenth visit (last: 01:15 today). `develop` already existed (c700ba6 at start, afd9131 at end); not created. All five phase-1 agents ran. Queue: only #70, unreviewed, green locally, 0 behind.
