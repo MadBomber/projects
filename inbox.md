@@ -1189,3 +1189,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Adoption: `asgard help` with no `.loki`** only prints "no .loki file found". A first-time user after `gem install` gets no usage and no docs link; a short starter (minimal `class Tasks` stub + docs URL) would help. Current behaviour is documented, so it's a product decision.
 - **`no_negate` before `class_option`** silently does nothing (`task_dsl.rb:29`, `next unless opt`). Warn or raise with the `.loki` line?
 - **tty-table under frozen literals (F-40):** `strings`/`unicode_utils` are dormant and break under `--enable=frozen-string-literal`. Not urgent; if Ruby flips the default, `Schedule::Table` (the only user) needs a small replacement table renderer.
+
+## aia (2026-11-13 08:48, BomberBot)
+
+- **F-143: should a `-c` config file warn about keys it ignores?** Unknown top-level keys, non-Hash section values and misspelt section keys (`llm: {temprature: 0.2}`) are dropped silently. That behaviour is documented, and it was chosen so that upgraders' removed 2.0 keys load quietly. Options: (a) warn on unknown keys, except a list of known-removed 2.0 keys; (b) warn only in `load_extra_config`, for unknown top-level keys and non-Hash section values; (c) keep it silent.
+- **Accept VS Code's `servers` key in `--mcp` files?** VS Code `mcp.json` files use `servers`, not `mcpServers`. Accepting it as an alias would let users reuse those files unchanged. Today they quietly turn into a server with no command (#241). It adds a supported format, so it's your call.
+- **One rule for user-facing messages.** Warnings reach the user three ways: `$stderr.puts`, the logger, and plain `puts` to stdout (`/webpage` errors, `web_and_file_directives.rb:17-18,32-33`). Proposed rule: user-facing messages go to stderr, and the logger is for diagnostics only. #240 exposes the duplication.
