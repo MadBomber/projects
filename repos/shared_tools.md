@@ -10,7 +10,7 @@ Local tool definitions for Ruby AI frameworks, used by aia. A change to a public
 
 ## Status
 
-_Updated 2026-11-13 05:15._ Dewayne merged #9/#13/#14 and opened his own fixes #18-#23 for issues #10-#12 and #15-#17; madbot opened #24, #28, #29 (all lib, green, waiting for review) and filed #25-#27 from a partial quality audit.
+_Updated 2026-11-13 07:30._ Review queue full (#24, #28, #29 open, green, unreviewed), so no new PRs; a dead-code audit and the improver yielded F-68..F-86 and issues #30-#32. Dewayne's #18-#23 still open.
 
 ## Backlog
 
@@ -29,7 +29,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - `CronTool#next_times` fails during minute :59 (F-59): [issue #25](https://github.com/MadBomber/shared_tools/issues/25)
 - `CronTool` field parsing and day matching (F-60..F-62): [issue #26](https://github.com/MadBomber/shared_tools/issues/26)
 - Tool files raise NameError when required directly (F-65): [issue #27](https://github.com/MadBomber/shared_tools/issues/27) (after #20 merges, for `data_science_kit.rb`)
-- Open security items S-2, S-5, S-7, S-9, S-12 have small fixes (details held locally; neutral titles only)
+- `CompositeAnalysisTool` returns simulated data as if real (F-78): [issue #30](https://github.com/MadBomber/shared_tools/issues/30) (two PRs: files, then URLs)
+- `CompositeAnalysisTool`/`DataScienceKit` ignore their nested `options`/`parameters` object (F-79): [issue #31](https://github.com/MadBomber/shared_tools/issues/31) (DataScienceKit half after #20)
+- `WorkflowManagerTool` creates `.workflows/` on `new` (F-80): [issue #32](https://github.com/MadBomber/shared_tools/issues/32)
+- `DiskTool`/`ComputerTool` return nil for unknown actions (F-68); macOS notification text with `#{` fails (F-77); WHOIS read has no timeout (F-82); dead `storage_dir` reader (F-70); committed `examples/.workflows/*.json` (F-73)
+- Open security items S-2, S-5, S-7, S-9, S-12, S-13 have small fixes (details held locally; neutral titles only)
 
 ## Merged bomberbot PRs
 
