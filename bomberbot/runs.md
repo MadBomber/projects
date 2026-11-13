@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 01:10 typed_bus
+
+- `develop` already existed (97c56f1); not created.
+- **Since last visit:** Dewayne merged #28/#29/#30 (2026-11-12 20:52Z, no comments), then fixed #25-#27 and #31-#36 himself on develop (906faac code, 97c56f1 docs); responder verified all nine fixed. Tender deleted 9 leftover merged bot branches. 0 open issues, 0 open PRs at start; CI green on develop.
+- **New PRs** (independent, base develop, CI green 3.2-4.0, review clean round 1 each):
+  - [#37](https://github.com/MadBomber/typed_bus/pull/37) docs: list logger dependency and link LICENSE (source: brain, F-58/F-59). Not low risk (docs site/mkdocs.yml).
+  - [#38](https://github.com/MadBomber/typed_bus/pull/38) docs: remove unused typed_bus.gif (source: brain/dead code, F-63; removal). Not low risk (deploy asset).
+  - [#39](https://github.com/MadBomber/typed_bus/pull/39) fix(message_bus): show name and registered channels on unknown (source: brain, F-62). Lib → awaiting Dewayne.
+  - Builders started after tender/responder/triage reported (verified brain-backlog items) while auditor/improver finished; both confirmed the same picks.
+- **Merged (low risk):** none. **Merged after approval:** none (Dewayne merged #28-#30 himself). **Tended:** none open.
+- **Audit:** dependencies @ 97c56f1 → F-80..F-82, S-40 (local), S-32 narrowed. Improver F-90.
+- **Issues answered:** none (none open).
+- **Issues filed:** [#40](https://github.com/MadBomber/typed_bus/issues/40) Dependabot config inert (F-80), [#41](https://github.com/MadBomber/typed_bus/issues/41) stale lock (F-82), [#42](https://github.com/MadBomber/typed_bus/issues/42) publish YARD return (F-22).
+- **Note:** rbenv global is 4.1.0-preview1, whose Bundler 4.0.6 crashes on `bundle install`; builders used `RBENV_VERSION=4.0.9`.
+
 ## 2026-11-13 01:10 smart_message-transport-named_pipes
 
 - `develop` already existed (c143600); not created.

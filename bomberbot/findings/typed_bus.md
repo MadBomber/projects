@@ -10,7 +10,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 |---|---|---|
 | dead code | 2026-11-12 | Diff 5be35a6..0f94a6c + confirm pass at develop 0f94a6c (lib, examples, test, docs references; dependents aia, robot_lab, robot_lab-cyborg, writers_room, city_of_the_future, scripts). debride + `ruby -wc` + mutation (224 runs). F-8 fixed; F-33 partly fixed (two readers left); F-13/F-34/F-35/F-55/F-63 still hold. New: F-64 (stale unsubscribe-mid-publish test → #35), F-65, F-66. Previous full run: 2026-11-10 at 5be35a6. |
 | adoption | 2026-11-12 | Second run, at develop 0f94a6c. `gem build` clean (no warnings, 12 files incl. LICENSE); all metadata URIs 200 except `/yard/` 404 (F-12, now live: mkdocs `--force` wiped YARD's gh-pages commit 9 s after it was pushed); `mkdocs build --strict` clean; README snippets all run (Ruby 4.0.9); examples 00-14 exit 0, 15 LoadError (F-26/#25); released 0.0.1 compared with live docs. F-23/F-24 confirmed fixed. gem-skill verify not run (no LLM key in env). New: F-57..F-60. First run: 2026-11-10 at 5be35a6. |
-| dependencies | 2026-11-10 | First run, at develop 5be35a6. `bundle outdated` (async 2.36→2.46, suite green on 2.46), bundler-audit, Dependabot state. New: F-28 (no dependabot.yml, alerts off → issue #15), F-29 (stale async lock → issue #14), F-30 (unused dev dep debug_me — NOT filed; debug_me is Dewayne's standing debug tool), F-31 (heavy dev deps aigcm/ratatui_ruby dominate the tree — needs decision). S-32 held locally (8 dev-tree advisories, shipped gem clean). |
+| dependencies | 2026-11-13 | Second run, at develop 97c56f1. Ruby 4.0.9 + 4.1.0-preview1; `bundle outdated` (22 stale, async/logger current); suite green on locked deps, on latest deps (`bundle update --all`) and with frozen-string-literal; async 2.0.0 floor fails on Ruby 4 (F-81). bundler-audit: runtime tree clean; S-32 narrowed, S-40 held locally. F-29 fixed; F-28 half-fixed → F-80; F-31 partly fixed; F-5 floor still open. New: F-80..F-82, S-40. First run: 2026-11-10 at 5be35a6. |
 | security | 2026-11-11 | Second run, at develop 0fe5860. bundle-audit: S-32 unchanged (runtime tree clean). No eval/shell/YAML/Marshal/ENV in lib/. F-1/F-9 confirmed fixed; #8 fixed F-18 but regressed drain-and-retry (F-46). S-1..S-3 unchanged. New S-33, S-34 held locally. |
 | quality | 2026-11-12 | Second run, at develop 0f94a6c (16 commits since be4018d). Ruby 4.0.9; RuboCop 1.92.2 + reek 6.6.0 default configs; flog; flay. Suite 224 runs, 0F, 100% line+branch (3/3 green). RuboCop 494→564 (+70 in changed files, mostly house-style Layout/Style), reek 55→55, flay 0, flog 430.3→446.7. F-15 still present (now also on the throttle path), F-17 still present. New: F-49..F-52. First run: 2026-11-09 at main be4018d (F-15..F-22). |
 
@@ -143,3 +143,24 @@ No new PRs (review queue full: #28/#29/#30). Phase-1 agents read develop from a 
 - F-66 (dead code): new public `Configuration.validate_max_pending!` (`configuration.rb:36-40`) is used only internally and in tests, undocumented, unreleased. Status: needs Dewayne's decision (mark `@api private` vs. document as public) → inbox.
 - F-70 (improver): `Channel.new(:x, type: "Order")` / `type: :order` is accepted; every publish then raises bare `TypeError: class or module required` (`channel.rb:220`). Fix: `ArgumentError` in `initialize` unless nil or a Module. Status: issue [#34](https://github.com/MadBomber/typed_bus/issues/34).
 - F-71 (improver): a raising DLQ `on_dead_letter` callback skips `record_stat(:dead_lettered)`/`(:nacked)` (`channel.rb:87-96` pushes before recording) and is logged as "subscriber #1 raised". Repro: `{z_published: 1}` vs `{z_published: 1, z_dead_lettered: 1, z_nacked: 1}`. Stats-first fix: issue [#36](https://github.com/MadBomber/typed_bus/issues/36). Whether `push` should rescue/log callback errors: needs Dewayne's decision → inbox.
+
+### 2026-11-13 (tenth visit; dependencies audit + improver, develop 97c56f1)
+
+Dewayne merged #28/#29/#30 (2026-11-12 20:52Z), then fixed #25-#27 and #31-#36 directly on develop (906faac code, 97c56f1 docs); the responder verified all nine fixed. Fixed on develop, closing on release: F-15 (#30), F-49 (#29), F-50/F-7 (#28), F-26 (#25), F-47 (#26), F-53 (#27), F-54 (#31), F-57 (#32), F-61 (#33), F-64 (#35), F-70 (#34), F-71 (#36). Suite 243 runs, 0F, 100% line+branch. CI green on develop.
+
+- F-58/F-59: PR'd [#37](https://github.com/MadBomber/typed_bus/pull/37).
+- F-62: PR'd [#39](https://github.com/MadBomber/typed_bus/pull/39).
+- F-63: PR'd [#38](https://github.com/MadBomber/typed_bus/pull/38) (gif only). mp4 (2.7 MB) / jpg (120 KB) also unreferenced: needs Dewayne's decision → inbox.
+- F-22: issue [#42](https://github.com/MadBomber/typed_bus/issues/42) (YARD `@return` half). The `unsubscribe` return-value half needs Dewayne's decision (Boolean vs document nothing) → inbox.
+- F-28: partly fixed (config added in 4f26122) → F-80.
+- F-29: fixed (async 2.46.0 locked, latest).
+- F-31: partly fixed (`:extras` group), still needs decision.
+- F-5: Ruby 3.2 EOL 2026-03-31; current async/console/io-event need >= 3.3, CI 3.2 leg deletes the lock. Floor bump still open.
+- F-65, F-33 remainder, F-35/F-55: still present at 97c56f1.
+- F-80 (auditor): `.github/dependabot.yml` exists only on develop (Dependabot reads the default branch) and has no `target-branch`, so it opens nothing now and would target `main` after release. Alerts off (403). Status: issue [#40](https://github.com/MadBomber/typed_bus/issues/40).
+- F-81 (auditor): gemspec `async ~> 2.0` floor is untested; async 2.0.0 on Ruby 4.0.9 gives 2 errors (`io_write` arity). Status: needs Dewayne's decision (which floor) → inbox.
+- F-82 (auditor): `Gemfile.lock` 22 gems behind; suite green after `bundle update --all`. Status: issue [#41](https://github.com/MadBomber/typed_bus/issues/41) (neutral; also clears S-32/S-40).
+- F-90 (improver): `timeout` still unvalidated; `timeout: "5"` leaves a delivery pending forever (TypeError swallowed in the Async task, `delivery.rb:66`). Same decision as F-56 (is 0 valid?) → inbox, not filed.
+- S-32: security finding, details held locally. Status: open (narrowed).
+- S-40: security finding, details held locally. Status: open; neutral fix tracked by issue #41.
+
