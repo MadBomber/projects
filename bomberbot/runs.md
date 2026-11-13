@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 00:34 smart_message-transport-lanet
+
+- `develop` already existed (3b0abb9); not created.
+- **Since last visit:** Dewayne rebase-merged #8 (6491330), #13 (788e993) and #9 (3b0abb9) without comment or approval; #9 conflicted on CHANGELOG and he had `@copilot` resolve it. The tender deleted the three leftover merged branches (repo has auto-delete off). Then he opened his own PRs [#20–#29](https://github.com/MadBomber/smart_message-transport-lanet/pulls) (`fix/issue-*`), one per open issue #3/#10–#19, all green and MERGEABLE.
+- **skipped: no candidate clears the bar without overlapping work in flight.** #20–#29 touch `lanet.rb`, every test file, `test_helper.rb`, CHANGELOG, README, the gemspec and `Gemfile.lock`; the only untouched-file candidates (F-15 RuboCop baseline, `llms.txt`) would be stale or premature until they merge and F-1 is decided. No builders ran.
+- **Merged (low risk):** none. **Merged after approval:** none (none approved; he merges without approving). **Tended:** none open.
+- **Audit:** security (+dead-code) @ 3b0abb9: bundle-audit clean, S-6 fixed by #13, S-1…S-5/S-7/S-8 unchanged and latent, no new F/S. Dead-code re-scan @ 3b0abb9: nothing new.
+- **Issues answered:** none; every issue already shows Dewayne's linked PR (taste: don't comment just to link). Responder findings on #3/#17 went to the findings file.
+- **Issues filed:** [#30](https://github.com/MadBomber/smart_message-transport-lanet/issues/30) `disconnect` returns with threads alive (F-36), [#31](https://github.com/MadBomber/smart_message-transport-lanet/issues/31) default rake red on 270 RuboCop offenses (F-15).
+- **Review notes on #20–#29** (F-50…F-54, in findings + inbox): CHANGELOG conflicts on 7 of them; #27 must land before #29; #28/#29 conflict in `disconnect`; S-4 note on #29 held locally.
+- **Ready for next visit (after #20–#29 merge):** F-36/#30 join in `stop_services`, F-15/#31 RuboCop baseline, F-21 minitest 6, F-28 dead setup/teardown.
+
 ## 2026-11-13 00:15 aia
 
 - `develop` already existed (0d611ef); not created.

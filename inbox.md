@@ -949,3 +949,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-84 decision:** OK to remove `FactAsserter`, even though that changes the TF-IDF filter's constructor keyword?
 - **#146 decision:** accept top-level `debug`/`verbose` in prompt front matter, warn, or close as by design.
 - **Tavily sample after #219:** `mcp_servers/tavily_mcp_server.json` puts `$TAVILY_API_KEY` in the command string with `"env": {}`. Under ruby_llm 2.2's env allowlist the key won't be inherited, so the sample should move the key into `env`.
+
+## 2026-11-13 smart_message-transport-lanet (bomberbot)
+
+- **Merge order for your PRs #20–#29** (improver + merge simulation): #21, #20, #24, #22, #23, #25, #26, #27, #29, #28. Seven of them add a CHANGELOG line at the same spot, so each after the first needs a rebase. #20–#28 merged in numeric order with a union CHANGELOG merge apply cleanly and the suite is green (70 runs); #29 then conflicts in `lanet.rb`/`test_helper.rb`.
+- **#29 needs #27's logger line (F-51):** `Logger.new($stdout)` inside the class resolves to `SmartMessage::Logger`, which has no `.new` in the real gem, so #29 alone still raises on construction without `logger:`. Rebase #29 onto #27 with `SmartMessage::Logger.default` before `super`. Before merging #29, see the S-4 local security note (`notes/security/smart_message-transport-lanet.md`, 2026-11-13).
+- **#28 + #29 (F-52):** `@nodes_mutex = Mutex.new` must stay before `super` once #29 lands, because `Base#initialize` starts the threads; the stub suite won't catch it.
+- **#26 test gap:** after #9, a Class subscription still reaches `receive` after `unsubscribe!`; #26's test asserts only `active_subscriptions`. Consider also asserting `receive` isn't called.
+- **#25 (F-53):** `self.env_number` becomes public API; `private_class_method :env_number` would avoid it.
+- **None of #20–#29 says `Fixes #N`**, so issues #3, #10–#19 won't close on merge.
+- **CHANGELOG mergeability:** ten parallel PRs appending to `## [Unreleased]` guarantee a rebase chain. Split it into `### Fixed / Added / Changed`, or leave CHANGELOG out of batch PRs and add one consolidated entry?

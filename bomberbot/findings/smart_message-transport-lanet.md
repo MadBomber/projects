@@ -8,7 +8,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 
 | audit | last run | commit | result |
 |-------|----------|--------|--------|
-| security (+dead-code) | 2026-11-10 | c33acdf | S-1…S-6 (4 open, 1 theoretical, 1 dev-lockfile); F-1…F-13. F-1: the gem cannot run against the real `lanet` API |
+| security (+dead-code) | 2026-11-13 | 3b0abb9 | bundle-audit clean (DB 4d71b12 = upstream HEAD); S-6 fixed by #13; S-1…S-5, S-7, S-8 still reproduce (all unreachable while F-1 stands); #8/#9 add no exposure; no new F/S. Earlier run: 2026-11-10 @ c33acdf (S-1…S-6, F-1…F-13). dead-code @ 3b0abb9: nothing new |
 | dependencies | 2026-11-12 | b9b206e | F-20…F-24 (+F-16 relock recipe verified on 4.0.9, clears S-6; F-24 floor needs decision); dead-code re-scan @ b9b206e: nothing new |
 | adoption | 2026-11-12 | b9b206e | F-30…F-34 (+F-13 update); README runs on 0.0.17 with F-2/F-10/F-17 workarounds except F-18; no mkdocs/examples/llms.txt; gem-skill fetch-only; dead-code re-scan @ b9b206e: nothing new |
 | quality | 2026-11-12 | b9b206e | F-35…F-38, S-8 (+F-11 verified → #18; F-15 todo recipe verified; F-2/F-9/F-29/F-30 notes). RuboCop 273 (lib 113), reek 43, flog 342 / 13.7 per method, flay 852 (tests only); dead-code re-scan @ b9b206e: nothing new |
@@ -126,3 +126,28 @@ Dead-code scan reached develop @ b9b206e (`lib/` unchanged since c33acdf; debrid
 - **F-9 (update):** `handle_smart_message`'s `sender_info` (`:352`) is also unused.
 - **F-2/F-30 (note):** the constructor is written for the stub: `defined?(super)` (`:46`) is always true; `@options ||=` (`:47`) is a no-op after `Base#initialize`; `attr_reader :options` duplicates Base's; `attr_reader :logger` makes public and shadows Base's private `logger`, which already defaults to `SmartMessage::Logger.default`. Dropping that reader and the `Logger.new` fallback may be the smallest F-30 fix (public API: see inbox).
 - **Note (improver):** `connected?` (`:96`) returns `nil` rather than `false` when `@sender` is nil; `!!(…)` plus a test, after #8 merges. Low.
+
+## 2026-11-13 — bomberbot — security (+dead-code) — develop @ 3b0abb9
+
+Dead-code scan reached develop @ 3b0abb9 (`lib/` changed only by #8/#9; debride's 13 `lib/` candidates are unchanged public API / Base hooks; #9's new test helpers are all used; nothing new beyond F-9/F-28). bundle-audit 0.9.3, DB 4d71b12 (= upstream HEAD, 1359 advisories): "No vulnerabilities found". Suite green on 4.0.9 (64 runs / 303 assertions). No new audit findings; F-39…F-49 and S-9+ unused.
+
+- **S-1, S-2, S-3, S-7, S-8:** security findings, details held locally. status: open (re-verified at 3b0abb9; unreachable while F-1 stands).
+- **S-4:** security finding, details held locally. status: open (re-checked against Dewayne's PR #29; see local note).
+- **S-5:** security finding, details held locally. status: unverified (theoretical; unchanged).
+- **S-6:** security finding, details held locally. status: **fixed by [#13](https://github.com/MadBomber/smart_message-transport-lanet/pull/13)**.
+- **F-1 / F-10 (re-verified):** lanet 1.0.0 still can't load (`lanet/receiver.rb:4` requires an unshipped `config`), and the real `Sender`/`Receiver` take a port, not a config hash. Every network path stays unreachable.
+- **F-4 (note):** the stub `Base#subscribe`/`#unsubscribe` are no-ops, so #9's unsubscribe tests build the dispatcher's subscribers hash by hand (`test_lanet_integration.rb:423-436`).
+- **F-15:** re-verified: 270 offenses in 6 files; `bundle exec rake` exits 1. status: **issue [#31](https://github.com/MadBomber/smart_message-transport-lanet/issues/31)**.
+- **F-36:** re-verified: both threads alive right after `disconnect` in 50/50 runs. Dewayne's #29 moves the kills into `stop_services` without a join. status: **issue [#30](https://github.com/MadBomber/smart_message-transport-lanet/issues/30)**.
+- **F-21 (update):** minitest `~> 6.0` + `minitest-mock` resolve to 6.1.0 / 5.27.0 and the suite is green on 4.1.0-preview1 (triage, scratch). Wait for #22 (lockfile).
+- **#3 (update, responder):** #8 made the orphaned-thread symptom worse: a quick `disconnect` + `connect` now resets `@shutdown` before the constructor's orphaned threads wake, leaving 2 discovery + 2 heartbeat threads (b9b206e: 0). Dewayne's #29 addresses it.
+- **#17 (update, responder):** after #9, `unsubscribe!(ChatMessage)` leaves Class subscriptions still reaching `receive` (before #9 they never received at all). #26 fixes it; its test checks only `active_subscriptions`.
+
+### Review notes on Dewayne's PRs #20–#29 (improver + main session, 2026-11-13)
+
+- **F-50:** seven of them (#22, #23, #25–#29) add a CHANGELOG line at the same spot; every pair conflicts there. #20, #21, #24 conflict with nothing. Main-session merge simulation in numeric order with a union merge for CHANGELOG: #20–#28 apply cleanly and the suite is green (70 runs); #29 then conflicts in `lanet.rb` and `test_helper.rb`.
+- **F-51:** #27 and #29 both rewrite `initialize`. #29 keeps `Logger.new($stdout)`, which inside the class resolves to `SmartMessage::Logger` (no `.new` in the real gem), so #29 alone doesn't fix construction with the real gem. Merge #27 first; on rebase #29's line becomes `SmartMessage::Logger.default` before `super`. status: inbox (Dewayne's PRs).
+- **F-52:** #28 and #29 conflict in `disconnect` (adjacent hunks). Also `@nodes_mutex = Mutex.new` must stay before `super` after #29, because `Base#initialize` starts the threads; the stub suite wouldn't catch it.
+- **F-53:** #25 adds a public `self.env_number`; `private_class_method :env_number` would keep it off the API. Low.
+- **F-54:** #28 makes `discovered_nodes`/`node_registry` return copies (documented in its CHANGELOG). Note, not a defect.
+- Suggested merge order (improver): #21, #20, #24, #22, #23, #25, #26, #27, #29, #28.
