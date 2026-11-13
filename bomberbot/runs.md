@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:00 aia
+
+Visit after 2026-11-13 02:55. `develop` already existed (0d611ef, unchanged); not created.
+
+- **skipped: review queue full.** The tender found [#226](https://github.com/MadBomber/aia/pull/226), [#227](https://github.com/MadBomber/aia/pull/227), [#228](https://github.com/MadBomber/aia/pull/228), [#229](https://github.com/MadBomber/aia/pull/229) and [#233](https://github.com/MadBomber/aia/pull/233) unchanged, MERGEABLE, 0 behind develop, unapproved, with no comments. Nothing to merge, rebase or retarget. Dewayne's #206–#222 are all still open and unreviewed.
+- PRs merged: none. Low-risk merges: none.
+- Audit: **dependencies** (develop 0d611ef). bundle-audit clean, same 4 transitive outdated gems, direct deps at latest, suite 2001/0 hermetic on 4.0.9 and 4.1.0-preview1, but it touches the real TrakFlow DB (F-135).
+- Improver: F-136..F-140 (role validation, `/tools` nil description, `speak_command` tilde, bash completion `cd`, `/compare` provider).
+- Issues answered: none (responder found nothing new to add; no comments since the last visit).
+- Issues filed: [#237](https://github.com/MadBomber/aia/issues/237) (F-135), [#238](https://github.com/MadBomber/aia/issues/238) (F-136), [#239](https://github.com/MadBomber/aia/issues/239) (F-137).
+- Inbox: role sent twice in one-shot runs; `/compare` outside the crew; replace word_wrapper.
+
 ## 2026-11-13 08:05 typed_bus
 
 Thirteenth visit (last 2026-11-13 06:55). `develop` already existed (97c56f1, unchanged); not created.
