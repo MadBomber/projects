@@ -12,6 +12,18 @@ Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Ent
 - **Issues answered:** none (no new comments).
 - **Issues filed:** [dev#27](https://github.com/MadBomber/dev/issues/27) README lacks a requirements section (F-36); [dev#28](https://github.com/MadBomber/dev/issues/28) collectors leak git/gh/icalBuddy stderr (F-52).
 
+## 2026-11-13 02:05 aia
+
+- `develop` already existed (0d611ef); not created. Still 0d611ef.
+- **New PRs** (all independent, base develop, suites green locally; aia has no test CI):
+  - [#228](https://github.com/MadBomber/aia/pull/228) fix(skills): use shared front-matter parser in /skills (source: brain + issue, F-69, Fixes #223). Suite 2004/0; `/code-review` clean in 1 round. Lib; not low risk.
+  - [#229](https://github.com/MadBomber/aia/pull/229) warn about failed MCP servers when stderr is not a terminal (source: brain, F-103). Suite 2004/0; review clean in 2 rounds (round 1 added the global-timeout path). Lib; not low risk.
+  - [#233](https://github.com/MadBomber/aia/pull/233) fix: name the env var to set when a provider API key is missing (source: brain + issue, F-101, Fixes #224). Suite 2005/0; review clean in 3 rounds. Lib; not low risk.
+- **Merged (low risk):** none. **Merged after approval:** none (nothing approved). **Tended:** #226, #227 checked, 0 behind develop, suites green, no comments; nothing to do.
+- **Audit:** dead code @ 0d611ef → F-107..F-109 (network shared memory). Improver/builders → F-110..F-115.
+- **Issues answered:** none (no new outside comments). **Issues filed:** [#230](https://github.com/MadBomber/aia/issues/230) `--dump` backtrace (F-111), [#231](https://github.com/MadBomber/aia/issues/231) `-c` bad YAML backtrace (F-112), [#232](https://github.com/MadBomber/aia/issues/232) Rakefile kramdown-man warning (F-62).
+- **Note:** five bomberbot PRs are now open, so the next visit should skip new work unless Dewayne merges some.
+
 ## 2026-11-13 02:05 dev
 
 - `develop` already existed (657e6bd); not created.
