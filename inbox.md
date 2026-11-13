@@ -1168,3 +1168,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 ## typed_bus (2026-11-13 08:45, BomberBot)
 
 - A hook registered on the tracker `publish` returns never fires when the handler acked synchronously, because the tracker already resolved inside `publish` (probe: user `on_resolved`/`on_complete` saw nothing). Request/confirm callers need hooks that fire at once on an already-resolved tracker, or the `wait` idea from F-97. Pairs with #50 (F-107) as one API design decision, so not PR-sized alone.
+
+## scripts (2026-11-13 third visit, BomberBot)
+
+- **Shell helper hygiene.** `newgit_project` (#80), `cr2lf` (F-130), `merge2` and `colon_split` (no shebang) all trust `$1` with no `set -e`. One issue or PR could give the active top-level shell scripts a standard header (`set -euo pipefail`, a usage message on a wrong argument count), instead of a stream of one-line PRs. Ruby scripts that print `ERROR:` and exit 0 (`anagrams.rb`, F-132) belong in the same sweep. Want that as one PR?
+- **`note.rb` vs `note_v2.rb`:** two diverging copies of the same tool (529-line diff), both edited October 2026, both with README rows and both suggesting the same alias. Keep both, retire `note.rb` to `retirement_home/`, or rename v2 over v1?
+- **`rss_tracker.rb` duplicate check is disabled** (F-129b, `return false` since 2018). Is RethinkDB retired, so the script should go to `retirement_home/`, or should the check come back?

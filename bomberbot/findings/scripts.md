@@ -23,8 +23,9 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | quality | 2026-11-12 | Logic-defect pass at develop 86201ce over ~95 scripts no earlier finding names (top-level `.rb`, extensionless Ruby, shell, `lib/`, `templates/`); archives excluded. Every candidate reproduced under `sandbox-exec` (scratch copies, stub brew/Octokit, in-process Rack, throwaway git repos). New F-80..F-97 (improver F-98, F-99; S-9 held locally). **F-80 (`move_fork_offline.rb`) is data loss.** Dead-code scan last covered commit: 86201ce (develop unchanged). |
 | dead code | 2026-11-13 | Quick scan 86201ce..a35981f (#50-#67 plus the #35-#37 merges, 38 files): nothing orphaned, no new auditor findings. F-10/F-17/F-18/F-23/F-52/F-79/F-99 still present and referenced only by their README rows. erb2haml is now the last non-archive systemu user (F-68). Dead-code scan last covered commit: a35981f. |
 | security | 2026-11-13 | Full diff bc51825..a35981f (#24-#26, #35-#37, #50-#67; no new files) plus whole-tree sweep (archives excluded) for shell `eval`, single-quote-interpolated `system`, rm -rf, Kernel#open pipes, TLS-off, fixed /tmp paths, curl\|sh, PATH shadowing of system binaries, debug dumps of credential-bearing options. All runs under `sandbox-exec` with stubs. bundle-audit n/a (no lockfile). S-3..S-10 re-verified present. New S-11..S-14 (held locally), F-116..F-118, F-14 extended. Dead-code scan last covered commit: a35981f (develop unchanged). |
+| quality | 2026-11-13 | RuboCop `Lint` (1.92.2, scratch config; repo `.rubocop.yml` is all comments) over 209 Ruby files plus `flay -m 30` at develop a35981f, archives excluded. ~260 Lint offenses and 20 flay groups triaged by hand; repros under `sandbox-exec`. New F-125..F-129 (auditor), F-130 (triage), F-131 (improver). **F-125 (comment_gemfile) and F-126 (copy_modified_files) lose user data.** Dead-code scan last covered commit: a35981f (develop unchanged). |
 
-Dead-code scan last covered commit: 86201ce (develop, 2026-11-12; quick scan bc51825..86201ce, nothing removable)
+Dead-code scan last covered commit: a35981f (develop, 2026-11-13; unchanged since the quick scan 86201ce..a35981f)
 
 ## Findings
 
@@ -295,3 +296,18 @@ Security audit at develop a35981f (diff bc51825..a35981f plus a whole-tree sweep
 - F-122 (new, improver, dead code): stubs kept "for backup" (30e5e9b): `working_directory_from.rb`, `reverse_gem_depends.rb`, `sync_upstream.rb`, `go2work`; nothing references them but their README rows. Status: needs Dewayne's decision (keep with honest rows, move to retirement_home, or delete).
 - F-123 (new, improver, low): `revert_all.rb:75-84` has two unguarded `debug_me` blocks, so `--dryrun` prints five DEBUG lines. Fix: `if debug?`. Status: open (ride-along).
 - F-124 (new, improver, low): `killall_ruby` writes `~/tmp/temp.s` via gawk and sources it; fails when `~/tmp` is missing. `pkill -9 -x ruby` does the same. Status: open (low).
+
+
+### 2026-11-13, third run
+
+Quality audit at develop a35981f (RuboCop `Lint` + flay, every candidate read by hand, repros sandboxed). Review queue full (#69-#71 open, unreviewed), so no PRs; filed F-125 (#78), F-126 (#79), F-131 (#80). No new security findings (next is S-15). Dead-code scan last covered commit: a35981f.
+
+- F-125 (new, auditor, defect, data loss, verified in sandbox): `comment_gemfile.rb:55` renames Gemfile to Gemfile.bak and writes a new one; L79 `eval`s each `gem` line alone, so a multi-line declaration raises SyntaxError and leaves a truncated Gemfile; a rerun renames that over Gemfile.bak. `gemspec` lines also match `start_with? 'gem'`. Status: issue [#78](https://github.com/MadBomber/scripts/issues/78).
+- F-126 (new, auditor, defect, verified in sandbox): `copy_modified_files.rb:132` reads misspelled `configatron.referebce_dir` (never used) and L150 compares source with target, so target-only edits are overwritten. Fix: `reference_dir`, compare reference with source. Status: issue [#79](https://github.com/MadBomber/scripts/issues/79).
+- F-127 (new, auditor, defect, verified in sandbox): `comment_brewfile:81-83` runs `brew info <whole line>`, so `cask "iterm2"` gets the `cask` formula's description and `brew "jq"` a version header. Fix: parse `(brew|cask) "name"` and use `brew desc` (`--cask` for casks). Status: open (check against real brew first).
+- F-128 (new, auditor, defect, verified with remind): `remadd.rb:44` maps `last` to day 25 (`REM Tue 25 ++7`), so "last tuesday" lands next month when it falls on or before the 24th (Nov 2026 → 2026/12/01). Fix: `REM Tue 1 -7` with the following month. Status: open (plain form is a small PR; the `in <month>` form needs thought).
+- F-129 (new, auditor, low): (a) `get_marketbeat_data_from_email.rb:107,111` `[closing|current]` is a character class, not alternation; fix `(?:closing|current)`. Status: open (ride-along). (b) `rss_tracker.rb:268` `duplicate?` starts with `return false` (since 2018), so every run re-inserts stories. Status: needs Dewayne's decision (RethinkDB likely retired).
+- F-130 (new, triage, defect, reproduced on scratch copies): `cr2lf:3-7` runs `mv` even when `sed` fails, so an unreadable file is replaced with an empty one (exit 0); a mistyped name leaves an empty file; paths with spaces break; no argument waits on stdin. Fix: quote, require one argument, `mv` only on success, remove the tmp file on failure. Status: open (next small PR candidate).
+- F-131 (new, improver, defect, reproduced with a scratch HOME): `newgit_project` has no argument check and no `set -e`: with no argument it runs `git init` in `$HOME`; on an existing directory it commits and tags there. Status: issue [#80](https://github.com/MadBomber/scripts/issues/80).
+- F-132 (new, improver, low): `anagrams.rb:3-7` prints `ERROR:` and exits 0. Status: open (ride-along; see inbox idea on shell/argument hygiene).
+

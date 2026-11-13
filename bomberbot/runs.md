@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:17 scripts
+
+Fifteenth visit (last 2026-11-13 06:37). `develop` already existed (a35981f, unchanged); not created. Run directory was fresh.
+
+- **New PRs:** skipped: review queue full (#69, #70, #71 open, unapproved, MERGEABLE; the repo has no CI).
+- **Merged (low risk):** none (all three touch scripts). **Merged after approval:** none.
+- **Tended:** #69-#71 checked; 0 behind develop, no comments or reviews, nothing to do.
+- **Issues answered:** none. #72-#77 are our own, with no outside comments; all still reproduce at a35981f.
+- **Audit:** quality (RuboCop `Lint` + flay at a35981f, sandboxed repros): F-125..F-129. Triage: F-130 (`cr2lf`). Improver: F-131, F-132. No new security findings. Dead-code scan last covered a35981f.
+- **Issues filed:** [#78](https://github.com/MadBomber/scripts/issues/78) comment_gemfile truncates the Gemfile (F-125), [#79](https://github.com/MadBomber/scripts/issues/79) copy_modified_files ignores --reference_dir (F-126), [#80](https://github.com/MadBomber/scripts/issues/80) newgit_project runs git init in $HOME (F-131).
+- Inbox: shell-script argument hygiene sweep, note.rb vs note_v2.rb, rss_tracker duplicate check.
+
 ## 2026-11-13 08:45 typed_bus
 
 Fourteenth visit (last 2026-11-13 08:05). `develop` already existed (97c56f1, unchanged); not created. Run directory was fresh.

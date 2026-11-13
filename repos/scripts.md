@@ -10,7 +10,7 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-13 (fourteenth run)._ No change since the 05:23 visit: #69/#70/#71 still open and unreviewed, so no new PRs (review queue full). Security audit found S-11..S-14 (held locally); filed #75 (termall), #76 (github_batch_delete_repos), #77 (jira quoting). Issues #72-#77 are open for Dewayne. main and develop still diverged both ways (`ruler`).
+_Updated 2026-11-13 (fifteenth run)._ Review queue still full (#69/#70/#71 open, unreviewed), so no new PRs. Quality audit (RuboCop Lint + flay) found F-125..F-132; filed #78 (comment_gemfile data loss), #79 (copy_modified_files ignores --reference_dir), #80 (newgit_project in $HOME). Issues #72-#80 are open for Dewayne. Next PR candidate once the queue clears: F-130 (`cr2lf` empties a file it can't read). main and develop still diverged both ways (`ruler`).
 
 ## Backlog
 
