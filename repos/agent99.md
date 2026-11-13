@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-13 01:58 (eleventh visit)._ Nothing merged since the tenth visit (develop still 28a6347); #55–#57 open and clean, so review queue full: tend-and-record only. Dependencies audit ran; filed #61–#63. Still no test CI on develop until #54 merges; "green" = local suite on Ruby 4.0.9 with a locally re-resolved lock.
+_Updated 2026-11-13 06:25 (twelfth visit)._ Nothing merged since the tenth visit (develop still 28a6347); #55–#57 open and clean, so review queue full. The quality audit found a remote NATS shutdown never exited (F-104), so #55 gained a fix for it (9368c76). Filed #64–#66.
 
 
 ## Backlog
@@ -26,7 +26,7 @@ else in this repo.
 
 - **In flight in Dewayne's own PRs (don't overlap until they land):** #7 → #53, #14 → #38, #16 → #43, #18 → #41, #19 → #42, #22 → #44, #24 → #45, #25 → #46, #26 → #54, #30 → #47, #31 → #48, #32 → #49, #33 → #52, #34 → #50, #35 → #40, #36 → #39, #37 → #51. Off limits while open: `message_processing.rb`, `header_management.rb`, `base.rb`, `agent_discovery.rb`, `agent_lifecycle.rb`, `examples/control.rb`, `examples/maxwell_agent86.rb`, README, `docs/getting-started/{basic-example,quick-start}.md`, gemspec, `Gemfile.lock`, `bin/console`, `bin/test`, `Rakefile`, `.github/workflows/test.yml`, `test/README.md`, and the test files they edit. 16 of them add their CHANGELOG line at the end of `[Unreleased]` → Fixed and conflict pairwise there; madbot PRs insert higher up to stay clear.
 - #3, #4, #5, #6, #8, #15, #20, #21, #23 and F-2: fixed on `develop` (#9–#13, #17, #27–#29). Issues stay open until develop reaches `main`.
-- F-55: remote shutdown runs `fini` twice + false warning. **PR open** [#55](https://github.com/MadBomber/agent99/pull/55).
+- F-55: remote shutdown runs `fini` twice + false warning. **PR open** [#55](https://github.com/MadBomber/agent99/pull/55) Since 2026-11-13 it also covers F-104 (a NATS agent kept running after a remote shutdown).
 - F-65 + F-71: `RegistryClient` drops the URL path and ignores the scheme. **PR open** [#56](https://github.com/MadBomber/agent99/pull/56).
 - F-59 (part): stray notes after `__END__` in `tcp_message_client.rb` / `header_schema.rb`. **PR open** [#57](https://github.com/MadBomber/agent99/pull/57).
 - [#58](https://github.com/MadBomber/agent99/issues/58) F-90: fixed `sleep 0.5` per test makes the suite 38 s instead of ~1.5 s (tests-only, 2 lines; low-risk candidate once #54 lands).
@@ -37,6 +37,9 @@ else in this repo.
 - [#63](https://github.com/MadBomber/agent99/issues/63) F-93: `bin/console` can't load irb on Ruby 4.0+ (Gemfile + lock; after #53).
 - S-17: security finding, details held locally; one targeted conservative re-lock after #53 (with S-12).
 - F-94 (lock needs Ruby >= 4.0 after #53, ties to F-68) and F-102 (pause drops requests vs docs): **needs Dewayne's decision**.
+- [#64](https://github.com/MadBomber/agent99/issues/64) F-105: docs say `REGISTRY_BASE_URL`, the code reads `AGENT99_REGISTRY_URL` (docs-only, 5 lines in 4 files; low-risk candidate, no open PR touches them).
+- [#65](https://github.com/MadBomber/agent99/issues/65) F-106: `run_demo.rb` generates agents with `require_relative '../lib/agent99'` (examples, 1 line).
+- [#66](https://github.com/MadBomber/agent99/issues/66) F-108: `docs/agent99_framework/` wrong signatures for `register`/`publish`/`delete_queue`/`initialize` (docs-only, ~8 lines; low-risk candidate; can ride with #64).
 - F-53 (+ F-51/F-40 riding along): registry client hides HTTP error statuses behind a JSON parse error; dead `@id`, `payload` alias, unused `response` (the only `ruby -w` warning in lib), wrong header comment. Same file as #56: stack on it or wait. Keep `register` returning uuid/nil (#42 relies on it).
 - F-61: CHANGELOG `[Unreleased]` has three near-duplicate #6 lines. Blocked: they are context lines in every one of #38–#53's CHANGELOG hunks; do it after they land.
 - F-60: four unused test helpers in `test/support/test_infrastructure.rb` (tests-only removal; same file as #58).
@@ -50,10 +53,10 @@ else in this repo.
 
 ## Open bomberbot PRs
 
-- [#55](https://github.com/MadBomber/agent99/pull/55) `madbot/shutdown-fini-once` → develop. F-55. lib one line + new `test/agent99/test_control_actions.rb` (child-process test). Review clean round 1. Not low risk (lib).
+- [#55](https://github.com/MadBomber/agent99/pull/55) `madbot/shutdown-fini-once` → develop. F-55 + F-104. lib: `handle_shutdown` drops `fini` and exits via `Thread.main.raise(SystemExit.new(0))`; new `test/agent99/test_control_actions.rb` (2 child-process tests). Fixup 9368c76 (2026-11-13 06:20) fails before and passes after, review clean. Not low risk (lib).
 - [#56](https://github.com/MadBomber/agent99/pull/56) `madbot/registry-url-path` → develop. F-65 + F-71. lib 3 lines + 2 tests. Review clean in 2 rounds. Not low risk (lib).
 - [#57](https://github.com/MadBomber/agent99/pull/57) `madbot/drop-end-notes` → develop. F-59 (part). Deletions only in two lib files + CHANGELOG. Review clean round 1. Not low risk (lib).
-- CHANGELOG lines sit at the top, after the #4 line and after the debug_me bullet; the three merge together and with Dewayne's PRs without conflict (checked).
+- CHANGELOG lines sit at the top, after the #4 line and after the debug_me bullet; the three merge together and with Dewayne's PRs without conflict (checked; re-checked 2026-11-13 06:18 after #55's line was reworded).
 
 ## Merged bomberbot PRs
 

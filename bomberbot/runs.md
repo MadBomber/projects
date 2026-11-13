@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 06:25 agent99
+
+Twelfth visit (last 2026-11-13 01:58). `develop` already existed (28a6347); not created. Run directory was fresh.
+
+- **New PRs:** skipped: review queue full (#55, #56, #57 open, unapproved, MERGEABLE/CLEAN, none low risk).
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** #55 got fixup [9368c76](https://github.com/MadBomber/agent99/pull/55). The quality audit showed nats-pure's concurrent-ruby worker swallows `exit` (F-104), so `handle_shutdown` now exits via `Thread.main.raise(SystemExit.new(0))`. The new worker-thread test fails on the old commit and passes on the new one; I checked against a real `Concurrent::ThreadPoolExecutor`; one code-review round, clean. CHANGELOG line reworded in place, the PR body's wrong claim corrected, and a comment posted. Test-merged #55+#56+#57 on develop: clean. #56 and #57 unchanged (develop unmoved). Suite on 4.0.9 with a scratch gem home: 76 runs, the only 2 failures in `test_load.rb`, which needs the bundled lock that gem home lacks.
+- **Audit:** quality (third run) at 28a6347 → F-104; the auditor's S-18 was S-7. Improver → F-105..F-108. Triage and responder: nothing new since 01:58.
+- **Issues answered:** none (no new comments). **Issues filed:** [#64](https://github.com/MadBomber/agent99/issues/64) REGISTRY_BASE_URL in docs (F-105), [#65](https://github.com/MadBomber/agent99/issues/65) run_demo require path (F-106), [#66](https://github.com/MadBomber/agent99/issues/66) wrong doc signatures (F-108).
+- **Housekeeping:** killed an orphaned example registry (pid 81818, under `timeout` 81816) left running since 00:49 by an earlier adoption audit.
+- **Deviation:** I made the #55 fixup myself (tending a bot PR), not through a builder, since the queue rule bars new PRs. There was no `/simplify` step.
+
 ## 2026-11-13 06:00 gem-skill
 
 Sixth visit (last 2026-11-13 05:01). `develop` existed (e55bd4d); not created. Run directory was fresh. `src/` cloned on `main` (default checkout) and was switched to detached `origin/develop` mid-phase; the readers read `develop` via `git archive` exports, so no effect.
