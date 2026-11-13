@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-13 06:25 (twelfth visit)._ Nothing merged since the tenth visit (develop still 28a6347); #55–#57 open and clean, so review queue full. The quality audit found a remote NATS shutdown never exited (F-104), so #55 gained a fix for it (9368c76). Filed #64–#66.
+_Updated 2026-11-13 07:10 (thirteenth visit)._ Nothing merged or approved since the tenth visit (develop still 28a6347); #55–#57 open and clean, so the review queue is full and no PR was opened. Security audit found S-19..S-21 (held locally); filed #67–#69.
 
 
 ## Backlog
@@ -40,6 +40,10 @@ else in this repo.
 - [#64](https://github.com/MadBomber/agent99/issues/64) F-105: docs say `REGISTRY_BASE_URL`, the code reads `AGENT99_REGISTRY_URL` (docs-only, 5 lines in 4 files; low-risk candidate, no open PR touches them).
 - [#65](https://github.com/MadBomber/agent99/issues/65) F-106: `run_demo.rb` generates agents with `require_relative '../lib/agent99'` (examples, 1 line).
 - [#66](https://github.com/MadBomber/agent99/issues/66) F-108: `docs/agent99_framework/` wrong signatures for `register`/`publish`/`delete_queue`/`initialize` (docs-only, ~8 lines; low-risk candidate; can ride with #64).
+- [#67](https://github.com/MadBomber/agent99/issues/67) F-109: docs Ruby samples that don't parse (registry irb walkthrough) and `on_exit` → `at_exit` (docs-only, ~15 lines in 4 files; low-risk candidate, no open PR touches them).
+- [#68](https://github.com/MadBomber/agent99/issues/68) F-110: misspellings in docs/examples incl. `RegristryClient`, `@agnet_*` (docs-only; low-risk candidate; can ride with #67).
+- [#69](https://github.com/MadBomber/agent99/issues/69) F-111: `info` without `name` exits though docs say it is derived; default to class name + test (lib, after #42, with #61).
+- S-20: security finding, details held locally; small neutral-titled lib PR once the queue clears. S-19, S-21: **needs Dewayne's decision**.
 - F-53 (+ F-51/F-40 riding along): registry client hides HTTP error statuses behind a JSON parse error; dead `@id`, `payload` alias, unused `response` (the only `ruby -w` warning in lib), wrong header comment. Same file as #56: stack on it or wait. Keep `register` returning uuid/nil (#42 relies on it).
 - F-61: CHANGELOG `[Unreleased]` has three near-duplicate #6 lines. Blocked: they are context lines in every one of #38–#53's CHANGELOG hunks; do it after they land.
 - F-60: four unused test helpers in `test/support/test_infrastructure.rb` (tests-only removal; same file as #58).

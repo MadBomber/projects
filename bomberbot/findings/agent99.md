@@ -10,7 +10,7 @@ Dewayne's decision, issue #N.
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-12 | Third run, develop c2b4e49. bundle-audit 0.9.3, DB 4d71b12: committed lock 31 advisories; re-resolved lock clean. S-1..S-12 re-confirmed open. New F-65, S-13..S-15 (held locally). Earlier: 2026-11-10 develop 5183c92 (S-9..S-11), 2026-11-09 main 69f0a04. |
+| security | 2026-11-13 | Fourth run, develop 28a6347. bundle-audit 0.9.3, DB 4d71b12 (= upstream HEAD): committed lock 31 advisories; #53 lock 28 (S-17 stands); fresh re-resolve clean. Full lib re-read + examples sinks. New S-19..S-21 (held locally). S-1..S-15, S-17 re-confirmed; S-16 fix in PR #56. Earlier: 2026-11-12 Third run, develop c2b4e49. bundle-audit 0.9.3, DB 4d71b12: committed lock 31 advisories; re-resolved lock clean. S-1..S-12 re-confirmed open. New F-65, S-13..S-15 (held locally). Earlier: 2026-11-10 develop 5183c92 (S-9..S-11), 2026-11-09 main 69f0a04. |
 | dead code | 2026-11-13 (delta) | Delta c2b4e49..28a6347: no new candidates; F-58 fixed (#29). Last full pass 2026-11-12: debride 1.15.2 on lib+examples+test at develop c2b4e49, hand-verified; dependents checked (`agent99_examples` pins 0.0.4, uses none of the candidates; the earlier "no dependent repos" note was wrong). New F-58..F-61; triage/improver added F-62..F-64. F-1 (plus public `Base#agents` question), F-40, F-41, F-51, F-52 still present. Live: `handle_*` via `send`, `HeaderManagement#type` (#17 asserts it public), client setters (tests), `Agent99.version` (docs). |
 | dependencies | 2026-11-13 | Third run, develop 28a6347, Ruby 4.0.9 + 4.1.0-preview1. Committed lock still fails to install on 4.0.9 (#7). Fresh re-resolve green 74/0/0/4 and bundle-audit clean; committed lock 31 advisories. #53+#46+#54 merged in scratch: frozen install green on 4.0.9/4.1, still 28 advisories (S-17). New F-93 (issue #63), F-94, S-17. Re-confirmed F-14 (#46 sufficient), F-56 (deferred), F-57 (#54; install unfrozen, no bundle-audit step), #7 (#53 sufficient for install). Floor 3.3 OK until 2027-03-31 EOL. Earlier: 2026-11-10 5183c92, 2026-11-09 69f0a04. |
 | adoption | 2026-11-13 | Second run, develop 28a6347. `mkdocs build --strict` passes (Material EOL 2027-05-05 notice, F-79); `gem build` 81 KB / 33 files, dup-URI warning (F-8). README step 1 works (F-21/F-23 fixed by #28); registry 500 fixed by #29 but it still needs `rackup` (F-78). New F-77..F-79. Still present: F-6 (missing example links; method part in #45), F-8, F-20, F-24..F-26, F-28..F-35, F-61. gem-skill not run (paid API). First run 2026-11-10, develop 5183c92. |
@@ -359,3 +359,17 @@ Dead-code scan last covered commit: 28a6347 (develop, delta pass 2026-11-13; las
 - Minor: the `validate_info_keys` heredoc (`agent_lifecycle.rb:42-43`) relies on trailing spaces; fold into #42's follow-up. `examples/kaos_spy.rb:29` calls `agents.empty?` on nil when the registry is down.
 - Security: the auditor's S-18 is S-7 (it adds the NATS detail; held locally); the improver's example-shell note is S-13. No new S numbers.
 - Re-checked still present: F-40, F-41, F-42, F-44, F-51, F-53, F-73, F-76, F-101.
+
+
+### 2026-11-13 (thirteenth visit; security audit, develop 28a6347)
+
+- Security audit, fourth run. bundle-audit 0.9.3, DB 4d71b12 (upstream HEAD): committed lock 31 advisories (unchanged); #53's lock (f09c47c) 28 (unchanged); fresh re-resolve clean. lib delta since c2b4e49 is #27/#28/#29 only; full lib re-read.
+- S-19: security finding, details held locally. Status: needs Dewayne's decision (with S-1, S-2).
+- S-20: security finding, details held locally. Status: open (small lib PR once the queue clears).
+- S-21: security finding, details held locally. Status: needs Dewayne's decision.
+- F-109 (improver, verified with `ruby -c`): docs Ruby samples that don't run: `docs/framework-components/agent-registry.md:25-64` irb walkthrough is a SyntaxError (missing comma `:44`, pasted log/inspect lines `:55-60`); `on_exit { fini }` in `agent-registry.md:91`, `agent-lifecycle.md:69,135` (code is `at_exit`); `what-is-an-agent.md:245-257` missing `end`; shell in a ruby fence `advanced-features.md:88-90`; nonexistent `deregister_from_registry` `agent-lifecycle.md:85-91`. Status: issue [#67](https://github.com/MadBomber/agent99/issues/67).
+- F-110 (improver): ~12 misspellings in `breaking-changes.md`, `agent-lifecycle.md:77`, `agent-registry.md` (incl. `RegristryClient`, `@agnet_1..3` in code), `examples/start_rabbitmq_and_registry.sh:6,15`. Status: issue [#68](https://github.com/MadBomber/agent99/issues/68).
+- F-111 (improver, reproduced): `info` without `name` exits 1 (`agent_lifecycle.rb:37` requires `[:name, :capabilities]`) while `breaking-changes.md:15-18` says name is derived from the class name and that `type`/`request_schema` are required. Code fix (default to class name) after #42. Status: issue [#69](https://github.com/MadBomber/agent99/issues/69).
+- F-112 (improver, minor): `examples/diagram.png` (51.5 KB) could be an SVG from `examples/diagram.dot` (5.8 KB) with a dark/transparent style. Status: open, low value.
+- Updates: F-20 also `docs/agent-development/error-handling-and-logging.md:10` (`LOG_LEVEL` read by nothing); F-29 also `examples/README.md:155` ("fallback implementations").
+- Re-confirmed open at 28a6347: S-1..S-15, S-17 (S-16 fix still in PR #56).
