@@ -8,7 +8,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-12 | Second run, at 5a0b89e. No Gemfile, so bundle-audit n/a. Read by hand: shell-outs, asgard `sh` echo, env and file reads, YAML, network, `claude -p`, `.irbrc`; history secret scan; open bot branches reviewed. F-40 to F-42; S-4 to S-6 plus an S-2 update, details held locally. (First run 2026-11-06: S-1, S-2.) |
+| security | 2026-11-13 | Third run, at 657e6bd, focused on dev#10–#12 (STATUS_WEEK_OF, reek_baseline, SKIP paths); fixtures with asgard 0.6.0, reek 6.6.0, global bundle-audit. F-52 verified, F-36 still holds; S-7, S-8 held locally. (Second run 2026-11-12 at 5a0b89e: F-40 to F-42, S-4 to S-6. First 2026-11-06: S-1, S-2.) |
 | dead code | 2026-11-13 | Fifth-run cheap scan 5a0b89e..657e6bd (dev#10 to #12); nothing new. (Previous: b1c29ed..5a0b89e, 2026-11-12.) |
 | dependencies | 2026-11-12 | First run, at 5a0b89e. No Gemfile; every require is a default gem on 4.0.9 and 4.1.0-preview1; clean load of all .loki with -W:deprecated; missing-tool fixtures. F-27, F-32 to F-36. |
 | adoption | n/a | Skipped for dev by spec. |
@@ -70,7 +70,7 @@ Dewayne merged dev#5 and dev#6 on 2026-11-09 from `bomber/` branches whose visit
 - **F-33:** `flay_check`/`reek_check` load whichever flay/reek is newest in asgard's Ruby, not the lockfile's version (asgard never sets up Bundler), so the gate and `bundle exec reek` can disagree. Status: needs Dewayne's decision (subprocess via `bundle exec` like flog, or accept and document).
 - **F-34:** `rubocop_check` and `test_check` FAIL when rubocop isn't bundled or there's no Gemfile. Status: needs Dewayne's decision (SKIP, or keep FAIL and narrow the README sentence).
 - **F-35:** `db_doc_guard` blames Postgres when `pg_isready` itself is missing. Status: open, low (waits on F-6).
-- **F-36:** the README lists no prerequisites (Ruby >= 4.0 via asgard 0.6.0; flog/flay/reek in asgard's own Ruby; macOS-only bits such as `open`, `brew install mkdocs`, `icalBuddy`). Status: open (best after F-27 lands).
+- **F-36:** the README lists no prerequisites (Ruby >= 4.0 via asgard 0.6.0; flog/flay/reek in asgard's own Ruby; macOS-only bits such as `open`, `brew install mkdocs`, `icalBuddy`). Status: issue [#27](https://github.com/MadBomber/dev/issues/27) (rechecked 2026-11-13 after F-27 merged; still holds).
 - **F-37:** `branch_report` lets git's `fatal: ref refs/remotes/origin/HEAD is not a symbolic ref` reach stderr (Open3.capture2 doesn't capture it). 1-line fix. Status: PR'd ([dev#22](https://github.com/MadBomber/dev/pull/22); also silences the detached-HEAD line and aborts outside a git repo).
 - **F-38:** `rubocop-strict.yml` and the README say its cops fire "regardless of .rubocop_todo.yml or inline directives"; inline disables still win, and it loses to the todo file if inherited first or under `inherit_mode: merge: [Exclude]`. Status: issue [#9](https://github.com/MadBomber/dev/issues/9).
 - **F-39:** stale comments: `quality.loki:3-4` and `gem_tasks.loki:4` show `import "../dev/..."`/`repo_dev.loki` (README and consumers use `import_up "dev/..."`); `quality.loki:9,327-328` say Rails checks load "once Rails is defined" (actually the `RAILS_ROOT` guard); flog's desc says ">=20/>=50" but the code uses `>`; the `test_check` label says "Tests + Coverage" but nothing measures coverage. Status: open, cosmetic.
@@ -102,4 +102,13 @@ Scope: `develop` at 657e6bd, mainly the code dev#10–#12 changed. RuboCop Lint/
 - **F-45 update:** `STATUS_WEEK_OF` (status_report.loki:301) has the same backtrace for `2026-13-01` and an empty value. Covered by dev#25.
 - **F-50:** `quality_rails.loki` (:24/36/48) calls `bundled_gem?`, defined only in quality.loki:382; importing the Rails gates alone gives NoMethodError. Fix: `import "quality.loki"` at the top (asgard's import dedups). Status: issue [#24](https://github.com/MadBomber/dev/issues/24).
 - **F-51:** `notes_collect` (status_report.loki:123) says "found today's journal entry" even when `STATUS_DATE` asks for another day. 1-line fix. Status: open, cosmetic (after #20 merges, same file).
-- **F-52:** `status_report.loki:42` `safe_capture2` uses `Open3.capture2` without capturing stderr, so its git calls may leak `fatal:` lines like F-37 did. Status: unverified (after #20, which edits that helper).
+- **F-52:** `status_report.loki:42` `safe_capture2` uses `Open3.capture2` without capturing stderr, so its git calls may leak `fatal:` lines like F-37 did. Status: issue [#28](https://github.com/MadBomber/dev/issues/28) (verified 2026-11-13; fix after #20, which edits that helper).
+
+### 2026-11-13, seventh run (security audit, third run)
+
+At 657e6bd; no new commits since the sixth run, so no dead-code scan (still at 657e6bd). Next free number: F-53.
+
+- **F-52 update:** verified. git, gh and icalBuddy stderr reaches the terminal from `git_collect`, `github_collect` and `calendar_collect`; it never reaches the notes file. Filed as [#28](https://github.com/MadBomber/dev/issues/28).
+- **F-36 update:** still holds after F-27. The SKIP lines now explain missing analyzers, but there's still no Ruby/asgard version, no "analyzer gems in asgard's Ruby" note, and no macOS flag. Filed as [#27](https://github.com/MadBomber/dev/issues/27).
+- **S-7:** security finding, details held locally. Status: open, low.
+- **S-8:** security finding, details held locally. Status: needs Dewayne's decision, low.

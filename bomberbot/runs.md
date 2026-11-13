@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 02:15 dev
+
+- `develop` already existed (657e6bd, unchanged since the 02:05 visit); not created.
+- **skipped: review queue full.** [dev#22](https://github.com/MadBomber/dev/pull/22), [#25](https://github.com/MadBomber/dev/pull/25), [#26](https://github.com/MadBomber/dev/pull/26) are open, MERGEABLE, with no reviews or comments. None is low risk because all three change `.loki` code. No new PRs.
+- **Phase 1, trimmed on purpose:** the last visit was 10 minutes earlier, with no new commits, issue comments or CI. Only the tender and the auditor ran. The main session checked the responder's inputs inline: #7–#15, #23 and #24 have no comments. Triage and the improver were skipped because the code hadn't changed since they ran at 02:05.
+- **Merged:** none. **Tended:** #22, #25, #26, no action needed (0 behind their bases).
+- **Audit:** security (third run) at 657e6bd: F-52 verified, F-36 rechecked, S-7 and S-8 held locally.
+- **Issues answered:** none (no new comments).
+- **Issues filed:** [dev#27](https://github.com/MadBomber/dev/issues/27) README lacks a requirements section (F-36); [dev#28](https://github.com/MadBomber/dev/issues/28) collectors leak git/gh/icalBuddy stderr (F-52).
+
 ## 2026-11-13 02:05 dev
 
 - `develop` already existed (657e6bd); not created.

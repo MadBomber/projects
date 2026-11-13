@@ -10,7 +10,7 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-13 (sixth run)._ Dewayne merged dev#10–#12 and opened his own PRs #16–#21 for every open issue; bomberbot opened #22 (F-37) and #25 (F-45), and #26 (F-13, stacked on #22), and filed #23/#24. `develop` is 657e6bd.
+_Updated 2026-11-13 (seventh run)._ Queue full (#22, #25, #26 open, none approved), so no new PRs; security audit ran; filed #27 (F-36) and #28 (F-52). `develop` is still 657e6bd.
 
 ## Backlog
 
@@ -38,6 +38,8 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [dev#15](https://github.com/MadBomber/dev/issues/15) github_collect ignores RR (F-40)
 - [dev#23](https://github.com/MadBomber/dev/issues/23) reek_check ignores exclude_paths and directories in .reek.yml (F-47)
 - [dev#24](https://github.com/MadBomber/dev/issues/24) quality_rails.loki NoMethodError unless quality.loki is imported (F-50)
+- [dev#27](https://github.com/MadBomber/dev/issues/27) README doesn't list what a consumer repo needs (F-36)
+- [dev#28](https://github.com/MadBomber/dev/issues/28) status_report collectors print git/gh/icalBuddy stderr (F-52)
 
 Dewayne's own PRs cover #7 (#17), #8 (#18), #9 (#21), #13 (#16), #14 (#19), #15 (#20).
 
