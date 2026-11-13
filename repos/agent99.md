@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-13 07:40 (fourteenth visit)._ Still nothing merged or approved (develop 28a6347); #55–#57 open, so no PR was opened. Full dead-code pass found F-113..F-118; filed #70–#72.
+_Updated 2026-11-13 08:25 (fifteenth visit)._ Still nothing merged or approved (develop 28a6347); #55–#57 open, so no PR was opened. Adoption delta + improver found F-119..F-124; filed #73–#75.
 
 
 ## Backlog
@@ -46,6 +46,11 @@ else in this repo.
 - [#70](https://github.com/MadBomber/agent99/issues/70) F-117: `examples/maxwell_request.rb` raises NameError on its own (examples, 1 line; no open PR touches it).
 - [#71](https://github.com/MadBomber/agent99/issues/71) F-114: most AMQP client unit tests exercise the mock (tests-only, one file; no open PR touches it).
 - [#72](https://github.com/MadBomber/agent99/issues/72) F-116: `NatsMessageClient` publish/dispatch/delete_queue untested (tests-only, one file).
+- [#73](https://github.com/MadBomber/agent99/issues/73) F-119: tutorial `curl` commands hit registry routes that 404 (`basic-example.md:263,266`, `basic-examples.md:258,261`; docs-only, 4 lines; low-risk candidate; `basic-example.md` is also in #45, different lines).
+- [#74](https://github.com/MadBomber/agent99/issues/74) F-122: dead `docs/README.md` link in `what-is-an-agent.md:25` (docs-only, 1 line; low-risk candidate; can ride with #73).
+- [#75](https://github.com/MadBomber/agent99/issues/75) F-124: unknown control action gets no reply (`message_processing.rb:89-93`, 1 lib line + test; after #38/#39/#41 and #55).
+- F-120: unused MathJax/arithmatex in `mkdocs.yml`; ride along with the S-6 docs-config fix (neutral title).
+- F-121 (A2A/MCP stub pages) and F-123 (`Base#name` ignores `info[:name]`; widen #69): **needs Dewayne's decision**.
 - F-115 (dead `simple_json_schema_builder` requires) and F-118 (stale FIXME, `.envrc` header): ride along with the next lib PR touching those files. F-113 (unused public accessors, `Timestamp#utc`): **needs Dewayne's decision**.
 - S-20: security finding, details held locally; small neutral-titled lib PR once the queue clears. S-19, S-21: **needs Dewayne's decision**.
 - F-53 (+ F-51/F-40 riding along): registry client hides HTTP error statuses behind a JSON parse error; dead `@id`, `payload` alias, unused `response` (the only `ruby -w` warning in lib), wrong header comment. Same file as #56: stack on it or wait. Keep `register` returning uuid/nil (#42 relies on it).

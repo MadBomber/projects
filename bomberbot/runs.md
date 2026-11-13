@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:25 agent99
+
+Fifteenth visit (last 2026-11-13 07:40). `develop` already existed (28a6347); not created. Run directory was fresh.
+
+- **New PRs:** skipped: review queue full (#55, #56, #57 open, unapproved, MERGEABLE, none low risk: all touch lib).
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** nothing needed (no reviews, comments or develop movement; still no CI).
+- **Audit:** adoption (focused delta) at 28a6347 → F-119..F-122; improver → F-123, F-124. Triage and responder: nothing new since 07:40. Setup slip: `src/` was cloned with `main` checked out, so the auditor and improver read `git archive` exports of develop instead; checked out develop afterwards.
+- **Issues answered:** none (no comments from anyone else). **Issues filed:** [#73](https://github.com/MadBomber/agent99/issues/73) tutorial `curl` routes 404 (F-119), [#74](https://github.com/MadBomber/agent99/issues/74) dead docs link (F-122), [#75](https://github.com/MadBomber/agent99/issues/75) unknown control action gets no reply (F-124).
+
 ## 2026-11-13 08:00 aia
 
 Visit after 2026-11-13 02:55. `develop` already existed (0d611ef, unchanged); not created.
