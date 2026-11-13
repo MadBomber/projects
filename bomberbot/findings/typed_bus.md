@@ -12,7 +12,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | adoption | 2026-11-12 | Second run, at develop 0f94a6c. `gem build` clean (no warnings, 12 files incl. LICENSE); all metadata URIs 200 except `/yard/` 404 (F-12, now live: mkdocs `--force` wiped YARD's gh-pages commit 9 s after it was pushed); `mkdocs build --strict` clean; README snippets all run (Ruby 4.0.9); examples 00-14 exit 0, 15 LoadError (F-26/#25); released 0.0.1 compared with live docs. F-23/F-24 confirmed fixed. gem-skill verify not run (no LLM key in env). New: F-57..F-60. First run: 2026-11-10 at 5be35a6. |
 | dependencies | 2026-11-13 | Second run, at develop 97c56f1. Ruby 4.0.9 + 4.1.0-preview1; `bundle outdated` (22 stale, async/logger current); suite green on locked deps, on latest deps (`bundle update --all`) and with frozen-string-literal; async 2.0.0 floor fails on Ruby 4 (F-81). bundler-audit: runtime tree clean; S-32 narrowed, S-40 held locally. F-29 fixed; F-28 half-fixed → F-80; F-31 partly fixed; F-5 floor still open. New: F-80..F-82, S-40. First run: 2026-11-10 at 5be35a6. |
 | security | 2026-11-13 | Third run, at develop 97c56f1 (diff from 0fe5860). bundle-audit 0.9.3: runtime tree clean; 6 dev/extras advisories = S-32/S-40, all cleared by a simulated `bundle lock --update` (so #41 clears them). No eval/shell/YAML/Marshal/ENV in lib/. S-1..S-3, S-33, S-34 unchanged. New: S-41, S-42. Previous run: 2026-11-11 at 0fe5860. |
-| quality | 2026-11-12 | Second run, at develop 0f94a6c (16 commits since be4018d). Ruby 4.0.9; RuboCop 1.92.2 + reek 6.6.0 default configs; flog; flay. Suite 224 runs, 0F, 100% line+branch (3/3 green). RuboCop 494→564 (+70 in changed files, mostly house-style Layout/Style), reek 55→55, flay 0, flog 430.3→446.7. F-15 still present (now also on the throttle path), F-17 still present. New: F-49..F-52. First run: 2026-11-09 at main be4018d (F-15..F-22). |
+| quality | 2026-11-13 | Third run, at develop 97c56f1 (906faac + 97c56f1 since 0f94a6c); read from a git-archive export. Ruby 4.0.9; RuboCop 1.92.2 + reek 6.6.0 default configs; flog; flay; 17-mutant pass over changed lines. Suite 243 runs, 482 assertions, 0F, 100% line+branch (3/3 green). RuboCop (default config, lib+test) 305→346 (lib flat at 50; +41 in tests, mostly StringLiterals); the old "564" baseline is not reproducible, so use 305/346. reek lib 55→56, flay 0, flog 446.7→470.4. 14/17 mutants killed; survivors → F-99/F-100. Found F-99..F-101. F-17, F-21, F-35/F-55, F-51, F-52, F-65 still present. Previous run: 2026-11-12 at 0f94a6c. |
 
 Dead-code scan last covered commit: 0f94a6c (develop, 2026-11-12, diff since 5be35a6 + confirm pass over lib, examples, test, docs references, local dependents incl. aia)
 
@@ -180,3 +180,12 @@ Review queue full (#37/#38/#39 open, unapproved, CLEAN, merge together cleanly, 
 - F-65, F-33 remainder, F-35/F-55, F-90: still present at 97c56f1.
 - S-41: security finding, details held locally. Status: open.
 - S-42: security finding, details held locally. Status: open (needs Dewayne).
+
+### 2026-11-13 (twelfth visit; quality audit, develop 97c56f1)
+
+Review queue full (#37/#38/#39 open, unapproved, green, 0 behind), so no PRs. develop unchanged at 97c56f1. No new security findings.
+
+- F-99 (auditor): no test that `DeadLetterQueue#drain` keeps the entry on a non-StandardError raise; mutant `rescue Exception` → `rescue StandardError` (`dead_letter_queue.rb:57`) survives (243/0F). Code is correct today (Interrupt probe keeps the entry). Status: issue [#46](https://github.com/MadBomber/typed_bus/issues/46).
+- F-100 (auditor): untested 906faac paths: `Channel.new(..., throttle: nil)` (drop `.to_f` at `channel.rb:28` survives) and closed-before-type-check in `publish` (drop first `ensure_open!` at `channel.rb:54` survives). Status: issue [#46](https://github.com/MadBomber/typed_bus/issues/46).
+- F-101 (auditor): `add_channel` logs "adding channel :bad (type=Order, …)" before `Channel.new` rejects it (`message_bus.rb:57-58`); successful add logs two INFO lines; format duplicated with `channel.rb:41`. Status: issue [#47](https://github.com/MadBomber/typed_bus/issues/47).
+- Re-confirmed at 97c56f1: F-17 (needs Dewayne), F-21, F-35/F-55, F-51, F-52, F-65.
