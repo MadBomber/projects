@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 02:45 robot_lab
+
+Tenth visit (last: 01:15 today). `develop` already existed (c700ba6 at start, afd9131 at end); not created. All five phase-1 agents ran. Queue: only #70, unreviewed, green locally, 0 behind.
+
+- **New PR [#73](https://github.com/MadBomber/robot_lab/pull/73)** fix(examples): load common before json in example 25. Source: **issue** #67 (Fixes #67, F-77). Independent. Proof on a main copy (the bug only bites with main's `bundler/setup` and a lockfile pinning json 2.21.2): `Gem::LoadError` before, runs to "Done." after, no LLM; `git merge-tree` with main clean. Review clean round 1. **Merged (low risk)** as develop afd9131 (examples-only, 2 lines).
+- **New PR [#74](https://github.com/MadBomber/robot_lab/pull/74)** fix: nil namespace for anonymous Hook subclasses. Source: **judgment** (improver, F-88). Independent. New `test/robot_lab/hook_test.rb` 1F/2E on develop → 5/0 on branch; suite 1312/0/0 (Ruby 4.0.9). Review clean round 1. lib, not low risk.
+- **New PR [#75](https://github.com/MadBomber/robot_lab/pull/75)** fix: restore duration and delegated_by in from_hash. Source: **brain** (F-56). Independent. Test fails on develop (`Expected 1.25, Actual nil`), suite 1308/0/0. Review clean round 1. lib, not low risk. #74 and #75 each add one CHANGELOG line: the second to merge needs a rebase.
+- **Merged (low risk):** #73 → afd9131. **Merged after approval:** none. **Tended:** #70 (no review, MERGEABLE, nothing to do).
+- **Audit:** quality v3 (delta 9d407dd..c700ba6 + unread lib files) and dead-code delta cfae25c..c700ba6 (nothing). F-85–F-87; S-10 duplicates S-4 (held locally).
+- **Issues answered:** none (no outside comments). **Issues filed:** [#71](https://github.com/MadBomber/robot_lab/issues/71) budget reservation leaks on Timeout/Interrupt (F-85), [#72](https://github.com/MadBomber/robot_lab/issues/72) duplicate `hook_registries` (F-87).
+- Three bomberbot PRs now open (#70, #74, #75), so next visit skips new work unless Dewayne merges.
+
 ## 2026-11-13 02:20 prompt_manager
 
 Ninth visit (the last was the eighth run, 2026-11-10, which left no entry here and left `THIRD_PR` placeholders in brain; both are fixed now). `develop` already existed (37420ea at start and end); not created. All five phase-1 agents ran. The review queue was empty: Dewayne merged #25, #26, #31 and #35 himself on 2026-11-10 without comments, and madbot's self-merges #27-#30 are still on develop.

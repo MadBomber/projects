@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Tenth visit (2026-11-13 02:45)._ Queue had only #70 (unreviewed). Opened **PR #73** (example 25 require order, Fixes #67), **merged (low risk)** as develop afd9131; **PR #74** (anonymous Hook namespace crash, F-88) and **PR #75** (`RobotResult.from_hash` restores `duration`/`delegated_by`, F-56), both lib so awaiting Dewayne. Quality audit v3 (delta to c700ba6): F-85–F-87. Filed #71 (budget reservation leaks on Timeout/Interrupt, F-85) and #72 (duplicate `hook_registries`, F-87). No issue needed a reply. `develop` afd9131 still 31 behind `main`.
+
 _Ninth visit (2026-11-13 01:15)._ Dewayne merged #38, #39, #40 (rebase, no comment; develop cfae25c) and opened his own PRs #52–#65 for 14 bomberbot issues, so bomberbot's queue was empty. Opened **PR #66** (stale Convergence/ToolLoopError comments, F-49/F-63), **merged (low risk)** as develop c700ba6, and **PR #70** (`Ledger#reserve!` refuses exactly the remaining Float budget, F-81), lib so awaiting Dewayne. Ran the second **adoption** audit (first examples run: F-76–F-80) plus a dead-code delta to cfae25c. Filed #67, #68, #69. No issue needed a reply. `develop` c700ba6 still 31 behind `main`.
 
 _Eighth visit (2026-11-12 08:04)._ Skipped building: review queue full (#38, #39, #40 still open, unreviewed, fourth visit waiting). Ran the third **dependencies** audit (F-71, F-72; F-15 now a verified resolve failure). Filed #49 (Rails example `last_result` returns oldest), #50 (`Network#parallel` YARD example fails), #51 (unused dev gems). No issue needed a reply. `develop` 9d407dd still 31 behind `main`.
@@ -59,17 +61,24 @@ else in this repo.
 - F-74 `Network#parallel` YARD example raises `NoMethodError`: issue [#50](https://github.com/MadBomber/robot_lab/issues/50), comment-only, after the sync.
 - **Dewayne's own PRs #52–#65 (2026-11-12) cover #30, #31, #36, #37, #41, #42, #44–#51; don't touch their files.**
 - F-81 `Ledger#reserve!` refuses exactly `remaining` (Float rounding): [#70](https://github.com/MadBomber/robot_lab/pull/70) **PR open**.
-- F-77 `examples/25_history_search.rb` json-before-Bundler: issue [#67](https://github.com/MadBomber/robot_lab/issues/67). One-line move; hunk identical on both branches, file differs, so after the sync.
+- F-77 `examples/25_history_search.rb` json-before-Bundler: issue [#67](https://github.com/MadBomber/robot_lab/issues/67). Fixed on develop by [#73](https://github.com/MadBomber/robot_lab/pull/73), **merged (low risk)** 2026-11-13 as afd9131; only bites on main, carries through the sync (hunk-safe).
 - F-78 `examples/09_chaining.rb` bare robot goes to Anthropic: issue [#68](https://github.com/MadBomber/robot_lab/issues/68) (example half; lib half needs Dewayne).
 - F-82 docs/comments say TF-IDF and quote a stale `ToolLoopError` message: issue [#69](https://github.com/MadBomber/robot_lab/issues/69), after the sync.
 - F-72 unused dev gems (`state_machines*`, `lumberjack`): issue [#51](https://github.com/MadBomber/robot_lab/issues/51), after the sync.
+- F-56 `RobotResult.from_hash` drops `duration`/`delegated_by`: [#75](https://github.com/MadBomber/robot_lab/pull/75) **PR open**.
+- F-88 anonymous `Hook` subclass crashes `Hook.namespace`: [#74](https://github.com/MadBomber/robot_lab/pull/74) **PR open**. #74 and #75 each add a CHANGELOG `[Unreleased]` line; the second to merge needs a trivial rebase.
+- F-85 budget reservation leaks when a run is interrupted (Timeout/Interrupt): issue [#71](https://github.com/MadBomber/robot_lab/issues/71). `robot/hooking.rb` (develop-only hunk, not in Dewayne's PRs); `ensure` + flag, test in `budget_leak_test.rb`. First pick next visit.
+- F-87 duplicate `hook_registries` in `robot.rb`: issue [#72](https://github.com/MadBomber/robot_lab/issues/72), after #57/#59 merge.
 
 ## Open bomberbot PRs
 
+- [#74](https://github.com/MadBomber/robot_lab/pull/74) `madbot/anon-hook-namespace` → develop. fix: nil namespace for anonymous Hook subclasses (F-88). **PR open**. lib, not low risk. Fails-before (1F/2E), 1312 green, review clean round 1.
+- [#75](https://github.com/MadBomber/robot_lab/pull/75) `madbot/result-from-hash-fields` → develop. fix: restore duration and delegated_by in from_hash (F-56). **PR open**. lib, not low risk. Fails-before, 1308 green, review clean round 1.
 - [#70](https://github.com/MadBomber/robot_lab/pull/70) `bomberbot/ledger-reserve-remaining` → develop. fix: let Ledger reserve exactly the remaining budget (F-81). **PR open**. lib, so not low risk. 1308 green, fails-before proven, review clean at the 3-round cap.
 
 ## Merged bomberbot PRs
 
+- [#73](https://github.com/MadBomber/robot_lab/pull/73) fix(examples): load common before json in example 25 (F-77, Fixes #67). **Merged (low risk)** 2026-11-13 as develop afd9131. 2 lines.
 - [#66](https://github.com/MadBomber/robot_lab/pull/66) docs: correct stale Convergence and ToolLoopError comments (F-49, F-63). **Merged (low risk)** 2026-11-13 as develop c700ba6. Comment-only, 3 lines.
 - [#40](https://github.com/MadBomber/robot_lab/pull/40) fix: release budget reservation when a run fails (F-31). Merged by Dewayne 2026-11-12 as develop cfae25c.
 - [#39](https://github.com/MadBomber/robot_lab/pull/39) fix: skip SKILL.md with unsafe YAML front matter (F-40). Merged by Dewayne 2026-11-12 (5dd891d, a06ba7a).
