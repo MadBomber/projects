@@ -14,6 +14,17 @@ Seventh visit (last 2026-11-12 07:45). `develop` existed (dc6725c); not created.
 - **Issues filed:** [#36](https://github.com/MadBomber/simple_flow/issues/36) (F-63), [#37](https://github.com/MadBomber/simple_flow/issues/37) (F-73), [#38](https://github.com/MadBomber/simple_flow/issues/38) (F-16 + F-41). The main session reran the #36 and #37 repros before filing.
 - Note: the main session made one throwaway trial-merge commit on a detached HEAD in `src/` (never pushed) to check that #40 and #41 merge together; next time do that in `scratch/`.
 
+## 2026-11-13 03:15 prompt_manager
+
+Tenth visit (last: 02:20 today). `develop` already existed (37420ea at start and end); not created. All five phase-1 agents ran.
+
+- **Skipped: review queue full.** #36, #40 and #41 are open, green, MERGEABLE, 0 behind develop, with no reviews or comments; nothing to tend and nothing approved.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Audit:** security (third run) at develop 37420ea → F-47..F-49 and S-6 (held locally). bundle-audit clean. Improver → F-50..F-52.
+- **Issues answered:** none (no new outside comments on #17, #32-#34, #37-#39).
+- **Issues filed:** [#42](https://github.com/MadBomber/prompt_manager/issues/42) front matter misread in CRLF files / indented `---` (F-38/F-39, the Backlog item, so its PR can say Fixes #42), [#43](https://github.com/MadBomber/prompt_manager/issues/43) ERB errors name no file (F-43), [#44](https://github.com/MadBomber/prompt_manager/issues/44) `MissingParameterError#names` (F-50).
+- Note: `src/` clones at `main`; roles that read "src at origin/develop" exported develop with `git archive`. Next time, check out `origin/develop` in `src/` (detached) right after cloning.
+
 ## 2026-11-13 02:55 aia
 
 - `develop` already existed (0d611ef); not created, and it didn't move this visit.

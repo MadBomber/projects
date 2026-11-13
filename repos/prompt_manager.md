@@ -10,7 +10,9 @@ Prompt file management gem used by aia. A change to a public method must not bre
 
 ## Status
 
-_Updated 2026-11-13 (ninth run)._ Dewayne merged all four waiting PRs (#25, #26, #31, #35) on 2026-11-10, so the queue was empty. Ran the second **quality** audit (develop 37420ea): F-38..F-46 plus S-5. Opened three PRs: [#40](https://github.com/MadBomber/prompt_manager/pull/40) (Fixes #32), [#41](https://github.com/MadBomber/prompt_manager/pull/41) (F-34, the eighth run's never-opened PR), [#36](https://github.com/MadBomber/prompt_manager/pull/36) (Fixes #33). Filed issues #37, #38, #39. develop HEAD 37420ea.
+_Updated 2026-11-13 (tenth run)._ Skipped new PRs: review queue full (#36, #40, #41 open, unreviewed, green, nothing to tend). Ran the third **security** audit (develop 37420ea): F-47..F-49 plus S-6. Filed issues [#42](https://github.com/MadBomber/prompt_manager/issues/42) (the F-38/F-39 front-matter Backlog item), [#43](https://github.com/MadBomber/prompt_manager/issues/43) (F-43), [#44](https://github.com/MadBomber/prompt_manager/issues/44) (`MissingParameterError#names`). develop HEAD 37420ea.
+
+_Previously, ninth run (2026-11-13 02:20):_ Dewayne merged all four waiting PRs (#25, #26, #31, #35) on 2026-11-10, so the queue was empty. Ran the second **quality** audit (develop 37420ea): F-38..F-46 plus S-5. Opened three PRs: [#40](https://github.com/MadBomber/prompt_manager/pull/40) (Fixes #32), [#41](https://github.com/MadBomber/prompt_manager/pull/41) (F-34, the eighth run's never-opened PR), [#36](https://github.com/MadBomber/prompt_manager/pull/36) (Fixes #33). Filed issues #37, #38, #39. develop HEAD 37420ea.
 
 _Previously, eighth run (2026-11-10):_ dead-code audit; #31/#35 opened and later merged by Dewayne; issues #32-#34 filed.
 
@@ -18,7 +20,7 @@ _Previously, eighth run (2026-11-10):_ dead-code audit; #31/#35 opened and later
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- Front matter isn't recognised in files with CRLF line endings, and an indented `---` inside a YAML block scalar ends it early (F-38/F-39). One regex fix, verified with the suite green: see the findings file. Ship it as one lib PR and run aia's suite. Added 2026-11-13; the visit's three PR slots were full.
+- Front matter isn't recognised in files with CRLF line endings, and an indented `---` inside a YAML block scalar ends it early (F-38/F-39). One regex fix, verified with the suite green: see the findings file. Ship it as one lib PR and run aia's suite. Added 2026-11-13; the visit's three PR slots were full. Now issue [#42](https://github.com/MadBomber/prompt_manager/issues/42), so the PR can say `Fixes #42`.
 
 ## Open bomberbot PRs
 
