@@ -11,7 +11,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## aia
 
-- [ ] Merge [aia#188](https://github.com/MadBomber/aia/pull/188) before [aia#193](https://github.com/MadBomber/aia/pull/193), which is stacked on it; the tender retargets #193 to develop afterwards (a trivial CHANGELOG conflict is possible). (added 2026-11-12)
+- [ ] Let bots push GitHub Actions workflows: `gh auth refresh -h github.com -s workflow` (the token lacks `workflow` scope), or add aia's test CI yourself from `bomberbot/plans/aia-test-ci.md`. aia has no test CI today. (added 2026-11-13)
+- [ ] Decide whether aia should require `ruby_llm >= 2.2` (see local security notes for aia, S-5, after #219). (added 2026-11-13)
 - [ ] Decide how aia's `develop` gets main's 6 post-release commits, including the `--paint` fix (F-45/F-46; options in inbox.md). (added 2026-11-12)
 
 ## ragdoll

@@ -10,7 +10,9 @@ AI Assistant CLI gem; depends on prompt_manager and shared_tools.
 
 ## Status
 
-_Updated 2026-11-12 (08:45 visit)._ **Skipped new PRs a fourth time: the review queue is full** (#183, #188, #193 unchanged, unapproved; develop still 22120fa). The improver found that **every stdio MCP server fails to start under ruby_llm 2.2** ([#203](https://github.com/MadBomber/aia/issues/203), F-100; also S-5, held locally, which constrains the fix). Also filed [#204](https://github.com/MadBomber/aia/issues/204) (`/config`, F-64+F-82) and [#205](https://github.com/MadBomber/aia/issues/205) (README model IDs and Quick Start key step, F-102). The dead-code audit found F-86..F-90.
+_Updated 2026-11-13 (00:15 visit)._ Dewayne rebase-merged #183 and #188 into develop (now 0d611ef); #193 merged only into its stacked base, and his own #206 redoes it. He also opened 17 fix PRs, #206–#222, covering nearly every open issue. Bomberbot opened [#226](https://github.com/MadBomber/aia/pull/226) (F-68) and [#227](https://github.com/MadBomber/aia/pull/227) (F-88 removal). A test-CI workflow is built but blocked: the bots' gh token lacks the `workflow` scope (`bomberbot/plans/aia-test-ci.md`). Filed #223 (F-69), #224 (F-101) and #225 (F-50).
+
+_Prior (2026-11-12 08:45 visit)._ **Skipped new PRs a fourth time: the review queue is full** (#183, #188, #193 unchanged, unapproved; develop still 22120fa). The improver found that **every stdio MCP server fails to start under ruby_llm 2.2** ([#203](https://github.com/MadBomber/aia/issues/203), F-100; also S-5, held locally, which constrains the fix). Also filed [#204](https://github.com/MadBomber/aia/issues/204) (`/config`, F-64+F-82) and [#205](https://github.com/MadBomber/aia/issues/205) (README model IDs and Quick Start key step, F-102). The dead-code audit found F-86..F-90.
 
 _Prior (2026-11-12 07:30 visit)._ **Skipped new PRs a third time: the review queue is full.** #183, #188 and #193 are unchanged and unapproved, and develop is still 22120fa. The quality audit and the improver found that **cost and token metrics have been broken since the move to ruby_llm 2**: filed [#200](https://github.com/MadBomber/aia/issues/200) (F-80, prices) and [#201](https://github.com/MadBomber/aia/issues/201) (F-81, tokens). Also filed [#202](https://github.com/MadBomber/aia/issues/202) (a failing directive ends the chat, F-65). F-67 (1.x log truncated on upgrade) needs Dewayne.
 
@@ -23,7 +25,9 @@ _Prior (2026-11-12 03:44 visit)._ **Skipped new PRs: the review queue is full.**
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- Open issues a PR can resolve:
+- **In flight (Dewayne's PRs #206–#222)** cover #154, #182, #190–#192 and #194–#205. Don't build anything touching their files until they merge; afterwards F-49, F-50 (#225), F-83, F-28 and F-31 unblock.
+- **Next picks with no overlap:** F-69 ([#223](https://github.com/MadBomber/aia/issues/223)) and F-104 after #226 merges (same file); F-101 ([#224](https://github.com/MadBomber/aia/issues/224), `lib/aia.rb`); the test CI workflow once the token has `workflow` scope.
+- Open issues a PR can resolve (most now have a PR from Dewayne):
   - [#203](https://github.com/MadBomber/aia/issues/203): stdio MCP servers can't start under ruby_llm 2.2 (F-100, lib, about 10 lines plus a lambda-`env:` test). **Top pick**: a headline feature is broken in the released gems. The builder must read S-5 (local notes) before choosing the fix. Pair F-103 (silent MCP failures off-TTY, about 8 lines) as a follow-up.
   - [#204](https://github.com/MadBomber/aia/issues/204): `/config` strips `=` and shows `nil` for nested keys (F-64+F-82, lib, about 15 lines plus tests).
   - [#205](https://github.com/MadBomber/aia/issues/205): README model IDs unknown to the registry, no API-key step in Quick Start (F-102; README half is a low-risk candidate, `docs/` half is docs-deploy).
@@ -59,11 +63,15 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#183](https://github.com/MadBomber/aia/pull/183) refactor(spawn): reuse `Crew.model_opts` in SpawnHandler (Fixes #181/F-29). **PR open**, awaiting Dewayne. The tender rebased it onto 2c1d77b (suite 2003/0).
-- [#188](https://github.com/MadBomber/aia/pull/188) refactor: remove write-only `TurnState#active_mcp_servers` (Fixes #187/F-43). **PR open**. It touches lib, so it is not low risk. Review clean in 1 round, suite 2001/0.
-- [#193](https://github.com/MadBomber/aia/pull/193) refactor: share one model-id lookup (`AIA::Utility.model_id_of`) (Fixes #182/F-30). **PR open**, **stacks on #188**. Review clean in 1 round, suite 2002/0. Retarget to develop once #188 merges.
+- [#226](https://github.com/MadBomber/aia/pull/226) fix: permit dates in skill and role front matter (F-68). **PR open**; review clean in 2 rounds, suite 2003/0. Lib, not low risk.
+- [#227](https://github.com/MadBomber/aia/pull/227) refactor: drop unused MCP `topics` metadata (F-88, part of F-90). **PR open**; review clean in 2 rounds, suite 2001/0. Lib deletion, not low risk.
+
 
 ## Merged bomberbot PRs
+
+- [#188](https://github.com/MadBomber/aia/pull/188) refactor: remove write-only `TurnState#active_mcp_servers` (rebase-merged by Dewayne 2026-11-12 → 0d611ef, resolves #187/F-43)
+- [#183](https://github.com/MadBomber/aia/pull/183) refactor(spawn): reuse `Crew.model_opts` (rebase-merged by Dewayne 2026-11-12 → b65fd22, resolves #181/F-29)
+- [#193](https://github.com/MadBomber/aia/pull/193) shared `model_id_of` lookup: merged by Dewayne into its stacked base `madbot/drop-active-mcp-servers` (ef507ab), **not on develop**; Dewayne's #206 redoes it
 
 - [#189](https://github.com/MadBomber/aia/pull/189) docs: README `--log-level` replaces removed log flags (merged low risk by madbot 2026-11-12 → 22120fa, resolves #186/F-44)
 - [#185](https://github.com/MadBomber/aia/pull/185) test: swap VERSION constants without redefinition warnings (merged low risk by madbot 2026-11-12 → 2c1d77b, resolves #179/F-40)

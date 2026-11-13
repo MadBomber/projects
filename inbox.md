@@ -939,3 +939,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Public `attr_reader :logger, :options` (`lanet.rb:43`)** makes `logger` public while smart_message keeps `Base#logger` private. Nothing reads them from outside. Keep, or make `logger` private as part of the 0.1.0 port?
 - **Dead gemspec scaffold:** `spec.bindir = "exe"` and `spec.executables` with no `exe/` directory. Fold into the #16 metadata PR?
 - **Queue full for the second visit in a row** with ready test-only items (#12, F-28, #19) waiting; the visit-3 question about exempting low-risk PRs from the queue rule still stands.
+
+## 2026-11-13 aia (bomberbot)
+
+- **Stale remote branches on aia:** `madbot/drop-active-mcp-servers`, `madbot/share-extract-model-id`, `madbot/dedupe-model-opts` and `bomber/provider-bare-model-name` hold merged or redone work, and #206/#210 supersede the last two pieces. There are also older `madbot/*` and `bomber/*` branches. Bots only delete branches they merge, so pruning is yours.
+- **Planning-era docs at the aia repo root:** `architecture_review.md` and `IMPLEMENTATION_PLAN.md` describe KBS-era classes (FactAsserter, RuleRouter). Move them to `docs/history/` or delete them?
+- **One front-matter parser** for prompts, skills and roles (F-68/F-69/F-104 all come from the drift). This is bigger than a PR because prompt_manager has its own parser.
+- **F-71 decision:** should `/delegate` plans be garbage-collected at session end (what `ephemeral:` promises), or should the unused keyword just be removed?
+- **F-84 decision:** OK to remove `FactAsserter`, even though that changes the TF-IDF filter's constructor keyword?
+- **#146 decision:** accept top-level `debug`/`verbose` in prompt front matter, warn, or close as by design.
+- **Tavily sample after #219:** `mcp_servers/tavily_mcp_server.json` puts `$TAVILY_API_KEY` in the command string with `"env": {}`. Under ruby_llm 2.2's env allowlist the key won't be inherited, so the sample should move the key into `env`.

@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 00:15 aia
+
+- `develop` already existed (0d611ef); not created.
+- **Since last visit:** Dewayne rebase-merged #183 (b65fd22) and #188 (0d611ef) without comment. #193 was merged into its stacked base `madbot/drop-active-mcp-servers`, not develop, and his own #206 redoes it. He also opened 17 fix PRs, #206–#222, covering nearly every open issue.
+- **New PRs** (independent, base develop, suites green locally, `/code-review` clean in 2 rounds each; aia has no test CI):
+  - [#226](https://github.com/MadBomber/aia/pull/226) fix: permit dates in skill and role front matter (source: brain, F-68). Lib; not low risk.
+  - [#227](https://github.com/MadBomber/aia/pull/227) refactor: drop unused MCP `topics` metadata (source: dead code, F-88 + part of F-90). Lib deletion; not low risk.
+  - **blocked:** test CI workflow (source: CI, tender lead). Built and reviewed clean, but the push was refused because the gh token lacks the `workflow` scope. The file is saved in `bomberbot/plans/aia-test-ci.md`, and there is a step in `dewayne.md`.
+- **Merged (low risk):** none. **Merged after approval:** none (no approved PRs). **Tended:** none open.
+- **Audit:** security @ 0d611ef: bundler-audit clean, delta neutral, no new F/S. S-5 is addressed by Dewayne's #219; the residual question is in local notes.
+- **Issues answered:** no new comments (each issue already shows its linked fix PR). Corrected BomberBot's own #182 comment to point at #206 instead of the stranded #193.
+- **Issues filed:** [#223](https://github.com/MadBomber/aia/issues/223) `/skills` front matter cut at `---` (F-69), [#224](https://github.com/MadBomber/aia/issues/224) missing-API-key message (F-101), [#225](https://github.com/MadBomber/aia/issues/225) README `just` commands (F-50).
+- **New findings:** F-104 (non-Hash front matter crashes the listings), F-105, F-106.
+
 ## 2026-11-12 09:07 smart_message-transport-lanet
 
 - `develop` already existed (b9b206e); not created.
