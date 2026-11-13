@@ -10,7 +10,7 @@ Dewayne's decision, issue #N.
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-10 | First run, at develop 7fa65e3. bundle-audit clean (no lockfile committed; resolved in scratch). SQL bind params, YAML safe, curl shell-out escaped. S-1, S-2 held locally. |
+| security | 2026-11-13 | Second run, at develop 93c16a1. bundle-audit clean (lockfile resolved in scratch). #58 params hash verified to encode query values; SQL binds, YAML safe load, lib curl shell-out escaped; bin/ scripts now read too. New: S-3, S-4 (held locally). |
 | dead code | 2026-11-12 | Full run at develop 5ea98c8: debride 1.15.2 over lib+bin+test+examples, every candidate grepped by hand, dynamic-dispatch sites checked, dependents sqa-cli/sqa-advisor/sqa-bi/sqa_demo-sinatra cloned to scratch. No unused private methods, error classes or orphan docs pages. New: F-41..F-48. |
 | dependencies | 2026-11-12 | First run at develop 5ea98c8 (Ruby 4.0.9, resolved in scratch). bundle outdated: only indirect gems behind (prism via flog, unicode-display_width via tty-table/strings, redis-client via redis = F-1); no gemspec limit blocks a newer release. bundle-audit clean. Dep Ruby floors confirm F-8 (sqa-tai ≥3.4; polars-df/eps/shared_tools ≥3.3; native gems <4.1.dev). New: F-19..F-22. |
 | adoption | 2026-11-12 | First run at develop 5ea98c8 (Ruby 4.0.9, offline seeded store). README blocks run: 3 broken (F-28 KBS syntax, F-29 indicator snippet, F-9 holding_period still). Examples 01-04/06-08 exit 0 offline (05/09 need network). `mkdocs build --strict` exit 0; api-reference stale (F-31). llms.txt 50/50 links resolve. gem-skill not run. New: F-28..F-33. |
@@ -36,7 +36,7 @@ Dead-code scan last covered commit: 5ea98c8 (develop, 2026-11-12; lib + bin + te
 - F-10: CHANGELOG `[Unreleased]` misses SQLite stores (b185b83), Yahoo window (7838c44), new bin scripts and rename, dependency changes (7411d07), nil guards (89e02af). Status: merged (low risk) [#51](https://github.com/MadBomber/sqa/pull/51), develop 795bce1 (Fixes #49).
 - F-11: no docs page mentions `sqa.db`/`portfolio.db`/`SQA::Store`; concepts/file_formats still describe per-ticker CSV/JSON. Status: open (docs deploy from develop, so not low risk).
 - F-12: `test_on_signal_callback` (test/stream_test.rb:77-92) asserts nothing; unused var in gp_test.rb. Fixing clears all 6 RuboCop offenses. Status: merged (low risk) [#50](https://github.com/MadBomber/sqa/pull/50), develop 9cee34f (Fixes #48); repo now lint-clean on `lib test`.
-- F-13: unused `$data` fixture in `test/test_helper.rb:75-99`. Status: open (test-only removal).
+- F-13: unused `$data` fixture in `test/test_helper.rb:75-99`. Status: **merged (low risk)** [#83](https://github.com/MadBomber/sqa/pull/83) 2026-11-13, develop 9fd9a79.
 - F-14: version numbers disagree: `VERSION = '0.4.0'`, CHANGELOG top release `[0.1.0]` above `[0.3.0]`, `.semver` 0.0.30, RubyGems 0.0.38. Status: needs Dewayne's decision.
 - F-15: `SQA.init(argv)` discards its argument though YARD advertises `--debug --verbose` (`lib/sqa/init.rb:35-37`). Status: needs Dewayne's decision (taste rule says fix code; small design choice). 2026-11-12: improver also found `SQA.init` runs `CLI.run! if defined? CLI` (`lib/sqa/init.rb:42-44`); sqa-cli defines `SQA::CLI` with no `run!`, so `SQA.init` raises NoMethodError when both are loaded. Settle together.
 - F-16: no test CI workflow; needs TA-Lib C lib, Ruby 3.4/4.0 matrix (polars-df has no 4.1 prebuilt). Status: PR open [#53](https://github.com/MadBomber/sqa/pull/53) (CI green).
@@ -50,7 +50,7 @@ Dead-code scan last covered commit: 7fa65e3 (develop, 2026-11-10; `lib/` only, b
 
 ### 2026-11-12 (third visit; dependencies audit + triage + improver, develop 5ea98c8)
 
-- F-19: `bin/sqa-console` (the gem's only executable) raises `cannot load such file -- irb (LoadError)` under `bundle exec` on Ruby 4.0: `irb` is a bundled gem and not in the gemspec/lock. Fix: `spec.add_development_dependency 'irb'`. Status: open (gemspec, one line; verified).
+- F-19: `bin/sqa-console` (the gem's only executable) raises `cannot load such file -- irb (LoadError)` under `bundle exec` on Ruby 4.0: `irb` is a bundled gem and not in the gemspec/lock. Fix: `spec.add_development_dependency 'irb'`. Status: **PR open** [#85](https://github.com/MadBomber/sqa/pull/85) (runtime dependency, since sqa-console ships as an executable).
 - F-20: most runtime deps have no version constraint, including pre-1.0 `polars-df` (locked 0.27.1), `hashie` 6.0, `toml-rb` 6.0, `kbs`, `myway_config`. Status: needs Dewayne's decision (pinning policy).
 - F-21: `Pathname` used in `lib/sqa.rb:13`, `init.rb:122`, `strategy.rb:78` with no `require 'pathname'`; fine on 4.x (preloaded), probably NameError on 3.x without bundler. Status: unverified (no 3.x Ruby here; moot if floor moves past 3.x, see F-8).
 - F-22: `yard-markdown` dev dependency unused (no `.yardopts`, `bin/generate_api_docs.rb` uses plain yard). Status: open (gemspec removal).
@@ -100,10 +100,30 @@ Dead-code scan last covered commit: 7fa65e3 (develop, 2026-11-10; `lib/` only, b
 - F-56: sub-gate duplication (`flay -m 30`): identical `TRANSFORMERS` ×3 (F-51 fix covers), identical `standard_deviation` in `pattern_matcher.rb:375`/`risk_manager.rb:445`, mirror pairs in ensemble, kbs_strategy, strategy_generator, store/portfolio. No bugs found in the pairs. Status: needs Dewayne's decision (readability only, like F-18).
 - F-57 (improver C-1): `Config` doesn't coerce `lazy_update` (only Boolean left out of `coerce_types`), so `SQA_LAZY_UPDATE=0` or `"off"` turns lazy mode on and `Stock#should_update?` silently stops updates. Status: issue [#66](https://github.com/MadBomber/sqa/issues/66) (1 line + test).
 - F-58 (improver): `Config#from_file` → `apply_incoming` (`config.rb:221-228`) skips coercion: JSON `"debug": "false"` → `debug? == true`; JSON/TOML `log_level` loads as String. Status: needs Dewayne's decision (coerce file values too; changes `log_level` type from JSON/TOML).
-- F-59 (improver C-2): `PatternMatcher#update_cluster_centroids` (`pattern_matcher.rb:202-210`) gives every empty cluster `previous_centroids[0]`, not its own, contradicting the comment; clusters silently collapse. Fix: `each_with_index`, `previous_centroids[idx]` + test via `send`. Status: open (good small PR).
+- F-59 (improver C-2): `PatternMatcher#update_cluster_centroids` (`pattern_matcher.rb:202-210`) gives every empty cluster `previous_centroids[0]`, not its own, contradicting the comment; clusters silently collapse. Fix: `each_with_index`, `previous_centroids[idx]` + test via `send`. Status: **PR open** [#84](https://github.com/MadBomber/sqa/pull/84) (also sizes clusters by `centroids.size` so short data does not crash).
 - F-60 (improver C-3): Stooq and Alpha Vantage raise bare `RuntimeError "Bad Response: N"` on non-200 (`stooq.rb:77-79`, `alpha_vantage.rb:97-99`); Yahoo/FMP raise `ApiError` as `stock.rb:430` documents. ~2 lines + 2 tests. Status: open (after #58 merges; same lines).
 - F-61 (improver C-4): `PortfolioOptimizer` `max_weight`/`min_weight` not honoured: `random_weights` clamps then renormalizes (886/1000 samples break `max_weight: 0.4`); no test covers constraints. Status: needs Dewayne's decision (redistribute vs reject; raise on infeasible bounds).
 - F-62 (improver): `SeasonalAnalyzer.detect_seasonality?` threshold (stddev > 2.0 on average *daily* % returns per month) never fires on real data (54 years of F: 0.093), so `StrategyGenerator`'s seasonal branch is dead. Status: needs Dewayne's decision (monthly returns vs recalibrate).
 - F-63 (improver): small no-ops: `bollinger_bands.rb:24` bare `middle.last`; `volume_breakout.rb:48,50` comparisons always true. Status: open (too thin alone; ride along with a nearby fix).
 
 Dead-code scan still at develop 5ea98c8 (no new commits since the 05:45 scan).
+
+### 2026-11-13 03:45 (seventh visit; security audit + improver, develop 93c16a1)
+
+Security audit: bundle-audit clean; nothing else public. S-2 was fixed by #58 (merged).
+
+- S-3: security finding, details held locally. Status: open.
+- S-4: security finding, details held locally. Status: open.
+- F-64 (improver I-1): `docs/advanced/fpop.md` treats `fpl_analysis` (Array of per-bar Hashes) as one Hash: Quick Start `analysis[:risk]` raises TypeError; documented keys `fpl/reward/quality_score` don't exist; wrong worked example, default `fpop` (14 not 10), DataFrame section, missing `:UNCERTAIN`; `fpop.rb:20-25` header example wrong. Status: issue [#80](https://github.com/MadBomber/sqa/issues/80).
+- F-65 (improver I-2): `FPOP.determine_direction` (`fpop.rb:107-118`) returns `:FLAT` for `(0.0, 5.0)` and `(-3.0, 0.0)`; 482 F.csv bars mislabeled, so `StrategyGenerator` `required_fpl_directions: [:UP]` drops them. Status: issue [#81](https://github.com/MadBomber/sqa/issues/81).
+- F-66 (improver I-3): `bin/sqa-summary` banner/header/examples still say `sqa-summary.rb`. Status: issue [#82](https://github.com/MadBomber/sqa/issues/82).
+- F-67 (improver I-6): `Stock.new(source: :typo)` raises `NameError: uninitialized constant SQA::DataFrame::Typo` (`stock.rb:114-115`); should raise `BadParameterError` listing known sources. ~6 lines + test. Status: open (land after #70, which fixes `:yahoo_finance` at the same lines).
+- F-68 (improver): `MarketRegime` accuracy set: `detect_history` labels each regime with the next window's volatility; windows are `window + 1` bars; `detect_trend_with_score` always uses `last(60)` as long SMA regardless of `lookback:`; `detect_strength` counts unchanged days as down. Status: needs Dewayne's decision (fix as a set; see inbox).
+- F-69 (improver): CHANGELOG `[Unreleased]` presents `bin/sqa-recent-prices`, `sqa-summary`, `sqa-yf-fetch` as CLI utilities, but `spec.executables` lists only `sqa-console` and `spec.files` excludes `bin/`. Status: needs Dewayne's decision (ship them as executables, or reword CHANGELOG).
+- F-70 (improver): `examples/download_prices.rb` (262 lines) likely redundant after #71 deletes F.csv and `bin/sqa-yf-fetch` writes `sqa.db`. Status: needs Dewayne's decision (remove vs. keep with pointer).
+- F-71 (builder #84): `PatternMatcher#cluster_patterns` comment says "iterate until convergence" but always runs 10 iterations; `patterns.sample` unseeded; `extract_all_patterns` skips the last window (should be `size - pattern_length + 1`). Status: open.
+- F-72 (builder #84): `test/test_helper.rb` uses deprecated `SimpleCov.add_group` (warns every run; use `SimpleCov.group`). Status: open (test-only, low-risk candidate).
+- F-73 (triage): `.semver` (0.0.30) is tracked and shipped in `spec.files` while `lib/sqa/version.rb` is 0.4.0 and RubyGems has 0.0.38. Status: needs Dewayne's decision (delete `.semver`; when to cut 0.4.0).
+- F-74 (builder #85): `bin/sqa-console` does `require "bundler/setup"`, so the installed executable likely raises `Bundler::GemfileNotFound` outside a project with a Gemfile. Unverified. Status: open (verify, then drop or guard the require).
+
+Dead-code scan still at develop 5ea98c8 (not rerun this visit).

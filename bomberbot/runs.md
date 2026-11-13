@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 03:45 sqa
+
+`develop` existed (93c16a1); not created this visit. No bomberbot PRs were open: Dewayne rebase-merged #53, #54, #58 on 2026-11-12 and, at 03:25-03:34Z today, opened his own #68-#79 (one per issue #55-#67), so this visit skipped everything those cover.
+
+- New PR [#83](https://github.com/MadBomber/sqa/pull/83) test: drop unused $data fixture from test_helper. Source: **brain** (F-13, dead code). -25 test lines; every reference searched incl. dynamic and the four dependents; suite 622/0F/0E before and after; review clean (1 round); CI green. **merged (low risk)** as develop 9fd9a79.
+- New PR [#84](https://github.com/MadBomber/sqa/pull/84) fix(pattern_matcher): keep each empty cluster's own centroid. Source: **brain** (F-59). +23/-3; fail-before/pass-after; round 1 review caught a nil crash with fewer centroids than clusters (fixed, regression test), round 2 clean; suite 624/0F/0E; CI green. lib → waits for Dewayne.
+- New PR [#85](https://github.com/MadBomber/sqa/pull/85) build(gemspec): declare irb so sqa-console runs on Ruby 4. Source: **brain** (F-19). Runtime dep (executable ships); new console test fails before/passes after; suite 623/0F/0E; review clean; CI green. gemspec → waits for Dewayne.
+- No stacks. Audit: **security** (second run, develop 93c16a1): bundle-audit clean, S-3/S-4 held locally, S-2 confirmed fixed by #58.
+- Tended: none open. Tender deleted merged branches `madbot/test-ci`, `madbot/docs-backtest-percent`, `madbot/av-query-params`. CI on develop green.
+- Issues answered: none (all open issues covered by Dewayne's PRs; #4 already has BomberBot's status note).
+- Issues filed: [#80](https://github.com/MadBomber/sqa/issues/80) (F-64 fpop.md), [#81](https://github.com/MadBomber/sqa/issues/81) (F-65 FPOP :FLAT), [#82](https://github.com/MadBomber/sqa/issues/82) (F-66 sqa-summary banner).
+- Note: /simplify and /code-review slash commands weren't available to builders; they used the code-review agent for review rounds.
+
 ## 2026-11-13 03:19 kbs
 
 `develop` existed (2dc666f); not created this visit. Queue was empty: Dewayne merged #28, #32, #33 on 2026-11-12.

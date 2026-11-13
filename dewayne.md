@@ -69,10 +69,11 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## sqa
 
-- [ ] Review [sqa#53](https://github.com/MadBomber/sqa/pull/53) (test CI on Ruby 3.4/4.0, green). Optional: make `test (3.4)`/`test (4.0)` required checks. Once it merges, later PRs get CI. (added 2026-11-12)
-- [ ] Review [sqa#54](https://github.com/MadBomber/sqa/pull/54) (docs: backtest fractions as percentages). After merge the Pages site redeploys from develop; check the Backtesting page. (added 2026-11-12)
-- [ ] Review [sqa#58](https://github.com/MadBomber/sqa/pull/58) (Alpha Vantage/Stooq queries from a params hash; lib). See the 2026-11-12 final report for context. (added 2026-11-12)
+- [ ] [sqa#53](https://github.com/MadBomber/sqa/pull/53) merged; optional after-merge step: make `test (3.4)`/`test (4.0)` required checks on develop. (added 2026-11-12)
 - [ ] Decide the design for [sqa#4](https://github.com/MadBomber/sqa/issues/4) (API keys in config: env var name vs value vs close); see inbox. (added 2026-11-10)
+- [ ] Review [sqa#84](https://github.com/MadBomber/sqa/pull/84) (PatternMatcher empty clusters keep their own centroid; lib, CHANGELOG line may need a rebase after your #68). (added 2026-11-13)
+- [ ] Review [sqa#85](https://github.com/MadBomber/sqa/pull/85) (adds `irb` as a **runtime** dependency so the shipped `sqa-console` runs on Ruby 4). (added 2026-11-13)
+- [ ] sqa security S-3/S-4: see the 2026-11-13 final report / local notes for disclosure and fix decisions. (added 2026-11-13)
 
 ## robot_lab
 
