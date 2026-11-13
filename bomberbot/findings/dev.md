@@ -10,7 +10,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 |---|---|---|
 | security | 2026-11-13 | Third run, at 657e6bd, focused on dev#10–#12 (STATUS_WEEK_OF, reek_baseline, SKIP paths); fixtures with asgard 0.6.0, reek 6.6.0, global bundle-audit. F-52 verified, F-36 still holds; S-7, S-8 held locally. (Second run 2026-11-12 at 5a0b89e: F-40 to F-42, S-4 to S-6. First 2026-11-06: S-1, S-2.) |
 | dead code | 2026-11-13 | Fifth-run cheap scan 5a0b89e..657e6bd (dev#10 to #12); nothing new. (Previous: b1c29ed..5a0b89e, 2026-11-12.) |
-| dependencies | 2026-11-12 | First run, at 5a0b89e. No Gemfile; every require is a default gem on 4.0.9 and 4.1.0-preview1; clean load of all .loki with -W:deprecated; missing-tool fixtures. F-27, F-32 to F-36. |
+| dependencies | 2026-11-13 | Second run, at 657e6bd (dev#10–#12 since 5a0b89e). The new requires `pathname` (core) and `fileutils` (default gem) load on 4.0.9 and 4.1.0-preview1, also inside an empty bundle. Every .loki loads clean with -W:deprecated -W:performance. The flog, flay, reek and bundler-audit gates run without warnings on both Rubies and parse 3.4/4.0 syntax. Every tool gem is at its latest release, and the gh, icalBuddy and gem flags work. Found F-53. (First run 2026-11-12 at 5a0b89e: F-27, F-32 to F-36.) |
 | adoption | n/a | Skipped for dev by spec. |
 | quality | 2026-11-13 | Second run, at 657e6bd, focused on dev#10–#12. RuboCop Lint+Security (TargetRubyVersion 3.4) plus rubocop-strict.yml, flog, flay, reek 6.6.0 over .rb copies; asgard 0.6.0 fixtures for reek_baseline/reek_check, the SKIP paths and STATUS_WEEK_OF. F-47 to F-49, F-45 update. (First run 2026-11-07: F-15 to F-17.) |
 
@@ -112,3 +112,9 @@ At 657e6bd; no new commits since the sixth run, so no dead-code scan (still at 6
 - **F-36 update:** still holds after F-27. The SKIP lines now explain missing analyzers, but there's still no Ruby/asgard version, no "analyzer gems in asgard's Ruby" note, and no macOS flag. Filed as [#27](https://github.com/MadBomber/dev/issues/27).
 - **S-7:** security finding, details held locally. Status: open, low.
 - **S-8:** security finding, details held locally. Status: needs Dewayne's decision, low.
+
+### 2026-11-13, eighth run (dependencies audit, second run)
+
+At 657e6bd. No new commits, so no dead-code scan; it stays at 657e6bd. The new requires load on both Rubies, and every .loki loads without warnings. The analyzer gates run cleanly on Ruby 3.4/4.0 syntax, and every tool gem is at its latest release. F-27 is still fixed; F-32 to F-36 are unchanged. Next free number: F-54.
+
+- **F-53:** `calendar_collect` says icalBuddy is missing whenever it fails for any reason. `safe_capture2` (status_report.loki:41-46) returns `["", false]` both when the binary is absent and on a non-zero exit, so :267 always prints "icalBuddy not available (brew install ical-buddy)". With icalBuddy 1.10.1 installed but unable to read calendars, it exits 1 with `error: No calendars.` (verified by the main session). Fix: tell ENOENT apart from a non-zero exit, and give the failure its own SKIP message. Best combined with F-52 (#28) after #20 merges. Status: issue [#29](https://github.com/MadBomber/dev/issues/29).

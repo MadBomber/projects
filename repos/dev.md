@@ -10,7 +10,7 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-13 (seventh run)._ Queue full (#22, #25, #26 open, none approved), so no new PRs; security audit ran; filed #27 (F-36) and #28 (F-52). `develop` is still 657e6bd.
+_Updated 2026-11-13 (eighth run)._ Queue still full (#22, #25, #26 open, none approved), so no new PRs. The dependencies audit ran and found F-53, filed as #29. `develop` is still 657e6bd.
 
 ## Backlog
 
@@ -40,6 +40,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [dev#24](https://github.com/MadBomber/dev/issues/24) quality_rails.loki NoMethodError unless quality.loki is imported (F-50)
 - [dev#27](https://github.com/MadBomber/dev/issues/27) README doesn't list what a consumer repo needs (F-36)
 - [dev#28](https://github.com/MadBomber/dev/issues/28) status_report collectors print git/gh/icalBuddy stderr (F-52)
+- [dev#29](https://github.com/MadBomber/dev/issues/29) calendar_collect says icalBuddy is missing when it is installed but fails (F-53; fix with #28 after #20)
 
 Dewayne's own PRs cover #7 (#17), #8 (#18), #9 (#21), #13 (#16), #14 (#19), #15 (#20).
 

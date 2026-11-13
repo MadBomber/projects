@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 06:45 dev
+
+Eighth visit (last 2026-11-13 02:15). `develop` already existed (657e6bd, unchanged); not created.
+
+- **skipped: review queue full.** [dev#22](https://github.com/MadBomber/dev/pull/22), [#25](https://github.com/MadBomber/dev/pull/25) and [#26](https://github.com/MadBomber/dev/pull/26) are still open and MERGEABLE, with no reviews, comments or CI. None is low risk because all three change `.loki` code.
+- **Phase 1 was trimmed on purpose,** as at 02:15: there were no new commits, issue comments or PR activity. Only the tender and the auditor ran. The main session checked that no issue has new comments. Triage and the improver were skipped because the code hasn't changed since they ran at 02:05.
+- **Merged:** none. **Tended:** #22, #25, #26, no action needed (0 behind their bases).
+- **Audit:** dependencies (second run) at 657e6bd. Clean apart from F-53. Environment note: `~/.rbenv/versions/4.0.9` now ships Bundler 4.1.0.beta3.
+- **Issues answered:** none (no new comments). **Issues filed:** [dev#29](https://github.com/MadBomber/dev/issues/29) calendar_collect says icalBuddy is missing when it is installed but fails (F-53).
+
 ## 2026-11-13 00:41 debug_me
 
 Resumed visit: the first session was cut off at the budget while the BasicObject builder was mid-review; the resume (06:44) re-spawned it to finish. `develop` already existed (733fe6d); not created. Last visit 2026-11-12 08:54.
