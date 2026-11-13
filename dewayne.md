@@ -56,12 +56,11 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## scripts
 
-- [ ] Close [scripts#19](https://github.com/MadBomber/scripts/issues/19) and [scripts#23](https://github.com/MadBomber/scripts/issues/23) by hand, or let them close when develop reaches main: their fixes merged to develop via #25 and #26, and `Fixes` only auto-closes on main. (added 2026-11-10, updated 2026-11-12)
-- [ ] Before the next develop → main release, sync the two: main has e746bef (`ruler` rewrite, 2026-11-11) that develop lacks. (added 2026-11-12)
-- [ ] Delete merged bot branches on MadBomber/scripts if you want them gone: `bomber/*` (9, plus `bomber/readme-fix-rows` and `bomber/readme-index-complete`, whose content reached develop through #25), `bomberbot/cp-r-spaces`, `bomberbot/land-readme-index`, `bomberbot/sinatra-bind-error`, and the orphan `dependabot/bundler/templates/sinatra_app/tzinfo-1.2.11`. (added 2026-11-12)
-- [ ] Review [scripts#37](https://github.com/MadBomber/scripts/pull/37) (S-2 fix, neutral title; details in `notes/security/scripts.md`). After merge, the next run of `backup_envrc.rb` changes your existing `~/.envrc_backup` to mode 0700, and a failed copy now exits 1 without advancing the timestamp. (added 2026-11-12)
-- [ ] Review [scripts#35](https://github.com/MadBomber/scripts/pull/35) (shc.rb file arg, Fixes #32) and [scripts#36](https://github.com/MadBomber/scripts/pull/36) (yaml2json aliases, Fixes #30). One-line code changes, so not self-merged. (added 2026-11-12)
-- [ ] scripts: S-3, S-4, S-5 and new S-6, S-7, S-8 are held locally in `notes/security/scripts.md`; S-8 (medium-low) is the one to read first. (added 2026-11-10, updated 2026-11-12)
+- [ ] Sync main and develop both ways: main has e746bef (`ruler` rewrite, committed straight to main) that develop lacks, and develop has #51-#67 that main lacks (#68 merged develop when it held only #50). Merge main into develop, then open a develop → main PR. (added 2026-11-12, updated 2026-11-13)
+- [ ] Delete merged bot branches on MadBomber/scripts if you want them gone: `bomber/*` (9, plus `bomber/readme-fix-rows` and `bomber/readme-index-complete`), `bomberbot/cp-r-spaces`, `bomberbot/land-readme-index`, `bomberbot/sinatra-bind-error`, `madbot/shc-file-arg`, `madbot/yaml2json-aliases`, `madbot/backup-envrc-fileutils`, and the orphan `dependabot/bundler/templates/sinatra_app/tzinfo-1.2.11`. (added 2026-11-12, updated 2026-11-13)
+- [ ] Review [scripts#69](https://github.com/MadBomber/scripts/pull/69) (S-9, removes the vendored `printenv`; neutral title, details in `notes/security/scripts.md`). After merge and a pull of `~/scripts`, `printenv` resolves to `/usr/bin/printenv`. (added 2026-11-13)
+- [ ] Review [scripts#70](https://github.com/MadBomber/scripts/pull/70) (resize_images full path, F-89) and [scripts#71](https://github.com/MadBomber/scripts/pull/71) (fix_perms skips `.git`, F-81). Small code changes, so not self-merged. (added 2026-11-13)
+- [ ] scripts: S-3 to S-8 are held locally in `notes/security/scripts.md`; S-8 (medium-low) is the one to read first. (added 2026-11-10, updated 2026-11-12)
 
 ## sqa
 

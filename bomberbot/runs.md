@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 05:23 scripts
+
+Thirteenth visit (last 2026-11-12 07:46). `develop` already existed (a35981f); not created.
+
+- **Since last visit:** Dewayne merged #35, #36, #37, fixed every BomberBot issue (#27-#49) himself in #50-#67, and merged develop → main (#68) before #51-#67 landed. main also has e746bef (`ruler`) that develop lacks. No open issues, no open bot PRs.
+- **New PRs** (all independent, base develop, no CI; proof by scratch before/after runs, `/code-review` round 1 clean):
+  - [#69](https://github.com/MadBomber/scripts/pull/69) chore: remove vendored CGI printenv (source: brain backlog S-9, security; neutral title). 92 lines deleted.
+  - [#70](https://github.com/MadBomber/scripts/pull/70) fix(resize_images): open images by their full path (source: judgment, finding F-89). Also fixes the output name for names that repeat the extension.
+  - [#71](https://github.com/MadBomber/scripts/pull/71) fix(fix_perms): skip .git and restore modes from a subdirectory (source: judgment, finding F-81).
+- **Merged (low risk):** none. All three change or delete scripts. **Merged after approval:** none (nothing approved was open).
+- **Deviation:** builders started alongside phase 1, not after it, because the queue was empty and all three were verified backlog/findings items; phase 1 produced no candidate that outranked them.
+- **Tended:** nothing open. **Issues answered:** none (no open issues; #19 and #23 closed).
+- **Audit:** dead code (quick scan 86201ce..a35981f): nothing orphaned by #50-#67. Improver: F-111..F-113 plus F-68 note; builders: F-114, F-115. S-10 held locally.
+- **Issues filed:** [#72](https://github.com/MadBomber/scripts/issues/72) `#!/bin/env` shebangs (F-66), [#73](https://github.com/MadBomber/scripts/issues/73) prepend_relative_path_as_comment (F-82), [#74](https://github.com/MadBomber/scripts/issues/74) magic_8_ball apostrophe (F-92). Main session reproduced each before filing.
+
 ## 2026-11-13 05:15 robot_lab
 
 Eleventh visit (last: 02:45 today). `develop` already existed (afd9131); not created. All five phase-1 agents ran.
