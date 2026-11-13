@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 05:15 shared_tools
+
+Third visit (last 2026-11-12 07:30). `develop` existed at 337219d; not created this visit. Dewayne had merged #9, #13, #14 and opened his own PRs #18-#23 fixing bot-filed issues #10, #11, #15, #17, #12, #16.
+
+- New PRs (all target `develop`, green on 3.3/3.4/4.0, review clean in one round, none stacked):
+  - [#24](https://github.com/MadBomber/shared_tools/pull/24) drop dead loader ignores and SimpleCov group (brain backlog, F-28; dead code)
+  - [#28](https://github.com/MadBomber/shared_tools/pull/28) escape NUL bytes in string literals (brain backlog, F-25); guard test moved to its own file after a `merge-tree` check showed a conflict with #23
+  - [#29](https://github.com/MadBomber/shared_tools/pull/29) require shims for notification and search_codebase tools (judgment, F-55)
+- Merged (low risk): none; all three change `lib/`. Merged after approval: none pending.
+- Started builders for #10/#15/#17 in parallel with phase 1 to save time; the tender then found Dewayne's #18/#20/#21, and all three were stopped before any push (no PR, no remote branch). Builders started before the auditor reported, a deviation from the 2026-11-12 process note, because the picks were Backlog items with issues.
+- Tended: nothing open; tender deleted merged branches `bomberbot/test-ci`, `bomberbot/readme-accuracy`, `bomberbot/disk-path-cleanpath`. CI on develop green.
+- Audit: **quality** (first run, partial, at 337219d): F-59..F-64; improver F-65..F-67; S-12 held locally.
+- Issues answered: none needed (all open issues have Dewayne's PRs).
+- Issues filed: [#25](https://github.com/MadBomber/shared_tools/issues/25) CronTool next_times fails at minute :59 (F-59), [#26](https://github.com/MadBomber/shared_tools/issues/26) CronTool field parsing and dom/dow (F-60..F-62), [#27](https://github.com/MadBomber/shared_tools/issues/27) tool files raise NameError when required directly (F-65).
+
 ## 2026-11-13 05:01 gem-skill
 
 Fifth visit (last recorded 2026-11-10; a 2026-11-12 visit was cut off twice before recording: it filed #16-#18, opened #19, and left uncommitted findings edits, committed now). The asgard task had set its directory aside as `~/sandbox/bomberbot-interrupted/gem-skill-20261113-0501`; it held no unpushed work. `develop` existed (866a510); not created.
