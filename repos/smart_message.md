@@ -17,7 +17,9 @@ Ruby 4.0+. The repo now has its own `CLAUDE.md`; read it before building.
 
 ## Status
 
-_Updated 2026-11-13 (ninth visit)._ Dewayne merged #21, #22, #23 (`develop` 2aa3dbf) and opened his own PRs [#36](https://github.com/MadBomber/smart_message/pull/36)–[#50](https://github.com/MadBomber/smart_message/pull/50), one per open issue (#18–#35), all green; BomberBot checked each against its issue's repro (all fix it; #46 covers 3 of #20's 4 cases, commented). Opened [#54](https://github.com/MadBomber/smart_message/pull/54) (drop unused example code), [#55](https://github.com/MadBomber/smart_message/pull/55) (tests for `replay_batch`/`configure_default`/`reset_logger`) and [#56](https://github.com/MadBomber/smart_message/pull/56) (wait for dispatch instead of sleeps); none self-merged. Ran the **security** audit (F-137, F-138, S-14) and filed [#51](https://github.com/MadBomber/smart_message/issues/51), [#52](https://github.com/MadBomber/smart_message/issues/52), [#53](https://github.com/MadBomber/smart_message/issues/53).
+_Updated 2026-11-13 (tenth visit)._ Skipped new PRs: review queue full (#54, #55, #56 open, green, unreviewed; `develop` still 2aa3dbf; Dewayne's #36–#50 unchanged). Ran an incremental **dead code** audit (F-155, F-156) and filed [#57](https://github.com/MadBomber/smart_message/issues/57) (Module/Set `validate:`), [#58](https://github.com/MadBomber/smart_message/issues/58) (one-argument `required:` lambda) and [#59](https://github.com/MadBomber/smart_message/issues/59) (`unsubscribe` with a lambda).
+
+_Earlier, 2026-11-13 (ninth visit)._ Dewayne merged #21, #22, #23 (`develop` 2aa3dbf) and opened his own PRs [#36](https://github.com/MadBomber/smart_message/pull/36)–[#50](https://github.com/MadBomber/smart_message/pull/50), one per open issue (#18–#35), all green; BomberBot checked each against its issue's repro (all fix it; #46 covers 3 of #20's 4 cases, commented). Opened [#54](https://github.com/MadBomber/smart_message/pull/54) (drop unused example code), [#55](https://github.com/MadBomber/smart_message/pull/55) (tests for `replay_batch`/`configure_default`/`reset_logger`) and [#56](https://github.com/MadBomber/smart_message/pull/56) (wait for dispatch instead of sleeps); none self-merged. Ran the **security** audit (F-137, F-138, S-14) and filed [#51](https://github.com/MadBomber/smart_message/issues/51), [#52](https://github.com/MadBomber/smart_message/issues/52), [#53](https://github.com/MadBomber/smart_message/issues/53).
 
 _Earlier, 2026-11-12 (eighth visit)._ Skipped new PRs a fourth time (review queue full: #21, #22, #23 open, green, unreviewed; `develop` still 07af3d4). Ran the **dependencies** audit (F-120..F-123: dependencies healthy on 4.0 and 4.1, but keep `hashie ~> 5.0`; see F-120) and filed [#33](https://github.com/MadBomber/smart_message/issues/33) (`clear_ddq!` hits nested classes), [#34](https://github.com/MadBomber/smart_message/issues/34) (transport options that hang) and [#35](https://github.com/MadBomber/smart_message/issues/35) (`pretty_print` with Integer keys).
 
@@ -93,6 +95,11 @@ works these before anything else in this repo.
 - [#53](https://github.com/MadBomber/smart_message/issues/53) honour `ddq_storage :redis, key_prefix:` (F-151); `dispatcher.rb`, after #38.
 - F-138 DLQ docs: replay of a payload with no `_sm_header` fails with `ValidationError`, not a decode error; one docs sentence.
 - S-14: security finding, details held locally; small neutral-titled `lib/` PR.
+- [#57](https://github.com/MadBomber/smart_message/issues/57) `validate:` with a Module or Set (F-157): `when Module` / `when Array, Set` in `property_validations.rb`, + tests + docs row; ~2 lines.
+- [#58](https://github.com/MadBomber/smart_message/issues/58) pass the message to a one-argument `required:` lambda (F-158); `property_validations.rb:127`, ~3 lines + test.
+- [#59](https://github.com/MadBomber/smart_message/issues/59) `unsubscribe` rejects a callable with a hint to pass the id (F-159); `subscription.rb`, ~4 lines + test.
+- F-160 `subscribe("X.y") { }` ignores the named handler: raise `ArgumentError`; after #46 (same file).
+- F-163 `rescue NameError, TypeError` in `Envelope.constant_named`; after #47.
 
 ## Open bomberbot PRs
 
