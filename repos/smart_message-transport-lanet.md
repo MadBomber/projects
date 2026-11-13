@@ -14,7 +14,7 @@ entirely against stubs defined in `test/test_helper.rb`.
 
 ## Status
 
-_Updated 2026-11-13 (visit 6): no activity since visit 5 (develop still 3b0abb9, #20–#29 open). Opened [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32) (RuboCop baseline, Fixes #31) after confirming the baseline holds on each of #20–#29, ran the dependencies audit (F-55, F-56) and filed [#33](https://github.com/MadBomber/smart_message-transport-lanet/issues/33) (F-56). F-1 still waits on Dewayne._
+_Updated 2026-11-13 (visit 7): no activity since visit 6 (develop still 3b0abb9; #20–#29 and #32 open, unreviewed). No PR opened: every candidate touches files #20–#29 change. Ran the adoption audit (F-57…F-59), filed [#34](https://github.com/MadBomber/smart_message-transport-lanet/issues/34) (F-59). F-1 still waits on Dewayne._
 
 ## Backlog
 
@@ -36,6 +36,7 @@ Well-defined items a single small PR could close. **Dewayne's own PRs #20–#29 
 - **F-21:** move to minitest 6 (`~> 6.0` plus `minitest-mock`); verified green in scratch 2026-11-13. After #22 merges (it touches `Gemfile.lock`).
 - **F-28 (half):** remove dead `setup`/`teardown` in `test_lanet_concurrency.rb:6-13`. After #20/#28 merge. Deletes test code, so not a low-risk self-merge.
 - **F-56 / [#33](https://github.com/MadBomber/smart_message-transport-lanet/issues/33):** `publish` reports success when every send fails. Raise when `target_nodes` is non-empty and none succeeded, plus one test. After #23/#25–#29 merge (same files).
+- **F-59 / [#34](https://github.com/MadBomber/smart_message-transport-lanet/issues/34):** `LANET_*` env vars read once at require (`DEFAULT_CONFIG` constant). Build the ENV hash inside `default_options` per call, plus a test that sets ENV after require (save/restore). After #25 merges (same block).
 
 ## Open bomberbot PRs
 
