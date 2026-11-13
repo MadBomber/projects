@@ -959,3 +959,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **#25 (F-53):** `self.env_number` becomes public API; `private_class_method :env_number` would avoid it.
 - **None of #20–#29 says `Fixes #N`**, so issues #3, #10–#19 won't close on merge.
 - **CHANGELOG mergeability:** ten parallel PRs appending to `## [Unreleased]` guarantee a rebase chain. Split it into `### Fixed / Added / Changed`, or leave CHANGELOG out of batch PRs and add one consolidated entry?
+
+## agent99 (2026-11-13, tenth visit)
+
+- **CHANGELOG conflicts across your #38–#53.** All 16 add their line at the same spot (end of `[Unreleased]` → Fixed), so each merge after the first needs a hand fix (120 of 120 pairs conflict; nothing else does). Options: `CHANGELOG.md merge=union` in `.gitattributes` (plus the driver locally), drop the lines from the PRs and write them in one pass, or merge oldest first and let `@copilot` resolve. When they've landed, bomberbot will dedupe the three #6 lines (F-61). (added 2026-11-13)
+- **Review notes on your PRs** (responder merged all 17 in scratch: suite 84/0/0/4 on 4.0.9 and 4.1-preview1): #51 still fails when the archive is unpacked inside another git repo (compare `git rev-parse --show-toplevel` with ROOT); #54's Rakefile comment says `test/support` "fails if loaded", which doesn't reproduce on develop+#53+#50 (narrow glob is still a good safeguard; improver saw an intermittent load-order NameError it would prevent); #45 fixes the three pages #24 named but 48 `def process_request(payload)` overrides remain in 10 other docs pages (F-26). (added 2026-11-13)
+- **F-91 / F-59 remainder: `TcpMessageClient`.** Besides being unloaded and "not ready for prime time", every `publish` raises `ArgumentError` (`agents(target)` on a no-arg reader). Delete it (CHANGELOG note), move it out of the gem, or fix `@agents[target]` + add `setup`/`delete_queue`. #57 only removes the notes after `__END__`. (added 2026-11-13)
+- **F-78: where does `rackup` live?** README Quick Start step 3 (`ruby examples/registry.rb`) fails on Sinatra 4 without `rackup`. Gemfile dev group, gemspec (with F-12's sinatra question), or a docs note only. (added 2026-11-13)
+- **F-79: docs toolchain.** Material for MkDocs reaches EOL 2027-05-05 (Zensical successor); `docs.yml` installs it unpinned. Pin now, decide on Zensical across repos before May. (added 2026-11-13)
+- **Adoption: move `docs/AI/` out of the agent99 site.** HTM notes, robot-written snippets and a binary `htm_demo.db` publish as "AI Concepts" but aren't about agent99's API; a separate repo or gist would make the site and repo easier to follow. (added 2026-11-13)
+- **Test design:** `TestAgent` replaces `process_control` and `process_request`, so the integration/system suites test the double, not the library (F-48, F-92). Trimming those overrides is bigger than one PR. (added 2026-11-13)
+

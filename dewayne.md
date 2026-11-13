@@ -36,7 +36,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## agent99
 
-- [ ] Review and merge into `develop` [#27](https://github.com/MadBomber/agent99/pull/27) (Fixes #20, lib), [#28](https://github.com/MadBomber/agent99/pull/28) (Fixes #21, #15, lib) and [#29](https://github.com/MadBomber/agent99/pull/29) (Fixes #23, examples). Their CHANGELOG lines don't collide, so any merge order works. (added 2026-11-12)
+- [ ] Review and merge into `develop` [#55](https://github.com/MadBomber/agent99/pull/55) (F-55, lib), [#56](https://github.com/MadBomber/agent99/pull/56) (F-65+F-71, lib) and [#57](https://github.com/MadBomber/agent99/pull/57) (F-59, deletions in lib). Their CHANGELOG lines sit above where your #38–#53 append, so they merge in any order without adding to those conflicts. (added 2026-11-13)
 - [ ] Issues #3/#4/#5… won't auto-close: `Fixes #N` only fires on merges into `main`. Close #4 by hand now (fixed on develop via #9) or at release. Now also #3, #5, #6, #8 (fixed on develop by #10–#13). (added 2026-11-10, updated 2026-11-12)
 - [ ] The agent99 docs site is 404 (GitHub Pages disabled, F-25). Before re-enabling Pages, handle the held-local note S-6 for this repo (same one-line `mkdocs.yml` fix as smart_message#9), then redeploy. (added 2026-11-10)
 

@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 01:10 agent99
+
+- `develop` already existed (28a6347); not created.
+- **Since last visit:** Dewayne squash-merged #27 (a651da1), #28 (0d749c8) and #29 (28a6347) within 70 s, no comment or approval. The tender deleted their leftover branches. He then opened his own [#38–#54](https://github.com/MadBomber/agent99/pulls) (`fix/issue-*`), one per open issue; their files were treated as off limits.
+- **New PRs** (independent, base develop, suites green locally on 4.0.9 with a re-resolved lock; no test CI on develop until #54):
+  - [#55](https://github.com/MadBomber/agent99/pull/55) fix(control): run fini once on remote shutdown (source: brain, F-55). Review clean round 1.
+  - [#56](https://github.com/MadBomber/agent99/pull/56) fix(registry): honor the registry URL's scheme and path (source: brain, F-65 + F-71; also S-16, neutral wording). Review clean in 2 rounds.
+  - [#57](https://github.com/MadBomber/agent99/pull/57) chore: drop stray notes after `__END__` (source: brain/dead code, F-59). Review clean round 1.
+  - Builders 55 and 56 started before phase 1 finished (both were verified brain-backlog items in files no open PR touches). The three merge together and with #38 cleanly (checked); CHANGELOG lines placed above Dewayne's append point.
+- **Merged (low risk):** none (all three touch `lib/`). **Merged after approval:** none. **Tended:** none open.
+- **Audit:** adoption @ 28a6347 → F-77..F-79; dead-code delta c2b4e49..28a6347: nothing new. Improver F-90..F-92.
+- **Issues answered:** none (every open issue already shows Dewayne's fix PR; no outside comments).
+- **Issues filed:** [#58](https://github.com/MadBomber/agent99/issues/58) fixed sleep per test (F-90), [#59](https://github.com/MadBomber/agent99/issues/59) docs version stale (F-77), [#60](https://github.com/MadBomber/agent99/issues/60) control handlers untested (F-92).
+- **Ready for next visit:** #59 (docs, low risk), #58 after #54, F-53+F-51 on registry_client.rb after #56, F-61 after #38–#53 land, #60 after #55.
+
 ## 2026-11-13 00:34 smart_message-transport-lanet
 
 - `develop` already existed (3b0abb9); not created.
