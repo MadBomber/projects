@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 06:37 scripts
+
+Fourteenth visit (last 2026-11-13 05:23). `develop` already existed (a35981f); not created.
+
+- **skipped: review queue full.** #69, #70, #71 are still open with no reviews, comments or approvals, so no new PRs were built.
+- **Merged (low risk):** none. **Merged after approval:** none. **Tended:** #69/#70/#71 checked; already on current develop, MERGEABLE, nothing to do.
+- **Issues answered:** none. #72-#74 are our own issues; all still reproduce at develop, nothing new to add.
+- **Audit:** security (full diff bc51825..a35981f plus a whole-tree sweep for new sink classes, sandboxed). New S-11..S-14 held locally; F-116..F-118 public; F-14 extended. Improver: F-119..F-124. Dead-code scan last covered a35981f.
+- **Issues filed:** [#75](https://github.com/MadBomber/scripts/issues/75) termall kills itself (F-119), [#76](https://github.com/MadBomber/scripts/issues/76) github_batch_delete_repos stops on a blank line (F-117), [#77](https://github.com/MadBomber/scripts/issues/77) jira scripts split arguments (F-111).
+
 ## 2026-11-13 06:16 smart_message-transport-lanet
 
 Seventh visit (last 2026-11-13 05:42). `develop` already existed (3b0abb9); not created. Run directory was fresh.

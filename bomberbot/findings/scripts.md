@@ -22,6 +22,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | dependencies | 2026-11-12 | Ruby 4.0/4.1 readiness pass at develop 86201ce: bundled/default-gem moves across 3.4.6, 4.0.9, 4.1.0-preview1; load probe of every bundled or removed library; `ruby -wc` on 4.0.9 and 3.4.6; sandboxed `-W:deprecated` runs (no args, `-h`) on 4.0.9; Bundler/`bundler/inline` scripts; template Gemfiles. No root Gemfile, so bundle outdated/audit n/a. New F-70..F-76; F-45 and F-66 extended. Dead-code scan last covered commit: 86201ce (develop unchanged). |
 | quality | 2026-11-12 | Logic-defect pass at develop 86201ce over ~95 scripts no earlier finding names (top-level `.rb`, extensionless Ruby, shell, `lib/`, `templates/`); archives excluded. Every candidate reproduced under `sandbox-exec` (scratch copies, stub brew/Octokit, in-process Rack, throwaway git repos). New F-80..F-97 (improver F-98, F-99; S-9 held locally). **F-80 (`move_fork_offline.rb`) is data loss.** Dead-code scan last covered commit: 86201ce (develop unchanged). |
 | dead code | 2026-11-13 | Quick scan 86201ce..a35981f (#50-#67 plus the #35-#37 merges, 38 files): nothing orphaned, no new auditor findings. F-10/F-17/F-18/F-23/F-52/F-79/F-99 still present and referenced only by their README rows. erb2haml is now the last non-archive systemu user (F-68). Dead-code scan last covered commit: a35981f. |
+| security | 2026-11-13 | Full diff bc51825..a35981f (#24-#26, #35-#37, #50-#67; no new files) plus whole-tree sweep (archives excluded) for shell `eval`, single-quote-interpolated `system`, rm -rf, Kernel#open pipes, TLS-off, fixed /tmp paths, curl\|sh, PATH shadowing of system binaries, debug dumps of credential-bearing options. All runs under `sandbox-exec` with stubs. bundle-audit n/a (no lockfile). S-3..S-10 re-verified present. New S-11..S-14 (held locally), F-116..F-118, F-14 extended. Dead-code scan last covered commit: a35981f (develop unchanged). |
 
 Dead-code scan last covered commit: 86201ce (develop, 2026-11-12; quick scan bc51825..86201ce, nothing removable)
 
@@ -274,3 +275,23 @@ Dead-code quick scan 86201ce..a35981f (Dewayne's #50-#67 plus the #35-#37 merges
 - F-114 (new, builder, defect): `fix_perms.rb` `restore_git_perm` restores a mode only when `git diff` for the file is exactly 3 lines (mode-only change); a tracked executable that also has content edits stays 0644. Fix: read the mode from `git ls-files -s`. Status: open (after #71 merges).
 - F-115 (new, builder, low): `resize_images.rb` help title says "Show the image metadata", the empty-input error says "No text files", and the metadata labels have typos ("tyoe:", "colorspace#"). Status: open (low; after #70 merges).
 
+
+### 2026-11-13, second run
+
+Security audit at develop a35981f (diff bc51825..a35981f plus a whole-tree sweep for sink classes earlier passes missed; every run sandboxed). S-3..S-10 still present. Review queue full (#69-#71 open, unreviewed), so no PRs this visit; filed F-111 (#77), F-117 (#76), F-119 (#75). Dead-code scan last covered commit: a35981f (develop unchanged).
+
+- S-11: security finding, details held locally. Status: open (verified in sandbox).
+- S-12: security finding, details held locally. Status: open (verified in sandbox).
+- S-13: security finding, details held locally. Status: open (low; verified with a stub).
+- S-14: security finding, details held locally. Status: needs Dewayne's decision (low).
+- F-111: confirmed by triage with a stub jira-sync (`--user [jane] [doe]`); `update_jira.sh:38` `--baseurl $JIRA_HOST` is unquoted too. Status: issue [#77](https://github.com/MadBomber/scripts/issues/77).
+- F-116 (new, auditor, defect): `my_docx_style_fixer.rb:88-90` `at_exit` prints `rm -fr '<temp_dir>'` instead of running it, so every run leaves `./temp_NNNN/` with the unzipped document in the cwd. Sibling `docx_style_fixer.rb:127` does clean up. Fix: `FileUtils.rm_rf(temp_dir)`. Status: open (one-line PR candidate).
+- F-117 (new, auditor, defect): `github_batch_delete_repos.rb:31` turns a blank or comment-only line into repo `""`; `Octokit::InvalidRepository` is not an `Octokit::Error`, so the batch stops partway. Fix: `.reject(&:empty?)`. Status: issue [#76](https://github.com/MadBomber/scripts/issues/76).
+- F-118 (new, auditor, low): repo `md2html` shadows Homebrew's md4c `/opt/homebrew/bin/md2html` (only other collision is `printenv`, #69). Status: needs Dewayne's decision (intended, or rename).
+- F-14 (extended): `schema_diff.rb:79-80` `mv #{BACKUP_DIR}/*` and `rm -fr #{BACKUP_DIR}` unquoted; a project path with a space would delete the wrong paths. Fix: `FileUtils.rm_rf`/`FileUtils.mv`. Status: open (verified by reading; small PR candidate).
+- F-119 (new, improver, defect, reproduced): `termall.rb:72-79` never skips its own PID, so `termall ruby` TERMs itself (exit 143) and leaves the targets running. Fix: `next if elements[1].to_i == Process.pid`. Status: issue [#75](https://github.com/MadBomber/scripts/issues/75).
+- F-120 (new, improver, defect): `print_tree.rb` ignores args and STDIN and prints 98 hardcoded paths from a former employer's app; its own TODO (L4-8) asks for ARGF/STDIN input. Fix: read paths from ARGF, drop the literal. Status: open (small PR candidate).
+- F-121 (new, improver, docs): README rows that describe the wrong thing: `classpath` (:48), `my_qa` (:195), `sync_upstream.rb` (:265, a gitup shim), `working_directory_from.rb` (:284, stub), `reverse_gem_depends.rb` (:237, `abort "Not ready"`). Status: open (small docs PR; the stubs overlap F-122).
+- F-122 (new, improver, dead code): stubs kept "for backup" (30e5e9b): `working_directory_from.rb`, `reverse_gem_depends.rb`, `sync_upstream.rb`, `go2work`; nothing references them but their README rows. Status: needs Dewayne's decision (keep with honest rows, move to retirement_home, or delete).
+- F-123 (new, improver, low): `revert_all.rb:75-84` has two unguarded `debug_me` blocks, so `--dryrun` prints five DEBUG lines. Fix: `if debug?`. Status: open (ride-along).
+- F-124 (new, improver, low): `killall_ruby` writes `~/tmp/temp.s` via gawk and sources it; fails when `~/tmp` is missing. `pkill -9 -x ruby` does the same. Status: open (low).
