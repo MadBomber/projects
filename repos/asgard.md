@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-13._ Dewayne merged #11/#12/#16 and fixed #13/#14/#15 himself (on `develop`, not yet `main`), plus added `truncate_log` (Refs #17). CI on develop green. This visit: first quality audit (clean gates), two new PRs (#20 docs, #21 F-24), issues #18 and #19 filed, BomberBot noted the develop fixes on #13/#14/#15.
+_Updated 2026-11-13 (second visit)._ develop unchanged at 4f3add1, CI green; #20/#21 still await review. This visit: adoption audit (F-31..F-36), three new PRs (#22 load hint, #23 fixes #18, #24 docs accuracy), issues #25 and #26 filed.
 
 ## Backlog
 
@@ -18,9 +18,15 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - F-24: the dependency-arity error should name the declaring task, like #14's fix. **PR open** ([#21](https://github.com/MadBomber/asgard/pull/21))
 - `truncate_log` (4f3add1) missing from README, CHANGELOG and `docs/files.md`. **PR open** ([#20](https://github.com/MadBomber/asgard/pull/20))
+- Issue #18 items 1-2 (truncate_log no-log-yet message, watcher help). **PR open** ([#23](https://github.com/MadBomber/asgard/pull/23)); item 3 and `project/NAME` wait on Dewayne (inbox).
+- F-32: reserved helper name reported at task_dsl.rb, not the .loki line. Issue [#25](https://github.com/MadBomber/asgard/issues/25); small lib fix, good next-visit PR.
+- F-36: schedule_root/watch_root duplicate project_root. Issue [#26](https://github.com/MadBomber/asgard/issues/26); do after #23 merges (same files).
 
 ## Open bomberbot PRs
 
+- [#22](https://github.com/MadBomber/asgard/pull/22) feat(load): hint when a DSL word is outside class Tasks (**PR open**, 2026-11-13; F-35)
+- [#23](https://github.com/MadBomber/asgard/pull/23) fix(logs): truncate_log NAME skips an entry with no log yet (**PR open**, 2026-11-13; Fixes #18)
+- [#24](https://github.com/MadBomber/asgard/pull/24) docs: fix reserved helper name, doctor exit, robots example (**PR open**, 2026-11-13; F-31/F-33/F-34)
 - [#20](https://github.com/MadBomber/asgard/pull/20) docs: list truncate_log in README, CHANGELOG and files.md (**PR open**, 2026-11-13)
 - [#21](https://github.com/MadBomber/asgard/pull/21) fix(deps): name declaring tasks in dependency arity errors (**PR open**, 2026-11-13; F-24, Refs #14)
 

@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 04:09 asgard
+
+- `develop` existed (4f3add1, unchanged since the 01:18 visit); not created. CI on develop green. src/ was first cloned on `main`; switched to detached origin/develop within minutes and the readers re-read (no effect on results).
+- **Tender:** #20 and #21 green, MERGEABLE, 0 behind develop, no reviews; nothing merged or changed. 2 open before new work.
+- **Responder:** commented on [#17](https://github.com/MadBomber/asgard/issues/17#issuecomment-6850008376) (truncate_log is on develop at 4f3add1, lines-based not days-based; links #20 and #18). #13/#14/#15/#18/#19 needed nothing new.
+- **Audit:** adoption (second run). F-31..F-34 from the auditor; F-35, F-36 from the improver.
+- **New PRs (3, all independent, base `develop`, all await Dewayne; none merged as low risk):**
+  - [#22](https://github.com/MadBomber/asgard/pull/22) feat(load): hint when a DSL word is outside class Tasks. Source: **judgment/adoption** (improver, F-35). Proof: new tests red on develop, green on branch; suite 643/0F; RuboCop clean; dev's suite (43 runs) green against the branch; CI 4/4. Review: 2 rounds, round 1 caught a nameless-NameError crash, fixed; clean. Not low risk (lib).
+  - [#23](https://github.com/MadBomber/asgard/pull/23) fix(logs): truncate_log NAME skips an entry with no log yet. Source: **issue #18** (Fixes #18, items 1-2). Proof: 2 new tests red on develop, green on branch; unknown name, slash name and bad `--lines` still exit 1; suite 642/0F; RuboCop clean; CI 4/4. Review: 2 rounds, round 1 caught `--lines` validation skipped on the new early return, fixed; clean. Not low risk (lib).
+  - [#24](https://github.com/MadBomber/asgard/pull/24) docs: fix reserved helper name, doctor exit, robots example. Source: **adoption audit** (F-31, F-33, F-34). +24/-8 docs only. Proof: corrected `helper(:project_root)` example loads and runs, `helper(:root)` fails; `--doctor` exit 0/1 verified on clean/problem projects; `mkdocs build --strict` clean; suite 640/0F; CI 4/4. Review: 1 round clean. **Not merged as low risk:** touches `docs/**`, and Pages deploys on `docs/**` pushes to develop (same reason as #20).
+- **Issues filed:** [#25](https://github.com/MadBomber/asgard/issues/25) reserved helper name reported at task_dsl.rb (F-32); [#26](https://github.com/MadBomber/asgard/issues/26) schedule_root/watch_root duplicate project_root (F-36).
+- Open bomberbot PRs now 5 (#20-#24); next visit will likely be "review queue full" unless Dewayne merges.
+
 ## 2026-11-13 04:20 simple_flow
 
 Eighth visit (last 2026-11-13 03:40). `develop` existed (77f7527); not created, and it didn't move this visit. All five phase-1 agents ran. To fit the 45-minute window the main session started the three builders as soon as it had chosen them from the Backlog's open issues, before the auditor and improver returned; nothing they found outranked an issue fix.
