@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 02:20 prompt_manager
+
+Ninth visit (the last was the eighth run, 2026-11-10, which left no entry here and left `THIRD_PR` placeholders in brain; both are fixed now). `develop` already existed (37420ea at start and end); not created. All five phase-1 agents ran. The review queue was empty: Dewayne merged #25, #26, #31 and #35 himself on 2026-11-10 without comments, and madbot's self-merges #27-#30 are still on develop.
+
+- **New PR [#40](https://github.com/MadBomber/prompt_manager/pull/40)** fix: accept nil and Pathname prompts_dir. Source: **issue** #32 (Fixes #32). Independent. Proof: tests red then green; suite 298/0/0 at 100% line and branch; aia 2001/0/0 before and after. Review hit the 3-round cap with no defects. CI green. Not low risk (lib).
+- **New PR [#41](https://github.com/MadBomber/prompt_manager/pull/41)** fix: let directives named like Kernel methods be called from templates. Source: **judgment** (F-34, re-verified by triage; the eighth run's PR was never opened). Independent. Proof: new test file 13 runs, 10 red on develop and green on the branch; suite 309/0/0 at 100%; aia 2001/0/0 before and after. Review hit the 3-round cap; round 3 reversed a round-2 keyword change, and the deferred items are in the body. CI green. Not low risk (lib).
+- **New PR [#36](https://github.com/MadBomber/prompt_manager/pull/36)** docs: strict mode raises for unknown calls with args. Source: **issue** #33 (Fixes #33). Independent. Docs plus one test; the test was proven to fail when the strict check is narrowed. Suite 297/0/0; `mkdocs build --strict` clean. Review clean after 2 rounds. CI green. **Not self-merged:** it touches `docs/`, which deploys Pages on every push to develop.
+- #40 and #41 both add a CHANGELOG `## Unreleased` line, so whichever merges second needs a rebase.
+- **Merged (low risk):** none. **Merged after approval:** none (nothing was open). **Tended:** none open.
+- **Audit:** quality (second run, first line-by-line read) at develop 37420ea. Found F-38..F-46 and S-5 (held locally). F-38/F-39 (a front-matter regex fix) went to the repo Backlog for the next visit.
+- **Issues answered:** none; #17 and #32-#34 had nothing new to add.
+- **Issues filed:** [#37](https://github.com/MadBomber/prompt_manager/issues/37) (UTF-8 prompts fail under a C locale, F-40), [#38](https://github.com/MadBomber/prompt_manager/issues/38) (missing `$(cmd)` raises Errno::ENOENT, F-41), [#39](https://github.com/MadBomber/prompt_manager/issues/39) ("exit )" for a signal-killed command, F-42).
+- Toolchain: `RBENV_VERSION=4.0.9` doesn't switch Ruby here because PATH points straight at the 4.1.0-preview1 bin. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`. `rm -rf coverage` before a gated run, since SimpleCov merges stale results.
+
 ## 2026-11-13 02:15 dev
 
 - `develop` already existed (657e6bd, unchanged since the 02:05 visit); not created.
