@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:55 robot_lab
+
+Twelfth visit (last 2026-11-13 05:15). `develop` existed (afd9131, unchanged); not created. Run directory was fresh.
+
+- **skipped: review queue full.** Three `bomberbot` PRs still open after tending, all unreviewed: [#70](https://github.com/MadBomber/robot_lab/pull/70), [#74](https://github.com/MadBomber/robot_lab/pull/74), [#75](https://github.com/MadBomber/robot_lab/pull/75).
+- **Merged:** none (nothing approved). **Merged (low risk):** none.
+- **Tended:** tender rebased all three onto develop afd9131 (one commit behind), suites green on Ruby 4.0.9 (1308 / 1312 / 1308), force-pushed (#70 4c13c3b, #74 bae3f96, #75 9c40f26). No review comments. RuboCop not run (repo config inherits a missing `../.rubocop-base.yml`).
+- **Audit:** dependencies v4 delta. No new dependency findings; F-26 corrected (the dev bundle masks the Ruby 4.1 tsort failure; simple_flow develop has the fix, unreleased). F-59/#43 re-verified.
+- **Improver:** F-94..F-100 (bus_poller, network, tool, user_message, script_tool).
+- **Issues answered:** none (no new comments on any issue). **Issues filed:** [#78](https://github.com/MadBomber/robot_lab/issues/78) BusPoller strands queued messages (F-94), [#79](https://github.com/MadBomber/robot_lab/issues/79) ractor scheduler not shut down on failure (F-95), [#80](https://github.com/MadBomber/robot_lab/issues/80) duplicate `Network#task` silently dropped (F-96).
+- Brain fix: backlog's "first pick" notes on F-43/#37 and F-73/#49 were stale (Dewayne's #61/#54 cover them).
+
 ## 2026-11-13 08:54 gem-skill
 
 Seventh visit (last 2026-11-13 06:00). `develop` existed (e55bd4d, unchanged); not created. Run directory was fresh.
