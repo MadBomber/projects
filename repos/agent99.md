@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-13 07:10 (thirteenth visit)._ Nothing merged or approved since the tenth visit (develop still 28a6347); #55–#57 open and clean, so the review queue is full and no PR was opened. Security audit found S-19..S-21 (held locally); filed #67–#69.
+_Updated 2026-11-13 07:40 (fourteenth visit)._ Still nothing merged or approved (develop 28a6347); #55–#57 open, so no PR was opened. Full dead-code pass found F-113..F-118; filed #70–#72.
 
 
 ## Backlog
@@ -43,6 +43,10 @@ else in this repo.
 - [#67](https://github.com/MadBomber/agent99/issues/67) F-109: docs Ruby samples that don't parse (registry irb walkthrough) and `on_exit` → `at_exit` (docs-only, ~15 lines in 4 files; low-risk candidate, no open PR touches them).
 - [#68](https://github.com/MadBomber/agent99/issues/68) F-110: misspellings in docs/examples incl. `RegristryClient`, `@agnet_*` (docs-only; low-risk candidate; can ride with #67).
 - [#69](https://github.com/MadBomber/agent99/issues/69) F-111: `info` without `name` exits though docs say it is derived; default to class name + test (lib, after #42, with #61).
+- [#70](https://github.com/MadBomber/agent99/issues/70) F-117: `examples/maxwell_request.rb` raises NameError on its own (examples, 1 line; no open PR touches it).
+- [#71](https://github.com/MadBomber/agent99/issues/71) F-114: most AMQP client unit tests exercise the mock (tests-only, one file; no open PR touches it).
+- [#72](https://github.com/MadBomber/agent99/issues/72) F-116: `NatsMessageClient` publish/dispatch/delete_queue untested (tests-only, one file).
+- F-115 (dead `simple_json_schema_builder` requires) and F-118 (stale FIXME, `.envrc` header): ride along with the next lib PR touching those files. F-113 (unused public accessors, `Timestamp#utc`): **needs Dewayne's decision**.
 - S-20: security finding, details held locally; small neutral-titled lib PR once the queue clears. S-19, S-21: **needs Dewayne's decision**.
 - F-53 (+ F-51/F-40 riding along): registry client hides HTTP error statuses behind a JSON parse error; dead `@id`, `payload` alias, unused `response` (the only `ruby -w` warning in lib), wrong header comment. Same file as #56: stack on it or wait. Keep `register` returning uuid/nil (#42 relies on it).
 - F-61: CHANGELOG `[Unreleased]` has three near-duplicate #6 lines. Blocked: they are context lines in every one of #38–#53's CHANGELOG hunks; do it after they land.
