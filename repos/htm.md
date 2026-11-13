@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-13 06:20._ Dewayne merged #30–#32 and opened his own PRs #47–#62 for every open bomberbot issue, so madbot closed its duplicates (#63–#65) and opened #66–#68 on findings nobody else is working on. Third dependencies audit: F-90–F-93.
+_Updated 2026-11-13 08:35._ Review queue full (#66–#68 unapproved), so no new PRs; dead-code audit found the `deleted` scopes never match (F-100), filed with two more as issues #69–#71.
 
 ## Backlog
 
@@ -20,6 +20,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-90: `rake test` runs 0 tests on Ruby 4.1 (Rakefile preloads test_helper). [#68](https://github.com/MadBomber/htm/pull/68) **PR open**
 - F-97: `TagService::TAG_FORMAT` accepts multi-line tags. [#66](https://github.com/MadBomber/htm/pull/66) **PR open**
 - F-99: `PropositionService` ignores circuit-breaker config. [#67](https://github.com/MadBomber/htm/pull/67) **PR open**
+- F-100: `deleted` scopes on Node/NodeTag/RobotNode/Tag never match, so `htm:db:purge_all` is a no-op. Issue [#69](https://github.com/MadBomber/htm/issues/69). Four one-line scope fixes plus SQL tests; build on or after #58 (same files).
+- F-120: `remember` restoring a soft-deleted node leaves a stale query cache. Issue [#70](https://github.com/MadBomber/htm/issues/70). One line plus a caching test (proven in scratch).
+- F-121: remove hidden `lib/tasks/db.rake` duplicates. Issue [#71](https://github.com/MadBomber/htm/issues/71). A removal.
 - F-37: move to minitest 6 (`~> 6.0` plus `minitest-mock`); verified green at b7eb5ef. Gemfile change; re-run at develop first.
 - F-96: `HTM#restore` doesn't clear the query cache. One line plus a DB test; wait for Dewayne's #49 (same method).
 - F-98: Railtie loads only 2 of 4 rake files; empty `htm.middleware` initializer. Needs railties in a scratch bundle for proof.

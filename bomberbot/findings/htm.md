@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-12 | second run (develop b7eb5ef): bundle-audit on the dev lock (ruby_llm 1.16.0, S-1 unchanged) and on a gemspec-only resolve (clean); re-read of shell-outs, send/const_get, YAML, ENV, file reads, raw SQL, MCP inputs against a throwaway PG 18; F-53–F-60, S-4–S-6 held locally |
-| dead code | 2026-11-12 | second run: debride over lib and bin plus the cf7ec39..b7eb5ef diff; F-44–F-49; last covered commit b7eb5ef |
+| dead code | 2026-11-13 | third run: debride 1.15.2 over lib, bin and lib/tasks plus the b7eb5ef..afbc2b7 diff (#30–#32 left nothing dead); F-100–F-101; last covered commit afbc2b7 |
 | dependencies | 2026-11-13 | third run (develop afbc2b7): bundle outdated, bundle-audit (DB 4d71b12) on the dev lock (S-1 unchanged) and a gemspec-only resolve (clean), releases since 11-11 (none for key deps), suite 656 green on 4.0.9 and 4.1-preview1 (4.1 only with F-90), minitest 6 and simple_flow 0.1.0 floor runs 647 green at b7eb5ef; F-90–F-93 (S-9); F-37 verified |
 | adoption | 2026-11-12 | second run (develop b7eb5ef): `mkdocs build --strict` (F-30 only; the deploy doesn't use --strict), llms.txt/README/SETUP links against the built site, documented API probed against signatures, docs `remember`/`recall` keyword scan, examples 00/01/03/04/05/11×2 run green on a throwaway PG 18 with no LLM (02 fails, F-80), `rake examples:status` and `rake htm:doc:yard` in a scratch copy, env-var names against defaults.yml, CHANGELOG against tags; gem-skill not run (paid model); F-74–F-84 |
 | quality | 2026-11-12 | second run (develop b7eb5ef): flog (nothing >50; top `RelevanceScorer#calculate_relevance` 49.1), flay -m 16, reek 6.6.0, rubocop over lib (F-6 only); F-66–F-70; F-66/F-67 reproduced on a throwaway PG 18 |
 
-Dead-code scan last covered commit: b7eb5ef (2026-11-12 second run)
+Dead-code scan last covered commit: afbc2b7 (2026-11-13 third run)
 
 ## Findings
 
@@ -185,3 +185,17 @@ Suite 656 green on Ruby 4.0.9 (`rake test`) and on 4.1.0-preview1 (only with F-9
 - **F-98: the Railtie loads only `htm.rake` and `jobs.rake`** (`railtie.rb:45-48`), not `tags.rake`/`files.rake` as `htm/tasks.rb` does, so Rails apps lack `htm:files:*`/`htm:tags:*` though the docs say rake tasks are auto-loaded; `initializer "htm.middleware"` is an empty block. About +2/−5 lines; proof needs railties in a scratch bundle. Status: open.
 - **F-99: `PropositionService` hardcodes circuit-breaker threshold 5 / timeout 60**, ignoring `config.circuit_breaker_*` that Embedding and Tag services read. Status: PR [#67](https://github.com/MadBomber/htm/pull/67) open.
 - Also from the improver: `QueryCache#normalize_arg`'s `when Time, DateTime` has a dead `DateTime` (fold into F-86). Inbox items: the `WorkingMemoryChannel` listener's `abort_on_exception`, connection leak on `retry` and a connection per `notify`; top-level migration constants; the circuit-breaker setup copied in three services; Rails apps loading tasks twice; two migration-status implementations. Needs Dewayne: nothing sends `:evicted`; `forget_content` isn't robot-scoped.
+
+### 2026-11-13 08:30 (dead-code audit, third run, develop afbc2b7)
+
+The b7eb5ef..afbc2b7 diff (#30–#32) left nothing dead: `NodeTag.link` replaced every `NodeTag.find_or_create` caller, and `Config::BOOLEAN_STRINGS` covers the only nested boolean. Debride's other candidates are public API, Sequel hooks or rake entry points, or already F-9/F-43–F-47/F-64/F-65/F-70/F-86. robot_lab-durable and teen_play call none of the scopes below.
+
+- **F-100: the `deleted` scopes on `Node`, `NodeTag`, `RobotNode` and `Tag` never match a row.** Each adds `exclude(deleted_at: nil)` on top of the `deleted_at IS NULL` default scope instead of starting from `unfiltered` (`Sequel.mock` SQL: `WHERE (("nodes"."deleted_at" IS NULL) AND ("deleted_at" IS NOT NULL))`). So `rake htm:db:purge_all` purges nothing, `htm:db:stats`/`htm_mcp stats`/`StatsTool` report 0 deleted, `Node.deleted_before` is empty, and the Rails example's trash page is empty. Present since the Sequel migration (d0ae3ea). Fix: `unfiltered.exclude(deleted_at: nil)` plus SQL tests; once fixed `purge_all` really purges, so Dewayne merges it knowingly. #58 edits `tag.rb`/`robot_node.rb`, so build on or after it. Status: issue [#69](https://github.com/MadBomber/htm/issues/69).
+- **F-101: public dataset scopes with no caller, test or doc:** `NodeTag.for_node`/`.for_tag`, `Tag.root_level`, `RobotNode.frequently_remembered`, `Node.in_timeframe`, `Node.deleted_before` (broken per F-100), `FileSource.recently_synced`, `FileSource.stale` (also semantically wrong: `mtime < last_synced_at` holds for nearly every synced file). Status: needs Dewayne's decision (same keep-and-test / deprecate / remove question as F-43/F-46/F-47/F-64).
+
+### 2026-11-13 08:30 (improver, develop afbc2b7)
+
+- **F-120: `LongTermMemory#add` restores a soft-deleted node without invalidating the query cache** (`node_operations.rb:41-44`; the new-node path does invalidate), so `recall` returns a stale result after `remember` brings a forgotten node back. Distinct from F-96 (`HTM#restore`). Failing-then-passing test verified in scratch (one-line fix). Status: issue [#70](https://github.com/MadBomber/htm/issues/70).
+- **F-121: `lib/tasks/db.rake` defines hidden top-level `db:migrate`/`db:setup`** duplicating `htm:db:*`; not in `tasks.rb`, the Railtie or the Rakefile, loaded only by `htm_mcp`'s `*.rake` glob; would add to Rails' own `db:*` if ever loaded in a Rails app. Also `docs/api/database.md:548` says `rake db:setup`. A removal. Status: issue [#71](https://github.com/MadBomber/htm/issues/71).
+- **F-122: endless/beginless time ranges rejected** (`timeframe: 1.hour.ago..` raises in `Timeframe#validate_range!`; `SqlBuilder.timeframe_condition` would call `nil.iso8601`). Additive API change, ~15 lines. Status: needs Dewayne's decision (inbox).
+

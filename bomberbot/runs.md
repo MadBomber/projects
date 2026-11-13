@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:35 htm
+
+`develop` already existed (afbc2b7); not created. Run directory was fresh.
+
+- **New PRs:** skipped: review queue full (#66, #67, #68 open, unapproved, MERGEABLE; no CI runs on PRs).
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** #66–#68 checked; up to date with develop, no comments, nothing to do.
+- **Issues answered:** none (nothing new on any issue since 06:25).
+- **Audit:** dead code, third run (afbc2b7): F-100 (`deleted` scopes never match), F-101 (needs decision). Improver: F-120–F-122.
+- **Issues filed:** [#69](https://github.com/MadBomber/htm/issues/69) deleted scopes (F-100), [#70](https://github.com/MadBomber/htm/issues/70) stale cache after auto-restore (F-120), [#71](https://github.com/MadBomber/htm/issues/71) hidden db.rake tasks (F-121).
+- Triage: develop CI is docs-deploy only; leftover merged branches madbot/mcp-help-env-vars, madbot/proposition-enabled-env, madbot/relink-deleted-tag could be deleted. The `src/` clone checks out `main`; agents read `origin/develop` via git show/archive.
+
 ## 2026-11-13 08:25 agent99
 
 Fifteenth visit (last 2026-11-13 07:40). `develop` already existed (28a6347); not created. Run directory was fresh.
