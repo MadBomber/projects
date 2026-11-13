@@ -17,8 +17,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## ragdoll
 
-- [ ] Before merging [ragdoll#30](https://github.com/MadBomber/ragdoll/pull/30): confirm the `MIT-LICENSE` copyright line, `Copyright (c) 2025 Dewayne VanHoozer` (gemspec author; 2025 is the repo's first commit; wording matches aia and prompt_manager). (added 2026-11-12)
-- [ ] Issues #11, #13, #17, #21, #22 and #23 are fixed on `develop` (#15, #14, #19, #25, #26, #24) but stay open until `develop` is merged to `main`, or close them by hand. `develop` holds about eight user-facing fixes that no release has (last tag v0.1.12). (added 2026-11-10, updated 2026-11-12)
+- [ ] Nothing pending for ragdoll; open questions are in inbox.md (2026-11-13).
 
 ## debug_me
 

@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 01:27 ragdoll
+
+- `develop` already existed (85b2ed0); not created.
+- **Since last visit:** Dewayne merged #30, #31 and #32 (no comments), closed issues #11, #13, #17, #21, #23, #27, #28 and #29 by hand, and opened his own PRs #42–#52 for every open issue. Bomberbot had 0 open PRs, so the queue rule didn't apply; new work went only on files his PRs don't touch. Deleted the merged `madbot/fix-llm-extraction`, `madbot/fix-search-cleanup` and `madbot/add-license` branches. No tender spawned: there were no bomberbot PRs to tend.
+- **New PRs** (independent, base develop, all CI green on 3.2/3.3/3.4/4.0, none low risk):
+  - [#56](https://github.com/MadBomber/ragdoll/pull/56) fix: store extracted keywords as an array in ExtractKeywordsJob (source: brain, F-68). Fails-before on pgvector (`malformed array literal` / garbled keywords); CI-mode 1321 green; review cap reached, no defects in the change.
+  - [#57](https://github.com/MadBomber/ragdoll/pull/57) refactor: drop unreachable duplicate lookup in add_document (source: dead code, F-72). Characterization tests pass before and after; DB suite has only the pre-existing F-99 failure; review clean in 2 rounds.
+  - [#58](https://github.com/MadBomber/ragdoll/pull/58) fix: point Database.migration_paths at the gem's db/migrate (source: brain, F-71). Fails-before/passes-after; `migrate!` verified end to end on a throwaway DB; review cap reached with test-hygiene findings only.
+- **Merged (low risk):** none. **Merged after approval:** none (none approved).
+- **Audit:** adoption (F-78–F-86), plus improver (F-90–F-95) and builder notes (F-96–F-102).
+- **Issues answered:** #12 (which PRs make which test files public). **Issues filed:** [#53](https://github.com/MadBomber/ragdoll/issues/53) (F-90), [#54](https://github.com/MadBomber/ragdoll/issues/54) (F-91/F-92), [#55](https://github.com/MadBomber/ragdoll/issues/55) (F-78/F-80).
+
 ## 2026-11-13 01:15 robot_lab
 
 - `develop` already existed (cfae25c); not created.
