@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 03:40 simple_flow
+
+Seventh visit (last 2026-11-12 07:45). `develop` existed (dc6725c); not created.
+
+- **New PRs:** [#41](https://github.com/MadBomber/simple_flow/pull/41) fix(pipeline): accept non-Result input in parallel steps (source: quality audit F-72, a regression from our #24); [#40](https://github.com/MadBomber/simple_flow/pull/40) fix(parallel): reject a max_concurrent that would hang (source: audit + improver, F-74/F-80); [#39](https://github.com/MadBomber/simple_flow/pull/39) test: silence warnings and stray output in rake test (source: brain F-70). All independent, CI green, review clean in one round; #40 + #41 trial-merge clean.
+- **Merged (low risk):** #39 → develop 77f7527 (test-only + CHANGELOG `### Tests`, 39 lines). **Merged after approval:** none needed; Dewayne had already rebase-merged #24-#26 himself.
+- **Tended:** no open bot PRs. Tender deleted 11 merged bot branches (`bomber/*`, `bomberbot/*`, `madbot/*`) after checking each tip matched its merged head.
+- **Audit:** quality (second run, at dc6725c) → F-72..F-77; improver F-80..F-88. Confirmed Dewayne's own fixes for #14, #27-#35 (310f2be..dc6725c).
+- **Issues answered:** none (no open issues; all closed by Dewayne at 02:35Z).
+- **Issues filed:** [#36](https://github.com/MadBomber/simple_flow/issues/36) (F-63), [#37](https://github.com/MadBomber/simple_flow/issues/37) (F-73), [#38](https://github.com/MadBomber/simple_flow/issues/38) (F-16 + F-41). The main session reran the #36 and #37 repros before filing.
+- Note: the main session made one throwaway trial-merge commit on a detached HEAD in `src/` (never pushed) to check that #40 and #41 merge together; next time do that in `scratch/`.
+
 ## 2026-11-13 02:55 aia
 
 - `develop` already existed (0d611ef); not created, and it didn't move this visit.

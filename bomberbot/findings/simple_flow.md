@@ -12,7 +12,7 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | dead code | 2026-11-12 | Full scan (lib, examples, benchmarks, bin, test; dependents fact_db, htm, robot_lab, robot_lab-cyborg, robot_lab-ractor) at develop 5132c88, Ruby 4.0.9, debride 1.15.2 + RuboCop unused cops + SimpleCov (497/502). Every debride lib candidate is public API or a TSort callback. New: F-42..F-44 (one verified removal, issue #32), F-45/F-46 need a decision; stale remote branches noted. Earlier: 2026-11-09 lib-only brief pass at e8196cc. |
 | dependencies | 2026-11-12 | First run, at develop 5132c88, Ruby 4.0.9 (4.1.0-preview1 without Bundler: 203/203 pass). Runtime deps logger/tsort correct, guarded by gemspec_test. CI lacks 4.0 (F-33, issue #27). Full dev refresh green (F-34, F-36, issue #28). aigcm unused (F-35). Dependabot off (F-37). Actions majors behind (F-38). io-event pin can't restore 3.2 (F-17 update). S-3 held locally. Earlier note: | See F-19 (logger/tsort runtime deps) from the 2026-11-10 adoption audit. Triage noted: Dependabot alerts disabled; dev-group minor bumps available (async 2.46, rubocop 1.92); minitest 6 and simplecov 1.x are majors. |
 | adoption | 2026-11-10 | First run, at develop f58e221, Ruby 4.0.9. 13/13 examples exit 0; README snippets run with stubs; `mkdocs build --strict` passes (INFO: dagwood-concepts.md not in nav; Material for MkDocs EOL May 2027); CHANGELOG complete for v0.1.0-v0.4.0; no llms.txt. Found F-19..F-27; F-19 (gem won't load on Ruby 4.0 under Bundler) also covers the Ruby 4 part of a dependencies audit. |
-| quality | 2026-11-09 | First run, at develop e8196cc, Ruby 4.0.9. Suite 193 runs, 0 failures, 2 skips. Found F-1..F-7, mostly `call_parallel` silently skipping steps. |
+| quality | 2026-11-13 | Second run, at develop dc6725c, Ruby 4.0.9. Suite 225 runs, 0 failures, 0 skips, 2 `-w` warnings (F-70); RuboCop lib 160 offenses (4 W); flog 792.9 (avg 11.5); flay 0. Reviewed Dewayne's fix commits 310f2be..dc6725c. Found F-72 (raw-input regression from 00d88fe/#24) through F-77; F-60/61/62/68/69 confirmed fixed. Earlier: 2026-11-09 first run at e8196cc, 193 runs, F-1..F-7. |
 
 Dead-code scan last covered commit: 5132c88 (develop, 2026-11-12)
 
@@ -107,3 +107,26 @@ Dead-code scan last covered commit: 5132c88 (develop, 2026-11-12)
 - S-4: security finding, details held locally. Status: needs Dewayne's decision.
 - S-5: security finding, details held locally. Status: open.
 - S-6: security finding, details held locally. Status: needs Dewayne's decision.
+
+### 2026-11-13 (seventh visit; quality audit, develop dc6725c; improver F-80..F-88)
+
+Status changes at dc6725c (Dewayne fixed #14 and #27..#35 directly on develop, 310f2be..dc6725c; #18-#20 closed after #24-#26 merged): F-9, F-10, F-29, F-33, F-34, F-36, F-39, F-42..F-44, F-60, F-61, F-62, F-66, F-68, F-69 fixed. F-4 now raises `ArgumentError` (no longer silent; run-time expansion still Dewayne's call). F-11 require half and F-30 `delegate` half fixed (10a09c2); the F-11 metadata half and F-27 remain. F-5, F-6, F-17, F-18, F-31, F-32, F-38, F-64, F-67, F-70 re-verified open. #14's closing note: the "masked comparison" idea is out of scope.
+
+- F-72 (auditor): parallel steps raise `NoMethodError: undefined method 'errors'` when the pipeline input isn't a `Result`; `merge_parallel_errors` (`pipeline.rb:398`) reads `input.errors` unguarded. Regression from 00d88fe (our #24); at 5132c88 it returned normally. Status: PR'd [#41](https://github.com/MadBomber/simple_flow/pull/41).
+- F-73 (auditor): on the threads backend `call_parallel` raises at the first failing thread while siblings still run; async waits for all since 37899e8. Verified by the main session. Status: issue [#37](https://github.com/MadBomber/simple_flow/issues/37).
+- F-74 (auditor) = F-80 (improver): `max_concurrent: 0` or negative hangs forever on the async backend (`Async::Semaphore.new(0)`, `parallel_executor.rb:47`); robot_lab passes user config straight through. Status: PR'd [#40](https://github.com/MadBomber/simple_flow/pull/40) (checked in `ParallelExecutor`, so only when a parallel group runs; moving it to `call_parallel` entry is a follow-up).
+- F-75 (auditor): visualizers raise raw `TSort::Cyclic` on a cycle while `call_parallel` raises a clear `ArgumentError`; unknown deps render silently. Overlaps F-87. Status: open (small behaviour change).
+- F-76 (auditor): `DependencyGraph#dependencies` uses `Hash.new([])`, a shared mutable default (`dependency_graph.rb:32`). Fix `Hash.new { [] }`. Status: open (tiny).
+- F-77 (auditor): the dependency-graph parallel branch duplicates `execute_parallel_group` (`pipeline.rb:356-385` vs `:309-327`). Status: open (refactor, after F-72).
+- F-70: merged (low risk) [#39](https://github.com/MadBomber/simple_flow/pull/39), develop 77f7527.
+- F-63 re-verified (Graphviz rejects `fetch-user [..]`). Status: issue [#36](https://github.com/MadBomber/simple_flow/issues/36).
+- F-16 re-verified (10 lines in 7 files) with F-41 typo. Status: issue [#38](https://github.com/MadBomber/simple_flow/issues/38).
+- F-81 (improver): `call_parallel(strategy:)` silently treats any unknown value (e.g. `:explict`) as `:explicit` (`pipeline.rb:205`). Fix: raise like `validate_concurrency!`. Status: open.
+- F-82 (improver): "Step must respond to #call" never names the step or the value received (`pipeline.rb:100,118,530,537`). Status: open.
+- F-83 (improver): CHANGELOG [Unreleased] omits the Tests CI workflow itself (8f94d29), the docs-site thread-fallback wording (2be8921, 624fc84) and the testing/contributing refresh (21ef8ab, c9be9bd). Status: open (CHANGELOG-only).
+- F-84 (improver, refreshes F-24): README badges and counts say 193 tests / 98.99% (actual 225 / 99.6%); `README.md:524` calls `async` required for parallelism, contradicting `:41-43`. Status: open.
+- F-85 (improver): `ruby -w` warns about unused variables in `examples/05_parallel_explicit.rb:272,277` and `examples/10_concurrency_control.rb:180,192`. Status: open.
+- F-86 (improver): `call_parallel`'s doc comment has no `@param max_concurrent`; the `Pipeline` class doc example calls `pipeline.call(initial_data)` with raw data. Status: open.
+- F-87 (improver): one cycle/unknown-dep error everywhere (run `validate_dependencies!` from `dependency_graph`). Status: inbox, with F-75.
+- F-88 (improver): `call`/`call_parallel` with non-`Result` input crash deep in a step; docs show raw-data calls in 26+ places. Wrapping raw input changes behaviour. Status: needs Dewayne's decision (inbox).
+

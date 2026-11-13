@@ -11,40 +11,35 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-12 07:45 (sixth visit): review queue still full (#24-#26 open, green, unreviewed), so no new PRs; security audit; filed #33 (`to_html` needs `json`), #34 (`parallel` drops `activated_steps`), #35 (async-unavailable tests always skip)._parallel`), #32 (unused requires and arguments)._ Suite green on Ruby 4.0.9 (203 runs). develop has unreleased user-visible fixes (Ruby 4 load, `call_parallel` skips, Logging `logger:`). Docs deploy on `docs/**` pushes to develop as well as main, so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-13 03:40 (seventh visit): Dewayne merged #24-#26 and fixed #14, #27-#35 himself on develop; this visit opened #39-#41 (#39 merged as low risk), ran the quality audit and filed #36-#38._ Suite green on Ruby 4.0.9 (225 runs, 0 skips; clean of `-w` warnings after #39). develop still has unreleased user-visible fixes. Docs deploy on `docs/**` pushes to develop as well as main, so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
 Well-defined items a single small PR could close.
 
-- [#14](https://github.com/MadBomber/simple_flow/issues/14) regenerate stale example regression baselines (F-10).
-- F-16: API docs show an absolute local path as each class's **Location**.
-- F-17: raise the Ruby floor to 3.3 (EOL 3.2; CI already can't install on 3.2).
-- F-11: `documentation_uri` to the docs site; gemspec template leftovers.
-- F-18: fix `StepTracker`'s doc-comment example.
-- [#18](https://github.com/MadBomber/simple_flow/issues/18) parallel steps repeat errors already on the incoming result (F-29). [#24](https://github.com/MadBomber/simple_flow/pull/24) **PR open**
-- [#19](https://github.com/MadBomber/simple_flow/issues/19) docs site says the async fallback is sequential and documents a nonexistent `execute_sequential` (F-20, F-21). [#26](https://github.com/MadBomber/simple_flow/pull/26) **PR open**
-- [#20](https://github.com/MadBomber/simple_flow/issues/20) stale installation and testing docs pages (F-22). installation.md already fixed on develop; testing.md in [#25](https://github.com/MadBomber/simple_flow/pull/25) **PR open**
-- [#27](https://github.com/MadBomber/simple_flow/issues/27) add Ruby 4.0 to the Tests CI matrix (F-33).
-- [#28](https://github.com/MadBomber/simple_flow/issues/28) dev-dependency refresh with simplecov `skip` (F-34, F-36).
-- [#29](https://github.com/MadBomber/simple_flow/issues/29) `benchmarks/parallel_vs_sequential.rb` crashes on Ruby 4.0 (F-39).
-- [#32](https://github.com/MadBomber/simple_flow/issues/32) removal: unused `require 'delegate'`, redundant `require_relative 'dependency_graph'`, unused argument/variables (F-30/F-11 halves, F-42..F-44, verified green).
-- [#30](https://github.com/MadBomber/simple_flow/issues/30) parallel step exceptions lost under the async backend; one-word `Sync` fix verified (F-60/F-61). Top pick next visit.
-- [#31](https://github.com/MadBomber/simple_flow/issues/31) `call_parallel` silently skips `depends_on` cycles (F-62).
-- [#33](https://github.com/MadBomber/simple_flow/issues/33) `to_html` raises `NoMethodError` unless `json` is loaded (F-66); land with the held S-5 fix.
-- [#34](https://github.com/MadBomber/simple_flow/issues/34) `parallel` blocks drop `activated_steps` (F-68); after #24.
-- [#35](https://github.com/MadBomber/simple_flow/issues/35) async-unavailable tests always skip (F-69); test-only.
-- F-70: silence `-w` warnings and Instrumentation output in the test run (test-only).
-- F-25: add `docs/llms.txt`. F-24: README nits (hard-coded test counts, old inspect format).
+- F-72: parallel steps crash on non-`Result` input (regression from #24). [#41](https://github.com/MadBomber/simple_flow/pull/41) **PR open**
+- F-74/F-80: `max_concurrent: 0` hangs forever on async. [#40](https://github.com/MadBomber/simple_flow/pull/40) **PR open**
+- [#36](https://github.com/MadBomber/simple_flow/issues/36) `visualize_dot` writes step names unquoted (F-63).
+- [#37](https://github.com/MadBomber/simple_flow/issues/37) threads backend raises while sibling steps still run (F-73).
+- [#38](https://github.com/MadBomber/simple_flow/issues/38) docs show absolute local paths as file locations, plus the `:concurrency:` typo (F-16, F-41).
+- F-18: fix `StepTracker`'s doc-comment example (`with_continue`/`.continue` don't exist).
+- F-11/F-27: `documentation_uri` to the docs site; gemspec template leftovers (`bindir`/`executables`); `homepage_uri == source_code_uri` build warning.
+- F-17: raise the Ruby floor to 3.3 (EOL 3.2; CI can't install on 3.2).
+- F-81: unknown `call_parallel(strategy:)` silently becomes `:explicit`. F-82: step-validation error doesn't name the step.
+- F-83: CHANGELOG [Unreleased] misses the Tests CI workflow and two docs refreshes. F-84 (F-24): README badges/counts stale, `README.md:524` contradicts the thread fallback.
+- F-85: `-w` unused-variable warnings in examples 05 and 10. F-86: `call_parallel` doc comment lacks `@param max_concurrent`.
+- F-76: `Hash.new([])` shared default in `DependencyGraph`. F-32: `.rubocop.yml` `require:` → `plugins:`.
+- F-25: add `docs/llms.txt`.
 
 ## Open bomberbot PRs
 
-- [#24](https://github.com/MadBomber/simple_flow/pull/24) fix: report inherited errors once after parallel steps (Fixes #18), **PR open**
-- [#25](https://github.com/MadBomber/simple_flow/pull/25) docs: drop stale test counts and describe CI accurately (Fixes #20), **PR open**
-- [#26](https://github.com/MadBomber/simple_flow/pull/26) docs: describe the Ruby thread fallback, not a sequential one (Fixes #19), **PR open**
+- [#40](https://github.com/MadBomber/simple_flow/pull/40) fix(parallel): reject a max_concurrent that would hang, **PR open** (lib; CI green)
+- [#41](https://github.com/MadBomber/simple_flow/pull/41) fix(pipeline): accept non-Result input in parallel steps, **PR open** (lib; CI green; fixes our #24 regression)
 
 ## Merged bomberbot PRs
 
+- [#39](https://github.com/MadBomber/simple_flow/pull/39) test: silence warnings and stray output in rake test (F-70), **merged (low risk)** by madbot 2026-11-13, develop 77f7527
+- [#24](https://github.com/MadBomber/simple_flow/pull/24), [#25](https://github.com/MadBomber/simple_flow/pull/25), [#26](https://github.com/MadBomber/simple_flow/pull/26) (Fixes #18, #20, #19), rebase-merged by Dewayne 2026-11-12 (develop 00d88fe, 21ef8ab/c9be9bd, 2be8921/624fc84)
 - [#22](https://github.com/MadBomber/simple_flow/pull/22) fix: declare `logger` and `tsort` as runtime deps (merged 2026-11-11, develop 5132c88, after @copilot resolved a CHANGELOG conflict)
 - [#21](https://github.com/MadBomber/simple_flow/pull/21) fix(pipeline): stop `call_parallel` silently skipping steps (merged 2026-11-10, develop 6e8c269, d94d818)
 - [#17](https://github.com/MadBomber/simple_flow/pull/17) test: run the VERSION check under rake test (merged 2026-11-10, develop daa8ae7)

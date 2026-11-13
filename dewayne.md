@@ -98,8 +98,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## simple_flow
 
-- [ ] Review [simple_flow#24](https://github.com/MadBomber/simple_flow/pull/24) (Fixes #18; lib change, so not merged as low risk). Intended behaviour change: a parallel branch that returns a fresh `Result` without errors no longer drops the incoming errors. (added 2026-11-12)
-- [ ] Review [simple_flow#25](https://github.com/MadBomber/simple_flow/pull/25) and [simple_flow#26](https://github.com/MadBomber/simple_flow/pull/26) (docs only, Fixes #20 and #19). Not self-merged because `deploy-github-pages.yml` publishes the docs site on `docs/**` pushes to `develop`. (added 2026-11-12)
+- [ ] Review [simple_flow#40](https://github.com/MadBomber/simple_flow/pull/40) and [simple_flow#41](https://github.com/MadBomber/simple_flow/pull/41) (lib fixes, so not self-merged; they merge together cleanly). #40 makes a Float `max_concurrent` such as `1.5` raise too. #41 fixes a regression our #24 introduced. (added 2026-11-13)
 
 ## smart_message-transport-lanet
 
