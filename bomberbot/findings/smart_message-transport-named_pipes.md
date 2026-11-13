@@ -10,7 +10,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 |-------|----------|--------|--------|
 | security (+dead-code) | 2026-11-12 | 6725e5c | bundle-audit clean; S-7 new (local); S-5 resolved by #4; S-1–S-4, S-6 still hold; F-34 (failing receive drops buffered messages) → #23, F-35 (CI token perms) → #25; dead-code: none new (F-1 resolved #8; F-2/F-3 hold); +F-36 → #24, F-37 → merged #26 |
 | quality | 2026-11-12 | 52f8e45 | RuboCop 137→124 (82 autocorrectable); 44 runs/0F/9 skips, -w clean; flog 306.9 (start_pipe_reader 92.9); F-39 shared FIFO deleted under other subscribers → #29, F-40 competing-consumer vs pub/sub (Dewayne), F-41 duplicate test + setup, F-42 no RuboCop baseline, F-43 reader untestable in isolation, F-44 CI lacks Ruby 4.0 → #30; +F-45 (improver) ENV read at require → #28 |
-| dependencies | 2026-11-10 | 2a49fcc | F-14…F-21 (+F-22/F-23 from triage/improver); stub checked against real smart_message 0.0.17 — framework path works, README transport API doesn't; minitest 6.1.0 blocked by `~> 5.16`; Ruby floor 3.2 is EOL. F-15→#13, F-22→#14, F-16→#15 |
+| dependencies | 2026-11-13 | c143600 | vs smart_message 0.1.0 (GitHub develop 2aa3dbf; not on RubyGems, untagged): framework path works, suite 48/49 vs real gem; 0.1.0 needs Ruby ≥ 4.0 → F-47 settles F-19; F-46 (#6 now = publish upstream), F-48 bare base require NameError → #41, F-49 stub reopens real Base, F-50 stub-coupled test, F-51 not in Transport registry, F-52 do_publish vs raise-on-failure contract, F-53 connected? before connect, F-54 gemspec version + superclass trap → PR #39; F-18 resolved, F-15 fixed (#20), F-14/F-16/F-20/F-24 hold; bundle-audit clean; only minitest outdated; dead-code delta 6725e5c..c143600: none new; S-8 (local) |
 | adoption | 2026-11-12 | b2042fc | F-24…F-32 (README/examples never ran against any smart_message — `attribute` DSL; Related Projects names nonexistent gems; gem unpublished/untagged; silent EPIPE message loss); +F-33 (improver) connect-after-disconnect; no mkdocs; no llms.txt; gem-skill blocked by #6 |
 
 ## 2026-11-10 — madbot — security + dead-code (first visit) — develop @ 8d0d2af
@@ -255,3 +255,42 @@ made no duplicate readers in 30 trials. Dead-code scan not re-run (develop uncha
 Re-confirmed at 52f8e45: F-2, F-3, F-10, F-12, F-13, F-21/F-38 hold; F-8 unchanged. Also
 (improver) gemspec `spec.bindir = "exe"`/`spec.executables` are dead (no `exe/`) — fold into an F-12
 packaging PR.
+
+## 2026-11-13 (visit 7) — madbot — dependencies audit (+dead-code delta) — develop @ c143600
+
+Checked against smart_message 0.1.0 from GitHub `develop` @ 2aa3dbf (stub `base.rb` off the load path, Ruby 4.0.9, minitest 6.1.0). Through the framework (`Msg.subscribe` + `msg.publish`) the transport works end to end on 0.1.0. bundle-audit clean. `bundle outdated`: only minitest (5.27.0 → 6.1.0, capped). Dead-code scan reached c143600: nothing new (new private `subscribers?` is used by `unsubscribe`).
+
+- **F-46:** smart_message 0.1.0 exists only on GitHub (no tag, RubyGems max 0.0.17). Against it a fresh resolve succeeds, so **F-18 is resolved on 0.1.0** and the `>= 0.1.0` floor is right; #6 now needs only the upstream release. status: **needs Dewayne's decision** (release order); noted on #6.
+- **F-47:** smart_message 0.1.0 requires Ruby `>= 4.0`; this gem declares `>= 3.2.0` (gemspec:13), README:37, `.rubocop.yml` TargetRubyVersion 3.2, CI 3.2–3.4. Settles F-19 at `>= 4.0`. status: **needs Dewayne's decision**; PR-ready once confirmed (gemspec, README, .rubocop.yml).
+- **F-48:** `named_pipes.rb:3` requires only `smart_message/transport/base`; under 0.1.0 (Zeitwerk) `NamedPipes.new` raises `NameError: uninitialized constant SmartMessage::Dispatcher` unless the caller required `smart_message` first; bin/console:5 too. status: **issue #41**.
+- **F-49:** the test stub reopens the real Base when both are on the load path (stub `initialize`/`publish`/`receive`/`subscribe` win, -W "method redefined"). Fix: drop the stub and test against 0.1.0, or move it under `test/support/` with a guard. status: open; verified (base.rb in flight in #34).
+- **F-50:** with the stub removed and `-rsmart_message`, the suite passes against real 0.1.0 except `test_subscribers_predicate_treats_missing_or_empty_as_none` (named_pipes_test.rb:248, builds stub-only `Base::Dispatcher`). Fold into F-49. status: open; verified.
+- **F-51:** `SmartMessage::Transport.create(:named_pipes)` → `ArgumentError: Unknown transport` on 0.1.0; manual `register` works. status: **needs Dewayne's decision** (new public entry point).
+- **F-52:** 0.1.0's contract says `do_publish` must raise on failure; it returns quietly with no subscriber pipe (named_pipes.rb:112-115) and swallows EPIPE/ENXIO (:302-310), so `PublishResult#success?` is true and nothing is DLQ'd. status: **needs Dewayne's decision** (is no-subscriber a success?).
+- **F-53:** 0.1.0's `Base#initialize` calls `configure`, so `connected?` is true before `connect`; YARD at named_pipes.rb:86 incomplete. status: open; verified (named_pipes.rb in flight).
+- **F-54:** gemspec:5 hard-codes `spec.version = "0.0.1"` (F-4 residual); `require_relative` of version.rb raises `superclass mismatch` (version.rb reopens `class NamedPipes` without superclass). status: **PR open #39** (reads VERSION as text).
+- **S-8:** security finding, details held locally. status: open (local-only).
+- Re-verified: F-14 holds on 0.1.0 (`publish` arity error; `subscribe(method)` NameError in `resolve_handler`); F-15 fixed by #20; F-16 holds until #34 (#21 never reached develop); F-20 holds (minitest 6.1 passes the stub suite); F-24 holds on 0.1.0.
+
+### Improver (visit 7)
+
+- **F-60:** gemspec packages `.envrc`, `.github/`, `Rakefile`; `bindir`/`executables` dead (no `exe/`); missing `bug_tracker_uri`/`documentation_uri`/`rubygems_mfa_required` (Dewayne's lanet#21 pattern). status: packaging + dead lines **PR open #39** (with F-12); metadata left for after lanet#21 lands (inbox).
+- **F-61:** README "How It Works" never says publish with no subscriber drops the message (debug log only). status: **merged (low risk) #43** at 4a27bc3.
+- **F-62:** `create_subscriber_pipe` ignores `system("mkfifo", …)`'s return; a permission failure surfaces as `ENOENT ... apply2files`, while README Troubleshooting promises `Errno::EACCES`. status: open; verified; overlaps a local security item, so fix with `File.mkfifo` alongside it, not filed publicly yet.
+- **F-63:** #21 was merged into stale base `madbot/unsubscribe-key`, never develop; #34 redoes it. status: process note (taste).
+
+### Triage (visit 7)
+
+- **F-70:** `test_write_to_nonexistent_pipe` wrote to real `/tmp/nonexistent_pipe_12345.pipe` with zero assertions. status: **merged (low risk) #44** at b162732 (path moved under @test_dir; still assertion-free until #40).
+- **F-71:** two tests skipped as "requires full framework" pass without it. status: **merged (low risk) #44**.
+- **F-72:** errors/integration teardown disconnected nothing (`@transport` never set). status: **merged (low risk) #44**.
+- **F-73:** `write_to_pipe` opens with `'w'`, so a FIFO removed after the `File.exist?` check becomes a regular file and `create_subscriber_pipe` then skips mkfifo. status: **issue #40**.
+- **F-74:** gemspec RuboCop offenses (`changelog_uri` indent, dev-dependency order). status: open; trivial, rides a future gemspec PR.
+- **F-41** (re-verified, integration copy 2.15 s): status: **issue #42**.
+
+### Responder (visit 7)
+
+- **F-80:** #12 still reproduces on c143600 (SIGTERM → ThreadError, exit 1); the issue's "pipes leak" is wrong for a normal exit (at_exit cleans up). Commented on #12.
+- **F-81:** Dewayne's #37 is red only on Ruby 3.2 (`Expected 1.0005… to be < 1.0`); likely the `rescue SystemCallError` `sleep(1)` after `Thread#wakeup` interrupts the blocking open. Unconfirmed (no Linux runner). Inbox review note.
+- **F-82:** pairwise merges of #31–#38: CHANGELOG conflicts among #33/#35/#36/#37/#38 (all add at top of Fixed); test-file conflicts #35+#37, #36+#38; `named_pipes.rb` conflict #37+#38. #31/#32/#34 clean. Inbox review note.
+- **F-83:** #29 still reproduces with #35's and #38's heads; no open PR touches it.

@@ -13,7 +13,9 @@ files: the transport, a committed test stub `transport/base.rb`, and a `version.
 
 ## Status
 
-_Updated 2026-11-12 08:22 (visit 6): **skipped new work — review queue full** (#20/#21/#22/#27 open, unreviewed, all rebased and green). Quality audit re-run (F-39…F-44, +F-45); filed [#28](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/28) (ENV read at require), [#29](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/29) (shared FIFO deleted under other subscribers), [#30](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/30) (CI lacks Ruby 4.0)._
+_Updated 2026-11-13 01:10 (visit 7): Dewayne merged all four waiting PRs (#20/#21/#22/#27; #21 landed only in its stale stacked base, his #34 redoes it) and opened his own #31–#38 for eight issues; madbot **merged (low risk)** [#43](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/43) (README no-subscriber publish, 4a27bc3) and [#44](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/44) (test hygiene, b162732), opened [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39) (gemspec packaging + version), ran the dependencies audit against smart_message 0.1.0 (F-46…F-54), and filed #40/#41/#42._
+
+**Visit 6 (2026-11-12 08:22):** **skipped new work — review queue full** (#20/#21/#22/#27 open, unreviewed, all rebased and green). Quality audit re-run (F-39…F-44, +F-45); filed [#28](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/28) (ENV read at require), [#29](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/29) (shared FIFO deleted under other subscribers), [#30](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/30) (CI lacks Ruby 4.0)._
 
 **Visit 5 (2026-11-12 06:55):** queue was 2 (#20/#21, rebased, unreviewed), so new work ran. Opened [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22) (README Related Projects, Fixes #19; held — review left an out-of-scope note) and [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27) (reconnect, Fixes #17); **merged (low risk)** [#26](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/26) (test assertions) at `52f8e45`. Security audit re-run (S-7 local, F-34…F-38); filed [#23](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/23), [#24](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/24), [#25](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/25)._
 
@@ -63,16 +65,16 @@ Well-defined items a single small PR could close.
 - **F-2:** remove vestigial `publisher_pipes` **public** `attr_reader` — public API →
   needs Dewayne's decision (inbox). (The private method is gone via #8.)
 - **F-3:** `mode` / `buffer_size` options are documented but inert → implement or remove (inbox).
-- **F-15 / [#13](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/13):** `unsubscribe` uses the Class, not `to_s`, as the dispatcher key → tears down a still-used pipe. One-line fix + test; ready PR when the queue clears. **PR open [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20).**
+- **F-15 / [#13](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/13):** `unsubscribe` uses the Class, not `to_s`, as the dispatcher key → tears down a still-used pipe. One-line fix + test; ready PR when the queue clears. **Merged [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20).**
 - **F-22 / [#14](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/14):** unsubscribe/disconnect stall ~2s per idle channel; wake the blocked reader with a nonblocking write-open + per-channel stop flag.
-- **F-16 / [#15](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/15):** add `unsubscribe!` override that removes the pipe and stops the reader. **PR open [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21)** (stacked on #20).
+- **F-16 / [#15](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/15):** add `unsubscribe!` override that removes the pipe and stops the reader. [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) merged only into its stale base; **Dewayne's #34 redoes it** (not yet on develop).
 - **F-11 / [#11](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/11):** responder verified the hoist is behaviour-neutral (~56 lines across both examples, `ruby -wc` clean).
 - **F-14 / F-18 / F-19:** README transport API vs real Base; smart_message's own unpinned deps; Ruby floor — Dewayne's decisions (inbox).
 - **F-10:** newline framing corrupts multi-line payloads → wire-format decision (inbox).
-- **F-12:** gem also ships `.github/`, `.envrc`, `Rakefile` (one-line gemspec reject list) — ready PR.
+- **F-12:** gem also ships `.github/`, `.envrc`, `Rakefile` (one-line gemspec reject list) — **PR open [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39)** (with the F-4 residual: gemspec reads VERSION from version.rb as text).
 - **F-32:** CHANGELOG `[Unreleased]` lacks merged #10 — one-line low-risk docs PR.
-- **F-33 / [#17](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/17):** connect after disconnect leaves the transport dead — small lib fix + test. **PR open [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27).**
-- **F-25 / [#19](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/19):** README Related Projects lists nonexistent gems — README-only, low-risk. **PR open [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22).**
+- **F-33 / [#17](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/17):** connect after disconnect leaves the transport dead — small lib fix + test. **Merged [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27).**
+- **F-25 / [#19](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/19):** README Related Projects lists nonexistent gems — README-only, low-risk. **Merged [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22).**
 - **F-27 / [#18](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/18):** silent message loss under bursty publish (pairs with #14's reader rework).
 - **F-34 / [#23](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/23):** a raising `receive` drops the messages buffered with it and stalls ~1s — per-message rescue + test (same loop as #14/#18).
 - **F-36 / [#24](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/24):** `disconnect` with `cleanup: false` leaves reader threads running — stop readers before the cleanup guard.
@@ -82,22 +84,26 @@ Well-defined items a single small PR could close.
 - **F-45 / [#28](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/28):** env vars read at require time — `default_options` merges ENV at call time + real test. Small lib PR when the queue clears.
 - **F-39 / [#29](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/29):** one subscriber's disconnect deletes the shared FIFO; ownership depends on F-40 (Dewayne: pub/sub fan-out vs work queue).
 - **F-44 / [#30](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/30):** add Ruby 4.0 to the CI matrix — one line; pair with #25 (same file, push over SSH).
-- **F-41:** duplicate write-timeout test + copied setup — test-only PR after #20/#21/#27 land.
+- **F-41 / [#42](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/42):** duplicate write-timeout test (integration copy, ~2s) + copied setup — test-only removal; not low risk (deletes a test).
 - **F-43:** extract `deliver_lines` from `start_pipe_reader` as part of the #23 fix.
-- Next-PR ranking when the queue clears (triage/improver agree): #24 (cleanup:false readers, ~5 lines), #28, #23 (+F-43), #25+#30, F-12 packaging (gemspec, never low risk).
+- **F-73 / [#40](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/40):** publish after FIFO removal creates a regular file that blocks re-subscribe — after #18/#29 settle.
+- **F-48 / [#41](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/41):** bare `transport/base` require → NameError under smart_message 0.1.0; pairs with F-49/F-50 (test against real gem) after #6.
+- **F-47:** Ruby floor to 4.0 (smart_message 0.1.0 requires it) — gemspec/README/.rubocop.yml PR once Dewayne confirms.
+- In flight (Dewayne, #31–#38): `named_pipes.rb`, `base.rb`, `named_pipes_test.rb`, CHANGELOG, `ci.yml` — no bot work there until they land.
+- Next-PR ranking after #31–#38 land: #42 (F-41), #41 + F-49/F-50, F-53 `connected?`, F-62 (with the local item), #40.
 
 ## Open bomberbot PRs
 
-- [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) `madbot/unsubscribe-key` — `unsubscribe` looks up subscribers by `String(message_class)` (as smart_message 0.0.17's Dispatcher keys them); test stub now registers handlers the same way. Base `develop`, CI green 3.2–3.4, review clean round 1, suite 47/0F/9S (rebased onto 52f8e45 at 36fe37d, visit 6). Fixes #13. lib → not low risk, awaiting Dewayne. Source: brain/issue (F-15).
-
-- [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) `madbot/unsubscribe-bang` — **Stacks on #20** (base `madbot/unsubscribe-key`). New `unsubscribe!` override + shared private `release_channel`; stub gains `unsubscribe!`/`drop_all` keyed like 0.0.17. CI green 3.2–3.4, review clean round 1, suite 48/0F/9S. Fixes #15. Retarget to `develop` once #20 merges (repo has delete-branch-on-merge off, so GitHub won't auto-retarget). Source: brain/issue (F-16).
-
-- [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22) `madbot/readme-related-projects` — README Related Projects lists the real sibling transport repos (lanet/email/rabbitmq/nats, marked unpublished) and the built-ins smart_message 0.0.17 registers (`:stdout`/`:memory`/`:redis`). Base `develop`, README-only +6/−5, CI green, review round 1 clean apart from an out-of-scope note on #6 → **not self-merged** (sqa#46 rule). Fixes #19. Source: brain/issue (F-25).
-
-- [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27) `madbot/reconnect-after-disconnect` — `connect` clears `@shutdown` and re-runs `configure`; `subscribe` restarts a dead reader. Base `develop` (52f8e45), lib +8/−5, 2 tests, 1 CHANGELOG line (first under Fixed); CI green; review round 1 found the cleanup:false dead-reader case (fixed test-first), round 2 clean; test-merges clean with #21. Fixes #17. lib → awaiting Dewayne. Source: brain/issue (F-33).
+- [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39) `madbot/gem-files-reject-dev-files` — gemspec stops packaging `.envrc`/`.github/`/`Rakefile`, drops dead `bindir`/`executables`, reads VERSION from version.rb as text (require_relative would raise superclass mismatch). Base `develop`, +5/−4, two standalone commits, CI green 3.2–3.4, review clean round 1, suite 49/0F/9S. gemspec → not low risk. Source: brain (F-12, F-4 residual/F-54).
 
 ## Merged bomberbot PRs
 
+- [#44](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/44) `madbot/test-hygiene` — errors/integration tests stay in their temp dirs, teardown disconnects, two needless skips removed (F-70/71/72). **Merged into develop as low risk by madbot** (test-only, +36/−30, no tests deleted, clean review) at `b162732`, 2026-11-13.
+- [#43](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/43) `madbot/readme-no-subscriber` — README says publish with no subscriber drops the message; pipe with no reader times out (F-61). **Merged into develop as low risk by madbot** (README +2, clean review) at `4a27bc3`, 2026-11-13.
+- [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27) `madbot/reconnect-after-disconnect` — merged by Dewayne (rebase) 2026-11-12 (bebe33b, f49d642). Fixes #17.
+- [#22](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/22) `madbot/readme-related-projects` — merged by Dewayne (merge commit c143600) 2026-11-13, with a comment that `-redis` may already ship in smart_message. Fixes #19.
+- [#21](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/21) `madbot/unsubscribe-bang` — merged by Dewayne **into its stale base `madbot/unsubscribe-key`**, never develop; his #34 carries the change. Branch deleted visit 7.
+- [#20](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/20) `madbot/unsubscribe-key` — merged by Dewayne (rebase) 2026-11-12 (706a382, 1ba06b4). Fixes #13.
 - [#26](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/26) `madbot/test-cleanup-assertions` — replace placeholder `assert true` with real cleanup assertions, drop three unused vars (F-37). **Merged into develop as low risk by madbot** (test-only, +2/−5, clean review) at `52f8e45`, 2026-11-12.
 - [#16](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/16) `madbot/examples-hoist-defs` — hoist nested handler `def`s in both examples (Fixes #11). **Merged into develop as low risk by madbot** (examples-only, +32/−31, clean review) at `6725e5c`, 2026-11-12.
 - [#9](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/9) `madbot/ci-tests-workflow` — merged by Dewayne (squash) 2026-11-10/11.

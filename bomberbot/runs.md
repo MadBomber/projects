@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 01:10 smart_message-transport-named_pipes
+
+- `develop` already existed (c143600); not created.
+- **Since last visit:** Dewayne merged #20 and #27 (rebase), #22 (merge commit c143600, with a comment on `-redis`), and #21 into its stale stacked base `madbot/unsubscribe-key`, so `unsubscribe!` never reached develop; his own #34 redoes it. He also opened [#31–#38](https://github.com/MadBomber/smart_message-transport-named_pipes/pulls) (`fix/issue-*`) for #25/#30/#28/#15/#24/#23/#14/#18; their files (`named_pipes.rb`, `base.rb`, `named_pipes_test.rb`, CHANGELOG, `ci.yml`) were treated as in flight. The tender deleted the four leftover `madbot/` branches.
+- **New PRs** (independent, base develop, CI green 3.2–3.4, review clean round 1 each, no CHANGELOG lines because CHANGELOG is in flight):
+  - [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39) build: tidy gemspec packaging and version source (source: brain, F-12 + F-4 residual/F-54). Gemspec → awaiting Dewayne.
+  - [#43](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/43) docs: say what publish does with no subscriber (source: adoption/judgment, F-61). **Merged (low risk)** at 4a27bc3.
+  - [#44](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/44) test: disconnect, un-skip, and sandbox pipe tests (source: judgment, F-70/71/72). **Merged (low risk)** at b162732.
+- **Merged after approval:** none (no approvals; he merges without them). **Tended:** none open.
+- **Audit:** dependencies @ c143600 against smart_message 0.1.0 (GitHub develop) → F-46…F-54, S-8 (local); dead-code delta 6725e5c..c143600: none new. Improver F-60…F-63, triage F-70…F-74, responder F-80…F-83.
+- **Issues answered:** [#6](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/6#issuecomment-6846529120) (0.1.0 status, Ruby 4 floor), [#12](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/12#issuecomment-6846529437) (still reproduces; "pipes leak" corrected).
+- **Issues filed:** [#40](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/40) regular file at FIFO path (F-73), [#41](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/41) NameError under 0.1.0 (F-48), [#42](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/42) duplicate timeout test (F-41).
+- **Brain hygiene:** reworded the named_pipes security line in `dewayne.md`, which described a local weakness in public brain.
+
 ## 2026-11-13 01:10 agent99
 
 - `develop` already existed (28a6347); not created.
