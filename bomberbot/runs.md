@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 04:20 simple_flow
+
+Eighth visit (last 2026-11-13 03:40). `develop` existed (77f7527); not created, and it didn't move this visit. All five phase-1 agents ran. To fit the 45-minute window the main session started the three builders as soon as it had chosen them from the Backlog's open issues, before the auditor and improver returned; nothing they found outranked an issue fix.
+
+- **New PRs:** [#44](https://github.com/MadBomber/simple_flow/pull/44) fix(visualizer): quote non-identifier step names in DOT output (source: brain + issue, Fixes #36; independent). [#43](https://github.com/MadBomber/simple_flow/pull/43) fix(parallel): threads backend waits for every step before raising (source: brain + issue, Fixes #37; **stacks on #40**, both edit `parallel_executor.rb`). [#42](https://github.com/MadBomber/simple_flow/pull/42) docs: link source files by repo-relative path (source: brain + issue, Fixes #38; independent). Each is one commit, fail-before/pass-after, CI green on 3.3/3.4/4.0, review clean in round 1; CHANGELOG lines placed at different spots and `git merge-tree` clean against #40, #41 and each other.
+- **Merged (low risk):** none (#43/#44 are lib; #42 is `docs/**`, which deploys from develop). **Merged after approval:** none.
+- **Tended:** #40 and #41 rebased onto develop 77f7527 (one test-only commit behind), suites green, force-pushed; they still merge together cleanly. No reviews or comments.
+- **Audit:** adoption (second run) at 77f7527 → F-89..F-91; F-20..F-22 confirmed fixed. Improver → F-95..F-99.
+- **Issues answered:** none (#36-#38 are ours, no outside comments; responder re-reproduced all three and noted #37's snippet is racy at 0.05 s).
+- **Issues filed:** [#45](https://github.com/MadBomber/simple_flow/issues/45) optional steps run under `call` (F-95), [#46](https://github.com/MadBomber/simple_flow/issues/46) `execution_plan` shows optional steps as always running (F-98), [#47](https://github.com/MadBomber/simple_flow/issues/47) no API page for the visualizer/StepTracker (F-90). The main session reran the #45 and #46 repros before filing.
+- Note: builders reported `/simplify` and `/code-review` unavailable and ran the code-review agent instead. The auditor ran `examples/regression_test.rb` in `src/` (it rewrites tracked baselines) and restored them.
+
 ## 2026-11-13 03:45 sqa
 
 `develop` existed (93c16a1); not created this visit. No bomberbot PRs were open: Dewayne rebase-merged #53, #54, #58 on 2026-11-12 and, at 03:25-03:34Z today, opened his own #68-#79 (one per issue #55-#67), so this visit skipped everything those cover.

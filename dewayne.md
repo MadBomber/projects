@@ -100,6 +100,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## simple_flow
 
 - [ ] Review [simple_flow#40](https://github.com/MadBomber/simple_flow/pull/40) and [simple_flow#41](https://github.com/MadBomber/simple_flow/pull/41) (lib fixes, so not self-merged; they merge together cleanly). #40 makes a Float `max_concurrent` such as `1.5` raise too. #41 fixes a regression our #24 introduced. (added 2026-11-13)
+- [ ] Review [simple_flow#44](https://github.com/MadBomber/simple_flow/pull/44) (Fixes #36, lib) and [simple_flow#42](https://github.com/MadBomber/simple_flow/pull/42) (Fixes #38, docs, deploys from develop). Merge #40 before [simple_flow#43](https://github.com/MadBomber/simple_flow/pull/43) (Fixes #37, stacked on #40); the next visit's tender retargets #43 to develop once #40 lands. (added 2026-11-13)
 
 ## smart_message-transport-lanet
 
