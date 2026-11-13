@@ -1174,3 +1174,8 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Shell helper hygiene.** `newgit_project` (#80), `cr2lf` (F-130), `merge2` and `colon_split` (no shebang) all trust `$1` with no `set -e`. One issue or PR could give the active top-level shell scripts a standard header (`set -euo pipefail`, a usage message on a wrong argument count), instead of a stream of one-line PRs. Ruby scripts that print `ERROR:` and exit 0 (`anagrams.rb`, F-132) belong in the same sweep. Want that as one PR?
 - **`note.rb` vs `note_v2.rb`:** two diverging copies of the same tool (529-line diff), both edited October 2026, both with README rows and both suggesting the same alias. Keep both, retire `note.rb` to `retirement_home/`, or rename v2 over v1?
 - **`rss_tracker.rb` duplicate check is disabled** (F-129b, `return false` since 2018). Is RethinkDB retired, so the script should go to `retirement_home/`, or should the check come back?
+
+## debug_me (2026-11-13 08:45, BomberBot)
+
+- **Should a bad `logger:` warn or raise?** (findings #74) A `logger:` without `#debug` (say `$stderr`) is skipped silently today; [#64](https://github.com/MadBomber/debug_me/pull/64) pins that guard. Options: keep silent, warn once, or raise `ArgumentError` when the option is set. Also decides proxies that answer `debug` via `method_missing`.
+- **Repo hygiene sweep:** `.envrc` (a personal `RR` export), `.rultor.yml` and `rubygems.yml.asc` (findings #10), plus the redundant `bundler` dev dependency (#76). One decision could clear all four.

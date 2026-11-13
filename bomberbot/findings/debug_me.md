@@ -11,10 +11,10 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | security | 2026-11-12 | Second audit, develop 0d7fb14 (develop now contains all of main). bundler-audit clean. Findings 38-39, S-36, S-37. |
 | dead code | 2026-11-12 | Second visit: improver read 0d7fb14..200c10f, nothing removable; two never-failing tests (#45) PR'd. 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
 | dependencies | 2026-11-12 | Full audit, develop 0d7fb14. `bundle outdated`: only minitest 5.27 → 6.1, held by gemspec `~> 5.0` (#8; suite passes on 6.1.0). Finding 40 (actions/checkout@v4 on Node 20, issue #46), 41 (Ruby 3.2 floor EOL, needs decision). |
-| adoption | 2026-11-12 | develop 200c10f. mkdocs `--strict` clean; README examples run correctly; gem-skill sources step verified (metadata+README+CHANGELOG). Fixed: #5, #6, #24. New: #53-#58. Previous run 2026-11-09 (develop 3a4651e). |
+| adoption | 2026-11-13 | develop fb0b2ea. mkdocs `--strict` clean; README/docs fences parse (bar notation); probes match docs; metadata URIs 200; gem-skill sources unchanged (14,805 chars). New: #71-#73. main now 74 behind (#53). Previous 2026-11-12 (200c10f). |
 | quality | 2026-11-13 | Second quality audit, develop 733fe6d. flog 192.8 on `debug_me` (was 171.4), flay 0 in lib (92 in tests), reek 15, rubocop 56 lib / 384 lib+tests; suite green under `ruby -w` (17 test-only unused-local warnings, none from lib). New findings 64-69; #12, #34, #47, #62 fixed. Previous: 2026-11-09, develop e4858c9, findings 31-35. |
 
-Dead-code scan last covered commit: 733fe6d (develop, 2026-11-13; auditor quick pass and improver read 200c10f..733fe6d, nothing removable)
+Dead-code scan last covered commit: fb0b2ea (develop, 2026-11-13 08:45; improver read 733fe6d..fb0b2ea, tests only, nothing removable)
 
 ## Findings
 
@@ -185,6 +185,22 @@ Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing remova
 66. **With `header: false` and nothing to print, `debug_me` still writes a blank line, so `skip1:` adds nothing** (`f.puts ""`). Low. Status: open (output change; ask first).
 67. **With `header: false`, `:backtrace` drops the call-site frame** (`caller(1)[1..]`), so where `debug_me` was called appears nowhere; tests/debug_me_test.rb:130 pins the drop. Status: needs Dewayne's decision.
 68. **Discovery reads deprecated constants and fires their deprecation warning, attributed to lib/debug_me.rb.** Low. Status: open (no clean API; document or ignore).
-69. **A class that does `include DebugMe` dumps `DEBUG_ME_VERSION` on every `debug_me {}`** (inherited constants). Pre-existing. Also argues against moving more constants into `DebugMe` without `private_constant` (#31). Status: issue [#59](https://github.com/MadBomber/debug_me/issues/59).
+69. **A class that does `include DebugMe` dumps `DEBUG_ME_VERSION` on every `debug_me {}`** (inherited constants). Pre-existing. Also argues against moving more constants into `DebugMe` without `private_constant` (#31). Status: issue [#59](https://github.com/MadBomber/debug_me/issues/59); PR'd [#66](https://github.com/MadBomber/debug_me/pull/66) (2026-11-13 08:45).
 70. **Nothing tests `time:` / `strftime:`;** forcing a wrong format or deleting the timestamp left the suite green (improver mutation). Status: PR'd ([#61](https://github.com/MadBomber/debug_me/pull/61), 2026-11-13).
 - Security: no new finding; S-36 re-confirmed at 733fe6d (details held locally).
+
+### 2026-11-13 08:45 adoption audit (develop fb0b2ea; third adoption audit)
+
+- `mkdocs build --strict` clean; every ruby fence parses except signature notation; probes (no-include `DebugMe.debug_me {}`, Pathname label, `skip1:` with `header: false`, `DEBUG_ME_VERSION`) match the docs; metadata URIs return 200; CHANGELOG `[Unreleased]` covers e2ce9d8, e979bdb, 53b7edd.
+- Still open: #7/#59 (no `[1.1.3]` section), #36 (`llms.txt`), #50/#59 (docs/changelog.md behind), #53 (main 74 behind), #58, #63.
+
+71. **The docs never say an undefined name prints the String `"<undefined>"`** (lib/debug_me.rb:122), indistinguishable from a value that is that string. `grep -rni undefined README.md docs/*.md` → nothing. Low. Status: issue [#67](https://github.com/MadBomber/debug_me/issues/67).
+72. **"backtrack" typo in the `levels:` comment** (README.md:253, lib/debug_me.rb:18). Trivial. Status: folded into issue [#67](https://github.com/MadBomber/debug_me/issues/67).
+73. **CHANGELOG `[Unreleased]` doesn't mention the new documentation site** (fd375eb, after v1.1.3). Status: PR'd [#65](https://github.com/MadBomber/debug_me/pull/65).
+
+Builder and improver extras (2026-11-13 08:45):
+
+74. **A `logger:` without `#debug` is silently skipped,** including a proxy that answers `debug` via `method_missing` without `respond_to_missing?`; passing `$stderr` as `logger:` drops output with no warning. The guard itself is now pinned by [#64](https://github.com/MadBomber/debug_me/pull/64). Whether to warn or raise is an API choice. Status: needs Dewayne's decision (inbox).
+75. **An explicit `{ :DEBUG_ME_VERSION }` in a block written at top level prints `<undefined>`** for an object that includes DebugMe (names are evaluated in the block's scope). Low. Status: open.
+76. **The gemspec's `bundler` development dependency is redundant** (default gem since 2.6, floor 3.2) and the dev dependencies are unsorted (extends #27). Gemspec, so never low risk. Status: open.
+- Security: no new finding; S-36 re-confirmed by a builder at fb0b2ea (details held locally).

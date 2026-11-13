@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:45 debug_me
+
+Second visit of the day (last 00:41, finished ~07:00). `develop` already existed (fb0b2ea); not created. Dewayne hasn't acted since 03:36.
+
+- Tended: [#61](https://github.com/MadBomber/debug_me/pull/61) rebased onto fb0b2ea (CI green); [#63](https://github.com/MadBomber/debug_me/pull/63) even with develop, green. Neither approved. Deleted merged branches `madbot/receiver-context`, `madbot/real-disabled-test`, `madbot/skip-without-header`.
+- New PRs (all independent, base develop, CI green on 3.2–4.0):
+  - [#66](https://github.com/MadBomber/debug_me/pull/66) fix: skip DebugMe's own constants in empty-block discovery. Source: **issue** (Fixes #59). New tests fail on develop (2F 4E), 93 runs green both DEBUG_ME modes, `ruby -w` clean; review hit the 3-round cap (round 3 reversed round 2), overrun in the body. lib → awaits Dewayne.
+  - [#65](https://github.com/MadBomber/debug_me/pull/65) docs: tidy the Unreleased CHANGELOG notes. Source: **issue** (Fixes #60) + adoption finding #73. CHANGELOG + README, +6/−4; review ended in 2 rounds with no defects but rejected two items as out of scope → **not** self-merged (lanet#5 rule).
+  - [#64](https://github.com/MadBomber/debug_me/pull/64) test: pin that a logger without #debug is skipped. Source: **judgment** (improver mutation: the only surviving one of 13). New test file, +29; mutation-proven; review round 1 deferred two lib ideas → **not** self-merged.
+  - #65 and #66 both add to CHANGELOG `[Unreleased]`; merge #65 first, #66 then needs a one-line rebase.
+- Merged (low risk): none. Merged after Dewayne's approval: none.
+- Audit: **adoption** (third; develop fb0b2ea). Findings #71–#73; builders/improver added #74–#76. Dead-code read reached fb0b2ea, nothing removable. S-36 re-confirmed (held locally).
+- Issues answered: none (#58–#60 are BomberBot's, no comments). Issues filed: [#67](https://github.com/MadBomber/debug_me/issues/67) (findings #71, #72).
+- Queue is now 5 open bomberbot PRs; next visit is tend-only until Dewayne reviews.
+
 ## 2026-11-13 08:17 scripts
 
 Fifteenth visit (last 2026-11-13 06:37). `develop` already existed (a35981f, unchanged); not created. Run directory was fresh.
