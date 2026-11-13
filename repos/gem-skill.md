@@ -10,7 +10,7 @@ Generates Claude Code skills from Ruby gem docs.
 
 ## Status
 
-_Updated 2026-11-13 06:00._ madbot opened [#31](https://github.com/MadBomber/gem-skill/pull/31) (gemspec doc/issue URIs, F-45), [#32](https://github.com/MadBomber/gem-skill/pull/32) (setup exit status, Fixes #29) and [#36](https://github.com/MadBomber/gem-skill/pull/36) (missing Gemfile.lock, Fixes #28); all await Dewayne with #26. Second security audit ran (F-53, F-54); issues #33-#35 filed. `develop` green at e55bd4d (224 runs, 0 failures); no test CI, so PR proof is the local suite.
+_Updated 2026-11-13 08:54._ Review queue full: #26, #31, #32 and #36 still await Dewayne (no reviews or comments since 06:00), so madbot skipped new work. `develop` unchanged and green at e55bd4d (224 runs, 0 failures); no test CI, so PR proof is the local suite.
 
 ## Backlog
 
