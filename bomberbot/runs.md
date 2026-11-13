@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 01:15 robot_lab
+
+- `develop` already existed (cfae25c); not created.
+- **Since last visit:** Dewayne rebase-merged #38, #39, #40 without comment (develop cfae25c) and opened his own PRs #52–#65 (`fix/issue-*`) for 14 bomberbot issues; their files were treated as in flight. Tender deleted the three leftover `madbot/` branches.
+- **New PRs** (independent, base develop, no CI configured on PRs):
+  - [#66](https://github.com/MadBomber/robot_lab/pull/66) docs: correct stale Convergence and ToolLoopError comments (source: brain, F-49/F-63). Comment-only, review clean round 1, 1307 green. **Merged (low risk)** as develop c700ba6.
+  - [#70](https://github.com/MadBomber/robot_lab/pull/70) fix: let Ledger reserve exactly the remaining budget (source: judgment, improver F-81). Fails-before proven, 1308 green, fuzz 129→0, review clean at the 3-round cap. `lib/`, awaiting Dewayne.
+- **Merged after approval:** none this visit. **Tended:** none open.
+- **Audit:** adoption v2 (first examples run) + dead-code delta 9d407dd..cfae25c → F-76–F-80; improver F-81, F-83; builders F-82, F-84.
+- **Issues answered:** none needed a reply. **Issues filed:** [#67](https://github.com/MadBomber/robot_lab/issues/67) (F-77, adoption), [#68](https://github.com/MadBomber/robot_lab/issues/68) (F-78, adoption), [#69](https://github.com/MadBomber/robot_lab/issues/69) (F-82, judgment).
+- Notes: suites run on Ruby 4.0.9 (4.1-preview can't build `tokenizers`); RuboCop needed a temp copy of `robot_lab_project/.rubocop-base.yml`. Triage misread Dewayne's 14 PRs as bomberbot's queue; the skip rule counts only `bomberbot` PRs.
+
 ## 2026-11-13 01:10 typed_bus
 
 - `develop` already existed (97c56f1); not created.
