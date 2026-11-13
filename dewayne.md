@@ -8,6 +8,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review [asgard#20](https://github.com/MadBomber/asgard/pull/20) (README, CHANGELOG and `docs/files.md` list your new `truncate_log`). Docs only, green, but not merged as low risk: merging deploys the docs site (Pages runs on `docs/**` pushes to `develop`). (added 2026-11-13)
 - [ ] Review [asgard#21](https://github.com/MadBomber/asgard/pull/21) (the dependency-arity error names the declaring task, `(needed by c)`, same wording as your 621df2e for #14). Lib change. Merges cleanly alongside #20. (added 2026-11-13)
 - [ ] Decide [asgard#17](https://github.com/MadBomber/asgard/issues/17): close it as done by `truncate_log --lines`, or keep it open for `--days N` / `changes/*.json` cleanup / `log_retention`? (added 2026-11-13)
+- [ ] Bump `actions/checkout` to its current major in both workflows and `actions/setup-python` in the deploy workflow ([asgard#29](https://github.com/MadBomber/asgard/issues/29)); the bot token cannot edit `.github/workflows/`. (added 2026-11-13)
 
 ## aia
 

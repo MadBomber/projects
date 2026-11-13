@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-13 (second visit)._ develop unchanged at 4f3add1, CI green; #20/#21 still await review. This visit: adoption audit (F-31..F-36), three new PRs (#22 load hint, #23 fixes #18, #24 docs accuracy), issues #25 and #26 filed.
+_Updated 2026-11-13 (third visit)._ develop unchanged at 4f3add1, CI green; #20-#24 all green and unreviewed, so no new PRs (review queue full); dependencies audit (F-37..F-43), issues #27, #28, #29 filed.
 
 ## Backlog
 
@@ -21,6 +21,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Issue #18 items 1-2 (truncate_log no-log-yet message, watcher help). **PR open** ([#23](https://github.com/MadBomber/asgard/pull/23)); item 3 and `project/NAME` wait on Dewayne (inbox).
 - F-32: reserved helper name reported at task_dsl.rb, not the .loki line. Issue [#25](https://github.com/MadBomber/asgard/issues/25); small lib fix, good next-visit PR.
 - F-36: schedule_root/watch_root duplicate project_root. Issue [#26](https://github.com/MadBomber/asgard/issues/26); do after #23 merges (same files).
+- F-37: `bin/console` / `console` task fail on Ruby 4 (`irb` not in the Gemfile). Issue [#28](https://github.com/MadBomber/asgard/issues/28); one-line Gemfile PR (not low risk: Gemfile).
 
 ## Open bomberbot PRs
 

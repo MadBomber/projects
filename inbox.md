@@ -1179,3 +1179,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 
 - **Should a bad `logger:` warn or raise?** (findings #74) A `logger:` without `#debug` (say `$stderr`) is skipped silently today; [#64](https://github.com/MadBomber/debug_me/pull/64) pins that guard. Options: keep silent, warn once, or raise `ArgumentError` when the option is set. Also decides proxies that answer `debug` via `method_missing`.
 - **Repo hygiene sweep:** `.envrc` (a personal `RR` export), `.rultor.yml` and `rubygems.yml.asc` (findings #10), plus the redundant `bundler` dev dependency (#76). One decision could clear all four.
+
+## asgard (2026-11-13 08:45, BomberBot)
+
+- **Leading flag + `default_task` (#27, F-42):** `asgard --verbose build` runs the default task with `build` as its argument when the `.loki` sets `default_task`. Pick one: (a) move a leading `--debug`/`--verbose` after a word that names a command, (b) abort with "put options after the task name", (c) document the `default_task` case only. (a) is friendliest; (b) is the smallest output change.
+- **Gemspec 0.x bounds (F-39):** the comment says 0.x gems are bounded to the minor, but `ractor_queue ~> 0.2`, `tty-table ~> 0.12`, `tsort ~> 0.2` aren't. Tighten (`~> 0.2.1` etc., could block users ahead on those gems) or reword the comment?
+- **`bin/setup` (F-43):** unedited bundler template, referenced nowhere, not shipped. Keep or delete?
+- **Friendlier missing-`env` error:** `env(:deploy_target)` with the variable unset dumps a full `KeyError` backtrace (documented in `docs/environment.md:36-53`). A `KeyError` subclass that `run!` prints as `asgard: DEPLOY_TARGET is not set` would make the usual "configure me" failure one line. Output change, so your call.
+- **Adoption: `asgard help` with no `.loki`** only prints "no .loki file found". A first-time user after `gem install` gets no usage and no docs link; a short starter (minimal `class Tasks` stub + docs URL) would help. Current behaviour is documented, so it's a product decision.
+- **`no_negate` before `class_option`** silently does nothing (`task_dsl.rb:29`, `next unless opt`). Warn or raise with the `.loki` line?
+- **tty-table under frozen literals (F-40):** `strings`/`unicode_utils` are dormant and break under `--enable=frozen-string-literal`. Not urgent; if Ruby flips the default, `Schedule::Table` (the only user) needs a small replacement table renderer.
