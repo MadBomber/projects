@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-13 01:10 (tenth visit)._ Dewayne squash-merged #27–#29 (develop 28a6347) and opened his own PRs #38–#54, one per open issue; madbot opened #55 (F-55), #56 (F-65+F-71) and #57 (F-59) in files none of his touch, and filed #58–#60. Still no test CI on develop until #54 merges; "green" = local suite on Ruby 4.0.9 with a locally re-resolved lock.
+_Updated 2026-11-13 01:58 (eleventh visit)._ Nothing merged since the tenth visit (develop still 28a6347); #55–#57 open and clean, so review queue full: tend-and-record only. Dependencies audit ran; filed #61–#63. Still no test CI on develop until #54 merges; "green" = local suite on Ruby 4.0.9 with a locally re-resolved lock.
 
 
 ## Backlog
@@ -32,6 +32,11 @@ else in this repo.
 - [#58](https://github.com/MadBomber/agent99/issues/58) F-90: fixed `sleep 0.5` per test makes the suite 38 s instead of ~1.5 s (tests-only, 2 lines; low-risk candidate once #54 lands).
 - [#59](https://github.com/MadBomber/agent99/issues/59) F-77: docs show 0.0.4 as current, 0.0.5 missing (docs-only, ~4 lines; low-risk candidate).
 - [#60](https://github.com/MadBomber/agent99/issues/60) F-92: control handlers untested (one new test file; after #55, which creates `test_control_actions.rb`).
+- [#61](https://github.com/MadBomber/agent99/issues/61) F-100: private `info`/`init` ignored at startup (lib 2 lines + tests in `test_agent_lifecycle.rb`; after #42, same lines).
+- [#62](https://github.com/MadBomber/agent99/issues/62) F-101: custom control action docs snippet raises NameError (docs-only, ~3 lines; low-risk candidate, no open PR touches the file).
+- [#63](https://github.com/MadBomber/agent99/issues/63) F-93: `bin/console` can't load irb on Ruby 4.0+ (Gemfile + lock; after #53).
+- S-17: security finding, details held locally; one targeted conservative re-lock after #53 (with S-12).
+- F-94 (lock needs Ruby >= 4.0 after #53, ties to F-68) and F-102 (pause drops requests vs docs): **needs Dewayne's decision**.
 - F-53 (+ F-51/F-40 riding along): registry client hides HTTP error statuses behind a JSON parse error; dead `@id`, `payload` alias, unused `response` (the only `ruby -w` warning in lib), wrong header comment. Same file as #56: stack on it or wait. Keep `register` returning uuid/nil (#42 relies on it).
 - F-61: CHANGELOG `[Unreleased]` has three near-duplicate #6 lines. Blocked: they are context lines in every one of #38–#53's CHANGELOG hunks; do it after they land.
 - F-60: four unused test helpers in `test/support/test_infrastructure.rb` (tests-only removal; same file as #58).
