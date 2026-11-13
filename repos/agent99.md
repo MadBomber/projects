@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-13 08:25 (fifteenth visit)._ Still nothing merged or approved (develop 28a6347); #55–#57 open, so no PR was opened. Adoption delta + improver found F-119..F-124; filed #73–#75.
+_Updated 2026-11-13 09:25 (sixteenth visit)._ Still nothing merged or approved (develop 28a6347); #55–#57 open, so no PR was opened. Dependencies delta found nothing new; improver found F-125..F-127; filed #76 (AMQP queues never expire).
 
 
 ## Backlog
@@ -49,6 +49,8 @@ else in this repo.
 - [#73](https://github.com/MadBomber/agent99/issues/73) F-119: tutorial `curl` commands hit registry routes that 404 (`basic-example.md:263,266`, `basic-examples.md:258,261`; docs-only, 4 lines; low-risk candidate; `basic-example.md` is also in #45, different lines).
 - [#74](https://github.com/MadBomber/agent99/issues/74) F-122: dead `docs/README.md` link in `what-is-an-agent.md:25` (docs-only, 1 line; low-risk candidate; can ride with #73).
 - [#75](https://github.com/MadBomber/agent99/issues/75) F-124: unknown control action gets no reply (`message_processing.rb:89-93`, 1 lib line + test; after #38/#39/#41 and #55).
+- [#76](https://github.com/MadBomber/agent99/issues/76) F-125: AMQP queues never expire because Bunny ignores `expires:` (`amqp_message_client.rb:55` → `arguments: { "x-expires" => QUEUE_TTL }`; 1 lib line + test on the real class + 2 docs lines in `messaging-system.md:12-13`, `what-is-an-agent.md:282`; no open PR touches them). Best next lib pick once the queue clears.
+- F-126 (never-run `test/system/test_full_workflows.rb`) and F-127 (`publish` reports success for undeliverable messages): **needs Dewayne's decision**.
 - F-120: unused MathJax/arithmatex in `mkdocs.yml`; ride along with the S-6 docs-config fix (neutral title).
 - F-121 (A2A/MCP stub pages) and F-123 (`Base#name` ignores `info[:name]`; widen #69): **needs Dewayne's decision**.
 - F-115 (dead `simple_json_schema_builder` requires) and F-118 (stale FIXME, `.envrc` header): ride along with the next lib PR touching those files. F-113 (unused public accessors, `Timestamp#utc`): **needs Dewayne's decision**.
