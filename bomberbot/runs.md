@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 02:05 dev
+
+- `develop` already existed (657e6bd); not created.
+- **Since last visit:** Dewayne merged [dev#10](https://github.com/MadBomber/dev/pull/10), [#11](https://github.com/MadBomber/dev/pull/11) (with a comment doubting the reek baseline and `.quality/`), and [#12](https://github.com/MadBomber/dev/pull/12) (into #11's branch, then #11 into `develop`, so it landed). He opened his own PRs #16–#21 for every open issue (#7, #8, #9, #13, #14, #15); left untouched.
+- **New PRs:**
+  - [dev#22](https://github.com/MadBomber/dev/pull/22) fix(branch_report): keep git's stderr off the terminal. Source: brain (F-37). Review clean in 2 rounds. Not low risk (`.loki` code).
+  - [dev#25](https://github.com/MadBomber/dev/pull/25) fix(status_report): one-line abort on an unreadable date env var. Source: brain (F-45). Keeps `Date.parse` on purpose; strict ISO is a question for Dewayne. Merges cleanly with #20. Review clean in 2 rounds.
+  - [dev#26](https://github.com/MadBomber/dev/pull/26) fix(branch_report): keep "|" in names from breaking rows. Source: brain (F-13, widened by triage to `|` in branch names). Stacks on #22. Review clean in 1 round.
+- **Merged:** none (no approvals pending; none qualified as low risk, all change `.loki` code).
+- **Tended:** no open bomberbot PRs. Merged bot branches from #10–#12 are still on origin (auto-delete is off); question in inbox.
+- **Audit:** quality (second run) plus the dead-code scan 5a0b89e..657e6bd: F-47 to F-49, F-45 update; nothing dead. Improver: F-50 to F-52.
+- **Issues answered:** none; each of #7–#15 is covered by a Dewayne PR, so a note would only repeat GitHub's link.
+- **Issues filed:** [dev#23](https://github.com/MadBomber/dev/issues/23) reek_check ignores `.reek.yml` exclude_paths/directories (F-47); [dev#24](https://github.com/MadBomber/dev/issues/24) quality_rails.loki NoMethodError without quality.loki (F-50).
+
 ## 2026-11-13 01:58 agent99
 
 - `develop` already existed (28a6347); not created.

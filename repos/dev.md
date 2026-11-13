@@ -10,23 +10,23 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-12 (fifth run)._ Review queue full (dev#10–#12 unreviewed, `develop` still 5a0b89e), so no new PRs; ran the overdue security audit and filed issues #13–#15. `develop` is 26 commits ahead of `main`.
+_Updated 2026-11-13 (sixth run)._ Dewayne merged dev#10–#12 and opened his own PRs #16–#21 for every open issue; bomberbot opened #22 (F-37) and #25 (F-45), and #26 (F-13, stacked on #22), and filed #23/#24. `develop` is 657e6bd.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
 - F-5: drop the header comments copied from the vbr project (after F-6 is decided).
-- F-37: keep git `fatal:` noise out of `branch_report` stderr (1 line).
-- F-13: escape `|` in branch_report author cells.
-- F-39: stale header comments and labels in quality.loki (plus F-46 ArchSpec message); after dev#11/#12 merge, since they edit quality.loki.
-- F-45: friendly abort on an invalid `STATUS_DATE` (after dev#10 merges).
+- F-37: keep git `fatal:` noise out of `branch_report` stderr. [dev#22](https://github.com/MadBomber/dev/pull/22) **PR open**
+- F-13: escape `|` in branch_report author cells (and `|` in branch names). [dev#26](https://github.com/MadBomber/dev/pull/26) **PR open**, stacked on #22.
+- F-39: stale header comments and labels in quality.loki (plus F-46 ArchSpec message, F-49 reek/flay load text); after Dewayne's #19 lands and his `.quality/` decision.
+- F-45: friendly abort on an invalid `STATUS_DATE` / `STATUS_WEEK_OF`. [dev#25](https://github.com/MadBomber/dev/pull/25) **PR open** (strict ISO parsing left for Dewayne).
 
 ## Open bomberbot PRs
 
-- [dev#10](https://github.com/MadBomber/dev/pull/10): fix(status_report): snap STATUS_WEEK_OF back to Monday (F-28). **PR open**
-- [dev#11](https://github.com/MadBomber/dev/pull/11): feat(quality): add reek_baseline task (F-26). **PR open**
-- [dev#12](https://github.com/MadBomber/dev/pull/12): fix(quality): skip flog, flay, reek, bundler-audit when absent (F-27). Stacks on #11; review loop ended clean at 3 rounds. **PR open**
+- [dev#22](https://github.com/MadBomber/dev/pull/22): fix(branch_report): keep git's stderr off the terminal (F-37). **PR open**
+- [dev#25](https://github.com/MadBomber/dev/pull/25): fix(status_report): one-line abort on an unreadable date env var (F-45). **PR open**
+- [dev#26](https://github.com/MadBomber/dev/pull/26): fix(branch_report): keep "|" in names from breaking rows (F-13). Stacks on #22; retarget to `develop` after #22 merges. **PR open**
 
 ## Open bomberbot issues
 
@@ -36,7 +36,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [dev#13](https://github.com/MadBomber/dev/issues/13) release crashes with NoMethodError when stdin is closed (F-43)
 - [dev#14](https://github.com/MadBomber/dev/issues/14) quality summary KeyError on a non-status *_check (F-44)
 - [dev#15](https://github.com/MadBomber/dev/issues/15) github_collect ignores RR (F-40)
+- [dev#23](https://github.com/MadBomber/dev/issues/23) reek_check ignores exclude_paths and directories in .reek.yml (F-47)
+- [dev#24](https://github.com/MadBomber/dev/issues/24) quality_rails.loki NoMethodError unless quality.loki is imported (F-50)
+
+Dewayne's own PRs cover #7 (#17), #8 (#18), #9 (#21), #13 (#16), #14 (#19), #15 (#20).
 
 ## Merged bomberbot PRs
 
-[dev#6](https://github.com/MadBomber/dev/pull/6) quality gates skip unbundled Rails/fasterer (2026-11-09), [dev#5](https://github.com/MadBomber/dev/pull/5) status_report survives missing base64/claude (F-24, 2026-11-09), [dev#4](https://github.com/MadBomber/dev/pull/4) branch_report vs origin/<default> (F-11, 2026-11-07), [dev#3](https://github.com/MadBomber/dev/pull/3) (2026-11-07), [dev#2](https://github.com/MadBomber/dev/pull/2) (2026-11-07), [dev#1](https://github.com/MadBomber/dev/pull/1) (2026-11-07).
+[dev#12](https://github.com/MadBomber/dev/pull/12) skip absent flog/flay/reek/bundler-audit (F-27, 2026-11-12), [dev#11](https://github.com/MadBomber/dev/pull/11) reek_baseline task (F-26, 2026-11-13; merged with doubts, see taste), [dev#10](https://github.com/MadBomber/dev/pull/10) STATUS_WEEK_OF snaps to Monday (F-28, 2026-11-12), [dev#6](https://github.com/MadBomber/dev/pull/6) quality gates skip unbundled Rails/fasterer (2026-11-09), [dev#5](https://github.com/MadBomber/dev/pull/5) status_report survives missing base64/claude (F-24, 2026-11-09), [dev#4](https://github.com/MadBomber/dev/pull/4) branch_report vs origin/<default> (F-11, 2026-11-07), [dev#3](https://github.com/MadBomber/dev/pull/3) (2026-11-07), [dev#2](https://github.com/MadBomber/dev/pull/2) (2026-11-07), [dev#1](https://github.com/MadBomber/dev/pull/1) (2026-11-07).

@@ -126,11 +126,12 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Optional, after merging [#9](https://github.com/MadBomber/shared_tools/pull/9): make `test (3.3)`, `test (3.4)` and `test (4.0)` required status checks on `develop` and `main`.
 
-## dev (2026-11-12)
+## dev (2026-11-13)
 
-- [ ] Review [dev#10](https://github.com/MadBomber/dev/pull/10) (weekly_report snaps `STATUS_WEEK_OF` to Monday) and [dev#11](https://github.com/MadBomber/dev/pull/11) (`reek_baseline` task). Merge #11 before [dev#12](https://github.com/MadBomber/dev/pull/12) (absent flay/reek/flog/bundler-audit report SKIP), which is stacked on it; the next tender retargets #12 to `develop`. No CI on this repo, so no checks gate them.
-- [ ] `main` is 26 commits behind `develop` (unchanged since 2026-10-30) and still has `schedule.loki`, which fails to load under asgard 0.6.0. Your checkout `~/sandbox/git_repos/madbomber/dev` is on `main`, so every `import_up "dev/..."` consumer runs the old files. Merge `develop` into `main`, or switch that checkout to `develop`.
-- [ ] Your checkout has an uncommitted `release` guard in `gem_tasks.loki`; [dev#7](https://github.com/MadBomber/dev/issues/7) covers the same ground. Bomberbot left `gem_tasks.loki` alone this visit so it won't conflict.
+- [ ] Review [dev#22](https://github.com/MadBomber/dev/pull/22) (branch_report keeps git's `fatal:` lines off stderr) and [dev#25](https://github.com/MadBomber/dev/pull/25) (one-line abort on a bad `STATUS_DATE` / `STATUS_WEEK_OF`). No CI, so no checks gate them.
+- [ ] Merge [dev#22](https://github.com/MadBomber/dev/pull/22) **before** [dev#26](https://github.com/MadBomber/dev/pull/26) (`|` in branch/author names), which is stacked on it; then retarget #26 to `develop` (or let the next visit do it).
+- [ ] Decide on [dev#25](https://github.com/MadBomber/dev/pull/25): should `STATUS_DATE` / `STATUS_WEEK_OF` accept only YYYY-MM-DD? Today words like `tuesday` silently become a nearby date; #25 keeps that.
+- [ ] `main` is 36 commits behind `develop` (unchanged since 2026-10-30) and still has `schedule.loki`, which fails to load under asgard 0.6.0. Your checkout `~/sandbox/git_repos/madbomber/dev` is on `main`, so every `import_up "dev/..."` consumer runs the old files. Merge `develop` into `main`, or switch that checkout to `develop`.
 
 ## kbs (2026-11-12)
 
