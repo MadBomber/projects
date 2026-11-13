@@ -1164,3 +1164,7 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **htm F-122: accept endless/beginless ranges for `timeframe:`?** `recall("x", timeframe: 1.hour.ago..)` raises today. Allowing a nil bound (`>=`/`<=` in SQL) is ~15 lines and additive, but it is API surface, so your call. Found by BomberBot improver.
 - **htm: one cache-invalidation hook.** Every write path must remember to clear the query cache (`add`, `delete`, `forget`, `unload_file`, `restore` F-96, auto-restore F-120). A single `LongTermMemory#nodes_changed!` or a `Node` model hook would stop this class of bug. Found by BomberBot improver.
 - **htm: one rake-file list.** `HTM::Tasks` (5 files), the Railtie (2, F-98) and `htm_mcp rake` (a `*.rake` glob, which also picks up F-121's db.rake) disagree. A shared constant would fix all three. Found by BomberBot improver.
+
+## typed_bus (2026-11-13 08:45, BomberBot)
+
+- A hook registered on the tracker `publish` returns never fires when the handler acked synchronously, because the tracker already resolved inside `publish` (probe: user `on_resolved`/`on_complete` saw nothing). Request/confirm callers need hooks that fire at once on an already-resolved tracker, or the `wait` idea from F-97. Pairs with #50 (F-107) as one API design decision, so not PR-sized alone.

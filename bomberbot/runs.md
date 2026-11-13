@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:45 typed_bus
+
+Fourteenth visit (last 2026-11-13 08:05). `develop` already existed (97c56f1, unchanged); not created. Run directory was fresh.
+
+- **skipped: review queue full.** The tender found [#37](https://github.com/MadBomber/typed_bus/pull/37), [#38](https://github.com/MadBomber/typed_bus/pull/38) and [#39](https://github.com/MadBomber/typed_bus/pull/39) still open, unapproved, MERGEABLE, 5/5 checks green, 0 behind, no reviews or comments.
+- **Merged:** none. **Tended:** #37, #38, #39, no action needed.
+- **Phase 1:** all five roles ran. Responder and triage: nothing new (develop CI green, no outside issues, no comments posted by the responder).
+- **Audit:** dead code at develop 97c56f1: F-106; no security findings. Improver: F-107 (probe re-run by main session), F-108, plus a late-hook inbox idea.
+- **Issues filed:** [#50](https://github.com/MadBomber/typed_bus/issues/50) tracker hooks replace the channel's cleanup (F-107), [#51](https://github.com/MadBomber/typed_bus/issues/51) CHANGELOG omits drain break behaviour (F-108).
+- **Issues answered:** added F-106 to [#46](https://github.com/MadBomber/typed_bus/issues/46#issuecomment-6855672986) as a signed comment.
+
 ## 2026-11-13 08:35 htm
 
 `develop` already existed (afbc2b7); not created. Run directory was fresh.
