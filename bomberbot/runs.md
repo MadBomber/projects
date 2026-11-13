@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 08:05 typed_bus
+
+Thirteenth visit (last 2026-11-13 06:55). `develop` already existed (97c56f1, unchanged); not created.
+
+- **skipped: review queue full.** The tender found [#37](https://github.com/MadBomber/typed_bus/pull/37), [#38](https://github.com/MadBomber/typed_bus/pull/38) and [#39](https://github.com/MadBomber/typed_bus/pull/39) still open, unapproved, MERGEABLE, all checks green, 0 behind, no reviews or comments.
+- **Merged:** none. **Tended:** #37, #38, #39, no action needed.
+- **Phase 1:** all five roles ran. Responder: #40-#47 have no comments; all eight still reproduce at 97c56f1; no comments posted by it. Triage: nothing new (develop CI green; Dependabot alerts 403; Discussions off).
+- **Audit:** adoption (third run) at develop 97c56f1: F-102, F-103; no security findings. Improver: F-104, F-105, plus an unbounded-DLQ inbox idea.
+- **Issues filed:** [#48](https://github.com/MadBomber/typed_bus/issues/48) close mid fan-out leaves deliveries pending (F-104, probe re-run by main session), [#49](https://github.com/MadBomber/typed_bus/issues/49) API reference omits constructor ArgumentErrors (F-102).
+- **Issues answered:** added F-103 to [#42](https://github.com/MadBomber/typed_bus/issues/42#issuecomment-6854947226) and F-105 to [#44](https://github.com/MadBomber/typed_bus/issues/44#issuecomment-6854947705) as signed comments.
+
 ## 2026-11-13 07:40 agent99
 
 Fourteenth visit (last 2026-11-13 07:10). `develop` already existed (28a6347); not created. Run directory was fresh.
