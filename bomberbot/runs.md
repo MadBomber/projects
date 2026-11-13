@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 06:25 htm
+
+- **Resumed visit.** The 2026-11-12 session was killed after phase 1, before the auditor reported; this session re-ran the auditor from its scratch output, built, and recorded. `develop` already existed (afbc2b7); not created.
+- **New PRs:** [#68](https://github.com/MadBomber/htm/pull/68) fix(test): stop preloading test_helper in rake test (source: dependency, audit F-90); [#66](https://github.com/MadBomber/htm/pull/66) fix(tags): anchor TagService::TAG_FORMAT to whole string (source: judgment, improver F-97); [#67](https://github.com/MadBomber/htm/pull/67) fix(propositions): read circuit breaker settings from config (source: judgment, improver F-99). None stacked; each review loop clean in round 1; none self-merged (#66/#67 change `lib/`, #68 changes the Rakefile).
+- **Closed as duplicates:** [#63](https://github.com/MadBomber/htm/pull/63) (#37), [#64](https://github.com/MadBomber/htm/pull/64) (#38), [#65](https://github.com/MadBomber/htm/pull/65) (#41), built first from the brain backlog, then found to duplicate Dewayne's own #54, #53 and #51, opened at 03:26–03:28. The pre-build check looked only at `bomberbot`-labeled PRs.
+- **Merged after approval:** none needed; Dewayne squash-merged #30, #31 and #32 himself on 2026-11-12 21:10–21:11, without comment. **Merged (low risk):** none.
+- **Tended:** #30–#32 (checked only, before they merged). **Issues answered:** #18 and #21 (fixed on `develop`, unreleased). **Issues filed (2026-11-12):** #44 (`htm_mcp rake` task args), #45 (`forget_content`), #46 (working-memory sync ids); Dewayne opened #50, #48 and #47 for them. #45 was later reworded neutrally (see the final report).
+- **Audit:** dependencies, third run (develop afbc2b7): F-90–F-93 (S-9 held locally); F-37 verified. Improver findings recorded as F-94–F-99.
+- Builders found the shared local `htm_test` DB stale (8 failures in TopicRelationships/ParentTagCreation on `develop`); a fresh throwaway PG 18 runs the full suite at 0 failures.
+
 ## 2026-11-13 05:42 smart_message-transport-lanet
 
 - `develop` already existed (3b0abb9); not created. Nothing moved since visit 5: develop unchanged, Dewayne's #20–#29 still open and MERGEABLE, no new comments.
