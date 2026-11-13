@@ -1061,3 +1061,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **typed_bus: awaitable `DeliveryTracker` (F-97, 2026-11-13).** `publish` returns a tracker but callers can only poll for "fully resolved". A `tracker.wait` (Async condition/promise) would make request/confirm usable. New public API, so your design call. Found by BomberBot.
 - **typed_bus: `remove_channel(:unknown)` (F-98, 2026-11-13).** Returns nil and logs "removing channel :unknown"; every other name-taking method raises "Unknown channel", and a test pins the no-op. Keep and document it, or raise like the rest? Also: `Configuration.validate_throttle!` (906faac) joins `validate_*` as undocumented public API: `@api private`, or document (F-66)? Found by BomberBot.
 
+
+## gem-skill (2026-11-13)
+
+- **Docs site deploys from `develop` (F-44).** The live site documents unreleased behaviour (bundle flag order, OLLAMA vars) that 0.2.2 users lack. Deploy only from `main`, or versioned docs with `mike` (already installed by the workflow, unused)? Found by BomberBot.
+- **Plugin upgrade path (F-42).** `gem skill setup` returns early when the Bundler plugin is registered, so the documented `gem update gem-skill && gem skill setup` leaves `bundle skill` on the old version. Reinstall on version mismatch, document the Bundler reinstall command, or print a hint? Found by BomberBot.
+- **Gem description and size (F-46, F-52).** The RubyGems description says skills come from "RubyDoc" (the Fetcher reads none) and the summary/help still say "Claude Code" only. The gem also ships `docs/` (a 117 KB jpg is ~72% of it), `.envrc`, `.github/`, `CLAUDE.md`, `mkdocs.yml`, `scripts/`. Reword and trim `spec.files`? Found by BomberBot.
+- **Adoption: `llms.txt` (F-47)** and a repo `.rubocop.yml` that matches the code's double-quote style, so builders' lint results mean something. Found by BomberBot.

@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 05:01 gem-skill
+
+Fifth visit (last recorded 2026-11-10; a 2026-11-12 visit was cut off twice before recording: it filed #16-#18, opened #19, and left uncommitted findings edits, committed now). The asgard task had set its directory aside as `~/sandbox/bomberbot-interrupted/gem-skill-20261113-0501`; it held no unpushed work. `develop` existed (866a510); not created.
+
+- **Since last visit:** Dewayne merged #9, #10, #11, #12, #13 (2026-11-10) and #19 (2026-11-13). He opened his own PRs #20-#24 (unlabeled, `fix/issue-*` branches) for issues #8, #14, #16, #17, #18; not bot branches, left alone.
+- **New PRs:**
+  - [#25](https://github.com/MadBomber/gem-skill/pull/25) test: make stub_generator cache so install links for real. Source: **CI** (develop red, F-32, 2 failures from the #9 + #12 interaction). Test-only, +9/-3. **Merged (low risk)** → develop 03434e2.
+  - [#26](https://github.com/MadBomber/gem-skill/pull/26) fix(verifier): cap verify output with max_tokens. Source: **brain** (F-17, root cause behind #6). 4 new tests fail-then-pass; full suite 227/0; a fake local server showed `max_tokens` nil → 32767/1000/2048. Review: 1 round, clean. Awaiting Dewayne.
+  - [#27](https://github.com/MadBomber/gem-skill/pull/27) test: pass with GEMSKILL_DIR or GEMSKILL_PROJECT_DIR set. Source: **brain** (F-10, plus the same leak for GEMSKILL_PROJECT_DIR in LinkerTest). Test-only, +24/-4. **Merged (low risk)** → develop e55bd4d. Suite 224/0 with and without both vars.
+  - None stacked. develop is green at e55bd4d.
+- **Audit:** adoption (second run, most overdue), F-41..F-52.
+- **Phase 1 deviations:** no tender (no open bomberbot PRs; checked directly), no triage or improver (both ran on 2026-11-12, one day earlier, against near-identical code); the main session did the responder's check itself.
+- **Issues answered:** none. #1 already has a BomberBot reply; #8/#14/#16/#17/#18 are linked from Dewayne's own PRs, so a comment would add nothing.
+- **Issues filed (labeled `bomberbot`):** [#28](https://github.com/MadBomber/gem-skill/issues/28) bundle skill without Gemfile.lock shows Bundler's error template (F-41), [#29](https://github.com/MadBomber/gem-skill/issues/29) gem skill setup exits 0 on failure (F-43), [#30](https://github.com/MadBomber/gem-skill/issues/30) docs inaccuracies (F-48, F-50).
+
 ## 2026-11-13 05:10 typed_bus
 
 Eleventh visit (last 2026-11-13 01:10). `develop` existed (97c56f1, unchanged); not created. CI on develop green.

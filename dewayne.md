@@ -52,11 +52,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## gem-skill
 
-- [ ] Review and merge into `develop` [gem-skill#10](https://github.com/MadBomber/gem-skill/pull/10) (bundle flag parsing, F-3/F-4; lib change, so not low risk). Note the behaviour change: `bundle skill` now exits 1 on an unknown, abbreviated or value-less flag, where before it silently ignored it. (added 2026-11-10)
-- [ ] Review [gem-skill#9](https://github.com/MadBomber/gem-skill/pull/9) (tests only, F-12). Not merged as low risk because its review loop hit the 3-round cap. Optional: `~/sandbox/git_repos/madbomber/gem-skill/.claude/skills/my_gem` in your checkout is the dangling link this leak left on 2026-09-24; it's safe to `rm`. (added 2026-11-10)
-- [ ] Review and merge [gem-skill#11](https://github.com/MadBomber/gem-skill/pull/11) (verify truncation fix, F-25; lib change, not low risk). Fixes #6. One-line guard so a truncated `--verify` reply no longer overwrites the cached skill. (added 2026-11-10)
-- [ ] Review and merge [gem-skill#12](https://github.com/MadBomber/gem-skill/pull/12) (exit codes, F-26; lib change, not low risk). Fixes #7. Behaviour change: `gem skill` now exits 1 on error paths (unknown subcommand, missing name, failed per-gem install/verify) instead of 0; error (1) takes precedence over verify-fixed (2). (added 2026-11-10)
-- [ ] Review and merge [gem-skill#13](https://github.com/MadBomber/gem-skill/pull/13) (S-1 path validation, neutral title; lib change, not low risk). Adds a `Gem::Skill::Validation` module and applies it at the lockfile/cache/linker boundaries. Security context is in the bomberbot final report of 2026-11-10, not in the PR. (added 2026-11-10)
+- [ ] Review and merge into `develop` [gem-skill#26](https://github.com/MadBomber/gem-skill/pull/26) (verify honours `--max-tokens`/`GEMSKIL_MAX_TOKENS`, F-17; lib change, not low risk). Also drops the Apfel docs advice to skip `--verify`. Its CHANGELOG line will conflict with your #20-#24 once they merge; a trivial rebase. (added 2026-11-13)
 
 ## scripts
 
