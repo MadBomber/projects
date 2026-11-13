@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-13 05:10 typed_bus
+
+Eleventh visit (last 2026-11-13 01:10). `develop` existed (97c56f1, unchanged); not created. CI on develop green.
+
+- **skipped: review queue full.** #37, #38, #39 still open, unapproved, no reviews, 0 behind develop, CI green; tender trial-merged all three (no conflicts, 245 runs 0F, 100% coverage). Merged: none.
+- **Audit:** security (third run) at develop 97c56f1 → S-41, S-42 held locally; no new F findings from the auditor. Triage → F-91; improver → F-92..F-98 (renumbered from its F-95..F-101).
+- **Issues answered:** none (#40-#42 are ours with no outside comments; develop fixes none).
+- **Issues filed:** [#43](https://github.com/MadBomber/typed_bus/issues/43) close leaves a waiting publisher blocked when on_dead_letter raises (F-91, repro re-run); [#44](https://github.com/MadBomber/typed_bus/issues/44) no test for remove_channel closing / clear! waking a publisher (F-92/F-93, mutation re-verified); [#45](https://github.com/MadBomber/typed_bus/issues/45) guides don't describe close waking waiting publishers (F-94).
+- Inbox: F-95..F-98.
+
 ## 2026-11-13 04:09 asgard
 
 - `develop` existed (4f3add1, unchanged since the 01:18 visit); not created. CI on develop green. src/ was first cloned on `main`; switched to detached origin/develop within minutes and the readers re-read (no effect on results).
