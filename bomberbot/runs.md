@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-14 12:26 prompt_manager
+
+Eleventh visit (last: 2026-11-13 03:15), first by mini_bomberbot. `develop` already existed (881aaea at start, 03995ff at end); not created. Run directory was fresh; `src/` detached at origin/develop before the readers started. All five phase-1 agents ran.
+
+- Queue was empty: Dewayne merged #36, #40, #41 (squash) and fixed every issue filed on 11-13 himself (#45-#47, #49-#51); his own #48 (Fixes #39) is open.
+- **New PR [#55](https://github.com/MadBomber/prompt_manager/pull/55)** test: gate branch coverage at 100% alongside line coverage. Source: **brain** (F-51). Independent. Proof: CI=true suite green 135/135 branches; an untested ternary in a throwaway copy passed before, fails after. Review clean in round 1. **Merged (low risk)** as develop 03995ff (test_helper + one README comment line, 11 lines).
+- **New PR [#56](https://github.com/MadBomber/prompt_manager/pull/56)** test: silence Encoding.default_external warnings in encoding test. Source: **judgment** (improver, F-57, from #46). Independent. Proof: rake test warnings 4 -> 0, guard test fails before; #46's tests still fail if lib reverts. Review hit the 3-round cap (minor notes only), so not low risk; waits for Dewayne.
+- **New PR [#57](https://github.com/MadBomber/prompt_manager/pull/57)** docs: describe front-matter fence rules and UTF-8 reading in the parsing guide. Source: **adoption** (triage; #49/#46 changed behaviour the guide didn't describe). Independent. Proof: every claim run on 4.0.9, `mkdocs build --strict` clean. Review hit the 3-round cap (new edge cases each round); `docs/` deploys Pages, so not low risk; waits for Dewayne.
+- **Merged (low risk):** #55 -> 03995ff. **Merged after approval:** none. **Tended:** nothing open to tend; ten stale bot branches on origin are fully merged (inbox).
+- **Audit:** dead code, incremental 37420ea..881aaea (develop 881aaea): nothing dead, 100% line+branch. F-53 (needs decision). Quick deps: bundle-audit clean; ruby_llm 2.2.1 added to F-8. Improver/triage/builders: F-54..F-60. No security findings.
+- **Issues answered:** none (#39 already cross-linked to #48; #17 already answered).
+- **Issues filed:** [#52](https://github.com/MadBomber/prompt_manager/issues/52) directive tests miss included files (F-54), [#53](https://github.com/MadBomber/prompt_manager/issues/53) empty `$()` error (F-55), [#54](https://github.com/MadBomber/prompt_manager/issues/54) uncallable directive names undocumented (F-56).
+- Notes: the bot token lacks `workflow` scope (#55's builder had to drop a `.github/workflows/test.yml` comment edit); `RBENV_VERSION=4.0.9` didn't take in builder shells, PATH-prefixing `~/.rbenv/versions/4.0.9/bin` did.
+
 ## 2026-11-13 09:16 smart_message
 
 Tenth visit (last 2026-11-13 07:15). `develop` existed at 2aa3dbf; not created. Run directory was fresh.

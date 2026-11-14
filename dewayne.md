@@ -138,3 +138,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review and merge [#37](https://github.com/MadBomber/kbs/pull/37) (`rule "x", priority: N` keyword, Fixes #29). Touches `lib/`, so not self-merged. (added 2026-11-13)
 - [ ] Review and merge [#39](https://github.com/MadBomber/kbs/pull/39) (gem ships only lib/ + README/CHANGELOG/LICENSE, 314 KB to 31 KB, Fixes #31). Changes the published package, so not self-merged. At release, add a CHANGELOG line for it (left out to avoid a conflict with #37). (added 2026-11-13)
 
+
+## prompt_manager (2026-11-14)
+
+- [ ] Optional: `.github/workflows/test.yml:35` comment still says the CI env arms the "100% line coverage gate"; since [#55](https://github.com/MadBomber/prompt_manager/pull/55) it arms line and branch gates. The bot token can't push workflow files. (added 2026-11-14)
+- [ ] Review and merge [#56](https://github.com/MadBomber/prompt_manager/pull/56) (test-only; review hit the cap) and [#57](https://github.com/MadBomber/prompt_manager/pull/57) (parsing guide; `docs/` deploys Pages). (added 2026-11-14)
