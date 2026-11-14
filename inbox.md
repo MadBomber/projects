@@ -1220,3 +1220,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Should `PM.register` warn or raise for names a template can't call** (`tap`, `to_s`, `binding`, ...)? Issue #54 proposes only documenting them. Found by BomberBot.
 - **Stale bot branches:** ten fully merged bot branches remain on origin (`bomber/coverage-gate-ci`, `bomber/llms-txt`, `bomber/readme-env-literal`, `bomber/simplecov-skip`, `bomber/test-ci`, `bomber/erb-safe-env-values`, `bomber/test-env-save-restore`, `bomberbot/drop-unreachable-alias-rescue`, `bomberbot/fix-nested-include-example`, `madbot/changelog-0-5-1-0-5-2`). OK for the bot to delete fully merged bot branches on future visits? Found by BomberBot.
 - **Encoding follow-ups (F-58, F-59):** shell expansion under `LANG=C` mixes UTF-8 and BINARY (`lib/pm/shell.rb:55`), and a UTF-8 BOM hides front matter (read with `"BOM|UTF-8"`). Both are issue/PR candidates for the next visit. Found by BomberBot.
+
+## shared_tools (2026-11-14)
+
+- **Docs pages and a demo for the ~25 newer tools** (Git, JSON/YAML/TOML/CSV, Diff/MultiEdit/ApplyPatch, Glob/Tree, Gem/Bundle/Lint/ParseRuby, Process*, WebFetch/HttpRequest/DownloadFile, Bash/RunTests, TodoWrite): they appear only in README, in no `docs/` page and no demo. One "developer toolbox" demo could show them together. Needs your view on docs nav (F-40). Found by BomberBot.
+- **Skip network tests when offline:** 5 tests fail on any machine without outbound network (or with unroutable IPv6, issue #41). A `skip_unless_network` helper or `NETWORK=1` gate would keep local `rake test` green. Found by BomberBot.
+- **mkdocs `validation: anchors: warn`** would make `--strict` catch broken anchors like F-46 (mkdocs only logs them at INFO). Config choice for you. Found by BomberBot.
+- **Ruby 4.1 and prism (F-88):** decide with F-71 whether to declare `prism` (and drop the Ripper backend) or keep Ripper with a parity test. Found by BomberBot.
+- **Release?** develop is far ahead of main/0.7.1 (ruby_llm 2.x breaking changes plus ~15 fixes in `## Unreleased`). Found by BomberBot.
+- **Upstream:** ruby_llm 2.2.1 warns that aliasing in `Chat::Ownership` breaks on Ruby 4.3; worth a note to ruby_llm. Found by BomberBot.

@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-14 12:28 shared_tools
+
+Fifth visit (last 2026-11-13 07:30). `develop` existed at e81c053; not created. Since last visit Dewayne squash-merged bot #24, #28, #29 and his own #18-#23, #33, #36-#38; his #34, #35 are open.
+
+- New PRs (all base `develop`, label `bomberbot`, none stacked, CI green on 3.3/3.4/4.0, `/code-review` clean in round 1):
+  - [#42](https://github.com/MadBomber/shared_tools/pull/42) docs(examples): point links at renamed *_demo.rb files (brain backlog, F-38/F-46; adoption). Proof: no stale `_example.rb` links, every target exists, `mkdocs build --strict` passes and the anchor INFO warning is gone. `needs-dewayne` (docs deploy from develop).
+  - [#43](https://github.com/MadBomber/shared_tools/pull/43) fix(tools): error on unknown disk/computer action (brain backlog, F-68). Proof: new tests fail on develop, pass on branch; suite 1004 runs, only the 5 pre-existing network failures; aia never references these tools directly.
+  - [#44](https://github.com/MadBomber/shared_tools/pull/44) fix(notification): quote macOS text as AppleScript strings (brain backlog, F-77). Proof: tests fail then pass; real osascript round-trip of `#{`/`#$`/`#@`/quotes/backslash ok vs -2741 before.
+- Merged (low risk): none. #43/#44 touch lib, and #42's docs deploy from develop.
+- Tended: no bot PRs were open; confirmed #24/#28/#29 merged (squash). Taste: squash merges, CHANGELOG line format, Dewayne's title/body style.
+- Audit: dependencies (develop e81c053), F-87..F-91; bundle-audit clean; S-14 held locally (from improver).
+- Issues answered: none (#26/#27 already linked to Dewayne's #34/#35). Filed: [#39](https://github.com/MadBomber/shared_tools/issues/39) WHOIS no read timeout (F-82), [#40](https://github.com/MadBomber/shared_tools/issues/40) zeitwerk floor (F-87), [#41](https://github.com/MadBomber/shared_tools/issues/41) IPv6 first-address failure (F-91).
+- Notes: Ruby 4.1.0-preview1 is first on PATH and `bundle exec` fails there (pdf-reader/ttfunk SolveFailure); builders put `~/.rbenv/versions/4.0.9/bin` first. `git -C src worktree add` with relative paths lands under `src/`; brief builders with absolute paths.
+
 ## 2026-11-14 12:26 prompt_manager
 
 Eleventh visit (last: 2026-11-13 03:15), first by mini_bomberbot. `develop` already existed (881aaea at start, 03995ff at end); not created. Run directory was fresh; `src/` detached at origin/develop before the readers started. All five phase-1 agents ran.

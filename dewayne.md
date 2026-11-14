@@ -121,6 +121,11 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Review [smart_message#21](https://github.com/MadBomber/smart_message/pull/21) (test-only, Fixes #14) and [smart_message#22](https://github.com/MadBomber/smart_message/pull/22) (2-line DLQ docs fix). Both green; review loops hit the 3-round cap, so not self-merged. (added 2026-11-12)
 - [ ] Review [smart_message#23](https://github.com/MadBomber/smart_message/pull/23) (DLQ replay rebuilds an entry as its stored class; `lib/`). Details in the 2026-11-12 bomberbot final report. (added 2026-11-12)
 
+## shared_tools (2026-11-14)
+
+- [ ] Review [#43](https://github.com/MadBomber/shared_tools/pull/43) and [#44](https://github.com/MadBomber/shared_tools/pull/44): both add the last line of `#### Fixes` in CHANGELOG, so whichever merges second needs a one-line conflict fix (as will #34/#35).
+- [ ] After merging docs PR [#42](https://github.com/MadBomber/shared_tools/pull/42): check the published Examples pages once the develop docs deploy runs.
+
 ## shared_tools (2026-11-12)
 
 - [ ] Optional, after merging [#9](https://github.com/MadBomber/shared_tools/pull/9): make `test (3.3)`, `test (3.4)` and `test (4.0)` required status checks on `develop` and `main`.
