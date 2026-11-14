@@ -130,12 +130,12 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Optional, after merging [#9](https://github.com/MadBomber/shared_tools/pull/9): make `test (3.3)`, `test (3.4)` and `test (4.0)` required status checks on `develop` and `main`.
 
-## dev (2026-11-13)
+## dev (2026-11-14)
 
-- [ ] Review [dev#22](https://github.com/MadBomber/dev/pull/22) (branch_report keeps git's `fatal:` lines off stderr) and [dev#25](https://github.com/MadBomber/dev/pull/25) (one-line abort on a bad `STATUS_DATE` / `STATUS_WEEK_OF`). No CI, so no checks gate them.
-- [ ] Merge [dev#22](https://github.com/MadBomber/dev/pull/22) **before** [dev#26](https://github.com/MadBomber/dev/pull/26) (`|` in branch/author names), which is stacked on it; then retarget #26 to `develop` (or let the next visit do it).
-- [ ] Decide on [dev#25](https://github.com/MadBomber/dev/pull/25): should `STATUS_DATE` / `STATUS_WEEK_OF` accept only YYYY-MM-DD? Today words like `tuesday` silently become a nearby date; #25 keeps that.
-- [ ] `main` is 36 commits behind `develop` (unchanged since 2026-10-30) and still has `schedule.loki`, which fails to load under asgard 0.6.0. Your checkout `~/sandbox/git_repos/madbomber/dev` is on `main`, so every `import_up "dev/..."` consumer runs the old files. Merge `develop` into `main`, or switch that checkout to `develop`.
+- [ ] `main` is 49 commits behind `develop` and still has `schedule.loki`, which fails to load under asgard 0.6.0. Your checkout `~/sandbox/git_repos/madbomber/dev` is on `main`, so every `import_up "dev/..."` consumer runs the old files. Your direct commit 664614c on `main` (fake_aws files, a `release` abort line) will conflict with develop's #17 abort in `release`: keep develop's line when you merge, and bring the fake_aws files to develop. (added 2026-11-13, updated 2026-11-14)
+- [ ] Review [dev#38](https://github.com/MadBomber/dev/pull/38) (drop branch_report's copied header line; relates to S-3, so not self-merged) and [dev#39](https://github.com/MadBomber/dev/pull/39) (quality.loki comments and skip hints; touches a `.loki`). No CI. (added 2026-11-14)
+- [ ] After you merge #32, bomberbot will PR [#35](https://github.com/MadBomber/dev/issues/35) (rename `status_date_check`, a regression from bot PR #25) and F-51; say on #35 if you'd rather it go first. (added 2026-11-14)
+- [ ] Optional: delete merged bot branches `bomberbot/reek-baseline-task`, `bomberbot/skip-absent-analyzers`, `bomberbot/status-week-monday`. (added 2026-11-14)
 
 ## kbs (2026-11-13)
 

@@ -1229,3 +1229,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Ruby 4.1 and prism (F-88):** decide with F-71 whether to declare `prism` (and drop the Ripper backend) or keep Ripper with a parity test. Found by BomberBot.
 - **Release?** develop is far ahead of main/0.7.1 (ruby_llm 2.x breaking changes plus ~15 fixes in `## Unreleased`). Found by BomberBot.
 - **Upstream:** ruby_llm 2.2.1 warns that aliasing in `Chat::Ownership` breaks on Ruby 4.3; worth a note to ruby_llm. Found by BomberBot.
+
+## dev (2026-11-14, mini_madbot)
+
+- `quality` collects every `*_check` task across all imported files; two files now dodge the suffix by hand (`db_doc_diff`, and #35 from our own #25). An exclude list in quality.loki or an asgard-level gate marker would remove the trap. Needs your design call.
+- F-2 (load-check CI) is stronger now: a job that imports every .loki and runs `asgard quality` in a fixture would have caught #35.
+- `status_report.loki` is "personal client status reporting" while the README says tasks stay universal: same question as F-6 for `db_doc.loki`/`.irbrc`; one decision could settle both.
+- `test_check` shows as "Tests + Coverage" but measures no coverage (copied from asgard's quality.loki). Rename or keep?

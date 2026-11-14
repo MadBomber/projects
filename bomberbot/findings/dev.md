@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-13 | Third run, at 657e6bd, focused on dev#10–#12 (STATUS_WEEK_OF, reek_baseline, SKIP paths); fixtures with asgard 0.6.0, reek 6.6.0, global bundle-audit. F-52 verified, F-36 still holds; S-7, S-8 held locally. (Second run 2026-11-12 at 5a0b89e: F-40 to F-42, S-4 to S-6. First 2026-11-06: S-1, S-2.) |
-| dead code | 2026-11-13 | Fifth-run cheap scan 5a0b89e..657e6bd (dev#10 to #12); nothing new. (Previous: b1c29ed..5a0b89e, 2026-11-12.) |
+| dead code | 2026-11-14 | Sixth-run cheap scan 657e6bd..6d0bb59 (dev#16–#34); nothing new. Fifth-run cheap scan 5a0b89e..657e6bd (dev#10 to #12); nothing new. (Previous: b1c29ed..5a0b89e, 2026-11-12.) |
 | dependencies | 2026-11-13 | Second run, at 657e6bd (dev#10–#12 since 5a0b89e). The new requires `pathname` (core) and `fileutils` (default gem) load on 4.0.9 and 4.1.0-preview1, also inside an empty bundle. Every .loki loads clean with -W:deprecated -W:performance. The flog, flay, reek and bundler-audit gates run without warnings on both Rubies and parse 3.4/4.0 syntax. Every tool gem is at its latest release, and the gh, icalBuddy and gem flags work. Found F-53. (First run 2026-11-12 at 5a0b89e: F-27, F-32 to F-36.) |
 | adoption | n/a | Skipped for dev by spec. |
-| quality | 2026-11-13 | Second run, at 657e6bd, focused on dev#10–#12. RuboCop Lint+Security (TargetRubyVersion 3.4) plus rubocop-strict.yml, flog, flay, reek 6.6.0 over .rb copies; asgard 0.6.0 fixtures for reek_baseline/reek_check, the SKIP paths and STATUS_WEEK_OF. F-47 to F-49, F-45 update. (First run 2026-11-07: F-15 to F-17.) |
+| quality | 2026-11-14 | Third run, at 6d0bb59, focused on dev#16–#22, #25, #26, #30, #31, #33, #34; RuboCop Lint+Security, flog, flay, debride, asgard 0.6.0 fixtures. F-54, F-55, F-16 update; triage added F-56. Earlier: Second run, at 657e6bd, focused on dev#10–#12. RuboCop Lint+Security (TargetRubyVersion 3.4) plus rubocop-strict.yml, flog, flay, reek 6.6.0 over .rb copies; asgard 0.6.0 fixtures for reek_baseline/reek_check, the SKIP paths and STATUS_WEEK_OF. F-47 to F-49, F-45 update. (First run 2026-11-07: F-15 to F-17.) |
 
-Dead-code scan last covered commit: 657e6bd (origin/develop, 2026-11-13, fifth run)
+Dead-code scan last covered commit: 6d0bb59 (origin/develop, 2026-11-14, sixth run)
 
 ## Findings
 
@@ -118,3 +118,14 @@ At 657e6bd; no new commits since the sixth run, so no dead-code scan (still at 6
 At 657e6bd. No new commits, so no dead-code scan; it stays at 657e6bd. The new requires load on both Rubies, and every .loki loads without warnings. The analyzer gates run cleanly on Ruby 3.4/4.0 syntax, and every tool gem is at its latest release. F-27 is still fixed; F-32 to F-36 are unchanged. Next free number: F-54.
 
 - **F-53:** `calendar_collect` says icalBuddy is missing whenever it fails for any reason. `safe_capture2` (status_report.loki:41-46) returns `["", false]` both when the binary is absent and on a non-zero exit, so :267 always prints "icalBuddy not available (brew install ical-buddy)". With icalBuddy 1.10.1 installed but unable to read calendars, it exits 1 with `error: No calendars.` (verified by the main session). Fix: tell ENOENT apart from a non-zero exit, and give the failure its own SKIP message. Best combined with F-52 (#28) after #20 merges. Status: issue [#29](https://github.com/MadBomber/dev/issues/29).
+
+### 2026-11-14, ninth run (quality audit, third run; dead-code scan 657e6bd..6d0bb59)
+
+At 6d0bb59. RuboCop Lint/Security: nothing new (F-17 now at quality.loki:521); flay total 132. Clean fixtures: `reek_check` with `.reek.yml` paths, `quality_rails.loki` loading alone and in either order, bad `STATUS_DATE` stopping `daily_summary` in one line. Dead-code scan reached 6d0bb59: nothing new. Next free number: F-57.
+
+- **F-54:** `status_date_check` (status_report.loki:295, from dev#25) ends in `_check`, so `quality` (quality.loki:39) collects it in any repo importing both files; it returns a `Date`, counted as FAIL (`[FAIL] Status Date`). Fix: rename to e.g. `status_date_guard` and update :298. Status: issue [#35](https://github.com/MadBomber/dev/issues/35); PR after Dewayne's #32 merges (same file).
+- **F-55:** `build`/`install` (gem_tasks.loki:46, :53) use `gem_version`'s `"?.?.?"` fallback in the file name; `release` aborts only after `quality` and `build`. Fixture `VERSION = [0, 1, 0].join(".")` built `pkg/foo-?.?.?.gem`. Status: issue [#36](https://github.com/MadBomber/dev/issues/36), low. Dewayne's direct commit 664614c on `main` also touches `release`.
+- **F-56:** `flog_check` compares with `>` (quality.loki:100, :102) though its desc (:65) and report header (:112) say `>=`. Split out of F-39. Status: issue [#37](https://github.com/MadBomber/dev/issues/37).
+- **F-16 update:** `branch_report` flog 104.7 → 111.9 after dev#22; flay mass 54 at :152/:157 unchanged. Still open, low.
+- **F-5 update:** `branch_report.loki` part PR'd ([#38](https://github.com/MadBomber/dev/pull/38)); `db_doc.loki`, `.irbrc` wait on F-6.
+- **F-39/F-46/F-49 update:** PR'd ([#39](https://github.com/MadBomber/dev/pull/39)); :187 wording and the "Tests + Coverage" label left for Dewayne.
