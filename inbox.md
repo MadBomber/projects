@@ -1236,3 +1236,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - F-2 (load-check CI) is stronger now: a job that imports every .loki and runs `asgard quality` in a fixture would have caught #35.
 - `status_report.loki` is "personal client status reporting" while the README says tasks stay universal: same question as F-6 for `db_doc.loki`/`.irbrc`; one decision could settle both.
 - `test_check` shows as "Tests + Coverage" but measures no coverage (copied from asgard's quality.loki). Rename or keep?
+
+## typed_bus (2026-11-14, mini_madbot)
+
+- **Floors decision (F-5/F-81/F-109):** async 2.0.0/2.1.0 fail on Ruby 4 (2.2.0+ pass), locked gems need Ruby >= 3.3, and simplecov 1.3's `skip` (to clear a deprecation warning on every test run) can't land while CI tests Ruby 3.2. One change could set `required_ruby_version >= 3.3`, `async ~> 2.2` (or ~> 2.38 for `Task#cancel`), drop the 3.2 CI leg, and switch to `skip`. Needs your pick of floors and a workflow edit.
+- **README "Validation & errors" section:** a short table of what raises at construction (bad `type`, `max_pending`, `throttle`) vs at publish (closed channel, wrong type, unknown channel), linking `docs/guides/error-handling.md`. Your call on README scope.
+- **F-12 urgent-ish:** gh-pages tip aeea16e has no `yard/`; `/yard/` is served only from a stale deploy and the next docs deploy will 404 it. Options: `keep_files` + ordered workflows, or one combined docs workflow.

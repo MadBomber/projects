@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-14 13:05 typed_bus
+
+- **develop:** existed (c67f833 at start). Run dir clone was slow; switched to a blobless clone.
+- **Since last visit:** Dewayne merged our [#37](https://github.com/MadBomber/typed_bus/pull/37)/[#38](https://github.com/MadBomber/typed_bus/pull/38)/[#39](https://github.com/MadBomber/typed_bus/pull/39) unchanged and fixed #40-#47, #49, #51 in his own PRs #52-#59/#61/#63; his #60 (#48) and #62 (#50) are open and CONFLICTING, so we avoided channel.rb, delivery_tracker.rb and CHANGELOG.
+- **New PRs:** [#64](https://github.com/MadBomber/typed_bus/pull/64) README throttle types/requirements (adoption, F-110), **merged (low risk)** 72b4a91; [#65](https://github.com/MadBomber/typed_bus/pull/65) root `llms.txt` (adoption, F-25), **merged (low risk)** 81fc31d; [#66](https://github.com/MadBomber/typed_bus/pull/66) test file rename + rspec `.gitignore` lines + `close_all` assertion (brain Backlog F-35/F-55), green, review clean on round 3 of 3 so left for Dewayne. None stacked.
+- **Audit:** dependencies (third run, c67f833): F-82 fixed, F-80 half, F-81 narrowed (async >= 2.2 on Ruby 4), F-5 holds, new F-109 (simplecov deprecation, waits on F-5); S-32/S-40 cleared by #53.
+- **Tended:** no open bot PRs; no stale bot branches.
+- **Issues answered:** none (#48/#50 already covered by Dewayne's PRs).
+- **Issues filed:** [#67](https://github.com/MadBomber/typed_bus/issues/67) YARD/API docs list timeout without nil and throttle as Float (F-111).
+
 ## 2026-11-14 12:41 dev
 
 Ninth visit (last 2026-11-13 06:45). `develop` already existed (6d0bb59); not created. Since last visit Dewayne merged bot #22, #25, #26 and his own #16–#21, #30, #31, #33, #34; his #32 (Fixes #29) is open.
