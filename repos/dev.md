@@ -10,7 +10,7 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-15 (eleventh run)._ Queue full (#48, #52, #53 still waiting, develop unmoved at 8113aab), so no new PRs; this visit ran a dependencies audit and filed #54–#56.
+_Updated 2026-11-15 (twelfth run)._ Queue full again (#48, #52, #53 unreviewed, develop unmoved at 8113aab), so no new PRs; ran the quality audit (F-71 to F-84) and filed #57–#59.
 
 ## Backlog
 
@@ -26,6 +26,10 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-62: unused `require "base64"` in client/ticket.loki breaks every task under `bundle exec asgard` ([dev#54](https://github.com/MadBomber/dev/issues/54)); one-line removal.
 - F-65: an empty pid file reads as a running dev server, pid 0 ([dev#55](https://github.com/MadBomber/dev/issues/55)); one guard in rails/dev.loki.
 - F-66: `|` in a ticket title breaks `ticket --markdown` tables ([dev#56](https://github.com/MadBomber/dev/issues/56)); same fix as #26.
+- F-71: `db restore --jobs 0` leaves the database empty ([dev#57](https://github.com/MadBomber/dev/issues/57)); validate jobs before the drop.
+- F-75: `ticket sync` stops at 2000 tickets but advances the stamp ([dev#58](https://github.com/MadBomber/dev/issues/58)).
+- F-79: `runbook show` can't open `deploy` next to `deploy-rollback` ([dev#59](https://github.com/MadBomber/dev/issues/59)); exact name wins.
+- F-72/F-73: `db diff` merges same-named objects across schemas and blames SET lines on neighbours; one PR in rails/db.loki.
 
 Layout (since #44–#47): Rails-only tasks live in `rails/`, client-workflow tasks in `client/`; `dev/.loki` imports top-level files only. README and llms.txt change with every task change. Merge commits only (rebase and squash are off).
 
@@ -43,6 +47,9 @@ Layout (since #44–#47): Rails-only tasks live in `rails/`, client-workflow tas
 - [dev#54](https://github.com/MadBomber/dev/issues/54) client/ticket.loki requires base64, so bundle exec asgard fails without it (F-62)
 - [dev#55](https://github.com/MadBomber/dev/issues/55) dev status reports an empty pid file as a running server (F-65)
 - [dev#56](https://github.com/MadBomber/dev/issues/56) ticket --markdown tables break on `|` (F-66)
+- [dev#57](https://github.com/MadBomber/dev/issues/57) db restore leaves the database empty when pg_restore rejects --jobs (F-71)
+- [dev#58](https://github.com/MadBomber/dev/issues/58) ticket sync stops at 2000 changed tickets but still advances the sync stamp (F-75)
+- [dev#59](https://github.com/MadBomber/dev/issues/59) runbook show can't open a runbook whose name is part of another's (F-79)
 
 Closed by Dewayne's PRs: #7, #8, #9, #13, #14, #15, #23, #24, #27, #28, #29 (#32), #35 (#42), #36 (#43), #37 (#41).
 
