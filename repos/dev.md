@@ -10,7 +10,7 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-15 (tenth run)._ Dewayne merged #38, #39, fixed #29 and #35–#37 himself and added aws, fake_aws, db, ticket, runbook and the `rails/`, `client/` layout; this visit opened #48, #52, #53 and filed #49–#51.
+_Updated 2026-11-15 (eleventh run)._ Queue full (#48, #52, #53 still waiting, develop unmoved at 8113aab), so no new PRs; this visit ran a dependencies audit and filed #54–#56.
 
 ## Backlog
 
@@ -23,6 +23,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-60: fake_aws smoke exits 0 on failure ([dev#51](https://github.com/MadBomber/dev/issues/51)).
 - F-61: `rails/quality_rails.loki` imports `../quality.loki` by relative path, which double-loads quality through a symlinked `dev/` when rails/ is imported first; use #53's `__FILE__` + `Asgard.glob_escape` form (after #53 merges).
 - F-5: `.irbrc` still opens with another project's path; waits on F-6.
+- F-62: unused `require "base64"` in client/ticket.loki breaks every task under `bundle exec asgard` ([dev#54](https://github.com/MadBomber/dev/issues/54)); one-line removal.
+- F-65: an empty pid file reads as a running dev server, pid 0 ([dev#55](https://github.com/MadBomber/dev/issues/55)); one guard in rails/dev.loki.
+- F-66: `|` in a ticket title breaks `ticket --markdown` tables ([dev#56](https://github.com/MadBomber/dev/issues/56)); same fix as #26.
 
 Layout (since #44–#47): Rails-only tasks live in `rails/`, client-workflow tasks in `client/`; `dev/.loki` imports top-level files only. README and llms.txt change with every task change. Merge commits only (rebase and squash are off).
 
@@ -37,6 +40,9 @@ Layout (since #44–#47): Rails-only tasks live in `rails/`, client-workflow tas
 - [dev#49](https://github.com/MadBomber/dev/issues/49) a bad AWS_EMULATOR_PORT breaks every command importing dev/.loki (F-58)
 - [dev#50](https://github.com/MadBomber/dev/issues/50) fake_aws exports and start break when HOME contains a space (F-57)
 - [dev#51](https://github.com/MadBomber/dev/issues/51) fake_aws smoke exits 0 when its checks fail (F-60)
+- [dev#54](https://github.com/MadBomber/dev/issues/54) client/ticket.loki requires base64, so bundle exec asgard fails without it (F-62)
+- [dev#55](https://github.com/MadBomber/dev/issues/55) dev status reports an empty pid file as a running server (F-65)
+- [dev#56](https://github.com/MadBomber/dev/issues/56) ticket --markdown tables break on `|` (F-66)
 
 Closed by Dewayne's PRs: #7, #8, #9, #13, #14, #15, #23, #24, #27, #28, #29 (#32), #35 (#42), #36 (#43), #37 (#41).
 
