@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 02:10 agent99
+
+Eighteenth visit (last 2026-11-15 01:50), by madbot. `develop` already existed (7d79e63); not created. Run directory was fresh.
+
+- **New PRs:**
+  - [#103](https://github.com/MadBomber/agent99/pull/103) `fix(examples): keep control.rb from stopping itself`. Source: issue #98 (brain F-132). Not stacked. Child-process test fails on develop, passes on branch; suite 115/0; CI green; review clean in 1 round.
+  - [#104](https://github.com/MadBomber/agent99/pull/104) `test: drop unused helpers from the test mocks`. Source: dead code (brain F-60 + F-129). Not stacked. Suite 113/0 before and after; no new RuboCop offenses; CI green; review clean in 1 round.
+- **Merged (low risk):** [#102](https://github.com/MadBomber/agent99/pull/102) `docs: match registry client interface to what Base calls` (issue #99, F-130 + F-131). Docs only, 2 pages, 24 lines, CI green, review clean in 1 round; probe showed a client written to the new page works with `Base`. → develop b0a8bf9. #99 stays open: `Fixes #N` only closes on the default branch.
+- **Merged after approval:** none (no approvals).
+- **Tended:** #97 and #101 rebased onto 7d79e63 (were 1 behind), suites green, CI green. No stray bot branches. 4 bot PRs open now (#97, #101, #103, #104).
+- **Audit:** security (fifth run, delta 28a6347..7d79e63). New S-22 (held locally, low). No new F-findings. Improver: F-160..F-164.
+- **Issues answered:** none (no comments from anyone on #69, #98–#100).
+- **Issues filed:** [#105](https://github.com/MadBomber/agent99/issues/105) (F-160), [#106](https://github.com/MadBomber/agent99/issues/106) (F-6/F-34), [#107](https://github.com/MadBomber/agent99/issues/107) (F-135).
+- **Deviation:** builders started alongside phase 1 to save time (all three were brain backlog / open-issue items, which come first anyway). `src/` was cloned on `main` instead of being detached at `origin/develop`; agents read `origin/develop` refs. Two builders' relative worktree paths landed under `src/build/` and were moved. Fix both in the next brief.
+
 ## 2026-11-15 02:00 prompt_manager
 
 Thirteenth visit (last 2026-11-15 01:05), by madbot. `develop` already existed (5d9ac2c, unchanged); not created. Run directory was fresh. All five phase-1 agents ran.

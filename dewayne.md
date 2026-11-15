@@ -39,6 +39,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## agent99
 
 - [ ] Review and merge into `develop` [#97](https://github.com/MadBomber/agent99/pull/97) (Gemfile.lock patch/minor update; details on why are in your local notes) and [#101](https://github.com/MadBomber/agent99/pull/101) (registry client logs HTTP status; lib, review cap hit). (added 2026-11-15)
+- [ ] Review and merge into `develop` [#103](https://github.com/MadBomber/agent99/pull/103) (examples/control.rb skips itself, single `fini`; Fixes #98) and [#104](https://github.com/MadBomber/agent99/pull/104) (drop unused test-mock helpers). Both green, review clean; not low risk because they delete code. #97, #103 and #104 each append to the end of CHANGELOG `[Unreleased]` → Fixed, so the second and third to merge will need a one-line rebase. (added 2026-11-15)
+- [ ] Security note S-22 for agent99 is held in your local notes (low; part of S-1). (added 2026-11-15)
 - [ ] Rebase your [#88](https://github.com/MadBomber/agent99/pull/88) (#69): it is CONFLICTING with develop in 4 files after #77–#95. (added 2026-11-15)
 - [ ] Decide json 3.x (F-70) and whether the gemspec should set floors for sinatra/rack, so gem users get the versions [#97](https://github.com/MadBomber/agent99/pull/97) locks for development. (added 2026-11-15)
 - [ ] The agent99 docs site is 404 (GitHub Pages disabled, F-25). Before re-enabling Pages, handle the held-local note S-6 for this repo (same one-line `mkdocs.yml` fix as smart_message#9), then redeploy. (added 2026-11-10)
