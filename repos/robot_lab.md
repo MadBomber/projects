@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Thirteenth visit (2026-11-15 02:17, resumed 03:53)._ Dewayne had merged #70, #74, #75 and his own #52–#65, #81–#89, so the queue was empty. Opened [#93](https://github.com/MadBomber/robot_lab/pull/93) (examples 09–11 amazing_print crash, F-103) and [#94](https://github.com/MadBomber/robot_lab/pull/94) (CHANGELOG backfill, F-102), both **merged (low risk)** (develop 7fe3145, 7394a10). Opened [#95](https://github.com/MadBomber/robot_lab/pull/95) (history compression orphans tool results, F-105), `lib/` so it waits for Dewayne. Ran **adoption** v3: the live docs site is now built from develop (F-101, Dewayne). Filed #90 (F-53), #91 (F-106), #92 (F-107). No issue needed a reply. `develop` 7394a10 still 31 behind `main`.
+
 _Twelfth visit (2026-11-13 08:55)._ Skipped building: review queue full (#70, #74, #75 rebased onto develop afd9131 by the tender, green locally, unreviewed). Ran the **dependencies** v4 delta (no new findings; F-26 correction: the dev bundle masks the 4.1 tsort failure). Improver read bus_poller/network/task/tool: filed #78 (BusPoller strands queued messages after a failed delivery, F-94), #79 (ractor scheduler not shut down on failure, F-95), #80 (duplicate `Network#task` name silently dropped, F-96). No issue needed a reply. `develop` afd9131 still 31 behind `main`.
 
 _Eleventh visit (2026-11-13 05:15)._ Skipped building: review queue full (#70, #74, #75 open, unreviewed, MERGEABLE). Ran a targeted **security** v3 audit (run_config, state_proxy, hook_context, agent_skill_matching, main's MCP files) plus a dead-code delta (nothing): F-90–F-93, S-11 held locally. Filed #76 (`HookContext#to_h` drops inherited readers, F-90) and #77 (`DotState` bracket access stores the wrong value, F-93). No issue needed a reply. `develop` afd9131 still 31 behind `main`.
@@ -43,50 +45,31 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 else in this repo.
 
 - Sync `main` into `develop` (Dewayne, see `dewayne.md`). It unblocks almost everything below.
-- F-8 `docs/llms.txt`, after the sync (written against 0.6.0).
-- F-6 test CI: issue [#30](https://github.com/MadBomber/robot_lab/issues/30), after the sync.
-- F-9 `documentation_uri`: issue [#31](https://github.com/MadBomber/robot_lab/issues/31) (gemspec, so Dewayne reviews).
-- F-7 extension gems pin `robot_lab ~> 0.3.0`: issue [#29](https://github.com/MadBomber/robot_lab/issues/29) (needs releases of the extension gems).
-- F-2 tracked `examples/**/*.log` files, after the sync.
-- F-16 `DelegationFuture#value` spurious-wakeup timeout: issue [#33](https://github.com/MadBomber/robot_lab/issues/33), fixed on develop by #34 (9d407dd); closes with the sync or by hand.
-- F-24/F-25 README tool examples: issue [#35](https://github.com/MadBomber/robot_lab/issues/35), after the sync.
-- F-26 `tsort` on Ruby 4.1: issue [#36](https://github.com/MadBomber/robot_lab/issues/36); root fix in simple_flow's gemspec.
-- F-43 `Narrator.enable!` double registration: issue [#37](https://github.com/MadBomber/robot_lab/issues/37) (narrator.rb sync-safe; test in a new file). Covered by Dewayne's PR #61; not a bomberbot pick.
-- F-48 test_helper `rescue LoadError` modifier never fires: issue [#41](https://github.com/MadBomber/robot_lab/issues/41), after the sync.
-- F-46 dead `Robot#compact_if_over_context_window`: issue [#42](https://github.com/MadBomber/robot_lab/issues/42), after the sync.
-- F-49/F-63 stale comments: [#66](https://github.com/MadBomber/robot_lab/pull/66), **merged (low risk)** 2026-11-13 as develop c700ba6.
-- F-60 `token_budget` unflagged after `reset_token_totals`: issue [#44](https://github.com/MadBomber/robot_lab/issues/44). Sync-safe (`robot/budget.rb`, new test file); fix proven in scratch (1302 green). Touches the same file as PR #40, different hunks: build after #40 merges or stack on it.
-- F-59 released 0.6.0 breaks on ruby_llm 2.2.0: issue [#43](https://github.com/MadBomber/robot_lab/issues/43). Fix ships from `main`; needs Dewayne's choice (cap `< 2.2` + 0.6.1, or adapt `ToolCallGating`).
-- F-54 `Robot#call` rescue `TypeError` on bad context: issue [#45](https://github.com/MadBomber/robot_lab/issues/45), after the sync.
-- F-67 `Memory#wait_for_key` pipe leak: issue [#46](https://github.com/MadBomber/robot_lab/issues/46). Sync-safe hunk; ~3 lines + test.
-- F-68 `doom_loop_threshold` <= 0 crashes mid-run: issue [#47](https://github.com/MadBomber/robot_lab/issues/47). Sync-safe `initialize`; bundle F-69 dedupe if small.
-- F-66 Redis `:auto` backend never falls back / changes types: issue [#48](https://github.com/MadBomber/robot_lab/issues/48). Part (b) `ping` fix after the sync.
-- F-73 Rails example `RobotLabThread#last_result` returns the oldest result: issue [#49](https://github.com/MadBomber/robot_lab/issues/49). Covered by Dewayne's PR #54; not a bomberbot pick.
-- F-74 `Network#parallel` YARD example raises `NoMethodError`: issue [#50](https://github.com/MadBomber/robot_lab/issues/50), comment-only, after the sync.
-- **Dewayne's own PRs #52–#65 (2026-11-12) cover #30, #31, #36, #37, #41, #42, #44–#51; don't touch their files.**
-- F-81 `Ledger#reserve!` refuses exactly `remaining` (Float rounding): [#70](https://github.com/MadBomber/robot_lab/pull/70) **PR open**.
-- F-77 `examples/25_history_search.rb` json-before-Bundler: issue [#67](https://github.com/MadBomber/robot_lab/issues/67). Fixed on develop by [#73](https://github.com/MadBomber/robot_lab/pull/73), **merged (low risk)** 2026-11-13 as afd9131; only bites on main, carries through the sync (hunk-safe).
-- F-78 `examples/09_chaining.rb` bare robot goes to Anthropic: issue [#68](https://github.com/MadBomber/robot_lab/issues/68) (example half; lib half needs Dewayne).
-- F-82 docs/comments say TF-IDF and quote a stale `ToolLoopError` message: issue [#69](https://github.com/MadBomber/robot_lab/issues/69), after the sync.
-- F-72 unused dev gems (`state_machines*`, `lumberjack`): issue [#51](https://github.com/MadBomber/robot_lab/issues/51), after the sync.
-- F-56 `RobotResult.from_hash` drops `duration`/`delegated_by`: [#75](https://github.com/MadBomber/robot_lab/pull/75) **PR open**.
-- F-88 anonymous `Hook` subclass crashes `Hook.namespace`: [#74](https://github.com/MadBomber/robot_lab/pull/74) **PR open**. #74 and #75 each add a CHANGELOG `[Unreleased]` line; the second to merge needs a trivial rebase.
-- F-85 budget reservation leaks when a run is interrupted (Timeout/Interrupt): issue [#71](https://github.com/MadBomber/robot_lab/issues/71). `robot/hooking.rb` (develop-only hunk, not in Dewayne's PRs); `ensure` + flag, test in `budget_leak_test.rb`. First pick next visit.
-- F-87 duplicate `hook_registries` in `robot.rb`: issue [#72](https://github.com/MadBomber/robot_lab/issues/72), after #57/#59 merge.
-- F-90 `HookContext#to_h` drops inherited readers (incl. `event`) and raises on the base class: issue [#76](https://github.com/MadBomber/robot_lab/issues/76). Hunk-safe (identical hunk on both branches), new test file; ~3 lines. Fix proven in scratch (1307 green). Pick once the queue has room.
-- F-93 `DotState` `ctx.local[:k] = v` silently stores the key name: issue [#77](https://github.com/MadBomber/robot_lab/issues/77). Hunk-safe, same file as F-90 (build together or stack); ~7 lines + test.
-- F-94 `BusPoller` strands queued messages after a failed delivery: issue [#78](https://github.com/MadBomber/robot_lab/issues/78). Hunk-safe `bus_poller.rb` + `bus_poller_test.rb` (not in any open PR); ~10 lines. Pick once the queue has room.
-- F-95 ractor scheduler not shut down when a robot fails: issue [#79](https://github.com/MadBomber/robot_lab/issues/79). Hunk-safe `network.rb` (Dewayne's #53 touches a different hunk); ~4 lines + stubbed test.
-- F-96 `Network#task` duplicate name silently dropped: issue [#80](https://github.com/MadBomber/robot_lab/issues/80). One guard line; same file as F-95, bundle or stack.
+- **Done on develop as of 2026-11-15** (issues close with the sync/release, since `Closes #N` only fires on `main`): F-6 #30, F-9 #31, F-16 #33, F-26 #36, F-43 #37, F-48 #41, F-46 #42, F-60 #44, F-54 #45, F-67 #46, F-68 #47, F-66 #48, F-73 #49, F-74 #50, F-72 #51, F-77 #67, F-78 example half #68, F-82 #69, F-85 #71, F-87 #72, F-90 #76, F-93 #77, F-94 #78, F-95 #79, F-96 #80, F-81, F-56, F-88, F-102, F-103.
+- F-101 live docs site built from develop (pre-0.3.0 install requirements): Dewayne re-deploys from `main` and decides F-10. **Hold every `docs/` PR until then.**
+- F-105 history compression orphans tool results: [#95](https://github.com/MadBomber/robot_lab/pull/95) **PR open**.
+- F-53 async `Robot#delegate` never settles on a non-StandardError: issue [#90](https://github.com/MadBomber/robot_lab/issues/90). Hunk-safe `robot.rb`; ~1 line + new test file. First pick next visit.
+- F-106 `subscribe_pattern` glob leaves regex metacharacters live: issue [#91](https://github.com/MadBomber/robot_lab/issues/91). Hunk-safe `memory.rb`; ~3 lines + test (prototype in improver scratch, gone with run dir).
+- F-107 `Memory#get(:a, :b, wait: N)` waits N per key: issue [#92](https://github.com/MadBomber/robot_lab/issues/92). Keep the change inside `get_multiple` to stay hunk-safe; same file as F-106, stack.
+- F-41 CRLF SKILL.md rejected as "missing 'name'": one-line, hunk-safe, no user report yet.
+- F-2 `examples/14_rusty_circuit/show.log` still tracked (identical on both branches; easy removal). Writers' Room `.log` files and root planning notes: Dewayne (inbox).
+- F-8 `docs/llms.txt`, after the sync and F-101.
+- F-104 five dead docs anchors (develop-only pages), after the sync and F-101.
+- F-24/F-25 README tool examples: issue [#35](https://github.com/MadBomber/robot_lab/issues/35); correct on develop's ruby_llm 1.16, so after the sync.
+- F-59 released 0.6.0 breaks on ruby_llm 2.2.x: issue [#43](https://github.com/MadBomber/robot_lab/issues/43), Dewayne's choice (still true on 2.2.2).
+- F-7 extension gems pin `robot_lab ~> 0.3.0`: issue [#29](https://github.com/MadBomber/robot_lab/issues/29) (extension releases).
 
 ## Open bomberbot PRs
 
-- [#74](https://github.com/MadBomber/robot_lab/pull/74) `madbot/anon-hook-namespace` → develop. fix: nil namespace for anonymous Hook subclasses (F-88). **PR open**. lib, not low risk. Rebased onto afd9131 2026-11-13 08:55 (bae3f96). Fails-before (1F/2E), 1312 green, review clean round 1.
-- [#75](https://github.com/MadBomber/robot_lab/pull/75) `madbot/result-from-hash-fields` → develop. fix: restore duration and delegated_by in from_hash (F-56). **PR open**. lib, not low risk. Rebased onto afd9131 2026-11-13 08:55 (9c40f26). Fails-before, 1308 green, review clean round 1.
-- [#70](https://github.com/MadBomber/robot_lab/pull/70) `bomberbot/ledger-reserve-remaining` → develop. fix: let Ledger reserve exactly the remaining budget (F-81). **PR open**. lib, so not low risk. Rebased onto afd9131 2026-11-13 08:55 (4c13c3b). 1308 green, fails-before proven, review clean at the 3-round cap.
+- [#95](https://github.com/MadBomber/robot_lab/pull/95) `madbot/compress-keep-tool-calls` → develop. fix: keep assistant tool calls with text during history compression (F-105). **PR open**. lib, not low risk. Fails-before/pass-after, 1341 green, review clean round 1, CI green, MERGEABLE.
 
 ## Merged bomberbot PRs
 
+- [#94](https://github.com/MadBomber/robot_lab/pull/94) docs: add missing CHANGELOG entries for merged fixes (F-102). **Merged (low risk)** 2026-11-15 as develop 7394a10. CHANGELOG only, +31.
+- [#93](https://github.com/MadBomber/robot_lab/pull/93) fix(examples): load amazing_print before common (F-103). **Merged (low risk)** 2026-11-15 as develop 7fe3145. +7/−3.
+- [#75](https://github.com/MadBomber/robot_lab/pull/75) fix: restore duration and delegated_by in from_hash (F-56). Merged (squash) by Dewayne 2026-11-13 as develop b45e351.
+- [#74](https://github.com/MadBomber/robot_lab/pull/74) fix: nil namespace for anonymous Hook subclasses (F-88). Merged (squash) by Dewayne 2026-11-13 as develop 966ebd2.
+- [#70](https://github.com/MadBomber/robot_lab/pull/70) fix: let Ledger reserve exactly the remaining budget (F-81). Merged (squash) by Dewayne 2026-11-13 as develop 10ee705.
 - [#73](https://github.com/MadBomber/robot_lab/pull/73) fix(examples): load common before json in example 25 (F-77, Fixes #67). **Merged (low risk)** 2026-11-13 as develop afd9131. 2 lines.
 - [#66](https://github.com/MadBomber/robot_lab/pull/66) docs: correct stale Convergence and ToolLoopError comments (F-49, F-63). **Merged (low risk)** 2026-11-13 as develop c700ba6. Comment-only, 3 lines.
 - [#40](https://github.com/MadBomber/robot_lab/pull/40) fix: release budget reservation when a run fails (F-31). Merged by Dewayne 2026-11-12 as develop cfae25c.

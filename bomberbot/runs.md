@@ -144,6 +144,22 @@ Visit 9, by bomberbot (last recorded: 2026-11-13 01:10). `develop` already exist
 - **Issues filed:** [#56](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/56) (F-87, `DEFAULT_CONFIG` keeps require-time env values).
 - **Dewayne:** review order #57 → #55/#58; approve #37's held CI runs and refresh its body; close #30 by hand; MFA before releasing with #55.
 
+## 2026-11-15 02:17 robot_lab
+
+Visit by madbot (last 2026-11-13 08:55). **Resumed** at 03:53 after the first session was cut off in phase 3 (all PRs, merges and issues were already done; brain and cleanup remained). `develop` existed; not created. Run directory was fresh.
+
+- **New PRs:**
+  - [#93](https://github.com/MadBomber/robot_lab/pull/93) fix(examples): load amazing_print before common. Source: **adoption** (F-103). Not stacked. 09/10/11 crashed with `NoMethodError` before; after, 10 runs to the end and 09/11 stop at the expected missing key; suite 1340/0; review clean round 1; CI green. **Merged (low risk)** → develop 7fe3145.
+  - [#94](https://github.com/MadBomber/robot_lab/pull/94) docs: add missing CHANGELOG entries for merged fixes. Source: **adoption** (F-102). Not stacked. CHANGELOG only, +31, each line checked against its commit; review 2 rounds, clean; CI green. **Merged (low risk)** → develop 7394a10.
+  - [#95](https://github.com/MadBomber/robot_lab/pull/95) fix: keep assistant tool calls with text during history compression. Source: **judgment** (improver, F-105). Not stacked. Fails-before/pass-after; suite 1341/0; review clean round 1; CI green, MERGEABLE. `lib/` → waits for Dewayne.
+- Low-risk merges used `--squash` to match how Dewayne merges this repo (tender: every PR since #70 squashed), not the prompt's default `--rebase`.
+- **Merged after approval:** none needed; Dewayne had already merged #70, #74, #75 (squash, no comment) and his own #52–#65, #81–#89.
+- **Tended:** none open; no stale bot branches; develop CI green.
+- **Audit:** adoption v3 (develop 1c6d37f): F-101–F-104. Improver: F-105–F-107, no bugs in #83–#89.
+- **Issues answered:** none (only our own issues and our earlier #21 note).
+- **Issues filed:** [#90](https://github.com/MadBomber/robot_lab/issues/90) (F-53), [#91](https://github.com/MadBomber/robot_lab/issues/91) (F-106), [#92](https://github.com/MadBomber/robot_lab/issues/92) (F-107).
+- Process slip: one builder ran a command in `~/.prompts` after a failed `cd` (set `main`'s upstream, created `.bundle`); it repaired both, and `main` tracks `origin/main` again.
+
 ## 2026-11-15 00:47 sqa
 
 **Resumed** at 02:15 after the first session stopped during phase 3 (all PRs and issues were already done; brain and cleanup remained). `develop` existed (ea405df); not created. No leftover run dir.
