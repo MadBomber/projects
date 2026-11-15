@@ -10,7 +10,7 @@ Knowledge-based system gem, idle since early 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-15 (third visit)._ Queue full: five bot PRs green and unapproved, so no new PRs. Ran the adoption audit (chaining from `perform` is a silent no-op, F-96, needs a decision) and filed #62 (SQLite timestamps), #63 (String message jams the queue) and #64 (docs call missing `engine.facts`/`close`).
+_Updated 2026-11-15 (fourth visit)._ Queue still full (five bot PRs green and unapproved), so no new PRs. The quality audit reproduced decompiler and DSL defects; filed #65 (`type:` predicates never match), #66 (README DSL example misfires) and #67 (wrong-type helper value raises mid-`add_fact`).
 
 ## Backlog
 
@@ -40,6 +40,10 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - SQLite timestamps shifted by the UTC offset (F-104, issue [#62](https://github.com/MadBomber/kbs/issues/62)).
 - String message blocks its SQLite topic (F-105, issue [#63](https://github.com/MadBomber/kbs/issues/63)).
 - `engine.facts`/`Engine#close`/`KnowledgeBase#close` the docs use (F-97, issue [#64](https://github.com/MadBomber/kbs/issues/64)).
+- Predicates and `?variables` on a `type:` attribute never match (F-117, issue [#65](https://github.com/MadBomber/kbs/issues/65)); the improver has a ~10-line prototype.
+- README "Using the DSL" example and `advanced_example_dsl.rb` misfire with several stocks (F-118, issue [#66](https://github.com/MadBomber/kbs/issues/66)); docs/examples only.
+- Condition helper raises on a wrong-type value and leaves the fact half added (F-115, issue [#67](https://github.com/MadBomber/kbs/issues/67)).
+- Decompiler `&&`/`||` parentheses (F-111) and `!`/`nil?` placeholders (F-112); hold until #56/#61 merge.
 
 ## Open bomberbot PRs
 

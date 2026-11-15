@@ -1459,3 +1459,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - [ ] **Unified\* models:** two of four raw-SQL methods in `UnifiedDocument` are broken (#77, #78) and coverage is thin. Is the Unified* family (F-83's "Ragdoll 2.0") staying, or folding back into `Document`/`Content`? Decides whether #78 is worth fixing or the code is a deprecation candidate.
 - [ ] **F-11 ruby_llm 2.x:** a full relock to ruby_llm 2.2.2 passes the full DB suite; only F-160 (`models.refresh!` renamed) and F-60 (Azure endpoint mapping) need code. Also clears the S-1 remainder. Say go and bomberbot will open it as one PR.
 
+
+## kbs (2026-11-15 07:58, madbot)
+
+- [ ] **Review queue:** five bot PRs (#53, #55, #56, #57, #61) have sat green since early today; four kbs visits today have skipped new work. A quick pass would unblock #64/#65/#66/#67 fixes.
+- [ ] **F-113:** since #47, attributes named `range`, `equals`, `one_of`, `less_than`, `greater_than`, `not_equal`, `satisfies` are silently dropped in a block-form `on`. Document them as reserved, or warn when a helper result is discarded?
+- [ ] **F-116:** docs say a missing key doesn't match `key: nil`; code matches it. Change the code (check `key?`; behaviour change) or the one doc line?
+- [ ] **F-120:** `on(:order) { id oid }` stores a `KBS::DSL::Variable` and never fires. Make the evaluator bind it (2 lines) or deprecate `KBS::DSL::Variable`?
+- [ ] **Idea:** keep the fact type under an internal key instead of `:type`, so user `type:` attributes can't collide (root cause of #65). Touches public `Fact#matches?`.
+- [ ] **Idea:** raise on unknown names in a block-form `on` (`value greter_than(100)` silently becomes a pattern key), and raise in `RuleBuilder#build` for a rule with no conditions. Both are small behaviour changes; decide with F-55.
+- [ ] **#30:** fixed on develop by #38 but unreleased. Close now, or at release?
