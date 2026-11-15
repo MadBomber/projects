@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-15 (fourth visit)._ Dewayne merged #20-#24, fixed #25-#29 and #19 himself (#30-#34) and released 0.6.1; this visit merged #36 as low risk (develop 4ee31fe), opened #37 and #39 (stacked on #37), filed #38.
+_Updated 2026-11-15 (fifth visit)._ No approvals since the fourth visit; #37/#39 rebased and green. This visit merged #42 as low risk (develop d87e1e2), opened #40 (Fixes #38, stacked on #39) and #41 (docs), and filed #43.
 
 ## Backlog
 
@@ -18,16 +18,21 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - F-44: a leading `--debug`/`--verbose` before `jobs list` / `schedule list` / `watcher list` aborts outside a project. **PR open** ([#37](https://github.com/MadBomber/asgard/pull/37))
 - F-45: `asgard --nope` reports `Could not find command "__nope"`. **PR open** ([#39](https://github.com/MadBomber/asgard/pull/39), stacked on #37)
-- F-46: `asgard --debug=true build` prints usage and exits 0 without running. Issue [#38](https://github.com/MadBomber/asgard/issues/38); Dewayne usually fixes filed issues himself, check first.
+- F-46: `asgard --debug=true build` prints usage and exits 0 without running. Issue [#38](https://github.com/MadBomber/asgard/issues/38). **PR open** ([#40](https://github.com/MadBomber/asgard/pull/40), stacked on #39; also hidden and dashed task names after a leading flag)
+- F-49: `current_task` missing from docs/reference.md's task-body table. **PR open** ([#41](https://github.com/MadBomber/asgard/pull/41))
+- F-50: `asgard TASK --help` runs the task. Issue [#43](https://github.com/MadBomber/asgard/issues/43); Dewayne usually fixes filed issues himself, check first.
 - F-47: develop lacks main's released 0.6.1 CHANGELOG text (`61a1111`). Needs Dewayne (dewayne.md).
 
 ## Open bomberbot PRs
 
 - [#37](https://github.com/MadBomber/asgard/pull/37) fix(cli): keep list commands machine-wide behind --debug or --verbose (**PR open**, 2026-11-15; F-44, Refs #27)
 - [#39](https://github.com/MadBomber/asgard/pull/39) fix(cli): name an unknown leading option as an option (**PR open**, 2026-11-15; F-45; stacks on #37)
+- [#40](https://github.com/MadBomber/asgard/pull/40) fix(cli): every form of a leading --debug or --verbose runs the task named after it (**PR open**, 2026-11-15; F-46, Fixes #38; stacks on #39)
+- [#41](https://github.com/MadBomber/asgard/pull/41) docs: list current_task in the task-body reference (**PR open**, 2026-11-15; F-49; docs/ deploys, not self-merged)
 
 ## Merged bomberbot PRs
 
+- [#42](https://github.com/MadBomber/asgard/pull/42) test: cover dep_result and dep_results (merged as low risk by madbot 2026-11-15, d87e1e2; F-48)
 - [#36](https://github.com/MadBomber/asgard/pull/36) docs: say only tests call Changes.forget (merged as low risk by madbot 2026-11-15, 4ee31fe; F-18)
 - [#24](https://github.com/MadBomber/asgard/pull/24) docs: fix reserved helper name, doctor exit, robots example (merged 2026-11-13)
 - [#23](https://github.com/MadBomber/asgard/pull/23) fix(logs): truncate_log NAME skips an entry with no log yet (merged 2026-11-13)

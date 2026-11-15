@@ -7,6 +7,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Review [asgard#37](https://github.com/MadBomber/asgard/pull/37) (a leading `--debug`/`--verbose` no longer stops `jobs list` / `schedule list` / `watcher list` working outside a project; Refs #27). Lib, green. Then [asgard#39](https://github.com/MadBomber/asgard/pull/39), stacked on it (`asgard --nope` says `unknown option '--nope'` instead of `Could not find command "__nope"`); retarget #39 to `develop` once #37 merges, or the next visit will. (added 2026-11-15)
 - [ ] Bring `develop` up to `main`: merge `main` into `develop` so it has the released 0.6.1 CHANGELOG text (`61a1111`, tagged `v0.6.1`); develop's CHANGELOG is missing 26 lines of it (F-47). Bots may not push `develop`; say on a visit if you'd rather a bot PR did it. (added 2026-11-15)
+- [ ] Review [asgard#40](https://github.com/MadBomber/asgard/pull/40) (Fixes #38: `--debug=true`, `--no-debug` and hidden/dashed task names after a leading flag; stacked on #39, so merge #37, #39, #40 in order; decide whether to keep the `--no-`/`--skip-` forms) and [asgard#41](https://github.com/MadBomber/asgard/pull/41) (one docs row for `current_task`; not self-merged because docs/ deploys Pages). (added 2026-11-15 06:40)
 
 ## aia
 

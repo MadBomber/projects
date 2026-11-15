@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 06:11 asgard
+
+Fifth visit (last 2026-11-15 03:12), by madbot. `develop` already existed (4ee31fe); not created. Run directory was fresh; `src/` cloned onto `main` and was detached at develop a few minutes into phase 1 (responder, triage and auditor worked from `git archive` copies of develop). All five phase-1 agents ran.
+
+- **New PRs:**
+  - [#40](https://github.com/MadBomber/asgard/pull/40) fix(cli): every form of a leading --debug or --verbose runs the task named after it. Source: **brain** (F-46) / **issue** #38 (Fixes #38), plus the hidden-task gap the responder and triage found. **Stacks on #39.** 5 new tests fail on base, pass; suite 663 green; rubocop clean; review round 1 caught dashed task names (fixed), round 2 clean. CI green. Lib, awaits Dewayne.
+  - [#41](https://github.com/MadBomber/asgard/pull/41) docs: list current_task in the task-body reference. Source: **adoption** (improver, F-49). +1 line; `mkdocs build --strict` clean; suite 655 green; review clean. Not self-merged (docs/ deploys Pages).
+  - [#42](https://github.com/MadBomber/asgard/pull/42) test: cover dep_result and dep_results. Source: **judgment** (improver, F-48). Test-only, +41; two mutations each fail a test; suite 658 green; review clean. **Merged (low risk)** → develop d87e1e2.
+- **Merged after approval:** none (no approvals). **Tended:** #37 and #39 rebased onto 4ee31fe (47e78a7, then 95d07b0), green; #39 got a commit moving `help_target`'s doc comment back above it (b3ca217). 4 bomberbot PRs open: #37, #39, #40, #41.
+- **Audit:** security (second, develop 4ee31fe): bundle-audit clean; S-3 held locally (needs decision, with S-2).
+- **Issues answered:** none (#38 is ours, no comments; the #38 body's repro and file location are corrected in #40's body). **Issues filed:** [#43](https://github.com/MadBomber/asgard/issues/43) `asgard TASK --help` runs the task (F-50).
+- Findings S-3, F-48..F-54; F-51, F-52 need Dewayne's decision (inbox). Findings file statuses refreshed (F-18, F-24, F-5, F-13).
+
 ## 2026-11-15 06:05 ragdoll
 
 Visit by madbot (last 2026-11-15 05:05). `develop` already existed (eccbab3, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.
