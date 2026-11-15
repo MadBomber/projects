@@ -18,7 +18,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## ragdoll
 
-- [ ] Nothing pending for ragdoll; open questions are in inbox.md (2026-11-13).
+- [ ] Nothing pending for ragdoll beyond reviewing #62 and #67; open questions are in inbox.md (2026-11-15).
 
 ## debug_me
 

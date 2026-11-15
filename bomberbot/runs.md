@@ -17,6 +17,21 @@ Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Ent
 - Issues answered: none (#4 still awaits a design call; BomberBot's earlier note still accurate).
 - Issues filed: [#89](https://github.com/MadBomber/sqa/issues/89) (F-78/F-79 Integer division), [#90](https://github.com/MadBomber/sqa/issues/90) (F-80/F-81 CHANGELOG + fpop.md), [#91](https://github.com/MadBomber/sqa/issues/91) (F-82 Polars warning).
 
+## 2026-11-15 02:03 ragdoll
+
+Visit by madbot (last 2026-11-13 01:27). `develop` already existed (0168977); not created. Run directory was fresh.
+
+- **New PRs:**
+  - [#62](https://github.com/MadBomber/ragdoll/pull/62) `chore(deps): drop unused searchkick, opensearch-ruby and ruby-progressbar`. Source: dead code / dependencies (brain F-51 + F-55). Not stacked. Suite 1377/0 before and after; `gem build` and load checked; dependents (ragdoll-cli/-rails/-docs) unaffected; CI green; review clean in 1 round. Gemspec + lock, not low risk.
+  - [#67](https://github.com/MadBomber/ragdoll/pull/67) `fix(search): record limit for hybrid searches`. Source: brain F-64. Not stacked. DB test fails before (`Expected 3, Actual nil`), passes after; CI-mode 1377/0; CI green; review clean in 1 round. `lib/`, not low risk. CHANGELOG-only conflict with #62.
+- **Merged (low risk):** [#66](https://github.com/MadBomber/ragdoll/pull/66) `test: assert search_similar_content's hash result when embedding is nil` (brain F-99). Test-only, +3/-1, CI green, review clean in 1 round; local full DB suite now 1377 runs, 0 failures. → develop eccbab3. (Its PR body names `/simplify` and `/code-review`; the builder used the code-review agent because the skills weren't available.)
+- **Merged after approval:** none (Dewayne had already merged #56–#58).
+- **Tended:** nothing open; no stray bot branches; develop CI green.
+- **Audit:** dead code (develop 0168977): F-103–F-109; improver F-120–F-127 and S-6 (held locally).
+- **Issues answered:** none (no open issues; no outside follow-ups on closed ones).
+- **Issues filed:** [#63](https://github.com/MadBomber/ragdoll/issues/63) (F-106), [#64](https://github.com/MadBomber/ragdoll/issues/64) (F-121), [#65](https://github.com/MadBomber/ragdoll/issues/65) (F-122/F-123). Main session re-ran each repro before filing.
+- **Deviation:** builders for #62 and #66/#67 started before the auditor/improver finished (all were verified brain findings, which rank first). Default rbenv Ruby 4.1.0-preview1 breaks Bundler on this repo; builders used `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`. Shared `ragdoll_test` DB guarded with a `/tmp/ragdoll_test_db.lock` mkdir mutex.
+
 ## 2026-11-15 02:10 agent99
 
 Eighteenth visit (last 2026-11-15 01:50), by madbot. `develop` already existed (7d79e63); not created. Run directory was fresh.

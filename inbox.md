@@ -1333,3 +1333,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-83** `MultiTimeframe#indicators(indicator: :bbands)` returns nil per timeframe: raise `BadParameterError`, or document the four supported indicators?
 - **F-84** `rebalance` trades carry absolute `shares` but signed `value`: keep (docs match), or make `value` absolute?
 - **ferrum 0.21:** `bin/sqa-yf-fetch:125` uses `Frame#evaluate_async`, deprecated and removed in ferrum 0.21; needs moving to `#evaluate` with `await` before a ferrum bump.
+
+## ragdoll (2026-11-15 visit)
+
+- **README has nothing on post-0.1.12 features.** Tags, propositions, hybrid RRF search, `timeframe:`/`tags:` on `Ragdoll.search`, and `enrich_document` exist only in code. One "Search filters and enrichment" section would close the biggest adoption gap; best written once F-83 (paused or active?) is settled. Pairs with F-81 (CHANGELOG `[Unreleased]` upgrade notes for the anyway_config migration, which need your voice).
+- **One result shape for all search types?** Adding `tags:` or `timeframe:` to `Ragdoll.search` switches to hybrid, whose rows have string keys (`'id'`, `'rrf_score'`, `client.rb:189-193`) while semantic rows use symbols. Document one row shape, or normalise?
+- **`Ragdoll::VERSION`.** `Ragdoll.version` scans ObjectSpace and returns `["Ragdoll::Core: 0.2.0"]`; `Ragdoll::VERSION` is undefined. A conventional alias would help users and tooling.
+- **Decisions waiting:** F-103 (dead `ExtractTextJob`), F-104 (`shrine_config.rb` writes dirs into the caller's cwd at require time), F-108 (`Config::TO_SYMBOL`), F-109 (`Document#search_data`, Searchkick leftover; natural follow-up to #62), F-124 (top-level `Ragdoll.add_tags` etc. missing), F-125 (`SearchEngine#search_documents`), and `Ragdoll.client(_config)` ignoring its argument.
+- **F-14 is now easy.** With #66 merged the local full DB suite passes (1377 runs, 0 failures); CI already starts a pgvector service but sets `RAGDOLL_SKIP_DATABASE_TESTS: true`. Flipping it would let CI prove DB fixes like #67. Touches `.github/`, so it would be a PR for you to approve.
+- **Machine note:** the global rbenv Ruby is 4.1.0-preview1, which crashes Bundler 2.7.2 (`Pathname::SEPARATOR_PAT`) on this repo; a `.ruby-version` (or a newer pinned Bundler) would avoid it.

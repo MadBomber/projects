@@ -10,7 +10,9 @@ RAG library; most-starred repo, idle since early 2026.
 
 ## Status
 
-_Updated 2026-11-13 01:27 visit._ Dewayne merged #30, #31 and #32 on 2026-11-12, closed eight fixed issues by hand, and opened his own PRs #42–#52 (`fix/issue-N`) for every open issue (all green; 37 of 55 pairs conflict in CHANGELOG only). Bomberbot opened three PRs on files none of those touch: [#56](https://github.com/MadBomber/ragdoll/pull/56) (F-68), [#57](https://github.com/MadBomber/ragdoll/pull/57) (F-72), [#58](https://github.com/MadBomber/ragdoll/pull/58) (F-71). Ran the **adoption** audit (F-78–F-86) plus improver (F-90–F-95); filed #53 (F-90 chunker), #54 (F-91/F-92 "since"), #55 (F-78/F-80 README). Next visit: F-90 (#53, one-line fix), then #54 and #55 once #49 merges.
+_Updated 2026-11-15 02:03 visit._ Dewayne merged #56–#58 unchanged and fixed #53–#55 himself (#59–#61); queue was empty. Opened [#62](https://github.com/MadBomber/ragdoll/pull/62) (F-51/F-55 drop unused gems) and [#67](https://github.com/MadBomber/ragdoll/pull/67) (F-64), both **PR open**; merged [#66](https://github.com/MadBomber/ragdoll/pull/66) (F-99) as low risk, so the local full DB suite is 0 failures. Ran the **dead code** audit (F-103–F-109) plus improver (F-120–F-127, S-6); filed #63 (F-106), #64 (F-121), #65 (F-122/F-123). Next visit: S-6 fix (neutral PR), F-105/F-107 removals, F-14 (turn on DB tests in CI).
+
+_Prior 2026-11-13 01:27 visit:_ Dewayne merged #30, #31 and #32 on 2026-11-12, closed eight fixed issues by hand, and opened his own PRs #42–#52 (`fix/issue-N`) for every open issue (all green; 37 of 55 pairs conflict in CHANGELOG only). Bomberbot opened three PRs on files none of those touch: [#56](https://github.com/MadBomber/ragdoll/pull/56) (F-68), [#57](https://github.com/MadBomber/ragdoll/pull/57) (F-72), [#58](https://github.com/MadBomber/ragdoll/pull/58) (F-71). Ran the **adoption** audit (F-78–F-86) plus improver (F-90–F-95); filed #53 (F-90 chunker), #54 (F-91/F-92 "since"), #55 (F-78/F-80 README). Next visit: F-90 (#53, one-line fix), then #54 and #55 once #49 merges.
 
 _Prior 2026-11-12 08:30 visit:_ **Skipped: review queue full** again: #30, #31, #32 unchanged (open, green, MERGEABLE, unapproved, no comments). Ran the **security** audit (S-5, held locally) plus improver (F-66–F-77); filed #39 (F-66 add_tags), #40 (F-67 enrichment summary/keywords), #41 (F-69 search tracking). Next visit once the queue moves: #39 and F-68 (one-line fixes), then #35, #33.
 
@@ -33,14 +35,15 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#58](https://github.com/MadBomber/ragdoll/pull/58) fix: point Database.migration_paths at the gem's db/migrate (F-71). **PR open**, CI green, review hit the 3-round cap with only test-hygiene findings left. `lib/`, not low risk.
-- [#57](https://github.com/MadBomber/ragdoll/pull/57) refactor: drop unreachable duplicate lookup in add_document (F-72, removal). **PR open**, CI green, review clean in 2 rounds. Deletes `app/` code, not low risk.
-- [#56](https://github.com/MadBomber/ragdoll/pull/56) fix: store extracted keywords as an array in ExtractKeywordsJob (F-68). **PR open**, CI green, proven on pgvector, review at the 3-round cap with no defects in the change. `app/`, not low risk.
-
-Dewayne's own open PRs #42–#52 (not bomberbot's) fix issues #12, #22 and #33–#41.
+- [#67](https://github.com/MadBomber/ragdoll/pull/67) fix(search): record limit for hybrid searches (F-64). **PR open**, CI green, DB test fails-before/passes-after locally, review clean in 1 round. `lib/`, not low risk. CHANGELOG-only conflict with #62 once either merges.
+- [#62](https://github.com/MadBomber/ragdoll/pull/62) chore(deps): drop unused searchkick, opensearch-ruby and ruby-progressbar (F-51, F-55). **PR open**, CI green, suite 1377/0 before and after, `gem build` and load checked, review clean in 1 round. Gemspec + lock, not low risk.
 
 ## Merged bomberbot PRs
 
+- [#66](https://github.com/MadBomber/ragdoll/pull/66) test: assert search_similar_content's hash result when embedding is nil (F-99). **Merged (low risk)** by madbot 2026-11-15 (develop eccbab3).
+- [#58](https://github.com/MadBomber/ragdoll/pull/58) fix: point Database.migration_paths at the gem's db/migrate (F-71). Squash-merged 2026-11-13 (7f9f7fd).
+- [#57](https://github.com/MadBomber/ragdoll/pull/57) refactor: drop unreachable duplicate lookup in add_document (F-72). Squash-merged 2026-11-13 (63f02d1).
+- [#56](https://github.com/MadBomber/ragdoll/pull/56) fix: store extracted keywords as an array in ExtractKeywordsJob (F-68). Squash-merged 2026-11-13 (c0d8f0c).
 - [#32](https://github.com/MadBomber/ragdoll/pull/32) fix: default proposition and tag extractors call RubyLLM chat correctly (issue #27, F-33). Merged 2026-11-12 (85b2ed0).
 - [#31](https://github.com/MadBomber/ragdoll/pull/31) fix: keep clicked searches in cleanup_old_unused_searches (issue #28, F-34). Merged 2026-11-12 (a284039).
 - [#30](https://github.com/MadBomber/ragdoll/pull/30) fix: ship the MIT-LICENSE file the gemspec declares (issue #29, F-39). Merged 2026-11-12 (3eb74e4).
