@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 02:32 gem-skill
+
+Visit by bomberbot (last recorded: 2026-11-13 08:54). `develop` already existed (f23b7fb); not created. Since the last visit Dewayne squash-merged every open bomberbot PR (#26, #31, #32, #36) and his own #20-#24 unchanged, and fixed four BomberBot-filed issues himself (#37-#40 close #33, #35, #34, #30). Queue empty after tending, so new work went ahead. All five phase-1 agents ran. Deviations: the F-49 builder started before phase 1 finished (brain Backlog item); the F-58 and F-53 builders started on triage's report; the F-53 builder was stopped before pushing when the improver's verify-streaming lead outranked it, and F-53 became issue #42 instead.
+
+- **New PRs** (none stacked, all base `develop`; none low risk since all touch `lib/`):
+  - [#44](https://github.com/MadBomber/gem-skill/pull/44) fix(cli): point the install tip at gem skill setup. Source: **brain** (F-49). Text, help and docs only; fail-before 2F, suite 260/0. Review hit the 3-round cap; leftovers are docs-wording drift (recorded in Backlog).
+  - [#45](https://github.com/MadBomber/gem-skill/pull/45) fix(frontmatter): strip an empty frontmatter block. Source: **judgment** (F-58, triage-verified). One regex; also fixes a later `---` rule eating the body. Fail-before 5F, suite 269/0. Review hit cap; round 3 caught and fixed a whitespace narrowing.
+  - [#46](https://github.com/MadBomber/gem-skill/pull/46) fix(verifier): stream the verify request. Source: **judgment** (improver, F-60; follow-up to Dewayne's #37). Fail-before 1F, suite 261/0, probe streamed false → true. Review hit cap, wording only.
+- **Audit:** dependencies (second run, f23b7fb): F-59 (needs decision); F-23/F-30/F-31 rechecked; Ruby 4.1 clean. Dead-code quick delta e55bd4d..f23b7fb: nothing new removable. Improver/triage/review: F-60–F-65.
+- **Merged:** none this visit (nothing approved and open). **Tended:** none open; stale remote branch `bomberbot/ollama-api-base` (#19 merged) left for Dewayne.
+- **Issues answered:** none (#1 already answered; no new comments).
+- **Issues filed:** [#41](https://github.com/MadBomber/gem-skill/issues/41) blank `GEMSKILL_MODEL` (F-62), [#42](https://github.com/MadBomber/gem-skill/issues/42) padded versions (F-53), [#43](https://github.com/MadBomber/gem-skill/issues/43) CHANGELOG Unreleased accuracy (F-51, F-61).
+- Expect a trivial CHANGELOG `### Fixed` conflict between #44, #45 and #46 as they merge.
+
 ## 2026-11-15 02:17 smart_message-transport-named_pipes
 
 Visit 9, by bomberbot (last recorded: 2026-11-13 01:10). `develop` already existed (91197bb); not created. A leftover run directory from a cut-off visit 8 (~2026-11-13 02:50, which opened #47/#48/#49 but never wrote brain) had been set aside by the asgard task as `bomberbot-interrupted/smart_message-transport-named_pipes-20261115-0217`; this visit records it. Since then Dewayne squash-merged our #39/#47/#48/#49 unchanged and his own #31–#36, #38, #50–#54; his #37 (#14) is open. #52 merged on top of #50 and turned `develop` CI red. All five phase-1 agents ran. Deviation: `src/` was briefly on `main` at phase-1 start (fresh clone); detached at `origin/develop` and all four readers re-read from develop (they had exported 91197bb anyway). Deviation: the gemspec builder started before phase 1 finished because it was a brain inbox item (Backlog-first).

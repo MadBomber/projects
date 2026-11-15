@@ -1353,3 +1353,21 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **llms.txt:** wait until F-14/F-24 settle which API the docs teach (verified path: `config { transport T }`, `Msg.subscribe`, `msg.publish`), else it spreads the broken transport-level API.
 - **CI `fail-fast: false`:** a red 3.2 leg cancels 3.3/3.4/4.0, hiding the 4.0 result; workflow edit, yours.
 - **CI loop (F-91):** the per-file loop stops at the first failing file under `bash -e`, so files after a red one never run, and it globs only `test/smart_message/transport/` while the Rakefile uses `test/**`. Consider `rake test` once #6 lets CI bundle, or a loop that collects failures. Workflow edit, yours.
+
+## robot_lab (2026-11-15)
+
+- **Live docs regression (F-101):** #81 redeployed the docs site from `develop`; it now shows pre-0.3.0 install requirements. Options: (a) workflow_dispatch the deploy on `main` now and drop `develop` from `on.push.branches` (1-line edit, identical on both branches); (b) keep develop deploys and accept unreleased docs until the sync; (c) versioned docs (mike). Bomberbot holds all `docs/` PRs until this is decided.
+- **`compress_history(recent_turns: 0)`:** `scorable_indices[-0..]` is the whole array, so every message is both "recent" and compressible and an off-topic latest message can be dropped. Raise on 0, or define it as "protect nothing, score against the last message"?
+- **Glob semantics for `subscribe_pattern`:** #91 proposes escaping metacharacters; `File.fnmatch?(pattern, key, File::FNM_EXTGLOB)` would give real glob behaviour (`[abc]`, `{a,b}`) but changes what "glob" means.
+- **`logger` dependency:** `config.rb` requires `logger`, a bundled gem since Ruby 3.5/4.0, not declared in the gemspec; works only via faraday. Declare it?
+- **F-2 leftovers:** tracked `examples/16_writers_room/output/opus_00{1,2}_notes.log` (keep with a `.gitignore` `!` rule, rename to `.md`, or delete) and root planning notes (`agent2agent_review.md`, `agentf_improvements.md`, `robot_concurrency.md`, `simple_acp_review.md`, `tool_manifest_plan.md`): keep, move to `docs/`, or delete?
+
+## gem-skill (2026-11-15)
+
+- **gem-skill: replace the hand-written lockfile parsing with `Bundler::LockfileParser`.** `lockfile.rb` now has three similar state machines (`parse_specs`, `parse_path_dep_names`, `parse_git_spec_names`), and git/path edge cases keep surfacing (#20). Bundler is always loaded where `bundle skill` runs. Behaviour-sensitive rewrite, not a small PR. Found by BomberBot.
+- **gem-skill: one settings object for env reads.** `Env` covers the numeric vars, but `GEMSKILL_MODEL`, `GEMSKILL_DIR`, `GEMSKILL_PROJECT_DIR` each treat blank/invalid differently (#41). Found by BomberBot.
+- **gem-skill: line-based frontmatter parser (F-64).** #45 fixes the empty-block case, but the regex approach still mishandles unclosed blocks, a body starting with `---`, `...`, a BOM, and indented delimiters. Found by BomberBot.
+- **gem-skill: always stream (F-65).** After #46 every CLI caller passes an empty block to force streaming; Generator/Verifier could stream by default and drop the non-streaming path. Also: should verify honour `--temperature`? Found by BomberBot.
+- **gem-skill: ruby_llm floor (F-59).** Only ruby_llm 2.0.0 caps json < 3. Raise the gemspec floor to `~> 2.1` and reword the json require-order comments, or just reword them? Found by BomberBot.
+- **gem-skill: repo `.rubocop.yml`.** None exists and RuboCop isn't in the Gemfile, so "zero new offenses" is measured against the global config (~1700 offenses, two-blank-lines rule contradicts the repo style). Add a repo config? Found by BomberBot.
+- **gem-skill: stale branch `bomberbot/ollama-api-base`** (#19 merged, no unique commits) can be deleted.
