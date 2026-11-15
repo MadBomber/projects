@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 00:47 sqa
+
+**Resumed** at 02:15 after the first session stopped during phase 3 (all PRs and issues were already done; brain and cleanup remained). `develop` existed (ea405df); not created. No leftover run dir.
+
+- Since last visit: Dewayne squash-merged #84, #85 and his own #68-#79, #86-#88; every bomberbot issue but #4 is closed.
+- New PR [#92](https://github.com/MadBomber/sqa/pull/92) test: SimpleCov group/skip instead of deprecated add_group/add_filter. Source: **brain** (F-72). 6 deprecation lines → 0; suite 644/0F/0E; review 2 rounds, 1 deferred (dev-dep floor) → not low risk, `needs-dewayne`; CI green.
+- New PR [#93](https://github.com/MadBomber/sqa/pull/93) fix(stock): raise BadParameterError for an unknown data source. Source: **brain** (F-67). Fail-before/pass-after; suite 646/0F/0E; review cap 3 rounds, round 3 no defects; CI green. lib → waits for Dewayne.
+- New PR [#94](https://github.com/MadBomber/sqa/pull/94) fix(sqa-yf-fetch): quote exported session values with Shellwords. Source: **security** (S-3, brain backlog). Fail-before/pass-after; suite 646/0F/0E; review cap 3 rounds, ended clean; CI green. bin/ + security → waits for Dewayne.
+- No stacks. Builders started in parallel with phase 1 (brain-backlog items, queue known empty) to fit the 45-minute budget; a deviation from the phase order, noted here.
+- Merged (low risk): none. Merged after approval: none (nothing approved or open at start).
+- Audit: **dead code** (third run, develop ea405df): F-75..F-77, nothing safe to delete.
+- Tended: none open; remote bot branches already deleted; CI on develop green.
+- Issues answered: none (#4 still awaits a design call; BomberBot's earlier note still accurate).
+- Issues filed: [#89](https://github.com/MadBomber/sqa/issues/89) (F-78/F-79 Integer division), [#90](https://github.com/MadBomber/sqa/issues/90) (F-80/F-81 CHANGELOG + fpop.md), [#91](https://github.com/MadBomber/sqa/issues/91) (F-82 Polars warning).
+
 ## 2026-11-15 02:10 agent99
 
 Eighteenth visit (last 2026-11-15 01:50), by madbot. `develop` already existed (7d79e63); not created. Run directory was fresh.

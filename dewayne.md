@@ -72,9 +72,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] [sqa#53](https://github.com/MadBomber/sqa/pull/53) merged; optional after-merge step: make `test (3.4)`/`test (4.0)` required checks on develop. (added 2026-11-12)
 - [ ] Decide the design for [sqa#4](https://github.com/MadBomber/sqa/issues/4) (API keys in config: env var name vs value vs close); see inbox. (added 2026-11-10)
-- [ ] Review [sqa#84](https://github.com/MadBomber/sqa/pull/84) (PatternMatcher empty clusters keep their own centroid; lib, CHANGELOG line may need a rebase after your #68). (added 2026-11-13)
-- [ ] Review [sqa#85](https://github.com/MadBomber/sqa/pull/85) (adds `irb` as a **runtime** dependency so the shipped `sqa-console` runs on Ruby 4). (added 2026-11-13)
-- [ ] sqa security S-3/S-4: see the 2026-11-13 final report / local notes for disclosure and fix decisions. (added 2026-11-13)
+- [ ] Review [sqa#94](https://github.com/MadBomber/sqa/pull/94) (sqa-yf-fetch `--print-env` quoting; this is the S-3 fix, see the local notes / 2026-11-15 final report for disclosure). S-4 still open, details local. (added 2026-11-15)
+- [ ] Review [sqa#93](https://github.com/MadBomber/sqa/pull/93) (unknown `source:` raises `BadParameterError`; callers rescuing `NameError` would no longer catch it; no dependent does). (added 2026-11-15)
+- [ ] Review [sqa#92](https://github.com/MadBomber/sqa/pull/92) and decide whether to add `spec.add_development_dependency 'simplecov', '>= 1.0'` (an old local lockfile on simplecov 0.22 would hit `NoMethodError: skip` until `bundle update simplecov`). (added 2026-11-15)
 
 ## robot_lab
 

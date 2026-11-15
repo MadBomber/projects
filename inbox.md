@@ -1322,3 +1322,14 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 
 - **`send_error` is documented but does not exist (F-163).** 43 mentions across 8 docs pages (12 in `agent-development/request-response-handling.md`, 12 in `examples/advanced-examples.md`, 5 in `api-reference/agent99-base.md`, ...); `lib/` has no such method. Taste says fix the code, not the docs: a small private `send_error(message, code: nil)` on top of `send_response` would make 8 pages true at once. Or strip it from the docs. Your call (ties to F-26). (added 2026-11-15)
 - **Invented error classes in the API reference (F-164).** `Agent99::RegistryError` + subclasses (`registry-client.md:248,264-267`), `Agent99::MessageClients::{Nats,Amqp,Tcp}Client` and `Agent99::MessageClient::*Error` (`message-clients.md`), `Agent99::MessageSchema`/`SchemaValidationError` (`schemas.md`) do not exist. More evidence for F-26; hold `llms.txt` (F-35) until the API reference matches the code. (added 2026-11-15)
+
+## sqa (2026-11-15, eighth visit)
+
+- **One Numeric policy for money and returns?** Five Integer-division bugs so far (#55, #56, #89) in Portfolio, RiskManager, PortfolioOptimizer. Coercing `initial_cash`/`price`/`total_value`/`capital` with `to_f` at each public entry point would close the class at once instead of one `fdiv` per visit.
+- **Error-class convention:** #73 raises bare `ArgumentError`; 33 other sites raise `SQA::BadParameterError` (an `ArgumentError` subclass, so switching is compatible). Make BadParameterError the rule? (F-85)
+- **Transformer dtypes:** let a `TRANSFORMERS` value be `{fn:, dtype:}` so user transformers can declare `return_dtype` (API addition; #91 can infer dtype without it).
+- **F-75** `Stock#transformers`: deprecate the accessor (all adapters share one object since #70) or keep it returning the shared constant?
+- **F-77** KBS singular `vector.volume` fallback: deprecate, or keep for outside callers?
+- **F-83** `MultiTimeframe#indicators(indicator: :bbands)` returns nil per timeframe: raise `BadParameterError`, or document the four supported indicators?
+- **F-84** `rebalance` trades carry absolute `shares` but signed `value`: keep (docs match), or make `value` absolute?
+- **ferrum 0.21:** `bin/sqa-yf-fetch:125` uses `Frame#evaluate_async`, deprecated and removed in ferrum 0.21; needs moving to `#evaluate` with `await` before a ferrum bump.
