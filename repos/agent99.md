@@ -16,65 +16,43 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-13 09:25 (sixteenth visit)._ Still nothing merged or approved (develop 28a6347); #55–#57 open, so no PR was opened. Dependencies delta found nothing new; improver found F-125..F-127; filed #76 (AMQP queues never expire).
-
+_Updated 2026-11-15 01:50 (seventeenth visit)._ Dewayne merged #38–#57 and #77–#95 on 2026-11-13 (develop 28a6347 → 3a338b8, CI green); this visit merged #96 as low risk (develop 7d79e63), opened #97 and #101, and filed #98–#100.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything
 else in this repo.
 
-- **In flight in Dewayne's own PRs (don't overlap until they land):** #7 → #53, #14 → #38, #16 → #43, #18 → #41, #19 → #42, #22 → #44, #24 → #45, #25 → #46, #26 → #54, #30 → #47, #31 → #48, #32 → #49, #33 → #52, #34 → #50, #35 → #40, #36 → #39, #37 → #51. Off limits while open: `message_processing.rb`, `header_management.rb`, `base.rb`, `agent_discovery.rb`, `agent_lifecycle.rb`, `examples/control.rb`, `examples/maxwell_agent86.rb`, README, `docs/getting-started/{basic-example,quick-start}.md`, gemspec, `Gemfile.lock`, `bin/console`, `bin/test`, `Rakefile`, `.github/workflows/test.yml`, `test/README.md`, and the test files they edit. 16 of them add their CHANGELOG line at the end of `[Unreleased]` → Fixed and conflict pairwise there; madbot PRs insert higher up to stay clear.
-- #3, #4, #5, #6, #8, #15, #20, #21, #23 and F-2: fixed on `develop` (#9–#13, #17, #27–#29). Issues stay open until develop reaches `main`.
-- F-55: remote shutdown runs `fini` twice + false warning. **PR open** [#55](https://github.com/MadBomber/agent99/pull/55) Since 2026-11-13 it also covers F-104 (a NATS agent kept running after a remote shutdown).
-- F-65 + F-71: `RegistryClient` drops the URL path and ignores the scheme. **PR open** [#56](https://github.com/MadBomber/agent99/pull/56).
-- F-59 (part): stray notes after `__END__` in `tcp_message_client.rb` / `header_schema.rb`. **PR open** [#57](https://github.com/MadBomber/agent99/pull/57).
-- [#58](https://github.com/MadBomber/agent99/issues/58) F-90: fixed `sleep 0.5` per test makes the suite 38 s instead of ~1.5 s (tests-only, 2 lines; low-risk candidate once #54 lands).
-- [#59](https://github.com/MadBomber/agent99/issues/59) F-77: docs show 0.0.4 as current, 0.0.5 missing (docs-only, ~4 lines; low-risk candidate).
-- [#60](https://github.com/MadBomber/agent99/issues/60) F-92: control handlers untested (one new test file; after #55, which creates `test_control_actions.rb`).
-- [#61](https://github.com/MadBomber/agent99/issues/61) F-100: private `info`/`init` ignored at startup (lib 2 lines + tests in `test_agent_lifecycle.rb`; after #42, same lines).
-- [#62](https://github.com/MadBomber/agent99/issues/62) F-101: custom control action docs snippet raises NameError (docs-only, ~3 lines; low-risk candidate, no open PR touches the file).
-- [#63](https://github.com/MadBomber/agent99/issues/63) F-93: `bin/console` can't load irb on Ruby 4.0+ (Gemfile + lock; after #53).
-- S-17: security finding, details held locally; one targeted conservative re-lock after #53 (with S-12).
-- F-94 (lock needs Ruby >= 4.0 after #53, ties to F-68) and F-102 (pause drops requests vs docs): **needs Dewayne's decision**.
-- [#64](https://github.com/MadBomber/agent99/issues/64) F-105: docs say `REGISTRY_BASE_URL`, the code reads `AGENT99_REGISTRY_URL` (docs-only, 5 lines in 4 files; low-risk candidate, no open PR touches them).
-- [#65](https://github.com/MadBomber/agent99/issues/65) F-106: `run_demo.rb` generates agents with `require_relative '../lib/agent99'` (examples, 1 line).
-- [#66](https://github.com/MadBomber/agent99/issues/66) F-108: `docs/agent99_framework/` wrong signatures for `register`/`publish`/`delete_queue`/`initialize` (docs-only, ~8 lines; low-risk candidate; can ride with #64).
-- [#67](https://github.com/MadBomber/agent99/issues/67) F-109: docs Ruby samples that don't parse (registry irb walkthrough) and `on_exit` → `at_exit` (docs-only, ~15 lines in 4 files; low-risk candidate, no open PR touches them).
-- [#68](https://github.com/MadBomber/agent99/issues/68) F-110: misspellings in docs/examples incl. `RegristryClient`, `@agnet_*` (docs-only; low-risk candidate; can ride with #67).
-- [#69](https://github.com/MadBomber/agent99/issues/69) F-111: `info` without `name` exits though docs say it is derived; default to class name + test (lib, after #42, with #61).
-- [#70](https://github.com/MadBomber/agent99/issues/70) F-117: `examples/maxwell_request.rb` raises NameError on its own (examples, 1 line; no open PR touches it).
-- [#71](https://github.com/MadBomber/agent99/issues/71) F-114: most AMQP client unit tests exercise the mock (tests-only, one file; no open PR touches it).
-- [#72](https://github.com/MadBomber/agent99/issues/72) F-116: `NatsMessageClient` publish/dispatch/delete_queue untested (tests-only, one file).
-- [#73](https://github.com/MadBomber/agent99/issues/73) F-119: tutorial `curl` commands hit registry routes that 404 (`basic-example.md:263,266`, `basic-examples.md:258,261`; docs-only, 4 lines; low-risk candidate; `basic-example.md` is also in #45, different lines).
-- [#74](https://github.com/MadBomber/agent99/issues/74) F-122: dead `docs/README.md` link in `what-is-an-agent.md:25` (docs-only, 1 line; low-risk candidate; can ride with #73).
-- [#75](https://github.com/MadBomber/agent99/issues/75) F-124: unknown control action gets no reply (`message_processing.rb:89-93`, 1 lib line + test; after #38/#39/#41 and #55).
-- [#76](https://github.com/MadBomber/agent99/issues/76) F-125: AMQP queues never expire because Bunny ignores `expires:` (`amqp_message_client.rb:55` → `arguments: { "x-expires" => QUEUE_TTL }`; 1 lib line + test on the real class + 2 docs lines in `messaging-system.md:12-13`, `what-is-an-agent.md:282`; no open PR touches them). Best next lib pick once the queue clears.
-- F-126 (never-run `test/system/test_full_workflows.rb`) and F-127 (`publish` reports success for undeliverable messages): **needs Dewayne's decision**.
-- F-120: unused MathJax/arithmatex in `mkdocs.yml`; ride along with the S-6 docs-config fix (neutral title).
-- F-121 (A2A/MCP stub pages) and F-123 (`Base#name` ignores `info[:name]`; widen #69): **needs Dewayne's decision**.
-- F-115 (dead `simple_json_schema_builder` requires) and F-118 (stale FIXME, `.envrc` header): ride along with the next lib PR touching those files. F-113 (unused public accessors, `Timestamp#utc`): **needs Dewayne's decision**.
-- S-20: security finding, details held locally; small neutral-titled lib PR once the queue clears. S-19, S-21: **needs Dewayne's decision**.
-- F-53 (+ F-51/F-40 riding along): registry client hides HTTP error statuses behind a JSON parse error; dead `@id`, `payload` alias, unused `response` (the only `ruby -w` warning in lib), wrong header comment. Same file as #56: stack on it or wait. Keep `register` returning uuid/nil (#42 relies on it).
-- F-61: CHANGELOG `[Unreleased]` has three near-duplicate #6 lines. Blocked: they are context lines in every one of #38–#53's CHANGELOG hunks; do it after they land.
-- F-60: four unused test helpers in `test/support/test_infrastructure.rb` (tests-only removal; same file as #58).
-- F-46/F-47/F-50 (with F-39): tests-only cleanups; several touch test files in #38–#54, recheck after they land.
-- F-1: `AgentDiscovery#add_agent` zero callers; blocked by #40 (same file) and the public `Base#agents` question.
-- F-13: `spec.require_paths` → `["lib"]` (gemspec; after #46). Also clears S-10.
-- gemspec: de-dupe homepage/source URLs (F-8; after #46).
-- F-78: example registry needs `rackup` (Sinatra 4); touches `Gemfile.lock` (after #53) and ties to F-12. **needs Dewayne's decision** (where the dep lives).
-- F-56/F-70 (supported bunny/json majors), F-68 (unused dev deps), F-73, F-76, F-79 (docs toolchain), F-91 (`TcpMessageClient` fate): **needs Dewayne's decision**.
-- S-13, S-14, S-15, S-16: security findings, details held locally; small neutral-titled fixes once the in-flight PRs land.
+- **In flight in Dewayne's own PR:** #69 → [#88](https://github.com/MadBomber/agent99/pull/88), which is CONFLICTING with develop (needs his rebase). Off limits while open: `lib/agent99/agent_lifecycle.rb`, `test/agent99/test_agent_lifecycle.rb`, `docs/operations/breaking-changes.md`, the top of CHANGELOG `[Unreleased]` → Fixed.
+- #3–#8, #14–#37, #58–#76: fixed on `develop` and closed by Dewayne (develop is 57+ commits ahead of `main`).
+- F-61: duplicate NATS CHANGELOG lines. **Merged (low risk)** [#96](https://github.com/MadBomber/agent99/pull/96) → develop 7d79e63.
+- S-12/S-17: development lock update. **PR open** [#97](https://github.com/MadBomber/agent99/pull/97) (neutral title; Gemfile.lock, not low risk).
+- F-53 + F-51 + F-40 + F-128: registry client hides HTTP status behind a JSON parse error; dead `@id`/`@base_url`, alias, unused `response`. **PR open** [#101](https://github.com/MadBomber/agent99/pull/101) (lib; review cap hit).
+- [#98](https://github.com/MadBomber/agent99/issues/98) F-132: `examples/control.rb` "stop all" shuts down the controller; `fini` runs twice (examples, ~3 lines).
+- [#99](https://github.com/MadBomber/agent99/issues/99) F-130 + F-131: API reference custom registry client interface is wrong; messaging page claims AMQP persistence (docs-only, ~12 lines; low-risk candidate).
+- [#100](https://github.com/MadBomber/agent99/issues/100) F-134: agent stays registered when `init` exits or raises (lib 2 lines + test; after #88).
+- F-60 + F-129: unused test helpers and orphaned mock `create_queue`/`@config` in `test/support/test_infrastructure.rb` (tests-only removal; drop `:server` from F-60, it is used now).
+- F-115 + F-118 + F-103: redundant `simple_json_schema_builder` requires (`base.rb:5`, `amqp_message_client.rb:5`; keep `agent99.rb:4`), stale FIXME (`amqp_message_client.rb:90`), `.envrc` header, unused `lib/agent99/.irbrc` (small lib removal).
+- F-1: `AgentDiscovery#add_agent` has zero callers (unblocked; but it is the only writer of `@agents` behind public `Base#agents`, which is a decision).
+- F-13 + F-8: gemspec `require_paths` → `["lib"]`, de-dupe homepage/source URIs (gemspec, never low risk; also clears S-10).
+- F-133: lifecycle/control docs don't say shutdown and failed registration exit the process (docs-only, ~6 lines).
+- F-135: `brew install rabbitmq-server` (the formula is `rabbitmq`) in 6 places; DEMO.md says Ruby 3.0+ (docs/examples ~7 lines).
+- F-136 (no CHANGELOG line for #54's CI), F-137 (`Base#run` dispatcher untested), F-138 (method-redefinition warnings in client tests), F-46/F-47/F-50: small tests/docs cleanups; F-46 waits on #88.
+- F-6/F-34: README dead links (`README.md:181,231-233,266`), now unblocked (docs-only).
+- S-6 + F-120: docs-config fix in `mkdocs.yml` (neutral title; never low risk).
+- S-13, S-14, S-15, S-20: security findings, details held locally; small neutral-titled fixes.
+- **Needs Dewayne's decision:** F-26 (docs describe an API that does not exist), F-41, F-45, F-48, F-52, F-56/F-70 (bunny 3 / json 3 majors), F-68, F-73, F-76, F-78 (`rackup` for the example registry), F-79, F-91, F-94, F-102, F-113, F-121, F-123, F-126, F-127, `Base#agents`, gemspec floors for sinatra/rack; S-19, S-21.
 
 ## Open bomberbot PRs
 
-- [#55](https://github.com/MadBomber/agent99/pull/55) `madbot/shutdown-fini-once` → develop. F-55 + F-104. lib: `handle_shutdown` drops `fini` and exits via `Thread.main.raise(SystemExit.new(0))`; new `test/agent99/test_control_actions.rb` (2 child-process tests). Fixup 9368c76 (2026-11-13 06:20) fails before and passes after, review clean. Not low risk (lib).
-- [#56](https://github.com/MadBomber/agent99/pull/56) `madbot/registry-url-path` → develop. F-65 + F-71. lib 3 lines + 2 tests. Review clean in 2 rounds. Not low risk (lib).
-- [#57](https://github.com/MadBomber/agent99/pull/57) `madbot/drop-end-notes` → develop. F-59 (part). Deletions only in two lib files + CHANGELOG. Review clean round 1. Not low risk (lib).
-- CHANGELOG lines sit at the top, after the #4 line and after the debug_me bullet; the three merge together and with Dewayne's PRs without conflict (checked; re-checked 2026-11-13 06:18 after #55's line was reworded).
+- [#97](https://github.com/MadBomber/agent99/pull/97) `bomberbot/relock-web-deps` → develop. Conservative `--minor` re-lock of rack, rack-session, rack-protection, sinatra, json (stays 2.x), uri; lock 7/7 lines + 1 CHANGELOG line (last bullet of Fixed). Suite 113/0 on 4.0.9 and 4.1.0-preview1, example registry routes checked, CI green, review clean in 2 rounds. Not low risk (Gemfile.lock).
+- [#101](https://github.com/MadBomber/agent99/pull/101) `bomberbot/registry-http-errors` → develop. F-53/F-51/F-40/F-128: logs `Registry returned <code> <reason>[: error]`, return values unchanged; the test file fails on develop (3F 1E) and passes on the branch, suite 117/0, `ruby -wc` lib clean, CI green. Review hit its 3-round cap (last fixes not re-reviewed). Not low risk (lib).
+- CHANGELOG: #101 inserts after the #55 "remote shutdown" line, #97 at the end of Fixed, #88 at the top; #97 + #101 merge together cleanly and neither conflicts with #88 in CHANGELOG (checked 2026-11-15).
 
 ## Merged bomberbot PRs
 
-- [#27](https://github.com/MadBomber/agent99/pull/27) → develop a651da1, [#28](https://github.com/MadBomber/agent99/pull/28) → 0d749c8, [#29](https://github.com/MadBomber/agent99/pull/29) → 28a6347: squash-merged by Dewayne 2026-11-12 ~21:45Z within 70 s, no review or comment. Branches deleted by the tender 2026-11-13.
-- [#9](https://github.com/MadBomber/agent99/pull/9) `bomberbot/fix-timestamp-decode` → develop 5183c92, merged by Dewayne 2026-11-10 (merge commit, no comment). Fixes #4.
-- [#10](https://github.com/MadBomber/agent99/pull/10) → develop bfcd914 (merge commit), [#17](https://github.com/MadBomber/agent99/pull/17) → 703dd17, [#11](https://github.com/MadBomber/agent99/pull/11) → 1d90fed, [#12](https://github.com/MadBomber/agent99/pull/12) → 137555d, [#13](https://github.com/MadBomber/agent99/pull/13) → c2b4e49 (squashes), all merged by Dewayne 2026-11-10 after he had `@copilot` resolve the CHANGELOG conflicts. Branches deleted 2026-11-12.
+- [#96](https://github.com/MadBomber/agent99/pull/96) → develop 7d79e63: **merged (low risk)** by bomberbot 2026-11-15 (rebase). F-61.
+- [#55](https://github.com/MadBomber/agent99/pull/55) → develop 5762f8e, [#56](https://github.com/MadBomber/agent99/pull/56) → 9f0042b, [#57](https://github.com/MadBomber/agent99/pull/57) → 1db8ef9: squash-merged by Dewayne 2026-11-13 ~21:23Z, no comment. Branches gone.
+- [#27](https://github.com/MadBomber/agent99/pull/27) → develop a651da1, [#28](https://github.com/MadBomber/agent99/pull/28) → 0d749c8, [#29](https://github.com/MadBomber/agent99/pull/29) → 28a6347: squash-merged by Dewayne 2026-11-12 ~21:45Z within 70 s, no review or comment.
+- [#9](https://github.com/MadBomber/agent99/pull/9) → develop 5183c92 (merge commit, 2026-11-10). Fixes #4.
+- [#10](https://github.com/MadBomber/agent99/pull/10) → develop bfcd914 (merge commit), [#17](https://github.com/MadBomber/agent99/pull/17) → 703dd17, [#11](https://github.com/MadBomber/agent99/pull/11) → 1d90fed, [#12](https://github.com/MadBomber/agent99/pull/12) → 137555d, [#13](https://github.com/MadBomber/agent99/pull/13) → c2b4e49 (squashes), merged by Dewayne 2026-11-10.

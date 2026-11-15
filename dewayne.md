@@ -38,8 +38,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## agent99
 
-- [ ] Review and merge into `develop` [#55](https://github.com/MadBomber/agent99/pull/55) (F-55, lib), [#56](https://github.com/MadBomber/agent99/pull/56) (F-65+F-71, lib) and [#57](https://github.com/MadBomber/agent99/pull/57) (F-59, deletions in lib). Their CHANGELOG lines sit above where your #38–#53 append, so they merge in any order without adding to those conflicts. (added 2026-11-13)
-- [ ] Issues #3/#4/#5… won't auto-close: `Fixes #N` only fires on merges into `main`. Close #4 by hand now (fixed on develop via #9) or at release. Now also #3, #5, #6, #8 (fixed on develop by #10–#13). (added 2026-11-10, updated 2026-11-12)
+- [ ] Review and merge into `develop` [#97](https://github.com/MadBomber/agent99/pull/97) (Gemfile.lock patch/minor update; details on why are in your local notes) and [#101](https://github.com/MadBomber/agent99/pull/101) (registry client logs HTTP status; lib, review cap hit). (added 2026-11-15)
+- [ ] Rebase your [#88](https://github.com/MadBomber/agent99/pull/88) (#69): it is CONFLICTING with develop in 4 files after #77–#95. (added 2026-11-15)
+- [ ] Decide json 3.x (F-70) and whether the gemspec should set floors for sinatra/rack, so gem users get the versions [#97](https://github.com/MadBomber/agent99/pull/97) locks for development. (added 2026-11-15)
 - [ ] The agent99 docs site is 404 (GitHub Pages disabled, F-25). Before re-enabling Pages, handle the held-local note S-6 for this repo (same one-line `mkdocs.yml` fix as smart_message#9), then redeploy. (added 2026-11-10)
 
 ## trak_flow

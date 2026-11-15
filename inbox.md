@@ -1296,3 +1296,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-144: robot_lab's `Network#parallel ... do task ... end` raises `NoMethodError`,** because simple_flow's `parallel` `instance_eval`s its block on `ParallelBlock`. Options: (a) simple_flow yields the group when the block takes a parameter (`parallel { |g| g.step ... }`) and keeps `instance_eval` otherwise; this is new public DSL. (b) robot_lab builds its own group object. robot_lab's only test passes an empty block.
 - **F-128 / Ruby 4.1:** when 4.1.0 ships, bump `Gemfile.lock` to Bundler 4.0.23 and add `"4.1"` to the CI matrix in one PR; 2.7.2 crashes on 4.1.
 
+
+## agent99 (2026-11-15, seventeenth visit)
+
+- **Troubleshooting page from real messages.** `docs/operations/troubleshooting.md` is 11 lines. The recent fixes produce clear errors worth explaining one by one ("could not register with the registry; shutting down", "No agents available", "AMQP/NATS Connection Error", "Unknown control action", and after #101 "Registry returned <code>"). About 30 additive lines, good for adoption. (added 2026-11-15)
+- **Fix the getting-started tutorials before the rest of F-26.** `docs/getting-started/quick-start.md:115,123` and `basic-example.md:146,169` still call the nonexistent `discover_agents`/`send_request`; `basic-example.md:76,120` call `send_error`/`agent.shutdown`. If you pick "rewrite the docs" for F-26, a PR that rewrites only the getting-started clients on the `maxwell_request.rb`/`chief_agent.rb` pattern is a bounded first step. (added 2026-11-15)
+- **CHANGELOG categories before 0.0.6.** `[Unreleased]` holds 40+ items under "Fixed", including new tests, CI and removed rake tasks. Split into Added / Changed / Removed / Fixed before the release? (added 2026-11-15)
+- **`examples/` vs `agent99_examples`.** `examples/README.md:3` says the examples are moving to their own repo, but they still ship and sit on `require_paths` (F-13). Settling which way it goes decides where examples fixes like #98 belong. (added 2026-11-15)
+- **gemspec floors for sinatra/rack.** #97 updates only the development lock; gem users resolve their own. Add `sinatra >= 4.2.1` (and declare rack), or leave it to users? Ties to F-12 (sinatra as a runtime dependency at all). (added 2026-11-15)
+- **json 3.x (F-70).** #97 kept json on 2.x on purpose; 3.1.0 is out. (added 2026-11-15)

@@ -2,6 +2,23 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 01:50 agent99
+
+Seventeenth visit (last 2026-11-13 09:25). `develop` already existed (3a338b8); not created. Run directory was fresh.
+
+- Since the last visit Dewayne squash-merged #55–#57 and all his own PRs (#38–#54, #77–#95), fixing and closing BomberBot's issues #58–#76. That left no open bomberbot PRs, so the queue was clear.
+- **New PRs:**
+  - [#97](https://github.com/MadBomber/agent99/pull/97) `chore(deps): update rack, sinatra, json and uri in Gemfile.lock`. Source: security (S-17, neutral title) and dependency. Not stacked. CI green, review clean.
+  - [#101](https://github.com/MadBomber/agent99/pull/101) `fix(registry): log the HTTP status of failed registry requests`. Source: brain (F-53 + F-51/F-40/F-128). Not stacked. CI green, review hit the 3-round cap.
+- **Merged (low risk):** [#96](https://github.com/MadBomber/agent99/pull/96) `docs(changelog): drop duplicate NATS connect entries` (brain F-61). CHANGELOG-only, 2 deletions, CI green, review clean. Merged → develop 7d79e63.
+- **Merged after approval:** none (nothing approved; nothing of ours was left open).
+- **Tended:** nothing needed. No open bot PRs, no stray bot branches, develop CI green.
+- **Audit:** dead-code delta 28a6347..3a338b8 found F-128 and F-129, confirmed 17 findings fixed by the merges, and folded S-12 into S-17. The improver found F-130..F-138; the main session renumbered them from its own F-128..F-136 to avoid a clash. Triage re-verified the backlog.
+- **Issues answered:** none. #69 is the only open issue and it is already cross-referenced by Dewayne's #88.
+- **Issues filed:** [#98](https://github.com/MadBomber/agent99/issues/98) (F-132), [#99](https://github.com/MadBomber/agent99/issues/99) (F-130 + F-131), [#100](https://github.com/MadBomber/agent99/issues/100) (F-134).
+- **Deviation:** builders started before the improver finished, to save time. Its candidates went to issues and the backlog instead.
+- **Note for Dewayne:** #88 is CONFLICTING with develop.
+
 ## 2026-11-15 01:35 simple_flow
 
 Tenth visit by madbot (last: 2026-11-15 00:25). `develop` already existed (2a5f282, unchanged); not created.
