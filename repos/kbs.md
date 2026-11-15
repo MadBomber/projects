@@ -10,7 +10,7 @@ Knowledge-based system gem, idle since early 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-15 (second visit)._ No approvals since the first visit; #53 and #55 rebased and green. This visit opened [#56](https://github.com/MadBomber/kbs/pull/56) (ternary decompile, #52), [#61](https://github.com/MadBomber/kbs/pull/61) (Ruby 4.1 strings, #50, stacked on #56) and [#57](https://github.com/MadBomber/kbs/pull/57) (`clear_session`, #51), ran the security audit, and filed #58 (`print_rules` Procs), #59 (docs `?var` prefix) and #60 (queue `consume` race).
+_Updated 2026-11-15 (third visit)._ Queue full: five bot PRs green and unapproved, so no new PRs. Ran the adoption audit (chaining from `perform` is a silent no-op, F-96, needs a decision) and filed #62 (SQLite timestamps), #63 (String message jams the queue) and #64 (docs call missing `engine.facts`/`close`).
 
 ## Backlog
 
@@ -33,10 +33,13 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Ruby 4.1 decompiler renders string literals as placeholders (F-60, issue [#50](https://github.com/MadBomber/kbs/issues/50)). [#61](https://github.com/MadBomber/kbs/pull/61) (**PR open**, stacks on #56)
 - `clear_session` clears nothing with a passed-in store (F-82, issue [#51](https://github.com/MadBomber/kbs/issues/51)). [#57](https://github.com/MadBomber/kbs/pull/57) (**PR open**)
 - Ternary decompile drops the condition (F-61, issue [#52](https://github.com/MadBomber/kbs/issues/52)). [#56](https://github.com/MadBomber/kbs/pull/56) (**PR open**)
-- Small PR candidates: `gem "benchmark"` for Ruby 4 (F-62), CSV examples from repo root (F-80), `query_facts` docs pass strings (F-81), `prioritized_production_nodes` private (F-66), `test.yml` action bumps (F-64).
+- Small PR candidates: `gem "benchmark"` for Ruby 4 (F-62), CSV examples from repo root (F-80), `query_facts` docs pass strings (F-81), `test.yml` action bumps (F-64), braceless `Condition.new` (F-99), README LICENSE link and example list (F-101/F-110), Redis demos flush local DBs (F-102), `get_rule_firings` tie order (F-106), SQLite `post_message` id (F-107). (F-66 dropped: Dewayne tests it publicly.)
 - `print_rules` shows helper conditions as raw Procs (F-90, issue [#58](https://github.com/MadBomber/kbs/issues/58)).
 - Docs say variables start with `?` (F-92, issue [#59](https://github.com/MadBomber/kbs/issues/59)); hold the `rete-algorithm.md` line until #55 merges.
-- Decompiler crashes on a block inside a block (F-94).
+- Decompiler crashes on a block inside a block (F-94); hold until #56/#61 merge.
+- SQLite timestamps shifted by the UTC offset (F-104, issue [#62](https://github.com/MadBomber/kbs/issues/62)).
+- String message blocks its SQLite topic (F-105, issue [#63](https://github.com/MadBomber/kbs/issues/63)).
+- `engine.facts`/`Engine#close`/`KnowledgeBase#close` the docs use (F-97, issue [#64](https://github.com/MadBomber/kbs/issues/64)).
 
 ## Open bomberbot PRs
 
