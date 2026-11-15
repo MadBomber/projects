@@ -1280,3 +1280,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-59:** how should `dev down` confirm a pid file still names its own process (`ps -o comm=` check, pgrep `-u`)?
 - **S-10 and S-12** (details in your local `notes/security/dev.md`) need your decision.
 
+
+## htm (2026-11-15)
+
+- **Build the Sequel connection from options, not a URL string.** `SequelConfig.build_connection_string` is behind F-53 (#78), part of F-66 (#39), and a locally held item. `Sequel.connect(adapter: "postgres", host:, user:, password:, sslmode:, connect_sqls: [...])` would close them together. Too big for one small PR, but it's the root fix.
+- **Settle where connection settings live.** `HTM.new` takes `db_config`, `db_pool_size` and `db_query_timeout`, but the real connection is a process-wide singleton built from `HTM.config`. F-132: `HTM.new(db_config:)` is ignored. Should it be deprecated, honoured per instance, or documented as channel-only for `RobotGroup`? F-133: `HTM_DATABASE__TIMEOUT` is never applied. Should it map to `statement_timeout` with a 30000 default, or be treated as the pool checkout timeout with the docs fixed?
+- **Test CI for PRs.** htm has no workflow that runs the suite; every bot PR's proof is local only. A Postgres-service CI job would let low-risk PRs merge on a real green check.
+- **Release:** about 28 fixes on `develop` since 0.0.32 (2026-05-24). Whether to cut 0.0.33 is your call.
+- **Security:** S-10 (and the still-open S-4, S-5) are in your local `notes/security/htm.md` and need your decision on disclosure and fix.

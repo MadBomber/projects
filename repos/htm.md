@@ -10,43 +10,41 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-13 08:35._ Review queue full (#66–#68 unapproved), so no new PRs; dead-code audit found the `deleted` scopes never match (F-100), filed with two more as issues #69–#71.
+_Updated 2026-11-15 01:20._ Dewayne merged #66–#68 and fixed #69–#71 himself (#72–#74); madbot opened #75 (F-96) and #76 (F-56), self-merged #77 (examples, F-80/F-78), and filed #78–#80.
 
 ## Backlog
 
-Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo. **Dewayne has his own PRs open (#47–#62) for most issue-backed items; check open PRs from every author before building.**
+Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo. **Dewayne opens his own PRs for bot issues (#47–#62, #72–#74); check open PRs from every author before building.**
 
-- Covered by Dewayne's open PRs (don't build): F-6/F-61 [#54](https://github.com/MadBomber/htm/pull/54) (#37); F-67 [#53](https://github.com/MadBomber/htm/pull/53) (#38); F-85 [#51](https://github.com/MadBomber/htm/pull/51) (#41); F-72 [#52](https://github.com/MadBomber/htm/pull/52) (#40); F-83 [#49](https://github.com/MadBomber/htm/pull/49) (#42); F-40 [#58](https://github.com/MadBomber/htm/pull/58) (#28); F-8/F-36 [#57](https://github.com/MadBomber/htm/pull/57) (#29); F-19/F-50 [#56](https://github.com/MadBomber/htm/pull/56) (#33); F-44/F-45 [#55](https://github.com/MadBomber/htm/pull/55) (#35); F-63 [#60](https://github.com/MadBomber/htm/pull/60) (#36); F-42 docs [#61](https://github.com/MadBomber/htm/pull/61) (#34); F-77 [#62](https://github.com/MadBomber/htm/pull/62) (#43); F-30 [#59](https://github.com/MadBomber/htm/pull/59) (#26); F-62 [#48](https://github.com/MadBomber/htm/pull/48) (#45); F-94 [#50](https://github.com/MadBomber/htm/pull/50) (#44); F-95 [#47](https://github.com/MadBomber/htm/pull/47) (#46).
-- F-90: `rake test` runs 0 tests on Ruby 4.1 (Rakefile preloads test_helper). [#68](https://github.com/MadBomber/htm/pull/68) **PR open**
-- F-97: `TagService::TAG_FORMAT` accepts multi-line tags. [#66](https://github.com/MadBomber/htm/pull/66) **PR open**
-- F-99: `PropositionService` ignores circuit-breaker config. [#67](https://github.com/MadBomber/htm/pull/67) **PR open**
-- F-100: `deleted` scopes on Node/NodeTag/RobotNode/Tag never match, so `htm:db:purge_all` is a no-op. Issue [#69](https://github.com/MadBomber/htm/issues/69). Four one-line scope fixes plus SQL tests; build on or after #58 (same files).
-- F-120: `remember` restoring a soft-deleted node leaves a stale query cache. Issue [#70](https://github.com/MadBomber/htm/issues/70). One line plus a caching test (proven in scratch).
-- F-121: remove hidden `lib/tasks/db.rake` duplicates. Issue [#71](https://github.com/MadBomber/htm/issues/71). A removal.
+- F-96: `HTM#restore` doesn't clear the query cache. [#75](https://github.com/MadBomber/htm/pull/75) **PR open**
+- F-56: `Tag.with_prefix` / `ListTagsTool` don't escape LIKE wildcards. [#76](https://github.com/MadBomber/htm/pull/76) **PR open**
+- F-53: DB passwords with URL-reserved characters aren't encoded/decoded. Issue [#78](https://github.com/MadBomber/htm/issues/78); reproduced 2026-11-15 without a DB.
+- F-131: documented embedding/tag/proposition timeouts never applied. Issue [#79](https://github.com/MadBomber/htm/issues/79).
+- F-123: `htm:db:info` omits `node_relationships` (use `Database::TABLES`). Issue [#80](https://github.com/MadBomber/htm/issues/80). One line plus a test.
 - F-37: move to minitest 6 (`~> 6.0` plus `minitest-mock`); verified green at b7eb5ef. Gemfile change; re-run at develop first.
-- F-96: `HTM#restore` doesn't clear the query cache. One line plus a DB test; wait for Dewayne's #49 (same method).
+- F-33: add `spec.metadata["documentation_uri"]` to `htm.gemspec` (site returns 200; one line).
+- F-79: `rake examples:status` always says "Database connected: No" (`Rakefile:110-118` calls the removed `HTM::ActiveRecordConfig`).
+- F-84: `examples/12_rails_app/README.md:46` and its `.envrc:6` use `HTM_EXTRACT_PROPOSITIONS`; HTM reads `HTM_PROPOSITION__ENABLED`. Low risk.
+- F-69: MCP tools use `instance_variable_get(:@long_term_memory)` instead of the reader (`mcp/tools.rb`; build after #76, same file).
+- F-18: extract the duplicated working-memory eviction block in `lib/htm.rb` (after #75, same file).
 - F-98: Railtie loads only 2 of 4 rake files; empty `htm.middleware` initializer. Needs railties in a scratch bundle for proof.
-- F-33: add `spec.metadata["documentation_uri"]` to `htm.gemspec` (one line; check #57 first, it edits the gemspec).
-- F-18: extract the duplicated working-memory eviction block in `lib/htm.rb`.
 - F-20: `enqueue_tags_job` / `generate_tags_step` re-implement `Node#add_tags`.
 - F-49: `htm:files:info` hand-rolls `FileSource.by_path`.
-- F-53: DB passwords with URL-reserved characters aren't encoded/decoded.
-- F-55 / F-56: `Node#nearest_neighbors(distance:)` ignored; `Tag.with_prefix` doesn't escape LIKE wildcards.
 - F-66: session settings applied to one pooled connection only. Issue [#39](https://github.com/MadBomber/htm/issues/39). The `connect_sqls` half is small; the per-instance timeout needs a decision.
-- F-69: MCP tools use `instance_variable_get(:@long_term_memory)` instead of the reader.
-- F-79: `rake examples:status` always says "Database connected: No".
-- F-80: `examples/02_config_file_example/show_config.rb` requires unused `amazing_print`. Low risk.
-- F-78 (examples half): stale pre-renumbering example paths. Low risk.
+- F-78 (docs half): stale pre-renumbering example paths in `docs/` and `SETUP.md` (docs deploy; not low risk).
 - F-86: unreachable `when DateTime` branches in `HTM::Timeframe` (plus the dead `DateTime` in `QueryCache#normalize_arg`). A removal.
 
 ## Open bomberbot PRs
 
-- [#68](https://github.com/MadBomber/htm/pull/68) fix(test): stop preloading test_helper in rake test (F-90). **PR open**
-- [#67](https://github.com/MadBomber/htm/pull/67) fix(propositions): read circuit breaker settings from config (F-99). **PR open**
-- [#66](https://github.com/MadBomber/htm/pull/66) fix(tags): anchor TagService::TAG_FORMAT to whole string (F-97). **PR open**
+- [#76](https://github.com/MadBomber/htm/pull/76) fix(tags): escape LIKE wildcards in tag prefix filters (F-56). **PR open**
+- [#75](https://github.com/MadBomber/htm/pull/75) fix(cache): invalidate search cache in HTM#restore (F-96). **PR open**
 
 ## Merged bomberbot PRs
 
+- [#77](https://github.com/MadBomber/htm/pull/77) fix(examples): drop unused amazing_print, fix stale paths (F-80, F-78 examples half). **Merged (low risk)** by madbot 2026-11-15, develop ad34812.
+- [#68](https://github.com/MadBomber/htm/pull/68) fix(test): stop preloading test_helper in rake test (F-90). Squash-merged 2026-11-13.
+- [#67](https://github.com/MadBomber/htm/pull/67) fix(propositions): read circuit breaker settings from config (F-99). Squash-merged 2026-11-13.
+- [#66](https://github.com/MadBomber/htm/pull/66) fix(tags): anchor TagService::TAG_FORMAT to whole string (F-97). Squash-merged 2026-11-13.
 - [#32](https://github.com/MadBomber/htm/pull/32) fix(tags): re-link soft-deleted node_tags rows instead of inserting (Fixes #19). Squash-merged 2026-11-12.
 - [#31](https://github.com/MadBomber/htm/pull/31) fix(config): HTM_PROPOSITION__ENABLED=false now turns proposition extraction off. Squash-merged 2026-11-12.
 - [#30](https://github.com/MadBomber/htm/pull/30) fix(mcp): correct env var names and defaults in htm_mcp help. Squash-merged 2026-11-12.

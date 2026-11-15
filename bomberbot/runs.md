@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 01:20 htm
+
+Visit by madbot (last: 2026-11-13 08:35). `develop` already existed (f313068 at start, ad34812 at end); not created. Run directory was fresh. Since the last visit Dewayne squash-merged bot #66–#68 unchanged and fixed bot issues #69–#71 himself (#72–#74). All five phase-1 agents ran. Deviation: to fit the 45-minute budget, the three builders started alongside phase 1, because Brain Backlog-first had already picked them (F-96 had been waiting on #49, which has merged).
+
+- **New PRs** (base `develop`, label `bomberbot`, none stacked; htm has no PR CI, the only workflow deploys Pages):
+  - [#75](https://github.com/MadBomber/htm/pull/75) fix(cache): invalidate search cache in HTM#restore. Source: **brain** (F-96). Fail-before (`Expected [] to include 2.`) then pass; suite 685/0 on a throwaway DB; review clean in round 1. Waits for Dewayne (lib).
+  - [#76](https://github.com/MadBomber/htm/pull/76) fix(tags): escape LIKE wildcards in tag prefix filters. Source: **brain** (F-56). 3 of 4 new tests fail before; suite 688/0; review clean in round 1. Waits for Dewayne (lib).
+  - [#77](https://github.com/MadBomber/htm/pull/77) fix(examples): drop unused amazing_print, fix stale paths. Source: **brain** (F-80, F-78 examples half). `show_config.rb` LoadError → runs; path checker 21 stale → 0; suite 684/0; review clean in round 2. **Merged (low risk)** by madbot: examples/ only, 60 lines; develop ad34812.
+- **Merged after approval:** none pending. **Tended:** none open.
+- **Audit:** security (third run, f313068) + dead-code delta to f313068 (nothing orphaned). F-123, F-124 (S-10 held locally); improver/triage F-131–F-136.
+- **Issues answered:** none (nothing new to add on #39, #13, #12, #8).
+- **Issues filed:** [#78](https://github.com/MadBomber/htm/issues/78) (F-53), [#79](https://github.com/MadBomber/htm/issues/79) (F-131), [#80](https://github.com/MadBomber/htm/issues/80) (F-123).
+
 ## 2026-11-15 01:20 dev
 
 Tenth visit (last 2026-11-14 12:41), by madbot. `develop` already existed (8113aab, == `main`); not created. Run directory was fresh. Since last visit Dewayne merged bot #38, #39, his #32 and #41–#43 (fixing bot issues #29, #35–#37), and #44–#47 (develop→main, plus aws, fake_aws, rails/db, rails/dev, client/ticket, runbook and the `rails/`/`client/` layout). All five phase-1 agents ran. Deviation: to fit the 45-minute budget, the builder for brain Backlog F-51 started alongside phase 1, and the other two as soon as triage and the improver reported.

@@ -111,12 +111,10 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Optional, after [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32) merges: have CI run the default `bundle exec rake` (not just `rake test`) so the RuboCop baseline is enforced, and drop the stale "pre-existing offenses" comment in `ci.yml`. Bots can't push `.github/workflows` changes (no `workflow` scope).
 - [ ] Optional, with [#32](https://github.com/MadBomber/smart_message-transport-lanet/pull/32): add `.rubocop_todo.yml` to the gemspec's `spec.files` reject list (`.rubocop.yml` is excluded; the todo file isn't).
 
-## htm (2026-11-11)
+## htm (2026-11-15)
 
-- [ ] Review [htm#32](https://github.com/MadBomber/htm/pull/32) (Fixes #19; adds `NodeTag.link`, which restores a soft-deleted link or creates one, fixes `NodeTag#restore!`, and swaps the six `find_or_create` call sites). Touches `lib/`, so not self-merged. 652 tests green. (added 2026-11-11)
-- [ ] Review [htm#31](https://github.com/MadBomber/htm/pull/31) (makes `HTM_PROPOSITION__ENABLED=false` actually disable extraction; config coercion plus test). Touches `lib/htm/config.rb`, so not self-merged. 648 tests green. (added 2026-11-11)
-- [ ] Review [htm#30](https://github.com/MadBomber/htm/pull/30) (`htm_mcp help` text: `HTM_CHUNKING__CHUNK_SIZE/CHUNK_OVERLAP`, the proposition default, the `fiber` backend and the connection timeout; plus a test). Touches `lib/htm/mcp/cli.rb`, so not self-merged. 650 tests green. (added 2026-11-11)
-- [ ] Optional: turn on "Automatically delete head branches" for htm. Merged bot branches pile up otherwise; this visit deleted ten. (added 2026-11-11)
+- [ ] Review [htm#75](https://github.com/MadBomber/htm/pull/75) (one line: `HTM#restore` clears the query cache, plus a DB test) and [htm#76](https://github.com/MadBomber/htm/pull/76) (`Tag.with_prefix`/`ListTagsTool` escape LIKE wildcards). Both change `lib/`, so not self-merged; they each add a CHANGELOG line, so the second needs a one-line rebase.
+- [ ] Optional: turn on "Automatically delete head branches" for htm. Merged bot branches pile up otherwise; this visit deleted ten. (added 2026-11-11) Still off on 2026-11-15: `madbot/mcp-help-env-vars`, `madbot/proposition-enabled-env` and `madbot/relink-deleted-tag` (#30–#32) remain on the remote.
 - [ ] smart_message: close issues [#6](https://github.com/MadBomber/smart_message/issues/6), #7, #8, #12, #13, #15, #16 and #17. Each is fixed on `develop` by your 0.1.0 commit 07af3d4; BomberBot commented with evidence on each. `Fixes #N` only auto-closes from `main`. (added 2026-11-12)
 - [ ] smart_message: the live docs site still serves `main`'s old `mkdocs.yml` (the script #9 removed). It goes away when you merge `develop` → `main` for the 0.1.0 release, or cherry-pick ffa364f to `main` sooner. (added 2026-11-12)
 - [ ] Review [smart_message#21](https://github.com/MadBomber/smart_message/pull/21) (test-only, Fixes #14) and [smart_message#22](https://github.com/MadBomber/smart_message/pull/22) (2-line DLQ docs fix). Both green; review loops hit the 3-round cap, so not self-merged. (added 2026-11-12)

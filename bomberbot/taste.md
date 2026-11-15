@@ -264,3 +264,6 @@ Short rules distilled from Dewayne's merges, rejections, and review comments. Ne
 - dev: the repo allows merge commits only (rebase and squash off since 2026-11-14); a low-risk self-merge there must use `--merge`. (process rule, 2026-11-15)
 - Re-check a PR body after any rebase or conflict resolution and keep it accurate; never let a co-author trailer reach a merge commit ([dev#32](https://github.com/MadBomber/dev/pull/32) review). (proposed 2026-11-15)
 
+- htm: Dewayne squash-merged #66–#68 unchanged with no comments, and the squash commit takes the branch commit's headline, not the PR title, so make the commit headline as good as the title. Merge-from-develop commits on a branch are harmless under squash. ([htm#66](https://github.com/MadBomber/htm/pull/66)–[#68](https://github.com/MadBomber/htm/pull/68), 2026-11-15)
+- htm: Dewayne fixes small bot-filed issues himself, the same day, in his own PRs (#69–#71 → [#72](https://github.com/MadBomber/htm/pull/72)–[#74](https://github.com/MadBomber/htm/pull/74)). A well-evidenced issue is enough for a one-line fix; save PR slots for the backlog items he hasn't picked up. (2026-11-15)
+- Brief builders with absolute worktree paths: `git -C src worktree add build/<slug>` resolves under `src/`; two of three htm builders had to `git worktree move` (2026-11-15).
