@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 08:17 aia
+
+By madbot (last aia visit 2026-11-13 08:48). `develop` already existed (5499744); not created. Run directory was fresh. All five phase-1 agents ran. The #240 builder started before triage and the auditor reported, to save clock: it was brain's top Backlog pick and an open issue, verified on develop by the main session.
+
+- **Since last visit:** Dewayne squash-merged all five bomberbot PRs (#226–#229, #233), his own #206–#222, and #243–#254 (one per bot-filed issue). develop 0d611ef → 5499744; queue empty.
+- **New PRs** (all independent, all off develop 5499744, none stacked):
+  - [#255](https://github.com/MadBomber/aia/pull/255) fix(logger): send aia and llm logs to stderr by default (source: brain backlog + issue, F-144, Fixes #240). 2 fail-before tests; suite 2067→2069/0/1; review clean round 1.
+  - [#259](https://github.com/MadBomber/aia/pull/259) fix(orchestrate): write each artifact under its build directory (source: security, S-6). 2 of 3 new tests fail before; suite 2070/0/1; review clean round 1. Neutral wording checked.
+  - [#260](https://github.com/MadBomber/aia/pull/260) fix(skills): ignore front matter that is not a mapping (source: brain backlog, F-104). Fail-before test + CLI repro (`--list-skills`/`--list-roles` exit 1 → 0); suite 2068/0/1; review clean round 1.
+- **Merged (low risk):** none (all three change lib/; #259 is a security fix). **Merged after approval:** none (nothing was open).
+- **Tended:** no open bot PRs. Deleted 11 merged bot branches; kept `madbot/share-extract-model-id` and `bomber/provider-bare-model-name` for Dewayne.
+- **Audit:** security (develop 5499744): S-6 (fix in #259), S-5 update (local notes), F-147..F-149; bundler-audit clean. Improver: F-150..F-154. Triage: backlog re-verified; no new numbers.
+- **Issues answered:** none (#93/#146/#147/#148 have only Dewayne's 11-07 review and no new comments; #240 is BomberBot's).
+- **Issues filed:** [#256](https://github.com/MadBomber/aia/issues/256) (F-150), [#257](https://github.com/MadBomber/aia/issues/257) (F-151, reproduced by the main session), [#258](https://github.com/MadBomber/aia/issues/258) (F-117).
+
 ## 2026-11-15 08:15 simple_flow
 
 Fourteenth visit by bomberbot (last: 2026-11-15 07:06, madbot). `develop` already existed (2a5f282, unchanged); not created. Run directory was fresh. All five phase-1 agents ran.

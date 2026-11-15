@@ -12,6 +12,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## aia
 
 - [ ] Let bots push GitHub Actions workflows: `gh auth refresh -h github.com -s workflow` (the token lacks `workflow` scope), or add aia's test CI yourself from `bomberbot/plans/aia-test-ci.md`. aia has no test CI today. (added 2026-11-13)
+- [ ] Review and merge into `develop` [aia#255](https://github.com/MadBomber/aia/pull/255) (logs default to stderr; changes a default, opt-back documented; Fixes #240), [aia#259](https://github.com/MadBomber/aia/pull/259) (orchestrate artifacts stay under the build dir; S-6, details and disclosure question in your local `notes/security/aia.md`) and [aia#260](https://github.com/MadBomber/aia/pull/260) (front-matter crash). Independent; the second and third need a CHANGELOG-only rebase. Close #240 by hand after #255 merges. (added 2026-11-15)
+- [ ] Delete stale aia branches `madbot/share-extract-model-id` (on develop via #206) and `bomber/provider-bare-model-name` (superseded by #210). (added 2026-11-15)
 - [ ] Decide whether aia should require `ruby_llm >= 2.2` (see local security notes for aia, S-5, after #219). (added 2026-11-13)
 - [ ] Decide how aia's `develop` gets main's 6 post-release commits, including the `--paint` fix (F-45/F-46; options in inbox.md). (added 2026-11-12)
 
