@@ -10,7 +10,7 @@ Generates Claude Code skills from Ruby gem docs.
 
 ## Status
 
-_Updated 2026-11-15 05:20._ Queue full (#44-#46 open, unapproved), so no new PRs; first full dead-code audit ran and issues #47-#49 were filed (platform gems in Gemfile.lock, e2e script, version sort). `develop` unchanged at f23b7fb.
+_Updated 2026-11-15 09:05._ Queue still full (#44-#46 open, unapproved), so no new PRs; second quality audit ran and issues #50-#52 were filed (refresh drops broken links, verify links into cwd, duplicate gem args). `develop` unchanged at f23b7fb.
 
 ## Backlog
 
@@ -23,6 +23,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Platform-suffixed gems in Gemfile.lock dropped or mis-versioned (F-70, issue [#47](https://github.com/MadBomber/gem-skill/issues/47)). One regex in `lockfile.rb:32` plus tests.
 - `scripts/e2e_test` always aborts "Runner failed" (F-66, issue [#48](https://github.com/MadBomber/gem-skill/issues/48)). One-line script fix.
 - `gem skill list` sorts versions as strings (F-72, issue [#49](https://github.com/MadBomber/gem-skill/issues/49)). One line in `cache.rb` plus a test.
+- `bundle skill refresh` treats a broken link as up to date, then deletes it (F-74, issue [#50](https://github.com/MadBomber/gem-skill/issues/50)). One line in `bundle_command.rb:91` plus a test. Silent data loss; take first.
+- `gem skill verify` links into the cwd (F-75, issue [#51](https://github.com/MadBomber/gem-skill/issues/51)). `link:` keyword on `Runner.install_skill`.
+- `gem skill install a a` runs twice (F-81, issue [#52](https://github.com/MadBomber/gem-skill/issues/52)). `.uniq` in two places plus a test.
 - Method-redefinition warnings in tests, now 9 (F-21). Test-only.
 - Shadowed exception rescues at `fetcher.rb:113` (safe deletion, F-63) and `gem_command.rb:374` (F-35, narrowing is a call).
 - Docs describe `gem skill setup` as plugin-only in `docs/index.md:34`, `docs/installation.md:18`; README says "once per machine" (:87) and "re-run after upgrading" (:208). Noticed by #44's builder; the upgrade half is F-42 (needs decision).

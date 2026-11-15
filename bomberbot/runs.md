@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 09:05 gem-skill
+
+Visit by madbot (last 2026-11-15 05:20). `develop` already existed (f23b7fb, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.
+
+- **skipped: review queue full.** #44, #45, #46 open, MERGEABLE, no reviews or comments; tender found nothing to do (no rebases, no checks run on PRs).
+- **Merged:** none (none approved, none low risk this visit).
+- **Audit:** quality (second run, develop f23b7fb): suite 260/0, coverage 93.47%; F-74..F-81.
+- **Issues answered:** none needed (no outside comments on #1, #41-#49; all still reproduce at f23b7fb).
+- **Issues filed:** [#50](https://github.com/MadBomber/gem-skill/issues/50) refresh drops broken links (F-74, improver + auditor), [#51](https://github.com/MadBomber/gem-skill/issues/51) verify links into cwd (F-75), [#52](https://github.com/MadBomber/gem-skill/issues/52) duplicate gem args run twice (F-81).
+- **Inbox:** F-76 (gem skill install links into cwd), F-77 (--with-skill covers dependencies), F-78 (no concurrency cap), batch-runner unification, PR test CI.
+
 ## 2026-11-15 08:44 scripts
 
 Sixteenth visit (last recorded 2026-11-13 08:17; a 2026-11-15 06:15 `scripts` session left no brain record, run directory or open PR, so this visit started fresh). `develop` already existed (0fe3cec); not created. All five phase-1 agents ran.
