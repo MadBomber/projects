@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 03:05 htm
+
+Visit by madbot (last: 2026-11-15 01:20). `develop` already existed (ad34812, unchanged); not created. Run directory was fresh. `src/` first checked out `main` (aee26d2); it was detached at `origin/develop` partway through, and triage and the improver read exported copies of develop instead. Deviation, as on the last visit: the three Backlog builders started alongside phase 1 to fit the 45-minute budget.
+
+- **New PRs:** [#82](https://github.com/MadBomber/htm/pull/82) fix(config): percent-encode database user and password (brain F-53, fixes issue #78). [#83](https://github.com/MadBomber/htm/pull/83) fix(rake): examples:status connects through Sequel (brain F-79). [#81](https://github.com/MadBomber/htm/pull/81) fix(examples): use HTM_PROPOSITION__ENABLED (brain F-84). None stack. All three review loops ended clean in one round. #82 ran the full suite green (688 runs) on a throwaway PG 18. #83 ran red-then-green plus a full run whose 4 failures came only from the port rewrite. #81 changes no code.
+- **Merged (low risk):** none. #81 touches the root `.envrc`, #82 touches `lib/`, and #83 touches the `Rakefile`. **Merged after approval:** none (no approvals).
+- **Tended:** #75 and #76, rebased onto ad34812 and force-pushed with the full suite green. #75 does not duplicate Dewayne's #73: that fix covered `remember`, and #75 covers `HTM#restore`; the tender commented on #75 to say so. Five bot PRs are now open.
+- **Audit:** adoption, third run (ad34812); F-137–F-141 and S-11. The auditor reached the live PG once through example 00's `psql`/`createdb` (a no-op `CREATE EXTENSION IF NOT EXISTS` plus reads); see the process note in the findings file.
+- **Improver:** F-142–F-149.
+- **Issues answered:** none. Nothing on the seven open issues is new since 01:20.
+- **Issues filed:** [#84](https://github.com/MadBomber/htm/issues/84) (F-142), [#85](https://github.com/MadBomber/htm/issues/85) (F-143), [#86](https://github.com/MadBomber/htm/issues/86) (F-140).
+
 ## 2026-11-15 02:45 debug_me
 
 By madbot. Dewayne had merged all five waiting bomberbot PRs (#61, #63–#66, squash) and his own #68/#69 on 2026-11-13, so the review queue was empty; `develop` 10bec70, CI green on 3.2–4.0. `src/` initially checked out `main`; detached at `origin/develop` within a minute and the read-only roles were told to re-read.

@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-15 01:20._ Dewayne merged #66–#68 and fixed #69–#71 himself (#72–#74); madbot opened #75 (F-96) and #76 (F-56), self-merged #77 (examples, F-80/F-78), and filed #78–#80.
+_Updated 2026-11-15 03:05._ madbot opened #81 (F-84), #82 (F-53, fixes #78) and #83 (F-79), and filed #84–#86; five bot PRs (#75, #76, #81–#83) now await Dewayne, none of them low risk.
 
 ## Backlog
 
@@ -18,13 +18,13 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - F-96: `HTM#restore` doesn't clear the query cache. [#75](https://github.com/MadBomber/htm/pull/75) **PR open**
 - F-56: `Tag.with_prefix` / `ListTagsTool` don't escape LIKE wildcards. [#76](https://github.com/MadBomber/htm/pull/76) **PR open**
-- F-53: DB passwords with URL-reserved characters aren't encoded/decoded. Issue [#78](https://github.com/MadBomber/htm/issues/78); reproduced 2026-11-15 without a DB.
+- F-53: DB passwords with URL-reserved characters are not encoded or decoded. Issue [#78](https://github.com/MadBomber/htm/issues/78). [#82](https://github.com/MadBomber/htm/pull/82) **PR open**
 - F-131: documented embedding/tag/proposition timeouts never applied. Issue [#79](https://github.com/MadBomber/htm/issues/79).
 - F-123: `htm:db:info` omits `node_relationships` (use `Database::TABLES`). Issue [#80](https://github.com/MadBomber/htm/issues/80). One line plus a test.
 - F-37: move to minitest 6 (`~> 6.0` plus `minitest-mock`); verified green at b7eb5ef. Gemfile change; re-run at develop first.
 - F-33: add `spec.metadata["documentation_uri"]` to `htm.gemspec` (site returns 200; one line).
-- F-79: `rake examples:status` always says "Database connected: No" (`Rakefile:110-118` calls the removed `HTM::ActiveRecordConfig`).
-- F-84: `examples/12_rails_app/README.md:46` and its `.envrc:6` use `HTM_EXTRACT_PROPOSITIONS`; HTM reads `HTM_PROPOSITION__ENABLED`. Low risk.
+- F-79: `rake examples:status` always says "Database connected: No". [#83](https://github.com/MadBomber/htm/pull/83) **PR open**
+- F-84: `HTM_EXTRACT_PROPOSITIONS` in `examples/12_rails_app/README.md` and the root `.envrc`. [#81](https://github.com/MadBomber/htm/pull/81) **PR open**
 - F-69: MCP tools use `instance_variable_get(:@long_term_memory)` instead of the reader (`mcp/tools.rb`; build after #76, same file).
 - F-18: extract the duplicated working-memory eviction block in `lib/htm.rb` (after #75, same file).
 - F-98: Railtie loads only 2 of 4 rake files; empty `htm.middleware` initializer. Needs railties in a scratch bundle for proof.
@@ -33,9 +33,17 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-66: session settings applied to one pooled connection only. Issue [#39](https://github.com/MadBomber/htm/issues/39). The `connect_sqls` half is small; the per-instance timeout needs a decision.
 - F-78 (docs half): stale pre-renumbering example paths in `docs/` and `SETUP.md` (docs deploy; not low risk).
 - F-86: unreachable `when DateTime` branches in `HTM::Timeframe` (plus the dead `DateTime` in `QueryCache#normalize_arg`). A removal.
+- F-142: "Nodes with tags" counts tag links (`jobs.rake`, `mcp/tools.rb`). Issue [#84](https://github.com/MadBomber/htm/issues/84). The `tools.rb` half should wait for #76.
+- F-143: `htm:jobs:process_tags` skips ancestor tags. Issue [#85](https://github.com/MadBomber/htm/issues/85). One line (`node.add_tags`) plus a task test.
+- F-140: example DB scripts shell out to the libpq default server. Issue [#86](https://github.com/MadBomber/htm/issues/86). Examples-only.
+- F-139 / F-137: docs list rake tasks that do not exist and call removed APIs (docs deploy; not low risk).
+- F-144: `jobs.rake` helpers leak onto `Object`; `time_ago` has gaps between its ranges.
 
 ## Open bomberbot PRs
 
+- [#83](https://github.com/MadBomber/htm/pull/83) fix(rake): examples:status connects through Sequel (F-79). **PR open**
+- [#82](https://github.com/MadBomber/htm/pull/82) fix(config): percent-encode database user and password (F-53, fixes #78). **PR open**
+- [#81](https://github.com/MadBomber/htm/pull/81) fix(examples): use HTM_PROPOSITION__ENABLED (F-84). **PR open**
 - [#76](https://github.com/MadBomber/htm/pull/76) fix(tags): escape LIKE wildcards in tag prefix filters (F-56). **PR open**
 - [#75](https://github.com/MadBomber/htm/pull/75) fix(cache): invalidate search cache in HTM#restore (F-96). **PR open**
 
