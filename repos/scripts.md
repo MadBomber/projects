@@ -10,22 +10,25 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-13 (fifteenth run)._ Review queue still full (#69/#70/#71 open, unreviewed), so no new PRs. Quality audit (RuboCop Lint + flay) found F-125..F-132; filed #78 (comment_gemfile data loss), #79 (copy_modified_files ignores --reference_dir), #80 (newgit_project in $HOME). Issues #72-#80 are open for Dewayne. Next PR candidate once the queue clears: F-130 (`cr2lf` empties a file it can't read). main and develop still diverged both ways (`ruler`).
+_Updated 2026-11-15 (sixteenth run)._ Dewayne merged #69-#71 and fixed every filed issue (#72-#80) himself in #83-#91; the queue was empty, so this visit opened #95 (sync_repo), #96 (cr2lf) and #97 (remadd), ran the full dead-code audit (F-133..F-142), and filed #92-#94. Next PR candidates: F-150 (`lflf2lf`, same fix as #96), F-151 (`remadd -a` with ordinals), F-134/F-136 (pure deletions). main and develop still diverged both ways (`ruler` on main).
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- S-9: security finding, details held locally. [#69](https://github.com/MadBomber/scripts/pull/69) **PR open**. (added 2026-11-12)
+- F-150: `lflf2lf` has the same unguarded sed/mv as the old `cr2lf`; same fix shape as #96. (added 2026-11-15)
 
 ## Open bomberbot PRs
 
-- [#69](https://github.com/MadBomber/scripts/pull/69) chore: remove vendored CGI printenv that shadows /usr/bin/printenv (opened 2026-11-13, S-9 backlog), **PR open**
-- [#70](https://github.com/MadBomber/scripts/pull/70) fix(resize_images): open images by their full path (opened 2026-11-13, F-89), **PR open**
-- [#71](https://github.com/MadBomber/scripts/pull/71) fix(fix_perms): skip .git and restore modes from a subdirectory (opened 2026-11-13, F-81), **PR open**
+- [#95](https://github.com/MadBomber/scripts/pull/95) fix(sync_repo): stop before pushing when checkout or merge fails (opened 2026-11-15, F-145), **PR open**
+- [#96](https://github.com/MadBomber/scripts/pull/96) fix(cr2lf): never empty a file it cannot read (opened 2026-11-15, F-130), **PR open**
+- [#97](https://github.com/MadBomber/scripts/pull/97) fix(remadd): schedule "last <weekday>" in the right month (opened 2026-11-15, F-128), **PR open**
 
 ## Merged bomberbot PRs
 
+- [#71](https://github.com/MadBomber/scripts/pull/71) fix(fix_perms): skip .git and restore modes from a subdirectory (merged 2026-11-13, F-81)
+- [#70](https://github.com/MadBomber/scripts/pull/70) fix(resize_images): open images by their full path (merged 2026-11-13, F-89)
+- [#69](https://github.com/MadBomber/scripts/pull/69) chore: remove vendored CGI printenv that shadows /usr/bin/printenv (merged 2026-11-13, S-9)
 - [#37](https://github.com/MadBomber/scripts/pull/37) fix(backup_envrc): copy with FileUtils, keep backups private (merged 2026-11-12, S-2)
 - [#35](https://github.com/MadBomber/scripts/pull/35) fix(shc): read the filename argument instead of stdin (merged 2026-11-12, Fixes #32)
 - [#36](https://github.com/MadBomber/scripts/pull/36) fix(yaml2json): allow YAML aliases and merge keys (merged 2026-11-12, Fixes #30)

@@ -1492,3 +1492,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **One "which file" for errors:** F-43, F-63/#61, F-77/#67 and a `MissingParameterError` from an included file (backtrace points at the parent's `include` line) are one family. A `path` on `PM::Error`, or `include` re-raising with the child path, would settle them together instead of piecemeal.
 - **Release gap:** develop is 48 commits ahead of main (RubyGems still 1.2.0, 11-02). #52 is fixed on develop but only auto-closes when develop reaches main. Fifteenth visit and third queue-full skip in a row today.
 
+
+## scripts (2026-11-15)
+
+- **Committed `gems_v40*.srt` snapshots:** `gems_v405` … `gems_v4101` (~2,200 lines each) look like saved output of `compare_gems_from_diff_rbenv_versions.sh` at each Ruby bump; nothing references them. Keep only the latest, or move them to `snapshots/`? Your call whether they're deliberate history.
+- **`sync_repo.sh` follow-ups** (beyond #95): use `git merge --ff-only` so a sync never creates a merge commit on the fork; return to the branch the user started on; `-h` is treated as a directory name. `--ff-only` changes behaviour, so it needs your OK.
+- **Shell argument hygiene (adds to the earlier item):** `find_and_delete.sh` calls its glob a "regex"; `gemd` passes `$@` unquoted and hardcodes `~/scripts`; `lflf2lf` repeats the old `cr2lf` bugs (F-150, next PR).
+- **Decisions waiting:** F-135 (`acronym_simple` disabled filter: re-enable or delete), F-140 (`categorize_gems` unused embedding client), F-141 (`apple_scripts/iterm/` superseded by `iTerm2/`), F-142 (`c2s`/`s2c` identical, README says one-way; decide with F-98), F-149 (`compare_gems_from_diff_rvm_versions.sh`, no `~/.rvm` here), F-152 (`remadd.rb` helpers to `lib/` so they can be tested).

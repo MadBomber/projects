@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 08:44 scripts
+
+Sixteenth visit (last recorded 2026-11-13 08:17; a 2026-11-15 06:15 `scripts` session left no brain record, run directory or open PR, so this visit started fresh). `develop` already existed (0fe3cec); not created. All five phase-1 agents ran.
+
+- **Since last visit:** Dewayne merged #69-#71 (merge commits), synced develop → main (#81/#82), then fixed every filed issue #72-#80 himself in #83-#91 (squash, one PR per issue). No open issues or bot PRs at start.
+- **New PRs** (all independent, base `develop`, one file and one commit each; no CI, so proof is `sh -n`/`bash -n`/`ruby -c` plus scratch before/after repros):
+  - [#95](https://github.com/MadBomber/scripts/pull/95) fix(sync_repo): stop before pushing when checkout or merge fails (source: judgment, improver F-145). Review clean in round 1.
+  - [#96](https://github.com/MadBomber/scripts/pull/96) fix(cr2lf): never empty a file it cannot read (source: brain, F-130 "next PR candidate"). Review hit the 3-round cap with no open defects; round 3 cosmetic only.
+  - [#97](https://github.com/MadBomber/scripts/pull/97) fix(remadd): schedule "last <weekday>" in the right month (source: judgment, audit F-128; dates checked with the real `remind`). Review hit the 3-round cap; round 3 found no defects.
+- **Merged (low risk):** none; all three change scripts. **Merged after approval:** none (nothing open). **Tended:** nothing open.
+- **Deviation:** the #96 and #97 builders started during phase 1, because brain named F-130 as the next PR and F-128 was a verified finding; phase 1 produced nothing that outranked them.
+- **Issues answered:** none (no open issues; closed #72-#80 have only Dewayne's "Fixed by" notes).
+- **Audit:** dead code, full pass at 0fe3cec (per-file debride, hand-confirmed) plus quick scan a35981f..0fe3cec: F-133..F-142. Improver F-145..F-149 (renumbered from F-140..F-144 to avoid a collision). Builders: F-150..F-152. No new security findings. Dead-code scan last covered 0fe3cec.
+- **Issues filed:** [#92](https://github.com/MadBomber/scripts/issues/92) backup_just skips paths with an apostrophe (F-146), [#93](https://github.com/MadBomber/scripts/issues/93) my_docx_style_fixer leaves its temp dir (F-116), [#94](https://github.com/MadBomber/scripts/issues/94) comment_brewfile wrong descriptions (F-127).
+
 ## 2026-11-15 08:45 prompt_manager
 
 Fifteenth visit (last 2026-11-15 04:40, bomberbot), by madbot. `develop` already existed (5d9ac2c, unchanged); not created. The run directory was fresh. All five phase-1 agents ran.
