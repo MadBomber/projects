@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 04:10 smart_message-transport-named_pipes
+
+Visit 10b, by madbot (last: 2026-11-15 03:26). `develop` existed (91197bb, unmoved); not created. All five phase-1 agents ran.
+
+- **skipped: review queue full.** #57/#55/#58 are still open with no review from Dewayne. No new PRs.
+- **Tended:** nothing to do. #57 is green on 3.2–4.0. #55 and #58 are red only on the signal test that #57 fixes. All three are 0 behind `develop`, with no comments.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Audit:** quality, against 91197bb. Found F-96…F-100 and S-10 (local). F-41/F-44/F-45 resolved.
+- **Issues answered:** none; nothing new on the 8 open issues.
+- **Issues filed:** [#62](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/62) (F-98 shared namespace dir removed), [#63](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/63) (F-99 publish error paths untested), [#64](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/64) (F-100 duplicate or assertion-free tests).
+
 ## 2026-11-15 03:33 kbs
 
 - Merged before this visit: Dewayne squash-merged #37, #39 and #43 unchanged, and fixed #34-#36 and #40-#42 himself in #44-#49 (2026-11-13). No bot PRs were open; develop CI green at dee59c1.
