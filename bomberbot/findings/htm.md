@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-15 | third run (develop f313068): bundle-audit (DB 5755673) on a scratch dev resolve (S-1 unchanged, ruby_llm 1.16.0) and a gemspec-only resolve (clean); re-read of all changes since b7eb5ef plus shell-out/send/const_get/YAML/ENV/file/raw-SQL sinks; F-123, S-10 held locally; F-62/S-7 fixed by #48 |
-| dead code | 2026-11-15 | delta afbc2b7..f313068 with the security run: nothing orphaned (#55/#74 removals leave no references); last covered commit f313068 |
-| dependencies | 2026-11-13 | third run (develop afbc2b7): bundle outdated, bundle-audit (DB 4d71b12) on the dev lock (S-1 unchanged) and a gemspec-only resolve (clean), releases since 11-11 (none for key deps), suite 656 green on 4.0.9 and 4.1-preview1 (4.1 only with F-90), minitest 6 and simple_flow 0.1.0 floor runs 647 green at b7eb5ef; F-90–F-93 (S-9); F-37 verified |
+| dead code | 2026-11-15 | delta f313068..ad34812 with the dependencies run (examples only): nothing orphaned; last covered commit ad34812 |
+| dependencies | 2026-11-15 | fourth run (develop ad34812): bundle outdated (prism via flog new, else unchanged), bundle-audit (DB 5755673) on a 4.0.9 dev resolve (S-1 unchanged, ruby_llm 1.16.0) and a gemspec-only resolve (ruby_llm 2.2.2, clean), releases since 11-13 (ruby_llm 2.2.1/2.2.2 only), suite 684 green on 4.0.9 and 4.1-preview1 (`-w` clean on 4.1), 684 green on minitest 6.1 and on ruby_llm 2.2.2, runtime-only eager load (4.1 fails, F-164); F-163, F-164; F-36/F-90 fixed; F-34/F-35/F-37/F-91 re-verified |
 | adoption | 2026-11-15 | third run (develop ad34812): mkdocs build --strict passes (F-30 fixed), llms.txt URLs vs build, docs htm.<method>/HTM_* env/rake-task scans, CHANGELOG vs merges, examples 00/01/05 green on throwaway PG 18 (no LLM); gem-skill not run (paid model); F-137–F-141, S-11; F-82 partly fixed |
 | quality | 2026-11-15 | third run (develop ad34812): b7eb5ef..ad34812 delta by hand; flog -a -c lib (lib/htm nothing >50, top RelevanceScorer#calculate_relevance 49.1; first run to score lib/tasks, F-156), flay -m 16, reek 6.6.0 (1010), rubocop lib (0 offenses); F-151–F-156; F-20 widened to 5 copies; F-6/F-19/F-44/F-45/F-61/F-67/F-72 fixed |
 
-Dead-code scan last covered commit: f313068 (2026-11-15 delta)
+Dead-code scan last covered commit: ad34812 (2026-11-15 delta)
 
 ## Findings
 
@@ -252,3 +252,19 @@ Quality was the most overdue audit (last 2026-11-12). No database was touched by
 - **F-160: `RobotGroup#failover!` `puts` to stdout corrupts the MCP stdio stream** (`robot_group.rb:597`, called by `group_tools.rb:346`). Also `same_process.rb:122` `[].join || '(none)'` never prints "(none)". Status: issue [#87](https://github.com/MadBomber/htm/issues/87).
 - **F-161: group names over 56 characters break every notify** (`working_memory_channel.rb:63`; PG caps channel names at 63 bytes; `pg_notify` errors after the node is stored). Status: issue [#89](https://github.com/MadBomber/htm/issues/89).
 - **F-162: `GroupRememberTool` reports a non-member as originator** while `RobotGroup#remember` silently falls back to the first active robot (`robot_group.rb:326-330`, `group_tools.rb:243-252`). Status: open; the MCP-only fix is a small PR, the public-API fallback needs Dewayne's decision.
+
+### 2026-11-15 04:30 (dependencies audit, fourth run, develop ad34812; dead-code delta f313068..ad34812)
+
+Suite 684 runs, 0 failures on Ruby 4.0.9 and 4.1.0-preview1 (throwaway PG 18, no LLM keys); also 684 green on minitest 6.1.0 + minitest-mock and on ruby_llm 2.2.2 (the version `gem install htm` resolves). `bundle outdated`: json, marcel, ruby_llm, ruby_llm-schema held by ruby_llm-mcp/fast-mcp (F-35, F-91); minitest (F-37); prism 2.1.0 held by dev-only flog (upstream, no action). Releases since 11-13: ruby_llm 2.2.1, 2.2.2 only. bundle-audit: dev lock S-1 unchanged; gemspec-only resolve clean. Dead-code delta (examples only): nothing orphaned.
+
+Re-verified at ad34812: F-34 still open (`config.rb:394` `refresh!`; 2.2.2 has only `refresh`; no test). F-35, F-91 unchanged. F-36 fixed (#57 declares `logger`). F-37 still green, still an obvious-yes PR. F-90 fixed. F-136 still open. F-2 unchanged.
+
+- **F-163: OpenAI organization/project and Azure endpoint settings never reach ruby_llm.** `apply_openai_provider_config`/`apply_azure_provider_config` (`config.rb:462-463,476-477`) assign `openai_organization=`, `openai_project=`, `azure_endpoint=`, `azure_api_version=` behind `respond_to?` guards; ruby_llm 1.16.0 and 2.2.2 name them `openai_organization_id`, `openai_project_id`, `azure_api_base` and have no API-version setting. `huggingface_api_key=` is skipped too (no such provider in ruby_llm). Probe: org/project/endpoint set in HTM arrive as nil in `RubyLLM.config`. Status: issue [#91](https://github.com/MadBomber/htm/issues/91) (the three-setter rename); `azure.api_version` and the `huggingface` provider: needs Dewayne's decision (inbox).
+- **F-164: `require "htm"` raises `LoadError: cannot load such file -- tsort` on Ruby 4.1.0-preview1 in a runtime-only install.** simple_flow 0.4.0 requires `tsort` without declaring it (fixed on simple_flow develop, 5132c88, unreleased); the dev bundle hides it via rbs. Status: needs Dewayne's decision (release simple_flow then raise htm's floor, or add `tsort` to htm's gemspec meanwhile).
+
+### 2026-11-15 04:30 (improver, develop ad34812; loaders and MCP group tools)
+
+- **F-165: `load_file` skips a file edited within 5 s of its last load** (`markdown_loader.rb:54-62` computes `file_hash` but skips on `needs_sync?(mtime)` alone; `file_source.rb:13` `DELTA_TIME = 5`). Scratch test fails on develop. Fix: also re-sync when the hash differs. Status: issue [#90](https://github.com/MadBomber/htm/issues/90).
+- **F-166: loading a second file that shares a chunk takes the chunk from the first file** (`markdown_loader.rb:224` always `node.update(source_id:)`; `remember` dedups without raising, so the rescue at `:227-240` is dead). Unloading A then leaves the shared chunk; unloading B removes it from both. Scratch test: A's node count 2→1 after loading B. Fix: claim only when `source_id` is nil or ours, drop the dead rescue. Status: open, small PR; it orphans public `Node.find_by_content` (keep or deprecate: needs Dewayne's decision).
+- **F-167: frontmatter that is not a mapping, or uses YAML aliases, crashes `load_file`** (`markdown_loader.rb:160-170` rescues only `Psych::SyntaxError` and doesn't check for a Hash). Status: issue [#92](https://github.com/MadBomber/htm/issues/92).
+- **F-168: MCP `CreateGroupTool` reports success for an unknown `join_as` but adds no member** (`group_tools.rb:54-55`); `JoinGroupTool` (`:166-170`) treats any non-`'passive'` value, `"Passive"` included, as active. Fix: validate against `%w[active passive]` in both. Status: open, small PR (MCP only).

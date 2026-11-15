@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-15 04:00._ bomberbot skipped building (five bot PRs await Dewayne, none approved), ran the quality audit (F-151–F-156), and filed #87–#89.
+_Updated 2026-11-15 05:00._ bomberbot skipped building again (five bot PRs await Dewayne, none approved), ran the dependencies audit (F-163, F-164) and an improver pass on the loaders (F-165–F-168), and filed #90–#92.
 
 ## Backlog
 
@@ -21,7 +21,7 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-53: DB passwords with URL-reserved characters are not encoded or decoded. Issue [#78](https://github.com/MadBomber/htm/issues/78). [#82](https://github.com/MadBomber/htm/pull/82) **PR open**
 - F-131: documented embedding/tag/proposition timeouts never applied. Issue [#79](https://github.com/MadBomber/htm/issues/79).
 - F-123: `htm:db:info` omits `node_relationships` (use `Database::TABLES`). Issue [#80](https://github.com/MadBomber/htm/issues/80). One line plus a test.
-- F-37: move to minitest 6 (`~> 6.0` plus `minitest-mock`); verified green at b7eb5ef. Gemfile change; re-run at develop first.
+- F-37: move to minitest 6 (`~> 6.0` plus `minitest-mock`); verified green at b7eb5ef and again at ad34812 (2026-11-15). Gemfile change; re-run at develop first.
 - F-33: add `spec.metadata["documentation_uri"]` to `htm.gemspec` (site returns 200; one line).
 - F-79: `rake examples:status` always says "Database connected: No". [#83](https://github.com/MadBomber/htm/pull/83) **PR open**
 - F-84: `HTM_EXTRACT_PROPOSITIONS` in `examples/12_rails_app/README.md` and the root `.envrc`. [#81](https://github.com/MadBomber/htm/pull/81) **PR open**
@@ -46,6 +46,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-156 (first half): wrap `htm:db:purge_all`'s seven DELETEs in one transaction.
 - F-155: MCP `SearchTool` parses timeframes itself and disagrees with `recall`; delegate to `HTM::Timeframe.normalize` (after #76, same file).
 - F-162: `GroupRememberTool` reports a non-member originator; return an error like `LeaveGroupTool` (MCP tool only).
+- F-165: `load_file` skips an edit made within 5 s of the last load (compare `file_hash`). Issue [#90](https://github.com/MadBomber/htm/issues/90). ~3 lines plus a test.
+- F-163: OpenAI org/project and Azure endpoint never reach ruby_llm (setter names). Issue [#91](https://github.com/MadBomber/htm/issues/91). Three setters plus a test.
+- F-167: `load_file` crashes on non-mapping or aliased frontmatter. Issue [#92](https://github.com/MadBomber/htm/issues/92). Two lines plus a DB-free test.
+- F-166: a second file sharing a chunk steals it from the first (`markdown_loader.rb:224`).
+- F-168: MCP `CreateGroupTool`/`JoinGroupTool` don't validate `join_as`.
 
 ## Open bomberbot PRs
 

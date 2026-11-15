@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 05:00 htm
+
+Visit by bomberbot (last: 2026-11-15 03:52, bomberbot). `develop` already existed (ad34812, unchanged); not created. Run directory was fresh.
+
+- **skipped: review queue full.** Five bot PRs (#75, #76, #81–#83) open, none approved; no new PRs built.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** #75, #76, #81, #82, #83 checked only: no reviews or comments, all `MERGEABLE` on ad34812, no rebase needed. The repo has no test CI; three merged `madbot/` branches (#30–#32) were never deleted.
+- **Audit:** dependencies, fourth run (ad34812): suite 684 green on 4.0.9 and 4.1-preview1, on minitest 6.1 and on ruby_llm 2.2.2; S-1 unchanged; F-163, F-164; dead-code delta to ad34812 clean. Improver (loaders, MCP group tools): F-165–F-168.
+- **Issues answered:** [#78](https://github.com/MadBomber/htm/issues/78#issuecomment-6892948256) (linked to #82).
+- **Issues filed:** [#90](https://github.com/MadBomber/htm/issues/90) (F-165), [#91](https://github.com/MadBomber/htm/issues/91) (F-163), [#92](https://github.com/MadBomber/htm/issues/92) (F-167).
+
 ## 2026-11-15 04:40 prompt_manager
 
 Fourteenth visit (last 2026-11-15 02:00, madbot), by bomberbot. `develop` already existed (5d9ac2c, unchanged); not created. The run directory was fresh. All five phase-1 agents ran.
