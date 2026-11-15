@@ -11,7 +11,7 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-15 01:35 (tenth visit): #53-#55 still await review (green, no comments), so no new PRs; ran the dependencies audit and filed #56-#58._ Suite green on Ruby 4.0.9 and 4.1.0-preview1 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-15 02:46 (eleventh visit): #53-#55 still await review (green, no comments), so no new PRs; the security audit found nothing new. Filed #59-#61._ Suite green on Ruby 4.0.9 and 4.1.0-preview1 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
@@ -35,6 +35,12 @@ Well-defined items a single small PR could close.
 - F-32/F-129: `.rubocop.yml` `require:` → `plugins:` (one line; removes two warnings per run). F-25: add `docs/llms.txt`.
 - F-38 + F-127: `test.yml` `actions/checkout@v4` → v7 (Node 20 deprecation warning on every job) and its stale io-event matrix comment. `.github/`, so not low risk.
 - F-128: `Gemfile.lock` `BUNDLED WITH 2.7.2` crashes on Ruby 4.1; bump to Bundler 4.0.23 together with a `"4.1"` CI entry once 4.1.0 ships (December).
+- [#59](https://github.com/MadBomber/simple_flow/issues/59) `call_parallel` runs the first wave on an already-halted input (F-147). 1 lib line in `pipeline.rb` + test.
+- [#60](https://github.com/MadBomber/simple_flow/issues/60) `parallel_order` is cubic; visualizers stall on large graphs (F-148). ~5 lib lines in `dependency_graph.rb`, Set-based.
+- [#61](https://github.com/MadBomber/simple_flow/issues/61) `use_middleware` accepts any value and fails later with NoMethodError (F-149). ~2 lib lines + test.
+- F-150: dependency/activation errors show String names as Symbols (`:#{name}` → `name.inspect`, 3 lines). Pairs with #58.
+- F-151: docs site `getting-started/examples.md` lacks example 13 (optional steps). Docs deploy.
+- Builder note for #56: quote or escape Mermaid labels so that newlines, `]` and `"` are neutralized too, not just keywords and spaces.
 - Builder note: `call_parallel` validates `max_concurrent` only when a parallel group runs, so a bad value is silently accepted or raises after earlier steps ran; validate once at the top of `call_parallel`.
 
 ## Open bomberbot PRs

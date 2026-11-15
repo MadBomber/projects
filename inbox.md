@@ -1378,3 +1378,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **debug_me: split the `debug_me` method (finding #32).** About 130 lines with three inner lambdas; pulling out discovery, formatting and the header would make each testable on its own, as the taste rules ask. Needs your go-ahead on structure. Found by BomberBot.
 - **debug_me: opt-in strictness for undefined names.** `"<undefined>"` is documented now, but a typo still fails silently; a `strict:` option that raises or tags undefined names would help. API addition, your call. Found by BomberBot.
 - **debug_me: make `docs/changelog.md` a snippet include of `CHANGELOG.md`.** It's a hand-kept copy that has already drifted (findings #50, #59). Docs-deploy change, so yours to decide alongside #59. Found by BomberBot.
+
+## simple_flow (2026-11-15 02:46, BomberBot)
+
+- **simple_flow: Logging docs vs code (F-153).** `docs/core-concepts/middleware.md:33-39` shows `[SimpleFlow] Before step: #<Proc>`; the code and `docs/api/middleware.md` print `Before call`. Either (a) fix the core-concepts page (docs only), or (b) make `Logging` log the step's identity, as that page promises (more useful and fits "change the code, not the docs", but it changes log output and overlaps F-89). Recommended: (b), together with F-89.
+- **simple_flow: Proc middleware drops options (F-154).** `use_middleware ->(c){ c }, level: :debug` silently throws `:debug` away. Either (a) raise `ArgumentError` when a Proc gets options, (b) pass them as `call(callable, **options)`, which breaks single-argument lambdas, or (c) document it. Recommended: (a).
+- **simple_flow: `examples/regression_test.rb` compares nothing.** It rewrites the tracked baselines on every run; pids, timings and random IDs alone changed 6 of 13 files. Normalising the noise, diffing against the baseline, adding an `--update` flag and running it in CI would make it a real regression check.
+- **simple_flow: Result conveniences.** There is no `halted?`, `failed?`/`errors?`, `to_h`, value `==`, or `deconstruct_keys`; every doc example spells out `!r.continue?` and `r.errors.any?`. All of these would be additions only.
+- **simple_flow: nested `parallel`** raises `NoMethodError` on `ParallelBlock`. Support nesting or raise a clear error, as part of the F-144 DSL rework.
