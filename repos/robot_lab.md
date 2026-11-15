@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Fifteenth visit (2026-11-15 08:36)._ Skipped building: review queue full (#95, #96, #97, #101 open, green, MERGEABLE, unreviewed). Ran **quality** v4 (delta c700ba6..7394a10 plus agent_skill/catalog, bus_messaging, mcp_management reads): F-113–F-117. Filed #102 (F-114), #103 (F-115), #104 (F-113). No issue needed a reply. `develop` 7394a10 still 31 behind `main`.
+
 _Fourteenth visit (2026-11-15 05:53)._ No approvals; tender rebased #95 (green). Opened [#96](https://github.com/MadBomber/robot_lab/pull/96) (Fixes #90, F-53) and [#97](https://github.com/MadBomber/robot_lab/pull/97) (Fixes #91, F-106), both `lib/` so they wait for Dewayne, plus [#101](https://github.com/MadBomber/robot_lab/pull/101) (Fixes #92, F-107) stacked on #97. Ran the **dead-code** delta to 7394a10 (nothing new). Filed #98 (F-108), #99 (F-109), #100 (F-110). No issue needed a reply. `develop` 7394a10 still 31 behind `main`.
 
 _Thirteenth visit (2026-11-15 02:17, resumed 03:53)._ Dewayne had merged #70, #74, #75 and his own #52–#65, #81–#89, so the queue was empty. Opened [#93](https://github.com/MadBomber/robot_lab/pull/93) (examples 09–11 amazing_print crash, F-103) and [#94](https://github.com/MadBomber/robot_lab/pull/94) (CHANGELOG backfill, F-102), both **merged (low risk)** (develop 7fe3145, 7394a10). Opened [#95](https://github.com/MadBomber/robot_lab/pull/95) (history compression orphans tool results, F-105), `lib/` so it waits for Dewayne. Ran **adoption** v3: the live docs site is now built from develop (F-101, Dewayne). Filed #90 (F-53), #91 (F-106), #92 (F-107). No issue needed a reply. `develop` 7394a10 still 31 behind `main`.
@@ -56,6 +58,9 @@ else in this repo.
 - F-108 one raising Memory subscriber drops the rest of the batch: issue [#98](https://github.com/MadBomber/robot_lab/issues/98). `memory.rb` `drain_notification_queue`, ~4 lines + test; stack on the memory PRs. First pick next visit.
 - F-109 `Memory#set` bypasses reserved-key rules of `[]=`: issue [#99](https://github.com/MadBomber/robot_lab/issues/99). ~2 lines + 2 tests, same file.
 - F-110 storing `:timeout` makes a blocking `get` raise `AwaitTimeout`: issue [#100](https://github.com/MadBomber/robot_lab/issues/100). ~3 lines inside `wait_for_key`.
+- F-114 non-String SKILL.md `name` crashes the catalog and leaves it empty: issue [#102](https://github.com/MadBomber/robot_lab/issues/102). One guard in `AgentSkill#initialize` + test; hunk-check `agent_skill*.rb` vs main. Pair with F-41 (same file family).
+- F-115 `Robot#with_bus` detaches a network robot from the shared BusPoller: issue [#103](https://github.com/MadBomber/robot_lab/issues/103). ~3 lines in `bus_messaging.rb#teardown_bus_channel` + test.
+- F-113 catalog can't find a skill by folder name when `name` differs: issue [#104](https://github.com/MadBomber/robot_lab/issues/104). Index by `dir.basename` too.
 - F-41 CRLF **or UTF-8 BOM** SKILL.md rejected as "missing 'name'": ~2 lines in `agent_skill.rb:53`, hunk-safe, reproduced 2026-11-15 by triage (LF ok, CRLF/BOM fail). Good independent pick.
 - F-2 `examples/14_rusty_circuit/show.log` still tracked (identical on both branches; easy removal). Writers' Room `.log` files and root planning notes: Dewayne (inbox).
 - F-8 `docs/llms.txt`, after the sync and F-101.

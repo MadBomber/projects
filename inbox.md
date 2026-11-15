@@ -1481,3 +1481,6 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **#146/#147/#148/#93** still wait on your 11-07 options; the responder re-checked all four on develop 5499744 and nothing changed.
 - **`.ruby-version`:** aia has none, so local runs use whatever rbenv's global is (4.1.0-preview1 here). Pin it if you want builders and CI on 4.0.
 
+
+- **robot_lab F-118 (2026-11-15):** `Errors.retryable_classes` (`[InferenceError]`) includes `ToolLoopError`, which `retryable?` says must never retry. Options: (a) move `ToolLoopError` out from under `InferenceError` (hierarchy change, deprecation note); (b) add `Errors.non_retryable_classes` and document `discard_on` after `retry_on`; (c) document only. Bomberbot recommends (b).
+- **robot_lab improver passes (2026-11-15):** only four `lib/` files are byte-identical on develop and main, all already read. Until the develop/main sync, robot_lab visits mostly re-read covered code; consider syncing soon or lowering robot_lab's visit frequency. If F-70 resolves as "remove Streaming", `streaming/sequence_counter.rb` is sync-safe and can go now.
