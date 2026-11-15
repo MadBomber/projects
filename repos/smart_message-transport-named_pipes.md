@@ -13,7 +13,9 @@ files: the transport, a committed test stub `transport/base.rb`, and a `version.
 
 ## Status
 
-_Updated 2026-11-15 04:10 (visit 10b): **skipped new work: review queue full** (#57/#55/#58 still unreviewed; `develop` unmoved at 91197bb). Quality audit found F-96…F-100 and S-10 (local); filed [#62](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/62), [#63](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/63), [#64](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/64)._
+_Updated 2026-11-15 04:45 (visit 11): **skipped new work: review queue full** (#57/#55/#58 still unreviewed; `develop` unmoved at 91197bb). Dependencies audit found F-101 (upstream) and F-102 (note); F-51 has grown. Filed [#65](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/65) and [#66](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/66)._
+
+**Visit 10b (2026-11-15 04:10):** skipped (queue full); quality audit F-96…F-100, S-10 (local); filed #62, #63, #64.
 
 **Visit 10 (2026-11-15 03:26):** **skipped new work — review queue full** (#57/#55/#58 open, unreviewed; `develop` unmoved at 91197bb); security re-audit (S-9 new, local; S-7 resolved); filed [#59](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/59), [#60](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/60), [#61](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/61).
 
@@ -111,6 +113,8 @@ Well-defined items a single small PR could close.
 - **F-99 / [#63](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/63):** publish error paths untested. Two tests in errors_test; test-only, adds tests (low-risk eligible). Best next PR when the queue clears.
 - **F-100 / [#64](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/64):** duplicate or assertion-free integration/error tests; fold into the #59 removal PR.
 - **F-96 / F-97:** large concurrent publishes interleave, and a timed-out partial write corrupts the next message. Framing decision for Dewayne (inbox, with F-10).
+- **F-103 / [#65](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/65):** `subscribe` after `disconnect` gives a dead subscriber. Fix: `@shutdown` guard plus a test; lib change, after #37.
+- **F-104 / [#66](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/66):** README:163 "Non-blocking I/O" claim. One-line README fix, low-risk eligible; good next docs PR once #58 merges (same file).
 - **S-10 (local):** neutral "cap reader line length at buffer_size" lib PR after #37 lands.
 - **S-9 (local):** neutral "verify the opened pipe path is a FIFO" lib PR after #37 lands.
 - Next-PR ranking: now (no #37 overlap): F-99/#63, F-93/#60, #59+#64 removal. After #37 lands: F-98/#62, F-87/#56, F-21/F-38 ENXIO removal, F-32 CHANGELOG gaps (#10/#39/#48), F-88, F-89+F-90.

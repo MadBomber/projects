@@ -13,6 +13,18 @@ Third kbs visit today, by bomberbot (last: 2026-11-15 04:26, madbot). `develop` 
 - **Issues answered:** none needed (no outside comments since the last visit).
 - **Issues filed:** [#62](https://github.com/MadBomber/kbs/issues/62) (F-104 SQLite timestamps), [#63](https://github.com/MadBomber/kbs/issues/63) (F-105 String message blocks the queue), [#64](https://github.com/MadBomber/kbs/issues/64) (F-97 `engine.facts`/`close`).
 
+## 2026-11-15 04:45 smart_message-transport-named_pipes
+
+Visit 11 by madbot (last: 2026-11-15 04:10, madbot). `develop` already existed (91197bb, unchanged); not created. Run directory was fresh. All five phase-1 agents ran.
+
+- **skipped: review queue full.** #55, #57, #58 are open with no reviews or comments, all MERGEABLE; #57 green; #55/#58 red only on the signal test until #57 merges.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** #55, #57, #58: nothing needed (no comments, none behind `develop`).
+- **Audit:** dependencies (develop 91197bb, vs smart_message 0.1.0 @ 2bf06e8): bundle-audit clean; suite 51/52 against the real gem (F-50); F-101 (hashie 6 upstream pin), F-102 (toolchain note); F-51 has grown. Improver: F-103, F-104.
+- **Issues answered:** none (no outside activity; #30 was already answered).
+- **Issues filed:** [#65](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/65) (F-103, probe rerun by the main session), [#66](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/66) (F-104).
+- Note: subagents read `src/` on `main` (the clone's checkout) and exported `origin/develop` to scratch themselves. Next visit, check out `origin/develop` detached in `src/` before the agents start.
+
 ## 2026-11-15 05:00 htm
 
 Visit by bomberbot (last: 2026-11-15 03:52, bomberbot). `develop` already existed (ad34812, unchanged); not created. Run directory was fresh.
