@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 01:05 prompt_manager
+
+Twelfth visit (last: 2026-11-14 12:26), by madbot. `develop` already existed (03995ff at start, 5d9ac2c at end); not created. Run directory was fresh. All five phase-1 agents ran. Deviation: to fit the 45-minute budget, the builders for the two brain Backlog items (#52, #54) started alongside phase 1 rather than after it, since the Backlog-first rule had already decided them; the third PR was chosen from a finding verified by the main session.
+
+- **New PRs:**
+  - [#58](https://github.com/MadBomber/prompt_manager/pull/58) docs: reserved directive names (source: brain Backlog / issue #54, Fixes #54). Independent. CI green, review clean in 1 round, every listed name proven by script, `mkdocs build --strict` clean. Not self-merged (`docs/` deploys Pages).
+  - [#59](https://github.com/MadBomber/prompt_manager/pull/59) test: custom directives in included files and file-backed context (source: brain Backlog / issue #52, Fixes #52). **Merged (low risk)** by madbot: test-only, 27 lines, review clean, CI green; develop 5d9ac2c.
+  - [#63](https://github.com/MadBomber/prompt_manager/pull/63) fix: strip a UTF-8 BOM when reading prompt files (source: brain finding F-59). Independent. Fail-before/pass-after tests, suite 330/0 at 100% line+branch (also under `LANG=C`), aia suite 1998/0, review clean in round 2 (round 1 caught that `r:BOM|UTF-8` mislabels non-BOM files when `default_internal` is set, so it adds `PM.read_file`). Waits for Dewayne (lib).
+- **Audit:** dependencies (develop 03995ff): clean bundle-audit; F-61 (Node-20 actions, to dewayne.md), F-62 (Bundler 4.0.24 relock fixes F-17), plus improver F-63..F-68.
+- **Tended:** #56 and #57 rebased onto 03995ff, green, still waiting. Merged after approval: none.
+- **Issues answered:** none (nothing new to add on #17, #39, #52-#54).
+- **Issues filed:** [#60](https://github.com/MadBomber/prompt_manager/issues/60) (F-58, shell expansion under LANG=C), [#61](https://github.com/MadBomber/prompt_manager/issues/61) (YAML errors name no file), [#62](https://github.com/MadBomber/prompt_manager/issues/62) (API docs `prompts_dir` type).
+
 ## 2026-11-15 00:47 typed_bus
 
 - **develop:** already existed (81fc31d). No leftover run dir.

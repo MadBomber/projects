@@ -149,3 +149,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Optional: `.github/workflows/test.yml:35` comment still says the CI env arms the "100% line coverage gate"; since [#55](https://github.com/MadBomber/prompt_manager/pull/55) it arms line and branch gates. The bot token can't push workflow files. (added 2026-11-14)
 - [ ] Review and merge [#56](https://github.com/MadBomber/prompt_manager/pull/56) (test-only; review hit the cap) and [#57](https://github.com/MadBomber/prompt_manager/pull/57) (parsing guide; `docs/` deploys Pages). (added 2026-11-14)
+
+## prompt_manager (2026-11-15)
+
+- [ ] Review and merge [#63](https://github.com/MadBomber/prompt_manager/pull/63) (lib: BOM-stripping reads via a new public `PM.read_file`; aia green) and [#58](https://github.com/MadBomber/prompt_manager/pull/58) (docs: reserved directive names; `docs/` deploys Pages). (added 2026-11-15)
+- [ ] Bump `actions/checkout@v4` -> v5+ (`test.yml:24`, `deploy-github-pages.yml:23`) and `actions/setup-python@v5` -> v6+ (`deploy-github-pages.yml:28`); CI warns about Node 20 (F-61). The bot token can't push workflow files. (added 2026-11-15)

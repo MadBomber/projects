@@ -1261,3 +1261,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Stacked PRs get no CI in typed_bus:** `test.yml` only fires for `pull_request` into `main`/`develop`, so a PR stacked on a `bomberbot/` branch (like #73) shows no checks; the builder dispatched the workflow by hand. Adding `bomberbot/**` to the `pull_request` branches would fix it; it's a workflow edit the bot token can't push.
 - **`Configuration#timeout` is unvalidated** (`attr_accessor`, unlike `max_pending`/`throttle`): `"10"` or `-5` are accepted silently. Validating it is a behaviour change; worth an issue/PR next visit if you agree.
 - **Ruby 4.1.0-preview1:** typed_bus's `:extras` bundle (example 15) won't install there (Bundler 4.0.6 `Pathname::SEPARATOR_PAT` crash; `ratatui_ruby` 1.5.2 native build fails). Builders used 4.0.9.
+
+## prompt_manager (2026-11-15, madbot)
+
+- **Should `PM.register` warn or raise on a reserved name** (`tap`, `to_s`, `binding`, ...)? #58 documents the list; rejecting at registration would stop the `LocalJumpError` before any template runs. Options: keep silent (documented), warn, or `ArgumentError`.
+- **Every error raised while parsing a file should name it.** #50 did ERB, #61 asks for YAML; `MetadataError` and `ShellCommandError` from included files still don't. A `#path` on `PM::Error` or a path prefix is a design choice.
+- **`Parsed#to_s(nil)`** raises `NoMethodError` (`renderer.rb:41`); coerce with `values || {}` or raise a clear `ArgumentError`?
+- **Relock with Bundler 4.0.24 now or at the next release?** (F-62) It fixes `bundle install` on 4.1.0-preview1 (F-17); a 3-line `Gemfile.lock` change, green on both Rubies.
+- **RuboCop setup** (F-68): add rubocop to the bundle and a repo `.rubocop.yml` matching the code's one-blank-line style, so "zero new offenses" means the same on every machine?
+- **Self-merging low-risk PRs:** the tender flagged that #55 (and now #59) were merged by the bot without approval, under the prompt's low-risk rule. Confirm you are happy with that on prompt_manager.
+- **#17** targets the 0.x `FileSystemAdapter` that no longer exists; close it as obsolete?
