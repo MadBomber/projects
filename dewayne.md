@@ -25,6 +25,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 - [ ] Decide debug_me S-36, S-37 and the new S-78; the details are in your local `notes/security/debug_me.md` (S-36 re-confirmed on develop 10bec70, 2026-11-15). (added 2026-11-12, updated 2026-11-15)
 - [ ] Review and merge into `develop` [debug_me#71](https://github.com/MadBomber/debug_me/pull/71) (tests only: one shared `DebugMeOn` helper replaces 8 copied `$DEBUG_ME` before/after blocks; review clean, not self-merged because it rewrites setup in 9 files) and [debug_me#72](https://github.com/MadBomber/debug_me/pull/72) (lib/ one line: `DEBUG_ME=" false"` now turns output off). Independent; any order. (added 2026-11-15)
 - [ ] Review and merge into `develop` [debug_me#77](https://github.com/MadBomber/debug_me/pull/77) (gemspec: drop the `bundler` dev dependency) and [debug_me#78](https://github.com/MadBomber/debug_me/pull/78) (lib comments only, Fixes #74; merges cleanly with #72). Then close #73 (fixed on develop by #79) and #74 by hand, since `Fixes` doesn't fire on `develop`. Also decide #75 (`$stdout` default; options in the issue) and push #76 (CI 4.1/head) if wanted. (added 2026-11-15 03:40)
+- [ ] debug_me 2026-11-15 07:35: #71, #72, #77, #78 rebased onto 3aebfa5 and green, still waiting on review. Pick a placeholder for [debug_me#80](https://github.com/MadBomber/debug_me/issues/80) (`"<undefined>"` or a distinct `"<syntax error>"`); fix it together with S-78 (local notes). (added 2026-11-15 07:35)
 
 ## typed_bus
 

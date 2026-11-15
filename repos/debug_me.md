@@ -10,20 +10,22 @@ Debug output gem, small and stable.
 
 ## Status
 
-_Updated 2026-11-15 03:40._ No approvals since the 02:45 visit; #71/#72 rebased and green. This visit merged [#79](https://github.com/MadBomber/debug_me/pull/79) as low risk (contributing guide, issue #73), opened [#77](https://github.com/MadBomber/debug_me/pull/77) (drop the `bundler` dev dependency, finding 76) and [#78](https://github.com/MadBomber/debug_me/pull/78) (lib comments, issue #74), and filed [#75](https://github.com/MadBomber/debug_me/issues/75) and [#76](https://github.com/MadBomber/debug_me/issues/76). `develop` 3aebfa5. **PR open**
+_Updated 2026-11-15 07:35._ Skipped new work: review queue full (#71, #72, #77, #78 open, rebased onto 3aebfa5, all green, no approvals). Filed [#80](https://github.com/MadBomber/debug_me/issues/80) (SyntaxError on a non-Ruby String, finding 82) and [#81](https://github.com/MadBomber/debug_me/issues/81) (backtrace cap untested). `develop` 3aebfa5. **PR open**
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
 - Shared `$DEBUG_ME` on/off test helper — **PR open** [#71](https://github.com/MadBomber/debug_me/pull/71).
+- Pin that `{ :backtrace }` prints the whole stack: `expected = caller(1)` at tests/debug_me_test.rb:131 (issue [#81](https://github.com/MadBomber/debug_me/issues/81), mutation-proven 2026-11-15). Test only, one line — first pick once the queue drains.
+- README typos: README.md:253 "options is"/"in you program", :289 "its as easy", :299 "something line this" (improver 2026-11-15). Docs, low risk.
 
 ## Open bomberbot PRs
 
-- [#77](https://github.com/MadBomber/debug_me/pull/77) chore: drop the bundler development dependency (finding 76). Gemspec −1 line + CHANGELOG, CI green, review clean round 1; gemspec, so awaits Dewayne. **PR open**
-- [#78](https://github.com/MadBomber/debug_me/pull/78) docs: make lib comments match DEBUG_ME and skip behaviour (Fixes #74). lib/debug_me.rb comments only, +3/−3, CI green, review clean round 1, merges cleanly with #72; lib/, so awaits Dewayne. **PR open**
-- [#71](https://github.com/MadBomber/debug_me/pull/71) test: share one $DEBUG_ME on/off helper across the suite (brain Backlog). New `tests/debug_me_on.rb` + 8 spec files, +38/−61, CI green, review clean round 1, mutation-proven. Not self-merged: rewrites setup in 9 files (when in doubt, not low risk). **PR open**
-- [#72](https://github.com/MadBomber/debug_me/pull/72) fix: ignore whitespace around the DEBUG_ME env value (finding 77). lib/ one line + env_test + README + CHANGELOG, CI green, review clean round 1 → awaits Dewayne. **PR open**
+- [#77](https://github.com/MadBomber/debug_me/pull/77) chore: drop the bundler development dependency (finding 76). Gemspec −1 line + CHANGELOG, rebased onto 3aebfa5 2026-11-15 07:25, CI green, review clean round 1; gemspec, so awaits Dewayne. **PR open**
+- [#78](https://github.com/MadBomber/debug_me/pull/78) docs: make lib comments match DEBUG_ME and skip behaviour (Fixes #74). lib/debug_me.rb comments only, +3/−3, rebased onto 3aebfa5 2026-11-15 07:25, CI green, review clean round 1, merges cleanly with #72; lib/, so awaits Dewayne. **PR open**
+- [#71](https://github.com/MadBomber/debug_me/pull/71) test: share one $DEBUG_ME on/off helper across the suite (brain Backlog). New `tests/debug_me_on.rb` + 8 spec files, +38/−61, rebased onto 3aebfa5 2026-11-15 07:25, CI green, review clean round 1, mutation-proven. Not self-merged: rewrites setup in 9 files (when in doubt, not low risk). **PR open**
+- [#72](https://github.com/MadBomber/debug_me/pull/72) fix: ignore whitespace around the DEBUG_ME env value (finding 77). lib/ one line + env_test + README + CHANGELOG, rebased onto 3aebfa5 2026-11-15 07:25, CI green, review clean round 1 → awaits Dewayne. **PR open**
 
 ## Merged bomberbot PRs
 
@@ -66,6 +68,8 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - [#75](https://github.com/MadBomber/debug_me/issues/75) Output escapes a reassigned `$stdout` (findings #80). Filed 2026-11-15; options for Dewayne in the issue.
 - [#76](https://github.com/MadBomber/debug_me/issues/76) CI matrix does not test Ruby 4.1 / head (findings #79). Filed 2026-11-15; workflow file, Dewayne pushes.
+- [#80](https://github.com/MadBomber/debug_me/issues/80) A String block value that is not valid Ruby raises SyntaxError instead of printing `<undefined>` (finding 82). Filed 2026-11-15; asks Dewayne which placeholder. Lib behaviour change.
+- [#81](https://github.com/MadBomber/debug_me/issues/81) No test checks that `:backtrace` prints the whole call stack (improver C1). Filed 2026-11-15; Backlog item.
 
 ### Closed by Dewayne on 2026-11-13 (second batch)
 
