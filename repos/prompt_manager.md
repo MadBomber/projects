@@ -10,7 +10,9 @@ Prompt file management gem used by aia. A change to a public method must not bre
 
 ## Status
 
-_Updated 2026-11-15 (twelfth run, madbot)._ Tender rebased #56/#57 (still waiting). Opened [#58](https://github.com/MadBomber/prompt_manager/pull/58) (Fixes #54), [#59](https://github.com/MadBomber/prompt_manager/pull/59) (Fixes #52, **merged low risk** as develop 5d9ac2c) and [#63](https://github.com/MadBomber/prompt_manager/pull/63) (F-59 BOM fix). Dependencies audit (develop 03995ff): F-61..F-68. Filed issues [#60](https://github.com/MadBomber/prompt_manager/issues/60), [#61](https://github.com/MadBomber/prompt_manager/issues/61), [#62](https://github.com/MadBomber/prompt_manager/issues/62). develop HEAD 5d9ac2c.
+_Updated 2026-11-15 (thirteenth run, madbot)._ Skipped building: review queue full (#56, #57, #58, #63 all green, unapproved). Adoption audit (develop 5d9ac2c): F-69..F-73. Filed issues [#64](https://github.com/MadBomber/prompt_manager/issues/64) and [#65](https://github.com/MadBomber/prompt_manager/issues/65). Dewayne's #48 has a CI run held for approval (in `dewayne.md`). develop HEAD 5d9ac2c.
+
+_Previously, twelfth run (2026-11-15 01:05):_ Tender rebased #56/#57 (still waiting). Opened [#58](https://github.com/MadBomber/prompt_manager/pull/58) (Fixes #54), [#59](https://github.com/MadBomber/prompt_manager/pull/59) (Fixes #52, **merged low risk** as develop 5d9ac2c) and [#63](https://github.com/MadBomber/prompt_manager/pull/63) (F-59 BOM fix). Dependencies audit (develop 03995ff): F-61..F-68. Filed issues [#60](https://github.com/MadBomber/prompt_manager/issues/60), [#61](https://github.com/MadBomber/prompt_manager/issues/61), [#62](https://github.com/MadBomber/prompt_manager/issues/62). develop HEAD 5d9ac2c.
 
 _Previously, eleventh run (2026-11-14):_ Queue was empty: Dewayne merged #36/#40/#41 and fixed every issue BomberBot filed on 11-13 himself (#45-#47, #49-#51, squash merges). Opened [#55](https://github.com/MadBomber/prompt_manager/pull/55) (F-51 branch-coverage gate, **merged low risk** as develop 03995ff), [#56](https://github.com/MadBomber/prompt_manager/pull/56) and [#57](https://github.com/MadBomber/prompt_manager/pull/57). Incremental **dead-code** audit (develop 881aaea): nothing dead; F-53..F-60. Filed issues [#52](https://github.com/MadBomber/prompt_manager/issues/52), [#53](https://github.com/MadBomber/prompt_manager/issues/53), [#54](https://github.com/MadBomber/prompt_manager/issues/54). develop HEAD 03995ff.
 
@@ -30,6 +32,8 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Issue [#61](https://github.com/MadBomber/prompt_manager/issues/61): pass `filename:` and a line offset to `YAML.safe_load` (F-63). lib. Added 2026-11-15.
 - Issue [#62](https://github.com/MadBomber/prompt_manager/issues/62): `docs/api/configuration.md` `prompts_dir` type (F-64). Docs one-liner. Added 2026-11-15.
 - F-65: test `~` expansion in `prompts_dir` (test-only). Added 2026-11-15.
+- Issue [#64](https://github.com/MadBomber/prompt_manager/issues/64): `insert`/`read` error wording for directories and the `read` alias (F-72). lib + `test/include_chain_test.rb`. Added 2026-11-15.
+- Issue [#65](https://github.com/MadBomber/prompt_manager/issues/65): gemspec duplicate `homepage_uri`/`source_code_uri` (F-70). Gemspec one-liner; never self-mergeable. Added 2026-11-15.
 
 ## Open bomberbot PRs
 

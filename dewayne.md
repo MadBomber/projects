@@ -149,4 +149,5 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 ## prompt_manager (2026-11-15)
 
 - [ ] Review and merge [#63](https://github.com/MadBomber/prompt_manager/pull/63) (lib: BOM-stripping reads via a new public `PM.read_file`; aia green) and [#58](https://github.com/MadBomber/prompt_manager/pull/58) (docs: reserved directive names; `docs/` deploys Pages). (added 2026-11-15)
+- [ ] Your [#48](https://github.com/MadBomber/prompt_manager/pull/48) has no CI on its last push (a Copilot cloud agent commit): the Test run is `action_required`. Click "Approve and run" (or push to the branch), then rebase onto develop. Merging it unblocks issue #53. (added 2026-11-15)
 - [ ] Bump `actions/checkout@v4` -> v5+ (`test.yml:24`, `deploy-github-pages.yml:23`) and `actions/setup-python@v5` -> v6+ (`deploy-github-pages.yml:28`); CI warns about Node 20 (F-61). The bot token can't push workflow files. (added 2026-11-15)
