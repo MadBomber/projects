@@ -1288,3 +1288,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Test CI for PRs.** htm has no workflow that runs the suite; every bot PR's proof is local only. A Postgres-service CI job would let low-risk PRs merge on a real green check.
 - **Release:** about 28 fixes on `develop` since 0.0.32 (2026-05-24). Whether to cut 0.0.33 is your call.
 - **Security:** S-10 (and the still-open S-4, S-5) are in your local `notes/security/htm.md` and need your decision on disclosure and fix.
+
+## simple_flow (2026-11-15 01:35)
+
+- **Review queue:** #53-#55 have been green and unreviewed since 00:25, so this visit opened no PRs. The next visit builds once they clear. Queued in order: #52 (one line), #50/#51 (after #54 merges, same file), and #56-#58.
+- **F-142: is `Result` meant to be immutable?** Parallel branches share one `Result` instance, and `with_*` share every hash they don't copy, so `r.context[:k] = v` in one branch leaks into its siblings. README, `docs/api/result.md` and the gemspec say "immutable" and "thread-safe". Options: (a) shallow-freeze `context`, `errors` and `activated_steps` in `Result#initialize`. In-place mutation then raises `FrozenError`, but none was found in lib, examples, tests, robot_lab, fact_db, htm or aia. (b) Soften the docs. (a) matches your preference for fixing the code.
+- **F-144: robot_lab's `Network#parallel ... do task ... end` raises `NoMethodError`,** because simple_flow's `parallel` `instance_eval`s its block on `ParallelBlock`. Options: (a) simple_flow yields the group when the block takes a parameter (`parallel { |g| g.step ... }`) and keeps `instance_eval` otherwise; this is new public DSL. (b) robot_lab builds its own group object. robot_lab's only test passes an empty block.
+- **F-128 / Ruby 4.1:** when 4.1.0 ships, bump `Gemfile.lock` to Bundler 4.0.23 and add `"4.1"` to the CI matrix in one PR; 2.7.2 crashes on 4.1.
+

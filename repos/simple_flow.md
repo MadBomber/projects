@@ -11,7 +11,7 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-15 00:25 (ninth visit): Dewayne squash-merged #40-#44 and fixed #45/#47 himself (#48, #49). This visit opened #53-#55, ran the dead-code audit and filed #50-#52._ Suite green on Ruby 4.0.9 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-15 01:35 (tenth visit): #53-#55 still await review (green, no comments), so no new PRs; ran the dependencies audit and filed #56-#58._ Suite green on Ruby 4.0.9 and 4.1.0-preview1 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
@@ -24,12 +24,17 @@ Well-defined items a single small PR could close.
 - [#51](https://github.com/MadBomber/simple_flow/issues/51) `call` silently ignores activating an unknown step (F-121). Pairs with #50 (same lines).
 - [#52](https://github.com/MadBomber/simple_flow/issues/52) `DependencyGraph#dependencies` shares one mutable default array (F-76). 1 line + test.
 - [#46](https://github.com/MadBomber/simple_flow/issues/46) `execution_plan`/visualizers show optional steps as always running (F-98). Needs a display decision (inbox); a fix also removes the note #49 added to `docs/api/dependency-graph-visualizer.md`.
-- F-82: step-validation error doesn't name the step. F-18: `StepTracker`'s doc-comment example (`with_continue`/`.continue` don't exist).
+- [#58](https://github.com/MadBomber/simple_flow/issues/58) step-validation error doesn't name the step or what it got (F-82; String names via robot_lab). ~6 lib lines + tests.
+- [#57](https://github.com/MadBomber/simple_flow/issues/57) unnamed step silently ignores `depends_on:`, so an "optional" one always runs (F-140). ~5 lib lines in `pipeline.rb`.
+- [#56](https://github.com/MadBomber/simple_flow/issues/56) `to_mermaid` breaks on keyword or spaced step names (F-124, verified with mermaid 12.3.0). ~15 lib lines, mirrors #44.
+- F-18: `StepTracker`'s doc-comment example (`with_continue`/`.continue` don't exist).
 - F-11/F-27: `documentation_uri` to the docs site; gemspec template leftovers (`bindir`/`executables`); `homepage_uri == source_code_uri` build warning.
 - F-17: raise the Ruby floor to 3.3 (EOL 3.2; CI can't install on 3.2).
 - F-83 remainder: CHANGELOG [Unreleased] misses the Tests CI workflow, RuboCop config, `pipeline_graph.*` untrack, and docs refreshes.
 - F-85 + F-101: `-w` unused-variable warnings in examples 05 and 10, and `to_html`'s redundant assignment. F-86: `call_parallel` doc comment lacks `@param max_concurrent`.
-- F-32: `.rubocop.yml` `require:` → `plugins:`. F-25: add `docs/llms.txt`. F-124 (unverified): `to_mermaid` writes names unquoted.
+- F-32/F-129: `.rubocop.yml` `require:` → `plugins:` (one line; removes two warnings per run). F-25: add `docs/llms.txt`.
+- F-38 + F-127: `test.yml` `actions/checkout@v4` → v7 (Node 20 deprecation warning on every job) and its stale io-event matrix comment. `.github/`, so not low risk.
+- F-128: `Gemfile.lock` `BUNDLED WITH 2.7.2` crashes on Ruby 4.1; bump to Bundler 4.0.23 together with a `"4.1"` CI entry once 4.1.0 ships (December).
 - Builder note: `call_parallel` validates `max_concurrent` only when a parallel group runs, so a bad value is silently accepted or raises after earlier steps ran; validate once at the top of `call_parallel`.
 
 ## Open bomberbot PRs
