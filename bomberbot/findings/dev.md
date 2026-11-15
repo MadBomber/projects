@@ -8,13 +8,13 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-13 | Third run, at 657e6bd, focused on dev#10–#12 (STATUS_WEEK_OF, reek_baseline, SKIP paths); fixtures with asgard 0.6.0, reek 6.6.0, global bundle-audit. F-52 verified, F-36 still holds; S-7, S-8 held locally. (Second run 2026-11-12 at 5a0b89e: F-40 to F-42, S-4 to S-6. First 2026-11-06: S-1, S-2.) |
-| dead code | 2026-11-14 | Sixth-run cheap scan 657e6bd..6d0bb59 (dev#16–#34); nothing new. Fifth-run cheap scan 5a0b89e..657e6bd (dev#10 to #12); nothing new. (Previous: b1c29ed..5a0b89e, 2026-11-12.) |
+| security | 2026-11-15 | Fourth run, at 8113aab, focused on the new code 6d0bb59..8113aab (aws, fake_aws, rails/db, rails/dev, runbook, client/ticket, gem_tasks release gating): F-57 to F-59, S-9 to S-13 held locally. Earlier: Third run, at 657e6bd, focused on dev#10–#12 (STATUS_WEEK_OF, reek_baseline, SKIP paths); fixtures with asgard 0.6.0, reek 6.6.0, global bundle-audit. F-52 verified, F-36 still holds; S-7, S-8 held locally. (Second run 2026-11-12 at 5a0b89e: F-40 to F-42, S-4 to S-6. First 2026-11-06: S-1, S-2.) |
+| dead code | 2026-11-15 | Seventh-run cheap scan 6d0bb59..8113aab (dev#38–#47, ~3,600 lines); nothing new: every new helper has a caller, uncalled names are tasks. Earlier: Sixth-run cheap scan 657e6bd..6d0bb59 (dev#16–#34); nothing new. Fifth-run cheap scan 5a0b89e..657e6bd (dev#10 to #12); nothing new. (Previous: b1c29ed..5a0b89e, 2026-11-12.) |
 | dependencies | 2026-11-13 | Second run, at 657e6bd (dev#10–#12 since 5a0b89e). The new requires `pathname` (core) and `fileutils` (default gem) load on 4.0.9 and 4.1.0-preview1, also inside an empty bundle. Every .loki loads clean with -W:deprecated -W:performance. The flog, flay, reek and bundler-audit gates run without warnings on both Rubies and parse 3.4/4.0 syntax. Every tool gem is at its latest release, and the gh, icalBuddy and gem flags work. Found F-53. (First run 2026-11-12 at 5a0b89e: F-27, F-32 to F-36.) |
 | adoption | n/a | Skipped for dev by spec. |
 | quality | 2026-11-14 | Third run, at 6d0bb59, focused on dev#16–#22, #25, #26, #30, #31, #33, #34; RuboCop Lint+Security, flog, flay, debride, asgard 0.6.0 fixtures. F-54, F-55, F-16 update; triage added F-56. Earlier: Second run, at 657e6bd, focused on dev#10–#12. RuboCop Lint+Security (TargetRubyVersion 3.4) plus rubocop-strict.yml, flog, flay, reek 6.6.0 over .rb copies; asgard 0.6.0 fixtures for reek_baseline/reek_check, the SKIP paths and STATUS_WEEK_OF. F-47 to F-49, F-45 update. (First run 2026-11-07: F-15 to F-17.) |
 
-Dead-code scan last covered commit: 6d0bb59 (origin/develop, 2026-11-14, sixth run)
+Dead-code scan last covered commit: 8113aab (origin/develop == main, 2026-11-15, seventh run)
 
 ## Findings
 
@@ -64,7 +64,7 @@ Dewayne merged dev#5 and dev#6 on 2026-11-09 from `bomber/` branches whose visit
 - **F-27:** absent analysis tools fail instead of SKIP, against README "Checks whose tool or config is absent report SKIP": `flay_check`/`reek_check` `require` with no rescue, so a missing gem aborts the whole `quality` run with no summary; `flog_check` reports FAIL when flog is neither bundled nor on PATH; `bundler_audit_check` reports FAIL with no `Gemfile.lock`. Status: PR'd ([dev#12](https://github.com/MadBomber/dev/pull/12), stacked on dev#11).
 - **F-28:** `weekly_report` treats `STATUS_WEEK_OF` as the window start even when it isn't a Monday (the header's own example, 2026-09-22, is a Tuesday), so Monday's daily summary is missed. Status: PR'd ([dev#10](https://github.com/MadBomber/dev/pull/10)).
 - **F-29:** `claude_sessions_collect` (status_report.loki:211) maps only `/` and `_` to `-`, but Claude Code maps every non-alphanumeric character, so a repo path with a `.` never finds its sessions. 1-line fix, but it would feed more session text into the weekly `claude -p` prompt, so it waits on S-1 like F-3. Status: needs Dewayne's decision.
-- **F-30:** `gem_tasks.loki` can't be imported without `quality.loki` (`release` has `depends_on [:quality, :build]` → `asgard: undefined task(s) in depends_on: quality`). Every current consumer imports both. Fix: `import "quality.loki"` at the top, or a README sentence. Status: open, low (held while Dewayne has an uncommitted local change to gem_tasks.loki).
+- **F-30:** `gem_tasks.loki` can't be imported without `quality.loki` (`release` has `depends_on [:quality, :build]` → `asgard: undefined task(s) in depends_on: quality`). Every current consumer imports both. Fix: `import "quality.loki"` at the top, or a README sentence. Status: PR'd ([dev#53](https://github.com/MadBomber/dev/pull/53), 2026-11-15); since f7049e8 `build` also depends on `quality`.
 - **F-31:** `gem_version` reads the first `lib/**/version.rb`; with a nested `lib/foo/cli/version.rb` it returns nil and `build` makes `foo-.gem` (`release -y` would tag `v`). Status: issue [#7](https://github.com/MadBomber/dev/issues/7).
 - **F-32:** `console` falls back to `bundle exec irb`, which fails on Ruby 4 when irb isn't in the bundle (irb is a bundled gem). Status: issue [#8](https://github.com/MadBomber/dev/issues/8).
 - **F-33:** `flay_check`/`reek_check` load whichever flay/reek is newest in asgard's Ruby, not the lockfile's version (asgard never sets up Bundler), so the gate and `bundle exec reek` can disagree. Status: needs Dewayne's decision (subprocess via `bundle exec` like flog, or accept and document).
@@ -101,7 +101,7 @@ Scope: `develop` at 657e6bd, mainly the code dev#10–#12 changed. RuboCop Lint/
 - **F-49:** the reek/flay "can not be loaded by asgard" messages (quality.loki:184, 446, 451) offer "outside the active bundle" as a cause, which only applies under `bundle exec asgard`; :184 repeats `skip_reek`'s text. Status: open, cosmetic (fold into the F-39/F-46 PR).
 - **F-45 update:** `STATUS_WEEK_OF` (status_report.loki:301) has the same backtrace for `2026-13-01` and an empty value. Covered by dev#25.
 - **F-50:** `quality_rails.loki` (:24/36/48) calls `bundled_gem?`, defined only in quality.loki:382; importing the Rails gates alone gives NoMethodError. Fix: `import "quality.loki"` at the top (asgard's import dedups). Status: issue [#24](https://github.com/MadBomber/dev/issues/24).
-- **F-51:** `notes_collect` (status_report.loki:123) says "found today's journal entry" even when `STATUS_DATE` asks for another day. 1-line fix. Status: open, cosmetic (after #20 merges, same file).
+- **F-51:** `notes_collect` (status_report.loki:123) says "found today's journal entry" even when `STATUS_DATE` asks for another day. 1-line fix. Status: PR'd ([dev#48](https://github.com/MadBomber/dev/pull/48), 2026-11-15, with the matching `desc` strings and daily_summary's "_No activity captured today._"); file now `client/status_report.loki`.
 - **F-52:** `status_report.loki:42` `safe_capture2` uses `Open3.capture2` without capturing stderr, so its git calls may leak `fatal:` lines like F-37 did. Status: issue [#28](https://github.com/MadBomber/dev/issues/28) (verified 2026-11-13; fix after #20, which edits that helper).
 
 ### 2026-11-13, seventh run (security audit, third run)
@@ -129,3 +129,21 @@ At 6d0bb59. RuboCop Lint/Security: nothing new (F-17 now at quality.loki:521); f
 - **F-16 update:** `branch_report` flog 104.7 → 111.9 after dev#22; flay mass 54 at :152/:157 unchanged. Still open, low.
 - **F-5 update:** `branch_report.loki` part PR'd ([#38](https://github.com/MadBomber/dev/pull/38)); `db_doc.loki`, `.irbrc` wait on F-6.
 - **F-39/F-46/F-49 update:** PR'd ([#39](https://github.com/MadBomber/dev/pull/39)); :187 wording and the "Tests + Coverage" label left for Dewayne.
+
+### 2026-11-15, tenth run (security audit, fourth run; dead-code scan 6d0bb59..8113aab)
+
+Audited `develop` at 8113aab (== `main`): `aws.loki`, `fake_aws.loki`, `fake_aws/` (Dockerfile, smoke.rb), `rails/db.loki`, `rails/dev.loki`, `runbook.loki`, `client/ticket.loki`, and the `client/status_report.loki` and `gem_tasks.loki` changes. No eval/Marshal; YAML only via `safe_load_file`; the new aws/ticket/db/runbook tasks pass argv, not shell strings. No lockfile, so no `bundle audit`. Dead-code scan: nothing new. Next free number: F-62.
+
+- **F-57:** `fake_aws` builds shell text from `Dir.home` without quoting (`export_lines` :146-158, `docker_run_command` :121-133, `healthy?` :136-140); a HOME with a space breaks `eval "$(asgard fake_aws exports)"` (verified with a fixture HOME). Status: issue [#50](https://github.com/MadBomber/dev/issues/50), low.
+- **F-58:** `Integer(ENV.fetch("AWS_EMULATOR_PORT", "9297"))` (fake_aws.loki:25) runs at import, so `AWS_EMULATOR_PORT=abc` breaks every asgard command in a repo importing `dev/.loki` (verified by the main session). Status: issue [#49](https://github.com/MadBomber/dev/issues/49), low.
+- **F-59:** `dev down` (rails/dev.loki:99-110) trusts pid files; a reused pid gets a group TERM, and `pgrep -x mailpit` matches other users' mailpit. Status: unverified (by reading), low; needs a choice of how to identify the process.
+- **F-60 (improver):** `fake_aws/smoke.rb` `check` rescues and prints FAIL but the script always exits 0. Status: issue [#51](https://github.com/MadBomber/dev/issues/51), low.
+- **F-61 (builder, dev#53):** `rails/quality_rails.loki:28` imports `"../quality.loki"` by relative path; through a symlinked `dev/` with rails/ imported before quality, quality loads twice (`already initialized constant`). Fix: #53's `__FILE__` + `Asgard.glob_escape` form. Status: open, low (after #53).
+- **GateGuard (improver):** `quality.loki` `GateGuard#invoke_command`'s method-level rescue (from 65a9c31) also covered non-gate tasks and Thor's unknown-command error, leaving `<task>_output.txt`. Status: PR'd ([dev#52](https://github.com/MadBomber/dev/pull/52)).
+- **F-50 update:** fixed by Dewayne (`rails/quality_rails.loki:28` imports quality.loki).
+- **F-5 update:** the `db_doc.loki` header was rewritten by Dewayne; `.irbrc:1` still names another project's path (waits on F-6). `rails/db_doc.loki:15` still defaults to `vbr_development`.
+- **S-9:** security finding, details held locally. Status: open, low.
+- **S-10:** security finding, details held locally. Status: needs Dewayne's decision, medium-low.
+- **S-11:** security finding, details held locally. Status: open, low.
+- **S-12:** security finding, details held locally. Status: needs Dewayne's decision, low.
+- **S-13:** security finding, details held locally. Status: unverified, low.

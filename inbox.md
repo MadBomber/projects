@@ -1271,3 +1271,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **RuboCop setup** (F-68): add rubocop to the bundle and a repo `.rubocop.yml` matching the code's one-blank-line style, so "zero new offenses" means the same on every machine?
 - **Self-merging low-risk PRs:** the tender flagged that #55 (and now #59) were merged by the bot without approval, under the prompt's low-risk rule. Confirm you are happy with that on prompt_manager.
 - **#17** targets the 0.x `FileSystemAdapter` that no longer exists; close it as obsolete?
+
+## dev (2026-11-15, madbot)
+
+- **CI for dev (F-2), now stronger:** ~3,600 new lines landed with no automated check, and the GateGuard bug (#52) would have been caught by one fixture test ("an unknown command must not create `*_output.txt`"). A workflow that installs asgard on Ruby 4, loads `dev/.loki` plus `rails/` and `client/`, and runs a few fixture checks. Your call; it's a `.github/` change the bot doesn't make.
+- **One rule for where tasks run from:** `doc` resolves the repo root through `loki_up`, while `runbook`, `rails/db`, `rails/dev` and the quality `*_output.txt` files use the current directory (`asgard runbook list` from a subdirectory says "No runbooks"). Write one rule under Conventions and make runbook follow `doc`?
+- **`fake_aws smoke` as a gate:** once #51 is fixed, `smoke.rb` could report through `run_gate` so a repo depending on the emulator adds a `fake_aws_check`. It would start Docker inside `quality`, so it's a design choice.
+- **F-59:** how should `dev down` confirm a pid file still names its own process (`ps -o comm=` check, pgrep `-u`)?
+- **S-10 and S-12** (details in your local `notes/security/dev.md`) need your decision.
+

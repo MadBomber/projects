@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 01:20 dev
+
+Tenth visit (last 2026-11-14 12:41), by madbot. `develop` already existed (8113aab, == `main`); not created. Run directory was fresh. Since last visit Dewayne merged bot #38, #39, his #32 and #41–#43 (fixing bot issues #29, #35–#37), and #44–#47 (develop→main, plus aws, fake_aws, rails/db, rails/dev, client/ticket, runbook and the `rails/`/`client/` layout). All five phase-1 agents ran. Deviation: to fit the 45-minute budget, the builder for brain Backlog F-51 started alongside phase 1, and the other two as soon as triage and the improver reported.
+
+- New PRs (base `develop`, label `bomberbot`, none stacked, no CI configured, `/code-review` clean, cap not hit):
+  - [dev#48](https://github.com/MadBomber/dev/pull/48) fix(status_report): name the date, not "today". Source: **brain** (F-51) plus triage's six matching `desc` strings and daily_summary's "_No activity captured today._". Fixture before/after with `STATUS_DATE`; all 16 .loki load. Review clean in 2 rounds.
+  - [dev#52](https://github.com/MadBomber/dev/pull/52) fix(quality): limit GateGuard rescue to real gates. Source: **judgment** (improver; regression from 65a9c31). A mistyped or failing non-gate task was reported as a crashed gate and left `<task>_output.txt`; now Thor's normal error, while a crashing `*_check` still FAILs with its output file and `quality` still summarizes. Review clean in round 1.
+  - [dev#53](https://github.com/MadBomber/dev/pull/53) fix(gem_tasks): import quality.loki that build needs. Source: **brain** (F-30). gem_tasks alone: rc=1 → rc=0; same task counts for gem_tasks+quality (either order) and `dev/.loki`, also through a symlinked `dev/` (one load). Review round 1 found a glob-character path bug, fixed; round 2 clean.
+- Merged (low risk): none; all three change `.loki` code.
+- Tended: no open bot PRs. Merged after approval: none. Tender deleted five merged bot branches (`mini_madbot/branch-report-header`, `mini_madbot/quality-loki-stale-text`, `bomberbot/reek-baseline-task`, `bomberbot/skip-absent-analyzers`, `bomberbot/status-week-monday`). The repo now allows merge commits only.
+- Audit: **security** (fourth run, new code 6d0bb59..8113aab) + dead-code scan to 8113aab (nothing new). F-57 to F-61, S-9 to S-13 (held locally).
+- Issues answered: none (no open issues). Issues filed: [dev#49](https://github.com/MadBomber/dev/issues/49) (F-58), [dev#50](https://github.com/MadBomber/dev/issues/50) (F-57), [dev#51](https://github.com/MadBomber/dev/issues/51) (F-60).
+
 ## 2026-11-15 01:05 prompt_manager
 
 Twelfth visit (last: 2026-11-14 12:26), by madbot. `develop` already existed (03995ff at start, 5d9ac2c at end); not created. Run directory was fresh. All five phase-1 agents ran. Deviation: to fit the 45-minute budget, the builders for the two brain Backlog items (#52, #54) started alongside phase 1 rather than after it, since the Backlog-first rule had already decided them; the third PR was chosen from a finding verified by the main session.

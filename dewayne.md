@@ -131,12 +131,9 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Optional, after merging [#9](https://github.com/MadBomber/shared_tools/pull/9): make `test (3.3)`, `test (3.4)` and `test (4.0)` required status checks on `develop` and `main`.
 
-## dev (2026-11-14)
+## dev (2026-11-15)
 
-- [ ] `main` is 49 commits behind `develop` and still has `schedule.loki`, which fails to load under asgard 0.6.0. Your checkout `~/sandbox/git_repos/madbomber/dev` is on `main`, so every `import_up "dev/..."` consumer runs the old files. Your direct commit 664614c on `main` (fake_aws files, a `release` abort line) will conflict with develop's #17 abort in `release`: keep develop's line when you merge, and bring the fake_aws files to develop. (added 2026-11-13, updated 2026-11-14)
-- [ ] Review [dev#38](https://github.com/MadBomber/dev/pull/38) (drop branch_report's copied header line; relates to S-3, so not self-merged) and [dev#39](https://github.com/MadBomber/dev/pull/39) (quality.loki comments and skip hints; touches a `.loki`). No CI. (added 2026-11-14)
-- [ ] After you merge #32, bomberbot will PR [#35](https://github.com/MadBomber/dev/issues/35) (rename `status_date_check`, a regression from bot PR #25) and F-51; say on #35 if you'd rather it go first. (added 2026-11-14)
-- [ ] Optional: delete merged bot branches `bomberbot/reek-baseline-task`, `bomberbot/skip-absent-analyzers`, `bomberbot/status-week-monday`. (added 2026-11-14)
+- [ ] Review and merge into `develop` [dev#48](https://github.com/MadBomber/dev/pull/48) (status_report says the target date, not "today"; F-51), [dev#52](https://github.com/MadBomber/dev/pull/52) (GateGuard rescues only real `*_check` gates, so a mistyped or failing task no longer leaves `<name>_output.txt`) and [dev#53](https://github.com/MadBomber/dev/pull/53) (gem_tasks.loki imports quality.loki itself; F-30). Independent, any order. Not self-merged: each changes a `.loki`. The repo now allows merge commits only. (added 2026-11-15)
 
 ## kbs (2026-11-13)
 
