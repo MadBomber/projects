@@ -2,6 +2,22 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 05:05 ragdoll
+
+Visit by madbot (last 2026-11-15 02:03). `develop` already existed (eccbab3); not created. Run directory was fresh. All five phase-1 agents ran; queue was 2, so building went ahead.
+
+- **New PRs** (none stacked; all CI green on 3.3/3.4/4.0, `/code-review` clean in 1 round; none low risk because each changes `app/` or `lib/`):
+  - [#71](https://github.com/MadBomber/ragdoll/pull/71) `fix(timeframe): parse "since X?" and bare years, clean whole phrase`. Source: issue #65 (F-122/F-123). 4 tests fail-before/pass-after; DB suite 1377→1381, 0 failures.
+  - [#72](https://github.com/MadBomber/ragdoll/pull/72) `fix(search): give text-fallback results document_title and string content`. Source: issue #64 (F-121). 3 tests fail-before/pass-after; DB suite 1380/0.
+  - [#73](https://github.com/MadBomber/ragdoll/pull/73) `fix(config): merge env and file overrides with bundled environment defaults`. Source: security (S-6), neutral title and body. 2 config tests fail-before/pass-after; DB suite 1379/0.
+- **Merged:** none (no approvals; nothing qualified as low risk).
+- **Tended:** #62 and #67 rebased onto eccbab3 (ff0f535, 90f7069), suite 1377/0, CI green. No comments to answer, none closed unmerged.
+- **Audit:** quality (develop eccbab3; reek first run, flog, flay): F-128–F-132. Improver: F-140, F-141. Builders: F-142–F-144.
+- **Issues answered:** none (#63–#65 are BomberBot's own and have no outside comments; all three still reproduce).
+- **Issues filed:** [#68](https://github.com/MadBomber/ragdoll/issues/68) (F-128 chunk size ignored), [#69](https://github.com/MadBomber/ragdoll/issues/69) (F-141 README `require 'ragdoll-core'`), [#70](https://github.com/MadBomber/ragdoll/issues/70) (F-105/F-107 dead code).
+- **Process note:** concurrent DB suites in separate worktrees collide on the fixed `ragdoll_test` database (F-144). Builders were told mid-run to take an `mkdir /tmp/ragdoll_test_db.lock` mutex, and the locked reruns were clean.
+- Review queue is now 5 (#62, #67, #71, #72, #73).
+
 ## 2026-11-15 05:20 gem-skill
 
 Visit by madbot (last 2026-11-15 02:32). `develop` already existed (f23b7fb, unmoved); not created. Run directory was fresh. All five phase-1 agents ran. Note: the fresh `src/` clone checked out `main`; readers exported `origin/develop` to `scratch/` instead, then `src/` was detached at develop.

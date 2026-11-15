@@ -10,7 +10,9 @@ RAG library; most-starred repo, idle since early 2026.
 
 ## Status
 
-_Updated 2026-11-15 02:03 visit._ Dewayne merged #56–#58 unchanged and fixed #53–#55 himself (#59–#61); queue was empty. Opened [#62](https://github.com/MadBomber/ragdoll/pull/62) (F-51/F-55 drop unused gems) and [#67](https://github.com/MadBomber/ragdoll/pull/67) (F-64), both **PR open**; merged [#66](https://github.com/MadBomber/ragdoll/pull/66) (F-99) as low risk, so the local full DB suite is 0 failures. Ran the **dead code** audit (F-103–F-109) plus improver (F-120–F-127, S-6); filed #63 (F-106), #64 (F-121), #65 (F-122/F-123). Next visit: S-6 fix (neutral PR), F-105/F-107 removals, F-14 (turn on DB tests in CI).
+_Updated 2026-11-15 05:05 visit._ Queue had 2 (#62, #67, both rebased onto eccbab3 and green, unapproved). Opened three fixes, all **PR open**, CI green, review clean in 1 round, none low risk: [#71](https://github.com/MadBomber/ragdoll/pull/71) (Fixes #65), [#72](https://github.com/MadBomber/ragdoll/pull/72) (Fixes #64), [#73](https://github.com/MadBomber/ragdoll/pull/73) (config merge fix, S-6). Ran the **quality** audit (reek first run; F-128–F-132) plus improver (F-140, F-141); filed #68 (F-128 chunking ignored), #69 (F-141 README require), #70 (F-105/F-107 dead code). Review queue now 5. Next visit: tend only unless the queue drops; then #70 removal, #63 once Dewayne picks a path.
+
+_Prior 2026-11-15 02:03 visit:_ Dewayne merged #56–#58 unchanged and fixed #53–#55 himself (#59–#61); queue was empty. Opened [#62](https://github.com/MadBomber/ragdoll/pull/62) (F-51/F-55 drop unused gems) and [#67](https://github.com/MadBomber/ragdoll/pull/67) (F-64), both **PR open**; merged [#66](https://github.com/MadBomber/ragdoll/pull/66) (F-99) as low risk, so the local full DB suite is 0 failures. Ran the **dead code** audit (F-103–F-109) plus improver (F-120–F-127, S-6); filed #63 (F-106), #64 (F-121), #65 (F-122/F-123). Next visit: S-6 fix (neutral PR), F-105/F-107 removals, F-14 (turn on DB tests in CI).
 
 _Prior 2026-11-13 01:27 visit:_ Dewayne merged #30, #31 and #32 on 2026-11-12, closed eight fixed issues by hand, and opened his own PRs #42–#52 (`fix/issue-N`) for every open issue (all green; 37 of 55 pairs conflict in CHANGELOG only). Bomberbot opened three PRs on files none of those touch: [#56](https://github.com/MadBomber/ragdoll/pull/56) (F-68), [#57](https://github.com/MadBomber/ragdoll/pull/57) (F-72), [#58](https://github.com/MadBomber/ragdoll/pull/58) (F-71). Ran the **adoption** audit (F-78–F-86) plus improver (F-90–F-95); filed #53 (F-90 chunker), #54 (F-91/F-92 "since"), #55 (F-78/F-80 README). Next visit: F-90 (#53, one-line fix), then #54 and #55 once #49 merges.
 
@@ -35,8 +37,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot PRs
 
-- [#67](https://github.com/MadBomber/ragdoll/pull/67) fix(search): record limit for hybrid searches (F-64). **PR open**, CI green, DB test fails-before/passes-after locally, review clean in 1 round. `lib/`, not low risk. CHANGELOG-only conflict with #62 once either merges.
-- [#62](https://github.com/MadBomber/ragdoll/pull/62) chore(deps): drop unused searchkick, opensearch-ruby and ruby-progressbar (F-51, F-55). **PR open**, CI green, suite 1377/0 before and after, `gem build` and load checked, review clean in 1 round. Gemspec + lock, not low risk.
+- [#73](https://github.com/MadBomber/ragdoll/pull/73) fix(config): merge env and file overrides with bundled environment defaults (S-6, neutral). **PR open**, CI green, 2 config tests fail-before/pass-after, DB suite 1379/0, review clean in 1 round. `lib/`, not low risk.
+- [#72](https://github.com/MadBomber/ragdoll/pull/72) fix(search): give text-fallback results document_title and string content (Fixes #64, F-121). **PR open**, CI green, 3 tests fail-before/pass-after, DB suite 1380/0, review clean in 1 round. `app/`, not low risk.
+- [#71](https://github.com/MadBomber/ragdoll/pull/71) fix(timeframe): parse "since X?" and bare years, clean whole phrase (Fixes #65, F-122/F-123). **PR open**, CI green, 4 tests fail-before/pass-after, DB suite 1381/0, review clean in 1 round. `app/`, not low risk.
+- [#67](https://github.com/MadBomber/ragdoll/pull/67) fix(search): record limit for hybrid searches (F-64). **PR open**, rebased onto eccbab3 2026-11-15 05:05 (90f7069), CI green, DB test fails-before/passes-after locally, review clean in 1 round. `lib/`, not low risk. CHANGELOG-only conflict with #62 once either merges.
+- [#62](https://github.com/MadBomber/ragdoll/pull/62) chore(deps): drop unused searchkick, opensearch-ruby and ruby-progressbar (F-51, F-55). **PR open**, rebased onto eccbab3 2026-11-15 05:05 (ff0f535), CI green, suite 1377/0 before and after, `gem build` and load checked, review clean in 1 round. Gemspec + lock, not low risk.
 
 ## Merged bomberbot PRs
 
