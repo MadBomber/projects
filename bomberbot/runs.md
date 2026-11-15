@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 06:05 ragdoll
+
+Visit by madbot (last 2026-11-15 05:05). `develop` already existed (eccbab3, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.
+
+- **skipped: review queue full.** #62, #67, #71, #72, #73 still open, CI green, MERGEABLE, 0 behind develop, no reviews or comments. No new PRs.
+- **Merged (low risk):** none. **Merged after approval:** none (nothing approved). **Tended:** all five checked; nothing to push, rebase or retarget. No bomberbot PR closed unmerged.
+- **Audit:** security (develop eccbab3; bundle-audit, code reads, two repros): S-7 (held locally), F-145; S-4 half fixed; S-1/2/3/5/6 still open. Improver: F-150–F-154. Triage: nothing changed since 05:05; Dependabot alerts disabled; only dev gems outdated.
+- **Issues answered:** none (all six open issues are BomberBot's, with no outside comments; PRs #71/#72 already linked from #65/#64).
+- **Issues filed:** [#74](https://github.com/MadBomber/ragdoll/issues/74) (F-151 non-UTF-8 files fail ingest), [#75](https://github.com/MadBomber/ragdoll/issues/75) (F-145 OLLAMA env vars ignored), [#76](https://github.com/MadBomber/ragdoll/issues/76) (F-150 search_similar_content YARD and dead Array branches).
+- Queue-full visit an hour after the last build visit.
+
 ## 2026-11-15 05:53 robot_lab
 
 Fourteenth visit (last 2026-11-15 02:17), by madbot. `develop` already existed (7394a10, unmoved); not created. Run directory was fresh. All five phase-1 agents ran; to save time the two independent builders started alongside them, since brain's Backlog had already named #90/#91/#92 as the first picks and the queue held only #95.
