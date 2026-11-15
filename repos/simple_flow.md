@@ -11,37 +11,36 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-13 04:20 (eighth visit): nothing merged since 03:40; this visit opened #42-#44 for issues #36-#38 (#43 stacks on #40), ran the adoption audit and filed #45-#47._ Suite green on Ruby 4.0.9 (225 runs on develop 77f7527). develop still has unreleased user-visible fixes. Docs deploy on `docs/**` pushes to develop as well as main, so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-15 00:25 (ninth visit): Dewayne squash-merged #40-#44 and fixed #45/#47 himself (#48, #49). This visit opened #53-#55, ran the dead-code audit and filed #50-#52._ Suite green on Ruby 4.0.9 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
 Well-defined items a single small PR could close.
 
-- F-72: parallel steps crash on non-`Result` input (regression from #24). [#41](https://github.com/MadBomber/simple_flow/pull/41) **PR open**
-- F-74/F-80: `max_concurrent: 0` hangs forever on async. [#40](https://github.com/MadBomber/simple_flow/pull/40) **PR open**
-- [#36](https://github.com/MadBomber/simple_flow/issues/36) `visualize_dot` writes step names unquoted (F-63). [#44](https://github.com/MadBomber/simple_flow/pull/44) **PR open**
-- [#37](https://github.com/MadBomber/simple_flow/issues/37) threads backend raises while sibling steps still run (F-73). [#43](https://github.com/MadBomber/simple_flow/pull/43) **PR open** (stacks on #40)
-- [#38](https://github.com/MadBomber/simple_flow/issues/38) docs show absolute local paths as file locations, plus the `:concurrency:` typo (F-16, F-41). [#42](https://github.com/MadBomber/simple_flow/pull/42) **PR open**
-- F-18: fix `StepTracker`'s doc-comment example (`with_continue`/`.continue` don't exist).
+- F-81: unknown `call_parallel(strategy:)` silently becomes `:explicit`. [#54](https://github.com/MadBomber/simple_flow/pull/54) **PR open**
+- F-122: `ParallelExecutor.execute_with_async(max_concurrent: 0)` still hangs when called directly (follow-up to #40). [#55](https://github.com/MadBomber/simple_flow/pull/55) **PR open**
+- F-84 (F-24): README badges/counts stale, async wording contradicts the thread fallback. [#53](https://github.com/MadBomber/simple_flow/pull/53) **PR open**. Still open: `docs/development/contributing.md:35` pins "77 tests, 296 assertions" (docs deploy).
+- [#50](https://github.com/MadBomber/simple_flow/issues/50) `call`/`:explicit` run steps that depend on an unactivated optional step (F-120). Next PR candidate: ~15 lib lines in `pipeline.rb`.
+- [#51](https://github.com/MadBomber/simple_flow/issues/51) `call` silently ignores activating an unknown step (F-121). Pairs with #50 (same lines).
+- [#52](https://github.com/MadBomber/simple_flow/issues/52) `DependencyGraph#dependencies` shares one mutable default array (F-76). 1 line + test.
+- [#46](https://github.com/MadBomber/simple_flow/issues/46) `execution_plan`/visualizers show optional steps as always running (F-98). Needs a display decision (inbox); a fix also removes the note #49 added to `docs/api/dependency-graph-visualizer.md`.
+- F-82: step-validation error doesn't name the step. F-18: `StepTracker`'s doc-comment example (`with_continue`/`.continue` don't exist).
 - F-11/F-27: `documentation_uri` to the docs site; gemspec template leftovers (`bindir`/`executables`); `homepage_uri == source_code_uri` build warning.
 - F-17: raise the Ruby floor to 3.3 (EOL 3.2; CI can't install on 3.2).
-- F-81: unknown `call_parallel(strategy:)` silently becomes `:explicit`. F-82: step-validation error doesn't name the step.
-- F-83: CHANGELOG [Unreleased] misses the Tests CI workflow and two docs refreshes. F-84 (F-24): README badges/counts stale, `README.md:524` contradicts the thread fallback.
-- F-85: `-w` unused-variable warnings in examples 05 and 10. F-86: `call_parallel` doc comment lacks `@param max_concurrent`.
-- F-76: `Hash.new([])` shared default in `DependencyGraph`. F-32: `.rubocop.yml` `require:` → `plugins:`.
-- F-25: add `docs/llms.txt`.
-- [#45](https://github.com/MadBomber/simple_flow/issues/45) optional steps run under `call` and `strategy: :explicit` even when not activated (F-95). Next PR candidate: ~11 lib lines in `pipeline.rb`.
-- [#46](https://github.com/MadBomber/simple_flow/issues/46) `execution_plan`/visualizers show optional steps as always running (F-98). [#47](https://github.com/MadBomber/simple_flow/issues/47) no API page for `DependencyGraphVisualizer`/`StepTracker` (F-90).
+- F-83 remainder: CHANGELOG [Unreleased] misses the Tests CI workflow, RuboCop config, `pipeline_graph.*` untrack, and docs refreshes.
+- F-85 + F-101: `-w` unused-variable warnings in examples 05 and 10, and `to_html`'s redundant assignment. F-86: `call_parallel` doc comment lacks `@param max_concurrent`.
+- F-32: `.rubocop.yml` `require:` → `plugins:`. F-25: add `docs/llms.txt`. F-124 (unverified): `to_mermaid` writes names unquoted.
+- Builder note: `call_parallel` validates `max_concurrent` only when a parallel group runs, so a bad value is silently accepted or raises after earlier steps ran; validate once at the top of `call_parallel`.
 
 ## Open bomberbot PRs
 
-- [#40](https://github.com/MadBomber/simple_flow/pull/40) fix(parallel): reject a max_concurrent that would hang, **PR open** (lib; CI green)
-- [#41](https://github.com/MadBomber/simple_flow/pull/41) fix(pipeline): accept non-Result input in parallel steps, **PR open** (lib; CI green; fixes our #24 regression)
-- [#42](https://github.com/MadBomber/simple_flow/pull/42) docs: link source files by repo-relative path, not a local checkout, **PR open** (Fixes #38; docs, so not self-merged; CI green)
-- [#43](https://github.com/MadBomber/simple_flow/pull/43) fix(parallel): threads backend waits for every step before raising, **PR open** (Fixes #37; stacks on #40, retarget to develop after #40 merges; lib; CI green)
-- [#44](https://github.com/MadBomber/simple_flow/pull/44) fix(visualizer): quote non-identifier step names in DOT output, **PR open** (Fixes #36; lib; CI green)
+- [#53](https://github.com/MadBomber/simple_flow/pull/53) docs(readme): drop pinned test counts and fix async wording, **PR open** (README only; CI green; review cap hit, so not self-merged)
+- [#54](https://github.com/MadBomber/simple_flow/pull/54) fix(pipeline): reject an unknown call_parallel strategy, **PR open** (lib + docs notes; CI green; review clean at round 3)
+- [#55](https://github.com/MadBomber/simple_flow/pull/55) fix(parallel): validate max_concurrent in execute_with_async too, **PR open** (lib; CI green; review clean in 2 rounds)
 
 ## Merged bomberbot PRs
+
+- [#40](https://github.com/MadBomber/simple_flow/pull/40)-[#44](https://github.com/MadBomber/simple_flow/pull/44) squash-merged by Dewayne 2026-11-13 (develop 52e10e1, 404e32b, 506dc52, dce712a, 1f4b734), without comment. Dewayne's own [#48](https://github.com/MadBomber/simple_flow/pull/48) (Closes #45) and [#49](https://github.com/MadBomber/simple_flow/pull/49) (Closes #47) followed the same evening.
 
 - [#39](https://github.com/MadBomber/simple_flow/pull/39) test: silence warnings and stray output in rake test (F-70), **merged (low risk)** by madbot 2026-11-13, develop 77f7527
 - [#24](https://github.com/MadBomber/simple_flow/pull/24), [#25](https://github.com/MadBomber/simple_flow/pull/25), [#26](https://github.com/MadBomber/simple_flow/pull/26) (Fixes #18, #20, #19), rebase-merged by Dewayne 2026-11-12 (develop 00d88fe, 21ef8ab/c9be9bd, 2be8921/624fc84)

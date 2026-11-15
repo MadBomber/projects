@@ -2,6 +2,22 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 00:25 simple_flow
+
+- **develop:** already existed (2a5f282). No run dir left over from a prior visit.
+- **Since last visit:** Dewayne squash-merged #40-#44 without comment and fixed #45 (#48) and #47 (#49) himself.
+- **New PRs:**
+  - [#55](https://github.com/MadBomber/simple_flow/pull/55) fix(parallel): validate max_concurrent in execute_with_async too. Source: judgment (improver F-122, which finishes brain F-74/#40). Independent. Fail-before by `Timeout::Error`; 250 runs green; review clean after 2 rounds.
+  - [#54](https://github.com/MadBomber/simple_flow/pull/54) fix(pipeline): reject an unknown call_parallel strategy. Source: brain (F-81). Independent. 2 failures + 1 error before; 253 runs green; review clean at round 3.
+  - [#53](https://github.com/MadBomber/simple_flow/pull/53) docs(readme): drop pinned test counts and fix async wording. Source: brain (F-84). Independent. README only; 249 runs; review hit the 3-round cap with nothing left open.
+  - CI is green on 3.3, 3.4 and 4.0 for all three, and `git merge-tree` shows them merging cleanly together.
+- **Swap:** a builder for F-76 (`Hash.new([])`) was stopped mid-build in favour of F-122, which fixes a hang; F-76 was filed as #52 instead.
+- **Merged (low risk):** none. #53 hit the review cap; #54 and #55 touch lib.
+- **Audit:** dead code at develop 2a5f282. F-42..F-44 fixed; new F-100 (needs decision), F-101.
+- **Tended:** none open. The tender read #40-#44, #48 and #49 for taste (squash merges; Problem/Fix/Testing body).
+- **Issues answered:** none. #46 had no comments, and a rerun added nothing new.
+- **Issues filed:** [#50](https://github.com/MadBomber/simple_flow/issues/50) (F-120), [#51](https://github.com/MadBomber/simple_flow/issues/51) (F-121), [#52](https://github.com/MadBomber/simple_flow/issues/52) (F-76). The main session reran each repro before filing.
+
 ## 2026-11-14 13:05 typed_bus
 
 - **develop:** existed (c67f833 at start). Run dir clone was slow; switched to a blobless clone.
