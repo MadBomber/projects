@@ -1371,3 +1371,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **gem-skill: ruby_llm floor (F-59).** Only ruby_llm 2.0.0 caps json < 3. Raise the gemspec floor to `~> 2.1` and reword the json require-order comments, or just reword them? Found by BomberBot.
 - **gem-skill: repo `.rubocop.yml`.** None exists and RuboCop isn't in the Gemfile, so "zero new offenses" is measured against the global config (~1700 offenses, two-blank-lines rule contradicts the repo style). Add a repo config? Found by BomberBot.
 - **gem-skill: stale branch `bomberbot/ollama-api-base`** (#19 merged, no unique commits) can be deleted.
+
+## debug_me (2026-11-15)
+
+- **debug_me: cut a release.** `develop` is ~82 commits ahead of `main` (last main commit 2026-01-06) with ~15 user-facing `[Unreleased]` fixes; RubyGems 1.1.3 users, the docs site, the GitHub landing README and `changelog_uri` all show the old behaviour (findings #53, #59). Dropping Ruby < 3.2 makes it 1.2.0 under SemVer. Found by BomberBot.
+- **debug_me: split the `debug_me` method (finding #32).** About 130 lines with three inner lambdas; pulling out discovery, formatting and the header would make each testable on its own, as the taste rules ask. Needs your go-ahead on structure. Found by BomberBot.
+- **debug_me: opt-in strictness for undefined names.** `"<undefined>"` is documented now, but a typo still fails silently; a `strict:` option that raises or tags undefined names would help. API addition, your call. Found by BomberBot.
+- **debug_me: make `docs/changelog.md` a snippet include of `CHANGELOG.md`.** It's a hand-kept copy that has already drifted (findings #50, #59). Docs-deploy change, so yours to decide alongside #59. Found by BomberBot.

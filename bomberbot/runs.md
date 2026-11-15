@@ -2,6 +2,20 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 02:45 debug_me
+
+By madbot. Dewayne had merged all five waiting bomberbot PRs (#61, #63–#66, squash) and his own #68/#69 on 2026-11-13, so the review queue was empty; `develop` 10bec70, CI green on 3.2–4.0. `src/` initially checked out `main`; detached at `origin/develop` within a minute and the read-only roles were told to re-read.
+
+- New PRs:
+  - [#70](https://github.com/MadBomber/debug_me/pull/70) docs: drop the duplicate #44/#45 CHANGELOG line. Source: judgment (tender/triage lead; #66's squash re-added the pre-#65 wording). **Merged (low risk)** by madbot → develop 44456b6: CHANGELOG `[Unreleased]` only, 1 line, review clean, CI green, CHANGELOG not snippet-included in docs.
+  - [#71](https://github.com/MadBomber/debug_me/pull/71) test: share one $DEBUG_ME on/off helper across the suite. Source: brain Backlog. Independent. Tests only, +38/−61 across 9 files, mutation-proven, review clean round 1, CI green. Not self-merged: rewrites setup in 9 files, so when in doubt, not low risk.
+  - [#72](https://github.com/MadBomber/debug_me/pull/72) fix: ignore whitespace around the DEBUG_ME env value. Source: security audit, public finding 77. Independent. Tests fail before / pass after, review clean round 1, CI green; lib/ so awaits Dewayne.
+- Audit: security (third), develop 10bec70: bundler-audit clean; finding 77, S-78 (held locally); S-31–S-37 still present.
+- Dead-code scan advanced to 10bec70 (nothing removable; 16 mutants of #63/#66/#68 all caught).
+- Tended: none open. Merged after approval: none (Dewayne merged them himself).
+- Issues answered: none open.
+- Issues filed: [#73](https://github.com/MadBomber/debug_me/issues/73) (contributing.md, finding 63), [#74](https://github.com/MadBomber/debug_me/issues/74) (lib comments, finding 48).
+
 ## 2026-11-15 02:32 gem-skill
 
 Visit by bomberbot (last recorded: 2026-11-13 08:54). `develop` already existed (f23b7fb); not created. Since the last visit Dewayne squash-merged every open bomberbot PR (#26, #31, #32, #36) and his own #20-#24 unchanged, and fixed four BomberBot-filed issues himself (#37-#40 close #33, #35, #34, #30). Queue empty after tending, so new work went ahead. All five phase-1 agents ran. Deviations: the F-49 builder started before phase 1 finished (brain Backlog item); the F-58 and F-53 builders started on triage's report; the F-53 builder was stopped before pushing when the improver's verify-streaming lead outranked it, and F-53 became issue #42 instead.

@@ -8,13 +8,13 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 
 | Audit | Last run | Notes |
 |---|---|---|
-| security | 2026-11-12 | Second audit, develop 0d7fb14 (develop now contains all of main). bundler-audit clean. Findings 38-39, S-36, S-37. |
+| security | 2026-11-15 | Third audit, develop 10bec70. bundler-audit clean (1378 advisories). Findings 77, S-78; S-31 to S-37 re-checked, all still present (details held locally). Previous 2026-11-12 (0d7fb14), findings 38-39, S-36, S-37. |
 | dead code | 2026-11-12 | Second visit: improver read 0d7fb14..200c10f, nothing removable; two never-failing tests (#45) PR'd. 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
 | dependencies | 2026-11-12 | Full audit, develop 0d7fb14. `bundle outdated`: only minitest 5.27 → 6.1, held by gemspec `~> 5.0` (#8; suite passes on 6.1.0). Finding 40 (actions/checkout@v4 on Node 20, issue #46), 41 (Ruby 3.2 floor EOL, needs decision). |
 | adoption | 2026-11-13 | develop fb0b2ea. mkdocs `--strict` clean; README/docs fences parse (bar notation); probes match docs; metadata URIs 200; gem-skill sources unchanged (14,805 chars). New: #71-#73. main now 74 behind (#53). Previous 2026-11-12 (200c10f). |
 | quality | 2026-11-13 | Second quality audit, develop 733fe6d. flog 192.8 on `debug_me` (was 171.4), flay 0 in lib (92 in tests), reek 15, rubocop 56 lib / 384 lib+tests; suite green under `ruby -w` (17 test-only unused-local warnings, none from lib). New findings 64-69; #12, #34, #47, #62 fixed. Previous: 2026-11-09, develop e4858c9, findings 31-35. |
 
-Dead-code scan last covered commit: fb0b2ea (develop, 2026-11-13 08:45; improver read 733fe6d..fb0b2ea, tests only, nothing removable)
+Dead-code scan last covered commit: 10bec70 (develop, 2026-11-15; improver read fb0b2ea..10bec70, nothing removable; 16 mutants of the #63/#66/#68 lib changes all caught)
 
 ## Findings
 
@@ -147,7 +147,7 @@ Triage/improver extras (not audit findings):
 45. **Two tests in tests/debug_me_test.rb (~519-554) can never fail** (mutation-proven). Status: PR'd ([#51](https://github.com/MadBomber/debug_me/pull/51)).
 46. **README "only local variables" example omits `cconst: false`,** so it also prints constants. Status: merged ([#50](https://github.com/MadBomber/debug_me/pull/50), low risk, develop 8fbbbde).
 47. **Suite output is noisy:** WorldView#six writes to stdout (no `file: nil`) and constants A/B/C are redefined with warnings. Status: issue [#53](https://github.com/MadBomber/debug_me/issues/53).
-48. **The `skip1:`/`skip2:` comments in DebugMeDefaultOptions are misleading.** Status: open (fold into a docs PR).
+48. **The `skip1:`/`skip2:` comments in DebugMeDefaultOptions are misleading.** Status: issue [#74](https://github.com/MadBomber/debug_me/issues/74) (2026-11-15, with the `ENV['DEBUG_ME']` comment at lib/debug_me.rb:4-5).
 49. **The gemspec `Dir[]` file list depends on the cwd** (related to S-37). Status: open.
 50. **CHANGELOG has no line for the #38/#41/#47 docs fixes, and docs/changelog.md has drifted from CHANGELOG.md.** Status: CHANGELOG half is issue [#60](https://github.com/MadBomber/debug_me/issues/60) (2026-11-13, with two more `[Unreleased]` inaccuracies); docs/changelog.md half folds into #59's decision.
 51. **The `:backtrace` frame format differs on Ruby 3.2/3.3 (`` `meth' ``) vs 3.4+ (`'Class#meth'`);** the docs show only 3.4+. Status: open.
@@ -171,7 +171,7 @@ Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing remova
 60. **'produces no output when $DEBUG_ME is false' can't see output** (passes `file: nil`); mutation-proven. Status: PR'd ([#51](https://github.com/MadBomber/debug_me/pull/51)).
 61. **Four docs pages say `debug_me {}` shows "all local variables"** (README:91, getting-started.md:93-101, usage.md:39-47, api-reference.md:108-109); at top level it also dumps constants. Status: README half merged ([#50](https://github.com/MadBomber/debug_me/pull/50)); the rest waits on #22's decision.
 62. **`v.to_s == 'backtrace'` (lib/debug_me.rb:74, :90) treats any object whose to_s is "backtrace" as the backtrace marker,** unlike line 99's Symbol/String check. Status: issue [#54](https://github.com/MadBomber/debug_me/issues/54).
-63. **docs/contributing.md mentions a nonexistent PR template and shows a Minitest::Test skeleton while every test is spec style.** Status: open, low value.
+63. **docs/contributing.md mentions a nonexistent PR template and shows a Minitest::Test skeleton while every test is spec style.** Status: issue [#73](https://github.com/MadBomber/debug_me/issues/73) (2026-11-15; branch-target half stays with #56).
 
 ### 2026-11-13 quality audit (develop 733fe6d; second quality audit)
 
@@ -180,13 +180,13 @@ Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing remova
 - Still present: #8, #14, #18, #22, #27, #31, #32, #33 (new reason: default `Style/ModuleFunction` autocorrect would turn `extend self` into `module_function` and break the public included method), #35 (plus NumericPredicate/ZeroLengthPredicate `bt_out.size > 0` ×3), #48 (lib comments), #49, #51, #58, #63.
 - The improver found no docs page contradicting #48/#52/#55; every README/docs example ran as shown; `mkdocs build --strict` clean.
 
-64. **A `BasicObject` value crashes `debug_me` with NoMethodError.** `debug_me { bo }` raises in `backtrace_marker` (`is_a?`), `{ :bo }` and ivar discovery raise in `pretty_inspect`. Pre-existing (same at e979bdb^). Fix: `Symbol === v`, `Kernel#class` via `bind_call`, `PP.pp(v, +'')`. Status: PR'd ([#63](https://github.com/MadBomber/debug_me/pull/63), 2026-11-13). Follow-ups noticed by its builder: a BasicObject with a custom `method_missing` that calls `super` still raises, and a forwarding proxy around a String is still evaluated as a name (both as on develop).
-65. **An empty-block dump shows the call stack in place of a local variable named `backtrace`.** Discovered `:backtrace` matches the marker. Pre-existing. Status: issue [#58](https://github.com/MadBomber/debug_me/issues/58).
+64. **A `BasicObject` value crashes `debug_me` with NoMethodError.** `debug_me { bo }` raises in `backtrace_marker` (`is_a?`), `{ :bo }` and ivar discovery raise in `pretty_inspect`. Pre-existing (same at e979bdb^). Fix: `Symbol === v`, `Kernel#class` via `bind_call`, `PP.pp(v, +'')`. Status: merged ([#63](https://github.com/MadBomber/debug_me/pull/63), Dewayne 2026-11-13 → 774eb65). Follow-ups noticed by its builder: a BasicObject with a custom `method_missing` that calls `super` still raises, and a forwarding proxy around a String is still evaluated as a name (both as on develop).
+65. **An empty-block dump shows the call stack in place of a local variable named `backtrace`.** Discovered `:backtrace` matches the marker. Pre-existing. Status: fixed by Dewayne's #68 (ddcb865), issue #58 closed.
 66. **With `header: false` and nothing to print, `debug_me` still writes a blank line, so `skip1:` adds nothing** (`f.puts ""`). Low. Status: open (output change; ask first).
 67. **With `header: false`, `:backtrace` drops the call-site frame** (`caller(1)[1..]`), so where `debug_me` was called appears nowhere; tests/debug_me_test.rb:130 pins the drop. Status: needs Dewayne's decision.
 68. **Discovery reads deprecated constants and fires their deprecation warning, attributed to lib/debug_me.rb.** Low. Status: open (no clean API; document or ignore).
-69. **A class that does `include DebugMe` dumps `DEBUG_ME_VERSION` on every `debug_me {}`** (inherited constants). Pre-existing. Also argues against moving more constants into `DebugMe` without `private_constant` (#31). Status: issue [#59](https://github.com/MadBomber/debug_me/issues/59); PR'd [#66](https://github.com/MadBomber/debug_me/pull/66) (2026-11-13 08:45).
-70. **Nothing tests `time:` / `strftime:`;** forcing a wrong format or deleting the timestamp left the suite green (improver mutation). Status: PR'd ([#61](https://github.com/MadBomber/debug_me/pull/61), 2026-11-13).
+69. **A class that does `include DebugMe` dumps `DEBUG_ME_VERSION` on every `debug_me {}`** (inherited constants). Pre-existing. Also argues against moving more constants into `DebugMe` without `private_constant` (#31). Status: merged ([#66](https://github.com/MadBomber/debug_me/pull/66), Dewayne 2026-11-13 → 81eca6d), issue #59 closed.
+70. **Nothing tests `time:` / `strftime:`;** forcing a wrong format or deleting the timestamp left the suite green (improver mutation). Status: merged ([#61](https://github.com/MadBomber/debug_me/pull/61), Dewayne 2026-11-13 → 043aa12).
 - Security: no new finding; S-36 re-confirmed at 733fe6d (details held locally).
 
 ### 2026-11-13 08:45 adoption audit (develop fb0b2ea; third adoption audit)
@@ -194,9 +194,9 @@ Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing remova
 - `mkdocs build --strict` clean; every ruby fence parses except signature notation; probes (no-include `DebugMe.debug_me {}`, Pathname label, `skip1:` with `header: false`, `DEBUG_ME_VERSION`) match the docs; metadata URIs return 200; CHANGELOG `[Unreleased]` covers e2ce9d8, e979bdb, 53b7edd.
 - Still open: #7/#59 (no `[1.1.3]` section), #36 (`llms.txt`), #50/#59 (docs/changelog.md behind), #53 (main 74 behind), #58, #63.
 
-71. **The docs never say an undefined name prints the String `"<undefined>"`** (lib/debug_me.rb:122), indistinguishable from a value that is that string. `grep -rni undefined README.md docs/*.md` → nothing. Low. Status: issue [#67](https://github.com/MadBomber/debug_me/issues/67).
-72. **"backtrack" typo in the `levels:` comment** (README.md:253, lib/debug_me.rb:18). Trivial. Status: folded into issue [#67](https://github.com/MadBomber/debug_me/issues/67).
-73. **CHANGELOG `[Unreleased]` doesn't mention the new documentation site** (fd375eb, after v1.1.3). Status: PR'd [#65](https://github.com/MadBomber/debug_me/pull/65).
+71. **The docs never say an undefined name prints the String `"<undefined>"`** (lib/debug_me.rb:122), indistinguishable from a value that is that string. `grep -rni undefined README.md docs/*.md` → nothing. Low. Status: fixed by Dewayne's #69 (10bec70), issue #67 closed.
+72. **"backtrack" typo in the `levels:` comment** (README.md:253, lib/debug_me.rb:18). Trivial. Status: fixed by #69 (10bec70).
+73. **CHANGELOG `[Unreleased]` doesn't mention the new documentation site** (fd375eb, after v1.1.3). Status: merged ([#65](https://github.com/MadBomber/debug_me/pull/65), Dewayne 2026-11-13 → 6842157).
 
 Builder and improver extras (2026-11-13 08:45):
 
@@ -204,3 +204,11 @@ Builder and improver extras (2026-11-13 08:45):
 75. **An explicit `{ :DEBUG_ME_VERSION }` in a block written at top level prints `<undefined>`** for an object that includes DebugMe (names are evaluated in the block's scope). Low. Status: open.
 76. **The gemspec's `bundler` development dependency is redundant** (default gem since 2.6, floor 3.2) and the dev dependencies are unsorted (extends #27). Gemspec, so never low risk. Status: open.
 - Security: no new finding; S-36 re-confirmed by a builder at fb0b2ea (details held locally).
+
+### 2026-11-15 security audit (develop 10bec70; third security audit)
+
+- bundler-audit clean (1378 advisories). No shell, YAML, Marshal, or file reads in lib; one env var; empty-block discovery no longer uses `eval`. Older S-items re-checked, all still present (details held locally).
+- Tender: [#65](https://github.com/MadBomber/debug_me/pull/65) and [#66](https://github.com/MadBomber/debug_me/pull/66) squash merges left the #44/#45 `[Unreleased]` line in twice (old wording re-added by 81eca6d). Status: **merged (low risk)** [#70](https://github.com/MadBomber/debug_me/pull/70) by madbot 2026-11-15 → develop 44456b6.
+
+77. **`DEBUG_ME` with surrounding whitespace leaves output on.** lib/debug_me.rb:7 lowercases but doesn't strip, so `DEBUG_ME=" false"` or `"false\n"` → `$DEBUG_ME == true`. Low. Status: PR'd [#72](https://github.com/MadBomber/debug_me/pull/72) (2026-11-15).
+- S-78: security finding, details held locally. Status: open (needs Dewayne's go-ahead on a lib behaviour change).

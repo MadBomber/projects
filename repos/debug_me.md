@@ -10,24 +10,27 @@ Debug output gem, small and stable.
 
 ## Status
 
-_Updated 2026-11-13 08:45._ Second visit of the day; Dewayne hasn't touched the repo since 03:36, so #61 and #63 still await him. This visit opened [#64](https://github.com/MadBomber/debug_me/pull/64) (logger guard test), [#65](https://github.com/MadBomber/debug_me/pull/65) (CHANGELOG `[Unreleased]` tidy, fixes #60) and [#66](https://github.com/MadBomber/debug_me/pull/66) (skip DebugMe's own constants, fixes #59), none self-merged, and filed [#67](https://github.com/MadBomber/debug_me/issues/67). Five bomberbot PRs now await review, so the next visit is tend-only. `develop` (fb0b2ea) is ~74 commits ahead of `main`; the live docs site stays stale until a release (findings #53). **PR open**
+_Updated 2026-11-15 02:45._ Dewayne merged all five waiting bomberbot PRs (#61, #63–#66) plus his own #68/#69 on 2026-11-13, so the queue was empty. This visit merged [#70](https://github.com/MadBomber/debug_me/pull/70) as low risk (duplicate CHANGELOG line), opened [#71](https://github.com/MadBomber/debug_me/pull/71) (shared `$DEBUG_ME` test helper, the Backlog item) and [#72](https://github.com/MadBomber/debug_me/pull/72) (strip whitespace in `ENV['DEBUG_ME']`, finding 77), and filed [#73](https://github.com/MadBomber/debug_me/issues/73) and [#74](https://github.com/MadBomber/debug_me/issues/74). `develop` (44456b6) is ~82 commits ahead of `main`; the live docs site stays stale until a release (findings #53). **PR open**
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- Shared `$DEBUG_ME` on/off test helper: the same save/force/restore before/after block is now copied across five spec files (noticed by the #61 builder). Test-only; do it after #61 and #63 merge.
+- Shared `$DEBUG_ME` on/off test helper — **PR open** [#71](https://github.com/MadBomber/debug_me/pull/71).
 
 ## Open bomberbot PRs
 
-- [#61](https://github.com/MadBomber/debug_me/pull/61) test: cover the time and strftime options (findings #70). Tests only, CI green, review hit the cap → awaits Dewayne. **PR open**
-- [#63](https://github.com/MadBomber/debug_me/pull/63) fix: print BasicObject values instead of raising (findings #64). lib/, CI green, review hit the cap → awaits Dewayne. **PR open**
-- [#64](https://github.com/MadBomber/debug_me/pull/64) test: pin that a logger without #debug is skipped (improver mutation). Tests only (new file), CI green; review round 1 deferred two lib ideas → not low risk, awaits Dewayne. **PR open**
-- [#65](https://github.com/MadBomber/debug_me/pull/65) docs: tidy the Unreleased CHANGELOG notes (Fixes #60, findings #73). CHANGELOG + README, CI green; review rejected two items as out of scope → not low risk, awaits Dewayne. **PR open**
-- [#66](https://github.com/MadBomber/debug_me/pull/66) fix: skip DebugMe's own constants in empty-block discovery (Fixes #59). lib/, adds `DebugMe.own_constant?`, CI green, review hit the cap → awaits Dewayne. Its CHANGELOG line will need a rebase after #65. **PR open**
+- [#71](https://github.com/MadBomber/debug_me/pull/71) test: share one $DEBUG_ME on/off helper across the suite (brain Backlog). New `tests/debug_me_on.rb` + 8 spec files, +38/−61, CI green, review clean round 1, mutation-proven. Not self-merged: rewrites setup in 9 files (when in doubt, not low risk). **PR open**
+- [#72](https://github.com/MadBomber/debug_me/pull/72) fix: ignore whitespace around the DEBUG_ME env value (finding 77). lib/ one line + env_test + README + CHANGELOG, CI green, review clean round 1 → awaits Dewayne. **PR open**
 
 ## Merged bomberbot PRs
 
+- [#70](https://github.com/MadBomber/debug_me/pull/70) docs: drop the duplicate #44/#45 CHANGELOG line. **Merged (low risk)** by madbot 2026-11-15 → develop 44456b6.
+- [#66](https://github.com/MadBomber/debug_me/pull/66) fix: skip DebugMe's own constants in empty-block discovery (Fixes #59). Merged by Dewayne 2026-11-13 (squash, after merging develop in himself) → 81eca6d.
+- [#65](https://github.com/MadBomber/debug_me/pull/65) docs: tidy the Unreleased CHANGELOG notes (Fixes #60). Merged by Dewayne 2026-11-13 (squash) → 6842157.
+- [#64](https://github.com/MadBomber/debug_me/pull/64) test: pin that a logger without #debug is skipped. Merged by Dewayne 2026-11-13 (squash) → 4c366fd.
+- [#63](https://github.com/MadBomber/debug_me/pull/63) fix: print BasicObject values instead of raising. Merged by Dewayne 2026-11-13 (squash) → 774eb65.
+- [#61](https://github.com/MadBomber/debug_me/pull/61) test: cover the time and strftime options. Merged by Dewayne 2026-11-13 (squash) → 043aa12.
 - [#62](https://github.com/MadBomber/debug_me/pull/62) test: read every assigned local so ruby -w stays quiet (findings #25, rest of #53). **Merged (low risk)** by bomberbot 2026-11-13 → develop fb0b2ea.
 - [#52](https://github.com/MadBomber/debug_me/pull/52) fix: read discovered names from the block's receiver (issues #44, #45). Merged by Dewayne 2026-11-12 (rebase) → e979bdb.
 - [#51](https://github.com/MadBomber/debug_me/pull/51) test: make the disabled $DEBUG_ME test catch output. Merged by Dewayne 2026-11-12 → 1aba775.
@@ -55,10 +58,12 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 ## Open bomberbot issues
 
-- [#58](https://github.com/MadBomber/debug_me/issues/58) A local named `backtrace` shows the call stack in an empty-block dump (findings #65). Filed 2026-11-13.
-- [#59](https://github.com/MadBomber/debug_me/issues/59) Classes that include DebugMe dump `DEBUG_ME_VERSION` on every empty block (findings #69). Filed 2026-11-13. **PR open** [#66](https://github.com/MadBomber/debug_me/pull/66).
-- [#60](https://github.com/MadBomber/debug_me/issues/60) CHANGELOG `[Unreleased]` misses the docs fixes and mislabels one entry (findings #50). Filed 2026-11-13. **PR open** [#65](https://github.com/MadBomber/debug_me/pull/65).
-- [#67](https://github.com/MadBomber/debug_me/issues/67) The docs never say an undefined name prints `"<undefined>"` (findings #71, #72). Filed 2026-11-13 08:45.
+- [#73](https://github.com/MadBomber/debug_me/issues/73) docs/contributing.md mentions a nonexistent PR template and a Minitest::Test skeleton (findings #63). Filed 2026-11-15.
+- [#74](https://github.com/MadBomber/debug_me/issues/74) Comments in lib/debug_me.rb misdescribe skip1:/skip2: and the DEBUG_ME values (findings #48). Filed 2026-11-15; easiest after #72.
+
+### Closed by Dewayne on 2026-11-13 (second batch)
+
+- #58 (his #68), #59 (by #66), #60 (by #65), #67 (his #69).
 
 ### Closed by Dewayne on 2026-11-13 (fixed on develop)
 
