@@ -1484,3 +1484,11 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 
 - **robot_lab F-118 (2026-11-15):** `Errors.retryable_classes` (`[InferenceError]`) includes `ToolLoopError`, which `retryable?` says must never retry. Options: (a) move `ToolLoopError` out from under `InferenceError` (hierarchy change, deprecation note); (b) add `Errors.non_retryable_classes` and document `discard_on` after `retry_on`; (c) document only. Bomberbot recommends (b).
 - **robot_lab improver passes (2026-11-15):** only four `lib/` files are byte-identical on develop and main, all already read. Until the develop/main sync, robot_lab visits mostly re-read covered code; consider syncing soon or lowering robot_lab's visit frequency. If F-70 resolves as "remove Streaming", `streaming/sequence_counter.rb` is sync-safe and can go now.
+
+## prompt_manager (2026-11-15 08:45 visit)
+
+- **F-83 Metadata keys named like Enumerable methods** (needs Dewayne): `meta.count`, `first`, `max`, `sort`, `select` return Enumerable results, not the front-matter value, contradicting `docs/api/metadata.md:18`. Options: (a) shadow Enumerable names like Object ones (one line in `shadows_object_method?`; recommended, matches the docs); (b) document them as `[]`-only.
+- **Keyword arguments to directives:** `<%= g(name: "Bob") %>` silently drops the keywords for `PM.register` blocks and raises `ArgumentError` for class directives. Forwarding `**kwargs` would fix both but changes the documented "keywords arrive as a trailing Hash" contract (`render_scope.rb:80`).
+- **One "which file" for errors:** F-43, F-63/#61, F-77/#67 and a `MissingParameterError` from an included file (backtrace points at the parent's `include` line) are one family. A `path` on `PM::Error`, or `include` re-raising with the child path, would settle them together instead of piecemeal.
+- **Release gap:** develop is 48 commits ahead of main (RubyGems still 1.2.0, 11-02). #52 is fixed on develop but only auto-closes when develop reaches main. Fifteenth visit and third queue-full skip in a row today.
+

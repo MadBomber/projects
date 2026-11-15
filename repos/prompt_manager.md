@@ -10,7 +10,9 @@ Prompt file management gem used by aia. A change to a public method must not bre
 
 ## Status
 
-_Updated 2026-11-15 (fourteenth run, bomberbot)._ Skipped building: review queue full (#56, #57, #58, #63 still green, unapproved; nothing tended). Security audit (develop 5d9ac2c): clean, F-74..F-79. Filed issues [#66](https://github.com/MadBomber/prompt_manager/issues/66) (Metadata dup/clone) and [#67](https://github.com/MadBomber/prompt_manager/issues/67) (MetadataError names no file). develop HEAD 5d9ac2c.
+_Updated 2026-11-15 (fifteenth run, madbot)._ Skipped building: review queue full (#56, #57, #58, #63 still green, unapproved; nothing tended). Quality audit (develop 5d9ac2c): F-80..F-85. Filed issues [#68](https://github.com/MadBomber/prompt_manager/issues/68) (CRLF closing fence), [#69](https://github.com/MadBomber/prompt_manager/issues/69) (`~/` path with prompts_dir set) and [#70](https://github.com/MadBomber/prompt_manager/issues/70) (non-boolean config shell/erb). develop HEAD 5d9ac2c.
+
+_Previously, fourteenth run (2026-11-15 04:40, bomberbot):_ Skipped building: review queue full (#56, #57, #58, #63 still green, unapproved; nothing tended). Security audit (develop 5d9ac2c): clean, F-74..F-79. Filed issues [#66](https://github.com/MadBomber/prompt_manager/issues/66) (Metadata dup/clone) and [#67](https://github.com/MadBomber/prompt_manager/issues/67) (MetadataError names no file). develop HEAD 5d9ac2c.
 
 _Previously, thirteenth run (2026-11-15 02:00, madbot):_ Skipped building: review queue full (#56, #57, #58, #63 all green, unapproved). Adoption audit (develop 5d9ac2c): F-69..F-73. Filed issues [#64](https://github.com/MadBomber/prompt_manager/issues/64) and [#65](https://github.com/MadBomber/prompt_manager/issues/65). Dewayne's #48 has a CI run held for approval (in `dewayne.md`). develop HEAD 5d9ac2c.
 
@@ -37,6 +39,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Issue [#66](https://github.com/MadBomber/prompt_manager/issues/66): `Metadata#dup`/`#clone` share the table (F-76). lib, ~7 lines + test; no overlap with open PRs. Added 2026-11-15.
 - Issue [#67](https://github.com/MadBomber/prompt_manager/issues/67): name the file in front-matter `MetadataError` (F-77). lib; wait for #63 (both edit `PM.parse`). Added 2026-11-15.
 - Issue [#64](https://github.com/MadBomber/prompt_manager/issues/64): `insert`/`read` error wording for directories and the `read` alias (F-72). lib + `test/include_chain_test.rb`. Added 2026-11-15.
+- Issue [#68](https://github.com/MadBomber/prompt_manager/issues/68): allow `\r` in the closing-fence regex so CRLF files keep expanding after a code block (F-80). lib, 1 line + test in `test/shell_test.rb`. Added 2026-11-15.
+- Issue [#69](https://github.com/MadBomber/prompt_manager/issues/69): expand a leading `~` in `PM.parse` paths when `prompts_dir` is set (F-81). lib, ~2 lines + test; also closes F-65; touches `PM.resolve_path`, not `PM.parse`, so no overlap with #63. Added 2026-11-15.
+- Issue [#70](https://github.com/MadBomber/prompt_manager/issues/70): coerce or validate non-boolean `PM.config.shell`/`erb` (F-82). lib + `test/configuration_test.rb`. Added 2026-11-15.
 - Issue [#65](https://github.com/MadBomber/prompt_manager/issues/65): gemspec duplicate `homepage_uri`/`source_code_uri` (F-70). Gemspec one-liner; never self-mergeable. Added 2026-11-15.
 
 ## Open bomberbot PRs
