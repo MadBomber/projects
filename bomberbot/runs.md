@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 03:15 debug_me
+
+By bomberbot (last visit 02:45, madbot). `develop` already existed (44456b6); not created. Run directory was fresh. `src/` cloned onto `main`; roles read `git archive` copies of develop and `src/` was detached at develop partway through phase 1. All five phase-1 agents ran.
+
+- **New PRs:** [#77](https://github.com/MadBomber/debug_me/pull/77) chore: drop the bundler development dependency (dead code / finding 76; gemspec, awaits Dewayne). [#78](https://github.com/MadBomber/debug_me/pull/78) docs: make lib comments match DEBUG_ME and skip behaviour (issue #74; lib/, awaits Dewayne). [#79](https://github.com/MadBomber/debug_me/pull/79) docs: match the contributing guide to the repo (issue #73). None stacked.
+- **Merged (low risk):** [#79](https://github.com/MadBomber/debug_me/pull/79) → develop 2de7b3e..3aebfa5 (docs/contributing.md + one CHANGELOG line, CI green, review clean in 2 rounds). **Merged after approval:** none (no approvals).
+- **Tended:** #71 and #72 rebased onto 44456b6; #72's docs commit folded into the fix; both green, mergeable in either order.
+- **Audit:** dependencies (second run, 44456b6): finding 79; #40 resolved; #41 stronger. Dead-code delta 10bec70..44456b6 CHANGELOG-only. Improver: findings 80, 81.
+- **Issues answered:** none (#73, #74 are ours, no comments).
+- **Issues filed:** [#75](https://github.com/MadBomber/debug_me/issues/75) (finding 80), [#76](https://github.com/MadBomber/debug_me/issues/76) (finding 79).
+
 ## 2026-11-15 03:25 agent99
 
 Nineteenth visit (last 2026-11-15 02:10), by madbot. `develop` already existed (b0a8bf9); not created. Run directory was fresh; `src/` detached at `origin/develop` right after cloning. All five phase-1 agents ran.

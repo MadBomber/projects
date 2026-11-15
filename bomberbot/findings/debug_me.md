@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-15 | Third audit, develop 10bec70. bundler-audit clean (1378 advisories). Findings 77, S-78; S-31 to S-37 re-checked, all still present (details held locally). Previous 2026-11-12 (0d7fb14), findings 38-39, S-36, S-37. |
-| dead code | 2026-11-12 | Second visit: improver read 0d7fb14..200c10f, nothing removable; two never-failing tests (#45) PR'd. 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
-| dependencies | 2026-11-12 | Full audit, develop 0d7fb14. `bundle outdated`: only minitest 5.27 → 6.1, held by gemspec `~> 5.0` (#8; suite passes on 6.1.0). Finding 40 (actions/checkout@v4 on Node 20, issue #46), 41 (Ruby 3.2 floor EOL, needs decision). |
+| dead code | 2026-11-15 | 2026-11-15: 10bec70..44456b6 is CHANGELOG-only (#70), nothing removable. Second visit: improver read 0d7fb14..200c10f, nothing removable; two never-failing tests (#45) PR'd. 2026-11-12: improver read 3a4651e..0d7fb14 and lib/ in full; nothing in lib/ removable; two never-failing tests found (#45 below). Quick scans through 3c1bd45; improver reads of 3c1bd45..77b8c25, 77b8c25..7e12714, 7e12714..6a9ec45 (nothing removable each time). 2026-11-09: read 6a9ec45..e4858c9 and the whole tree — found the unused `WorldView#everything` test helper, shipped as #36 (merged). |
+| dependencies | 2026-11-15 | Second audit, develop 44456b6. `bundle outdated`: only minitest 5.27 → 6.1 (#8; suite passes on 6.1.0, whose floor is 3.2). bundler-audit clean. Green on 4.0.9 and 4.1.0preview1, no lib warnings. Actions current; #40 resolved by 733fe6d. #41 stronger (unreleased 3.2 floor already EOL). #76 PR'd. New: #79 (issue #76). Previous 2026-11-12 (0d7fb14). |
 | adoption | 2026-11-13 | develop fb0b2ea. mkdocs `--strict` clean; README/docs fences parse (bar notation); probes match docs; metadata URIs 200; gem-skill sources unchanged (14,805 chars). New: #71-#73. main now 74 behind (#53). Previous 2026-11-12 (200c10f). |
 | quality | 2026-11-13 | Second quality audit, develop 733fe6d. flog 192.8 on `debug_me` (was 171.4), flay 0 in lib (92 in tests), reek 15, rubocop 56 lib / 384 lib+tests; suite green under `ruby -w` (17 test-only unused-local warnings, none from lib). New findings 64-69; #12, #34, #47, #62 fixed. Previous: 2026-11-09, develop e4858c9, findings 31-35. |
 
-Dead-code scan last covered commit: 10bec70 (develop, 2026-11-15; improver read fb0b2ea..10bec70, nothing removable; 16 mutants of the #63/#66/#68 lib changes all caught)
+Dead-code scan last covered commit: 44456b6 (develop, 2026-11-15; auditor read 10bec70..44456b6, CHANGELOG-only, nothing removable). Before that: 10bec70 (improver read fb0b2ea..10bec70, nothing removable; 16 mutants of the #63/#66/#68 lib changes all caught)
 
 ## Findings
 
@@ -147,7 +147,7 @@ Triage/improver extras (not audit findings):
 45. **Two tests in tests/debug_me_test.rb (~519-554) can never fail** (mutation-proven). Status: PR'd ([#51](https://github.com/MadBomber/debug_me/pull/51)).
 46. **README "only local variables" example omits `cconst: false`,** so it also prints constants. Status: merged ([#50](https://github.com/MadBomber/debug_me/pull/50), low risk, develop 8fbbbde).
 47. **Suite output is noisy:** WorldView#six writes to stdout (no `file: nil`) and constants A/B/C are redefined with warnings. Status: issue [#53](https://github.com/MadBomber/debug_me/issues/53).
-48. **The `skip1:`/`skip2:` comments in DebugMeDefaultOptions are misleading.** Status: issue [#74](https://github.com/MadBomber/debug_me/issues/74) (2026-11-15, with the `ENV['DEBUG_ME']` comment at lib/debug_me.rb:4-5).
+48. **The `skip1:`/`skip2:` comments in DebugMeDefaultOptions are misleading.** Status: issue [#74](https://github.com/MadBomber/debug_me/issues/74) (2026-11-15, with the `ENV['DEBUG_ME']` comment at lib/debug_me.rb:4-5). Lib-comment half PR'd [#78](https://github.com/MadBomber/debug_me/pull/78) (2026-11-15).
 49. **The gemspec `Dir[]` file list depends on the cwd** (related to S-37). Status: open.
 50. **CHANGELOG has no line for the #38/#41/#47 docs fixes, and docs/changelog.md has drifted from CHANGELOG.md.** Status: CHANGELOG half is issue [#60](https://github.com/MadBomber/debug_me/issues/60) (2026-11-13, with two more `[Unreleased]` inaccuracies); docs/changelog.md half folds into #59's decision.
 51. **The `:backtrace` frame format differs on Ruby 3.2/3.3 (`` `meth' ``) vs 3.4+ (`'Class#meth'`);** the docs show only 3.4+. Status: open.
@@ -171,7 +171,7 @@ Improver extras (develop 200c10f; dead-code read reached 200c10f, nothing remova
 60. **'produces no output when $DEBUG_ME is false' can't see output** (passes `file: nil`); mutation-proven. Status: PR'd ([#51](https://github.com/MadBomber/debug_me/pull/51)).
 61. **Four docs pages say `debug_me {}` shows "all local variables"** (README:91, getting-started.md:93-101, usage.md:39-47, api-reference.md:108-109); at top level it also dumps constants. Status: README half merged ([#50](https://github.com/MadBomber/debug_me/pull/50)); the rest waits on #22's decision.
 62. **`v.to_s == 'backtrace'` (lib/debug_me.rb:74, :90) treats any object whose to_s is "backtrace" as the backtrace marker,** unlike line 99's Symbol/String check. Status: issue [#54](https://github.com/MadBomber/debug_me/issues/54).
-63. **docs/contributing.md mentions a nonexistent PR template and shows a Minitest::Test skeleton while every test is spec style.** Status: issue [#73](https://github.com/MadBomber/debug_me/issues/73) (2026-11-15; branch-target half stays with #56).
+63. **docs/contributing.md mentions a nonexistent PR template and shows a Minitest::Test skeleton while every test is spec style.** Status: fixed on develop by [#79](https://github.com/MadBomber/debug_me/pull/79) (merged low risk 2026-11-15); issue #73 open until Dewayne closes it.
 
 ### 2026-11-13 quality audit (develop 733fe6d; second quality audit)
 
@@ -202,7 +202,7 @@ Builder and improver extras (2026-11-13 08:45):
 
 74. **A `logger:` without `#debug` is silently skipped,** including a proxy that answers `debug` via `method_missing` without `respond_to_missing?`; passing `$stderr` as `logger:` drops output with no warning. The guard itself is now pinned by [#64](https://github.com/MadBomber/debug_me/pull/64). Whether to warn or raise is an API choice. Status: needs Dewayne's decision (inbox).
 75. **An explicit `{ :DEBUG_ME_VERSION }` in a block written at top level prints `<undefined>`** for an object that includes DebugMe (names are evaluated in the block's scope). Low. Status: open.
-76. **The gemspec's `bundler` development dependency is redundant** (default gem since 2.6, floor 3.2) and the dev dependencies are unsorted (extends #27). Gemspec, so never low risk. Status: open.
+76. **The gemspec's `bundler` development dependency is redundant** (default gem since 2.6, floor 3.2) and the dev dependencies are unsorted (extends #27). Gemspec, so never low risk. Status: PR'd [#77](https://github.com/MadBomber/debug_me/pull/77) (2026-11-15; removal only, sorting still open).
 - Security: no new finding; S-36 re-confirmed by a builder at fb0b2ea (details held locally).
 
 ### 2026-11-15 security audit (develop 10bec70; third security audit)
@@ -212,3 +212,20 @@ Builder and improver extras (2026-11-13 08:45):
 
 77. **`DEBUG_ME` with surrounding whitespace leaves output on.** lib/debug_me.rb:7 lowercases but doesn't strip, so `DEBUG_ME=" false"` or `"false\n"` → `$DEBUG_ME == true`. Low. Status: PR'd [#72](https://github.com/MadBomber/debug_me/pull/72) (2026-11-15).
 - S-78: security finding, details held locally. Status: open (needs Dewayne's go-ahead on a lib behaviour change).
+
+### 2026-11-15 03:15 dependencies audit (develop 44456b6; second dependencies audit)
+
+- `bundle outdated` (Ruby 4.1.0preview1): only minitest 5.27.0 → 6.1.0, held by gemspec `~> 5.0` (#8); minitest 6.1.0 needs Ruby >= 3.2, same as our floor, and the suite passes on it (107 runs, 0 failures). bundler-audit clean (advisory db 2026-11-15).
+- Suite green on 4.0.9 and 4.1.0preview1 with `-W:deprecated --enable-frozen-string-literal`; no warnings from lib/. Nothing in lib/ needs more than Ruby 3.0, so the floor is a support-policy choice.
+- CI actions current (checkout/setup-python v7, setup-ruby v1). Ruby EOL: 3.2 ended 2026-03-31, 3.3 ends 2027-03-31.
+- Re-checks: **#40 resolved** (733fe6d, issue #46 closed). **#41 still needs Dewayne's decision, now stronger:** the 3.2 floor is unreleased and already EOL; raising to 3.4 would also retire #51. **#76** PR'd this visit. Still present: #8, #10, #53 (main now 82 behind), #58.
+- `src/` was checked out on `main` after cloning; every role read a `git archive` of origin/develop instead, and `src/` was detached at develop partway through.
+
+79. **CI does not test the next Ruby (4.1 / head).** .github/workflows/test.yml:26 stops at `"4.0"`; 4.1.0 is due 2026-12-25 and the suite already passes on 4.1.0preview1. Workflow file, so Dewayne pushes it. Low. Status: issue [#76](https://github.com/MadBomber/debug_me/issues/76).
+
+Improver extras (2026-11-15 03:15):
+
+80. **Output escapes a reassigned `$stdout`.** `DebugMeDefaultOptions[:file]` holds the `$stdout` from require time (lib/debug_me.rb:27), so `capture_io` / `$stdout = StringIO.new` capture nothing; the docs say the default is `$stdout`. Reproduced at 44456b6. The fix has an edge case (`file: STDOUT` passed on purpose), so the options are in the issue. Status: issue [#75](https://github.com/MadBomber/debug_me/issues/75).
+81. **`DebugMe.own_constant?` is public** (`DebugMe.singleton_methods` → `[:debug_me, :own_constant?]`) though its comment calls it internal; it hasn't shipped, so it could be hidden before the next release without deprecation, but tests/receiver_context_test.rb:148-163 tests it directly. Options: leave public and document; hide it and test through `send`; mark `# @api private`. Status: needs Dewayne's decision (inbox).
+- Improver suggests closing #49 (gemspec file list depends on cwd): Bundler and `gem build` both chdir to the gemspec's directory. Left open for Dewayne.
+- Security: no new finding.
