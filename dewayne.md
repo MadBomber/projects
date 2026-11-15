@@ -17,7 +17,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## ragdoll
 
-- [ ] Nothing pending for ragdoll beyond reviewing #62 and #67; open questions are in inbox.md (2026-11-15).
+- [ ] Review ragdoll [#62](https://github.com/MadBomber/ragdoll/pull/62), [#67](https://github.com/MadBomber/ragdoll/pull/67), [#71](https://github.com/MadBomber/ragdoll/pull/71), [#72](https://github.com/MadBomber/ragdoll/pull/72), [#73](https://github.com/MadBomber/ragdoll/pull/73) (all green; queue full, so no new PRs until some move); open questions are in inbox.md (updated 2026-11-15 07:46).
 
 ## debug_me
 

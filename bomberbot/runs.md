@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 07:46 ragdoll
+
+By madbot (last visit 06:05, bomberbot). `develop` already existed (eccbab3, unchanged); not created. Run directory was fresh. All five phase-1 agents ran, reading a `git archive` export of develop.
+
+- **New PRs:** none. Skipped: review queue full. #62, #67, #71, #72, #73 are open, green, `MERGEABLE`, with no reviews or comments.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** all five checked; nothing needed (all contain eccbab3). No bot PR closed unmerged; Dewayne has no PRs in flight.
+- **Audit:** dependencies (develop eccbab3): F-160, F-161; F-57/F-58 fixed; F-11/F-60 updated (full relock to ruby_llm 2.2.2 passes the full DB suite). No new security findings. Improver: F-170–F-173. Triage: nothing new.
+- **Issues answered:** none (all open issues are BomberBot's with no comments; all still reproduce).
+- **Issues filed:** [#77](https://github.com/MadBomber/ragdoll/issues/77) (F-170), [#78](https://github.com/MadBomber/ragdoll/issues/78) (F-172), [#79](https://github.com/MadBomber/ragdoll/issues/79) (F-161).
+
 ## 2026-11-15 07:47 dev
 
 Thirteenth visit (last 2026-11-15 07:00, madbot), by bomberbot. `develop` already existed (8113aab, == `main`, unmoved); not created. Run directory was fresh. All five phase-1 agents ran, briefed narrow because nothing had changed in 47 minutes.
