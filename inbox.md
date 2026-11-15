@@ -1342,3 +1342,13 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Decisions waiting:** F-103 (dead `ExtractTextJob`), F-104 (`shrine_config.rb` writes dirs into the caller's cwd at require time), F-108 (`Config::TO_SYMBOL`), F-109 (`Document#search_data`, Searchkick leftover; natural follow-up to #62), F-124 (top-level `Ragdoll.add_tags` etc. missing), F-125 (`SearchEngine#search_documents`), and `Ragdoll.client(_config)` ignoring its argument.
 - **F-14 is now easy.** With #66 merged the local full DB suite passes (1377 runs, 0 failures); CI already starts a pgvector service but sets `RAGDOLL_SKIP_DATABASE_TESTS: true`. Flipping it would let CI prove DB fixes like #67. Touches `.github/`, so it would be a PR for you to approve.
 - **Machine note:** the global rbenv Ruby is 4.1.0-preview1, which crashes Bundler 2.7.2 (`Pathname::SEPARATOR_PAT`) on this repo; a `.ruby-version` (or a newer pinned Bundler) would avoid it.
+
+## smart_message-transport-named_pipes (2026-11-15 visit 9, BomberBot)
+
+- **F-86 signal takeover:** every `NamedPipes.new` replaces the host's INT/TERM handlers and (since #50) exits 0 on either signal, and adds one `at_exit` per instance. Options: (a) document it in README "Graceful Shutdown"; (b) opt-out `trap_signals: false`; (c) one process-wide registry that chains the previous handler. Recommend (c) or (b); (a) at minimum.
+- **F-53 `connected?`:** true right after `new` (Base#initialize calls `configure`, which creates the directory). Should it mean "connect was called"? Small lib PR either way once you say which.
+- **F-40 / #29:** fan-out (one pipe per subscriber, each cleans up its own) vs work queue (shared pipe, refcount / last-one-out deletes). Re-verified: with a shared pipe, a departing subscriber silently stops all delivery to the others.
+- **One test entry point (F-89):** CI loops `ruby -Itest -Ilib`, README lists files, Rakefile has `rake test`; the signal test's own `-I` is how F-84 slipped through when #52 met #50. A `spawn_ruby_child` helper in `test_helper.rb` would stop it recurring.
+- **Batch-merge note:** #52 merged on top of #50 without CI re-running on the combination, turning develop red. Branch protection "require branches to be up to date" (or a merge queue) would catch that; your call.
+- **llms.txt:** wait until F-14/F-24 settle which API the docs teach (verified path: `config { transport T }`, `Msg.subscribe`, `msg.publish`), else it spreads the broken transport-level API.
+- **CI `fail-fast: false`:** a red 3.2 leg cancels 3.3/3.4/4.0, hiding the 4.0 result; workflow edit, yours.
