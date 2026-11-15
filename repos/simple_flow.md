@@ -11,7 +11,7 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-15 04:12 (twelfth visit): #53-#55 still await review (green, no comments), so no new PRs; quality audit found F-155..F-160; filed #62-#64._ Suite green on Ruby 4.0.9 and 4.1.0-preview1 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-15 07:06 (thirteenth visit): #53-#55 still await review (green, no comments), so no new PRs; adoption audit found F-165..F-170; filed #65-#67._ Suite green on Ruby 4.0.9 and 4.1.0-preview1 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
@@ -47,6 +47,10 @@ Well-defined items a single small PR could close.
 - [#64](https://github.com/MadBomber/simple_flow/issues/64) `parallel` accepts `:optional` as a group name (F-156). Two frozen constants used in four places.
 - F-161: test-only PR: the halt checks at `pipeline.rb:377` and `:532` are untested (mutation leaves the suite green). Low risk.
 - F-158: add `# frozen_string_literal: true` to five lib files (`.rubocop.yml` already enforces it; suite passes with frozen literals on).
+- [#65](https://github.com/MadBomber/simple_flow/issues/65) docs landing page: "Get Started" 404s and the Quick Example raises `ArgumentError` (F-166, F-167). Two lines in `docs/index.md` (docs deploy, so not self-merged). Pair with F-165 (favicon) only if mkdocs.yml review is fine.
+- [#66](https://github.com/MadBomber/simple_flow/issues/66) documented middleware order, array `activate`, activation across `parallel`, and two halt checks have no tests (F-171 + F-161). Test-only, low risk.
+- [#67](https://github.com/MadBomber/simple_flow/issues/67) Pipeline-as-a-step works but is undocumented and untested (F-172). README section + test.
+- F-168 + F-126: `testing.md:25` "skips are expected" and `contributing.md:35` pinned counts (docs deploy). F-169 `contributing.md:101` nonexistent test name (rest needs a decision).
 
 ## Open bomberbot PRs
 
