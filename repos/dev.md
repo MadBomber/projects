@@ -10,7 +10,7 @@ Shared Asgard task libraries (.loki) for madbomber repos. Not a gem: its suite i
 
 ## Status
 
-_Updated 2026-11-15 (twelfth run)._ Queue full again (#48, #52, #53 unreviewed, develop unmoved at 8113aab), so no new PRs; ran the quality audit (F-71 to F-84) and filed #57–#59.
+_Updated 2026-11-15 (thirteenth run)._ Queue still full (#48, #52, #53 unreviewed, develop unmoved at 8113aab), so no new PRs; ran a whole-file quality audit of the older files (F-85 to F-98) and filed #60–#62.
 
 ## Backlog
 
@@ -30,6 +30,12 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-75: `ticket sync` stops at 2000 tickets but advances the stamp ([dev#58](https://github.com/MadBomber/dev/issues/58)).
 - F-79: `runbook show` can't open `deploy` next to `deploy-rollback` ([dev#59](https://github.com/MadBomber/dev/issues/59)); exact name wins.
 - F-72/F-73: `db diff` merges same-named objects across schemas and blames SET lines on neighbours; one PR in rails/db.loki.
+- F-85: status_report drops commits when two STATUS_REPO_DIRS share a basename ([dev#60](https://github.com/MadBomber/dev/issues/60)).
+- F-87: parallel RSpec runner discards the user's SPEC_OPTS ([dev#61](https://github.com/MadBomber/dev/issues/61)); one line in quality.loki.
+- F-96/F-97: quality gates scan the wrong files when no `@@quality_dirs` dir exists, and the setting is undocumented ([dev#62](https://github.com/MadBomber/dev/issues/62)).
+- F-86: `bundler_audit_check` breaks on a lockfile path with a space; `Shellwords.escape`, one line in quality.loki.
+- F-95: README and two headers still call asgard's removed copies the "golden pattern"; docs/comments only.
+- F-98: README requirements miss gh for `ticket pr`, glow, mailpit, `JIRA_CLI_BIN`; docs only (low risk).
 
 Layout (since #44–#47): Rails-only tasks live in `rails/`, client-workflow tasks in `client/`; `dev/.loki` imports top-level files only. README and llms.txt change with every task change. Merge commits only (rebase and squash are off).
 
@@ -50,6 +56,9 @@ Layout (since #44–#47): Rails-only tasks live in `rails/`, client-workflow tas
 - [dev#57](https://github.com/MadBomber/dev/issues/57) db restore leaves the database empty when pg_restore rejects --jobs (F-71)
 - [dev#58](https://github.com/MadBomber/dev/issues/58) ticket sync stops at 2000 changed tickets but still advances the sync stamp (F-75)
 - [dev#59](https://github.com/MadBomber/dev/issues/59) runbook show can't open a runbook whose name is part of another's (F-79)
+- [dev#60](https://github.com/MadBomber/dev/issues/60) status_report drops a repo's commits when two STATUS_REPO_DIRS share a basename (F-85)
+- [dev#61](https://github.com/MadBomber/dev/issues/61) test_check's parallel RSpec runner discards the user's SPEC_OPTS (F-87)
+- [dev#62](https://github.com/MadBomber/dev/issues/62) quality gates scan the wrong files when no @@quality_dirs directory exists (F-96, F-97)
 
 Closed by Dewayne's PRs: #7, #8, #9, #13, #14, #15, #23, #24, #27, #28, #29 (#32), #35 (#42), #36 (#43), #37 (#41).
 
