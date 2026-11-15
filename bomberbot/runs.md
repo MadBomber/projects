@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 02:17 smart_message-transport-named_pipes
+
+Visit 9, by bomberbot (last recorded: 2026-11-13 01:10). `develop` already existed (91197bb); not created. A leftover run directory from a cut-off visit 8 (~2026-11-13 02:50, which opened #47/#48/#49 but never wrote brain) had been set aside by the asgard task as `bomberbot-interrupted/smart_message-transport-named_pipes-20261115-0217`; this visit records it. Since then Dewayne squash-merged our #39/#47/#48/#49 unchanged and his own #31–#36, #38, #50–#54; his #37 (#14) is open. #52 merged on top of #50 and turned `develop` CI red. All five phase-1 agents ran. Deviation: `src/` was briefly on `main` at phase-1 start (fresh clone); detached at `origin/develop` and all four readers re-read from develop (they had exported 91197bb anyway). Deviation: the gemspec builder started before phase 1 finished because it was a brain inbox item (Backlog-first).
+
+- **New PRs** (none stacked, all base `develop`):
+  - [#57](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/57) test: give the signal test child the test load path. Source: **CI** (red develop since b76f162). Test-only +8/−2, fails before / passes after, CI green 3.2–4.0. Review hit the 3-round cap (round 3 clean) with deferred pre-existing notes → not low risk; held. Merge first.
+  - [#55](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/55) build: add bug tracker, docs and MFA gemspec metadata. Source: **brain** (inbox lanet#21 pattern, F-60/F-74). `gem build` warning gone, rubocop 3→2, suite green except the develop signal failure. Review clean round 1. Gemspec → not low risk.
+  - [#58](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/58) docs: run the whole suite in README Running Tests. Source: **adoption** (F-85). README +12/−5; review hit cap with deferred notes → not low risk.
+- **Merged (low risk):** none (all three failed a criterion: gemspec, or review cap with deferred notes).
+- **Merged after approval:** none pending; tender found 0 open bot PRs and no bot branches left.
+- **Audit:** adoption (+dead-code delta c143600..91197bb: none new) → F-84…F-91.
+- **Issues answered:** [#30](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/30#issuecomment-6891620535) (develop already has Ruby 4.0 in CI via #32). #6/#14/#29 nothing new to add.
+- **Issues filed:** [#56](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/56) (F-87, `DEFAULT_CONFIG` keeps require-time env values).
+- **Dewayne:** review order #57 → #55/#58; approve #37's held CI runs and refresh its body; close #30 by hand; MFA before releasing with #55.
+
 ## 2026-11-15 00:47 sqa
 
 **Resumed** at 02:15 after the first session stopped during phase 3 (all PRs and issues were already done; brain and cleanup remained). `develop` existed (ea405df); not created. No leftover run dir.

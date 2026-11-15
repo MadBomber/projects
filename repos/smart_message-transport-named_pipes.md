@@ -13,7 +13,11 @@ files: the transport, a committed test stub `transport/base.rb`, and a `version.
 
 ## Status
 
-_Updated 2026-11-13 01:10 (visit 7): Dewayne merged all four waiting PRs (#20/#21/#22/#27; #21 landed only in its stale stacked base, his #34 redoes it) and opened his own #31–#38 for eight issues; madbot **merged (low risk)** [#43](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/43) (README no-subscriber publish, 4a27bc3) and [#44](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/44) (test hygiene, b162732), opened [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39) (gemspec packaging + version), ran the dependencies audit against smart_message 0.1.0 (F-46…F-54), and filed #40/#41/#42._
+_Updated 2026-11-15 02:17 (visit 9): `develop` CI was red since #52 (signal-test child lacked `-Itest`); bomberbot opened [#57](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/57) (fix, green on 3.2–4.0), [#55](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/55) (gemspec metadata, lanet#21 pattern) and [#58](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/58) (README Running Tests), none low risk (gemspec / review cap hit); merge #57 first. Adoption audit F-84…F-89; filed [#56](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/56)._
+
+**Visit 8 (2026-11-13 ~02:50, cut off before writing brain):** opened #47/#48/#49; Dewayne squash-merged them 2026-11-13 21:29 with his #31–#38/#50–#54 and our #39. Run dir moved to `bomberbot-interrupted/` on 2026-11-15.
+
+**Visit 7 (2026-11-13 01:10):** Dewayne merged all four waiting PRs (#20/#21/#22/#27; #21 landed only in its stale stacked base, his #34 redoes it) and opened his own #31–#38 for eight issues; madbot **merged (low risk)** [#43](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/43) (README no-subscriber publish, 4a27bc3) and [#44](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/44) (test hygiene, b162732), opened [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39) (gemspec packaging + version), ran the dependencies audit against smart_message 0.1.0 (F-46…F-54), and filed #40/#41/#42._
 
 **Visit 6 (2026-11-12 08:22):** **skipped new work — review queue full** (#20/#21/#22/#27 open, unreviewed, all rebased and green). Quality audit re-run (F-39…F-44, +F-45); filed [#28](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/28) (ENV read at require), [#29](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/29) (shared FIFO deleted under other subscribers), [#30](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/30) (CI lacks Ruby 4.0)._
 
@@ -89,15 +93,27 @@ Well-defined items a single small PR could close.
 - **F-73 / [#40](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/40):** publish after FIFO removal creates a regular file that blocks re-subscribe — after #18/#29 settle.
 - **F-48 / [#41](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/41):** bare `transport/base` require → NameError under smart_message 0.1.0; pairs with F-49/F-50 (test against real gem) after #6.
 - **F-47:** Ruby floor to 4.0 (smart_message 0.1.0 requires it) — gemspec/README/.rubocop.yml PR once Dewayne confirms.
-- In flight (Dewayne, #31–#38): `named_pipes.rb`, `base.rb`, `named_pipes_test.rb`, CHANGELOG, `ci.yml` — no bot work there until they land.
-- Next-PR ranking after #31–#38 land: #42 (F-41), #41 + F-49/F-50, F-53 `connected?`, F-62 (with the local item), #40.
+- In flight (Dewayne, [#37](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/37), #14): `named_pipes.rb`, `named_pipes_test.rb`, CHANGELOG — no bot lib work there until it lands. #31–#36, #38 merged.
+- **F-84:** `develop` CI red since #52 — **PR open [#57](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/57)**.
+- **F-85:** README Running Tests lists 3/5 files — **PR open [#58](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/58)**.
+- **F-60 metadata / F-74:** gemspec `bug_tracker_uri`/`documentation_uri`/MFA, drop duplicate `homepage_uri`, indent — **PR open [#55](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/55)**.
+- **F-87 / [#56](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/56):** `DEFAULT_CONFIG` still reads env at require — after #37.
+- **F-88:** move `lib/.../transport/base.rb` stub to `test/` (after #57; folds into F-49). **F-89:** shared child-ruby `-I` helper in `test_helper.rb`. **F-90:** signal test's `popen3` can hang if an assertion/Timeout fires with the child alive (kill in `ensure`); drain stderr while it runs.
+- **F-91:** CI loop stops at first failing file under `bash -e` and globs only `test/smart_message/transport/` (Rakefile: `test/**`); workflow → Dewayne. README Development "run `bundle install`" line contradicts #6.
+- Next-PR ranking after #37 lands: F-87/#56, F-21/F-38 ENXIO removal, F-32 CHANGELOG gaps (#10/#39/#48), F-88, F-89+F-90.
 
 ## Open bomberbot PRs
 
-- [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39) `madbot/gem-files-reject-dev-files` — gemspec stops packaging `.envrc`/`.github/`/`Rakefile`, drops dead `bindir`/`executables`, reads VERSION from version.rb as text (require_relative would raise superclass mismatch). Base `develop`, +5/−4, two standalone commits, CI green 3.2–3.4, review clean round 1, suite 49/0F/9S. gemspec → not low risk. Source: brain (F-12, F-4 residual/F-54).
+- [#57](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/57) `bomberbot/signal-test-load-path` — test: give the signal test child the test load path. Fixes red develop CI (#52×#50). Test-only, +8/−2, CI green 3.2–4.0. Review hit the 3-round cap (round 3 clean) with deferred pre-existing notes (popen3 hang, stderr drain, shared helper) → not self-merged. Source: CI. **Merge first.**
+- [#55](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/55) `bomberbot/gemspec-metadata` — build: add bug tracker, docs and MFA gemspec metadata (lanet#21 pattern; +1 CHANGELOG `### Changed`, merge-tree clean vs #37). Gemspec → not low risk. Review clean round 1. CI red only on the signal test until #57. Source: brain (inbox, F-60/F-74).
+- [#58](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/58) `bomberbot/readme-running-tests` — docs: run the whole suite in README Running Tests. README +12/−5; review hit cap with deferred notes → not self-merged. CI red only on the signal test until #57. Source: adoption (improver, F-85).
 
 ## Merged bomberbot PRs
 
+- [#49](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/49) — docs: match examples no-subscriber tip to the code (0255bf0). Squash-merged by Dewayne 2026-11-13 (opened by the cut-off visit 8).
+- [#48](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/48) — docs: list smart_message 0.1.0 built-in transports (c40927b). Squash-merged by Dewayne 2026-11-13 (opened by the cut-off visit 8).
+- [#47](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/47) — test: drop duplicate no-reader write timeout test, Fixes #42 (a31e074). Squash-merged by Dewayne 2026-11-13 (opened by the cut-off visit 8).
+- [#39](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/39) — build: tidy gemspec packaging and version source (bedd6d5). Squash-merged by Dewayne 2026-11-13.
 - [#44](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/44) `madbot/test-hygiene` — errors/integration tests stay in their temp dirs, teardown disconnects, two needless skips removed (F-70/71/72). **Merged into develop as low risk by madbot** (test-only, +36/−30, no tests deleted, clean review) at `b162732`, 2026-11-13.
 - [#43](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/43) `madbot/readme-no-subscriber` — README says publish with no subscriber drops the message; pipe with no reader times out (F-61). **Merged into develop as low risk by madbot** (README +2, clean review) at `4a27bc3`, 2026-11-13.
 - [#27](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/27) `madbot/reconnect-after-disconnect` — merged by Dewayne (rebase) 2026-11-12 (bebe33b, f49d642). Fixes #17.

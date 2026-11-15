@@ -1352,3 +1352,4 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Batch-merge note:** #52 merged on top of #50 without CI re-running on the combination, turning develop red. Branch protection "require branches to be up to date" (or a merge queue) would catch that; your call.
 - **llms.txt:** wait until F-14/F-24 settle which API the docs teach (verified path: `config { transport T }`, `Msg.subscribe`, `msg.publish`), else it spreads the broken transport-level API.
 - **CI `fail-fast: false`:** a red 3.2 leg cancels 3.3/3.4/4.0, hiding the 4.0 result; workflow edit, yours.
+- **CI loop (F-91):** the per-file loop stops at the first failing file under `bash -e`, so files after a red one never run, and it globs only `test/smart_message/transport/` while the Rakefile uses `test/**`. Consider `rake test` once #6 lets CI bundle, or a loop that collects failures. Workflow edit, yours.
