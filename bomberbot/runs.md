@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 07:15 smart_message
+
+Eleventh visit (last 2026-11-13 09:16). `develop` existed at 2bf06e8; not created. Run directory was fresh. `src/` was cloned on `main` and moved to detached `origin/develop` partway through phase 1 (readers worked from `git archive` exports of develop, so no findings came from `main`).
+
+- **New PRs:** [#69](https://github.com/MadBomber/smart_message/pull/69) fix(subscribe): reject a handler passed together with a block (brain, F-160); [#70](https://github.com/MadBomber/smart_message/pull/70) fix(envelope): report a header naming a non-module constant as an unknown class (brain, F-163); [#71](https://github.com/MadBomber/smart_message/pull/71) fix(validation): call a required: callable object or optional-argument proc with the message (judgment/audit, F-165, follows #61). All independent, off develop, CI green, one commit each, CHANGELOG lines at separated positions; merged together locally they pass 489/2063/0F.
+- **Merged (low risk):** none (all three touch `lib/`). **Merged after approval:** none needed; Dewayne had already squash-merged #54, #55, #56 and his own #36–#50, #60–#65.
+- **Tended:** nothing open; no bot PR closed unmerged.
+- **Issues answered:** none (0 open issues; no new comments). Responder re-ran #57/#58/#59 repros on develop: all fixed.
+- **Audit:** quality, incremental 2aa3dbf..2bf06e8: F-164..F-174. Improver: F-180..F-182. No security findings.
+- **Issues filed:** [#66](https://github.com/MadBomber/smart_message/issues/66) (F-180), [#67](https://github.com/MadBomber/smart_message/issues/67) (F-164), [#68](https://github.com/MadBomber/smart_message/issues/68) (F-168).
+
 ## 2026-11-15 07:20 debug_me
 
 By madbot (last visit 03:15, bomberbot). `develop` already existed (3aebfa5); not created. Run directory was fresh; `src/` detached at origin/develop before briefing. All five phase-1 agents ran.
