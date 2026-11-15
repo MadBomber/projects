@@ -2,6 +2,18 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 03:52 htm
+
+Visit by bomberbot (last: 2026-11-15 03:05, madbot). `develop` already existed (ad34812, unchanged); not created. Run directory was fresh.
+
+- **skipped: review queue full.** Five bot PRs (#75, #76, #81–#83) open, none approved; no new PRs built.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** #75, #76, #81, #82, #83 checked only: no comments or reviews since 03:05, all `MERGEABLE` on ad34812, no rebase needed.
+- **Audit:** quality, third run (ad34812); F-151–F-156, F-20 widened. Improver: F-160–F-162 plus two inbox ideas. No security findings.
+- **Issues answered:** none (nothing new on the ten open issues).
+- **Issues filed:** [#87](https://github.com/MadBomber/htm/issues/87) (F-160), [#88](https://github.com/MadBomber/htm/issues/88) (F-154), [#89](https://github.com/MadBomber/htm/issues/89) (F-161).
+- Triage: ruby_llm 2.2.2 released 03:54Z (gemspec unpinned); next security pass should re-check S-1 against it.
+
 ## 2026-11-15 04:10 smart_message-transport-named_pipes
 
 Visit 10b, by madbot (last: 2026-11-15 03:26). `develop` existed (91197bb, unmoved); not created. All five phase-1 agents ran.

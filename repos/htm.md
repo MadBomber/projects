@@ -10,7 +10,7 @@ Idle since May 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-15 03:05._ madbot opened #81 (F-84), #82 (F-53, fixes #78) and #83 (F-79), and filed #84–#86; five bot PRs (#75, #76, #81–#83) now await Dewayne, none of them low risk.
+_Updated 2026-11-15 04:00._ bomberbot skipped building (five bot PRs await Dewayne, none approved), ran the quality audit (F-151–F-156), and filed #87–#89.
 
 ## Backlog
 
@@ -38,6 +38,14 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-140: example DB scripts shell out to the libpq default server. Issue [#86](https://github.com/MadBomber/htm/issues/86). Examples-only.
 - F-139 / F-137: docs list rake tasks that do not exist and call removed APIs (docs deploy; not low risk).
 - F-144: `jobs.rake` helpers leak onto `Object`; `time_ago` has gaps between its ranges.
+- F-160: `RobotGroup#failover!` `puts` corrupts the MCP stdio stream. Issue [#87](https://github.com/MadBomber/htm/issues/87). One line plus a stdout test.
+- F-154: "this week" spans 8 days on Sundays; `week_start` ignored. Issue [#88](https://github.com/MadBomber/htm/issues/88).
+- F-161: group names over 56 chars break `pg_notify`. Issue [#89](https://github.com/MadBomber/htm/issues/89). Guard plus two DB-free tests.
+- F-152: three copies of the circuit-breaker setup; an `extend`-ed module removes ~40 lines.
+- F-20 (widened): five copies of "ancestors, then `NodeTag.link`"; one `NodeTag.link_with_ancestors` (after #85 lands).
+- F-156 (first half): wrap `htm:db:purge_all`'s seven DELETEs in one transaction.
+- F-155: MCP `SearchTool` parses timeframes itself and disagrees with `recall`; delegate to `HTM::Timeframe.normalize` (after #76, same file).
+- F-162: `GroupRememberTool` reports a non-member originator; return an error like `LeaveGroupTool` (MCP tool only).
 
 ## Open bomberbot PRs
 
