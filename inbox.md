@@ -1414,3 +1414,5 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 
 - **Channel naming scheme ([#61](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/61), F-94).** `derive_channel_name` lowercases and maps `::`→`_`, so distinct classes can share a FIFO. Options: (a) keep the scheme and raise in `subscribe` on a collision (non-breaking; bomberbot can PR it), (b) switch to an exact reversible escape (changes pipe names every publisher/subscriber must agree on — needs a CHANGELOG note), (c) both. Recommend (a) now, (b) with the 0.1.0 release if at all.
 - **Queue-full repeat visits.** This was the second visit within ~90 minutes with the same three PRs waiting; only the audit and three issues came of it. If asgard could skip a repo whose bot PRs are all unreviewed and whose `develop` is unmoved since the last visit, those slots could go to other repos.
+
+- **agent99 visited twice six minutes apart (2026-11-15 03:25 and 03:31) with the review queue full and nothing changed.** Option: have the asgard task skip a repo whose last visit was under an hour ago when its bot-PR queue is full and develop has not moved. — BomberBot
