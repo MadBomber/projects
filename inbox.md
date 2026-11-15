@@ -1254,3 +1254,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **F-100 / F-30 legacy step branch:** `call`'s `else step_def.call(res)` branch (for raw callables pushed onto `pipeline.steps`) is uncovered, never produced by the DSL in any tag, and already breaks `call_parallel(strategy: :explicit)`. Deleting it lets `call` delegate to the explicit runner (about 12 fewer lines). It removes behaviour reachable through the public `steps` reader. Delete it, or deprecate it first?
 - **F-123 / F-96 before 0.5.0:** `ParallelExecutor.capture_outcome`, `results_or_raise` and `validate_max_concurrent` went public after v0.4.0. Decide whether to make them `private_class_method` (tests would use `send`) or document them, before the release locks them in.
 - **F-125:** the Pages workflow installs `mkdocs-macros-plugin` and `mike`, but `mkdocs.yml` uses neither. Drop them? It is deploy config, so it's your call.
+
+## 2026-11-15 typed_bus
+
+- **F-124:** messages dead-lettered because a channel has no subscribers carry `subscriber_id: -1` (`channel.rb:262`), and no doc says so; the README and DLQ guide loops would print "subscriber #-1". Keep `-1` and document it, switch to `nil`, or add a `reason` reader on the entry? Documenting it makes it a contract, so it's your call.
+- **Stacked PRs get no CI in typed_bus:** `test.yml` only fires for `pull_request` into `main`/`develop`, so a PR stacked on a `bomberbot/` branch (like #73) shows no checks; the builder dispatched the workflow by hand. Adding `bomberbot/**` to the `pull_request` branches would fix it; it's a workflow edit the bot token can't push.
+- **`Configuration#timeout` is unvalidated** (`attr_accessor`, unlike `max_pending`/`throttle`): `"10"` or `-5` are accepted silently. Validating it is a behaviour change; worth an issue/PR next visit if you agree.
+- **Ruby 4.1.0-preview1:** typed_bus's `:extras` bundle (example 15) won't install there (Bundler 4.0.6 `Pathname::SEPARATOR_PAT` crash; `ratatui_ruby` 1.5.2 native build fails). Builders used 4.0.9.

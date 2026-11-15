@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 00:47 typed_bus
+
+- **develop:** already existed (81fc31d). No leftover run dir.
+- **Since last visit:** no Dewayne activity (no commits, comments or merges); #60/#62 still open and CONFLICTING.
+- **Tended:** [#66](https://github.com/MadBomber/typed_bus/pull/66) rebased onto 81fc31d (595ba41), CI green, still awaiting Dewayne. Nothing approved, nothing merged.
+- **New PRs:** [#69](https://github.com/MadBomber/typed_bus/pull/69) count `_published` only for accepted publishes (judgment/triage + auditor, F-112), review cap hit with the trade-off written up; [#68](https://github.com/MadBomber/typed_bus/pull/68) drop unused readers in example 15 (brain Backlog, dead code, F-33 remainder), clean review, not self-merged because it deletes code; [#73](https://github.com/MadBomber/typed_bus/pull/73) YARD/docs `nil`/`Numeric` types (issue #67, F-111 + F-123), **stacked on #69**, CI run by manual dispatch. None merged as low risk.
+- **Audit:** security (fourth run, at 81fc31d): lock clean, S-43 held locally, F-112 confirmed.
+- **Issues answered:** none (all open issues are ours with no outside comments).
+- **Issues filed:** [#70](https://github.com/MadBomber/typed_bus/issues/70) (F-120, timer-cancel tests can't fail), [#71](https://github.com/MadBomber/typed_bus/issues/71) (F-122, llms.txt gaps), [#72](https://github.com/MadBomber/typed_bus/issues/72) (F-121, DLQ log tests).
+
 ## 2026-11-15 00:25 simple_flow
 
 - **develop:** already existed (2a5f282). No run dir left over from a prior visit.

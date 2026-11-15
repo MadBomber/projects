@@ -29,6 +29,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## typed_bus
 
+- [ ] Review and merge into `develop` [#69](https://github.com/MadBomber/typed_bus/pull/69) (lib/: count `_published` only for accepted publishes, F-112; review cap hit, trade-off written up in the PR) and then [#73](https://github.com/MadBomber/typed_bus/pull/73) (YARD/docs types, Fixes #67; stacked on #69: merge #69 first, then retarget #73 to `develop` before merging, or BomberBot will retarget it next visit). (added 2026-11-15)
+- [ ] Review and merge into `develop` [#68](https://github.com/MadBomber/typed_bus/pull/68) (example 15: drop two unused readers; 1 line; not self-merged because it deletes code). (added 2026-11-15)
 - [ ] Review and merge into `develop` [#66](https://github.com/MadBomber/typed_bus/pull/66) (test file rename, rspec `.gitignore` lines, assertion in `test_close_all_on_empty_bus`; CI green, CLEAN; not self-merged because its review loop used all three rounds). (added 2026-11-14)
 - [ ] typed_bus: turn on Dependabot alerts in repo settings (alerts API returns 403); see [#40](https://github.com/MadBomber/typed_bus/issues/40). (added 2026-11-13)
 - [ ] At the next release, close the issues fixed on `develop` (#1-#6, #10-#21) if `Fixes #N` doesn't do it; those keywords only auto-close on merge to `main`. BomberBot left a "fixed on develop in <sha>" note on each. (added 2026-11-11, updated 2026-11-12)
