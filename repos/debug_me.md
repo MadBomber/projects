@@ -10,7 +10,7 @@ Debug output gem, small and stable.
 
 ## Status
 
-_Updated 2026-11-15 07:35._ Skipped new work: review queue full (#71, #72, #77, #78 open, rebased onto 3aebfa5, all green, no approvals). Filed [#80](https://github.com/MadBomber/debug_me/issues/80) (SyntaxError on a non-Ruby String, finding 82) and [#81](https://github.com/MadBomber/debug_me/issues/81) (backtrace cap untested). `develop` 3aebfa5. **PR open**
+_Updated 2026-11-15 09:15._ Skipped new work: review queue full (#71, #72, #77, #78 still open, green, unapproved; nothing to tend). Adoption audit (findings 90-97); filed [#82](https://github.com/MadBomber/debug_me/issues/82) (Rails install docs), [#83](https://github.com/MadBomber/debug_me/issues/83) (literal `**DebugMe**` on docs home) and [#84](https://github.com/MadBomber/debug_me/issues/84) (`{ [] }` dumps scope). `develop` 3aebfa5.
 
 ## Backlog
 
@@ -18,7 +18,10 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 
 - Shared `$DEBUG_ME` on/off test helper — **PR open** [#71](https://github.com/MadBomber/debug_me/pull/71).
 - Pin that `{ :backtrace }` prints the whole stack: `expected = caller(1)` at tests/debug_me_test.rb:131 (issue [#81](https://github.com/MadBomber/debug_me/issues/81), mutation-proven 2026-11-15). Test only, one line — first pick once the queue drains.
-- README typos: README.md:253 "options is"/"in you program", :289 "its as easy", :299 "something line this" (improver 2026-11-15). Docs, low risk.
+- README typos: README.md:253 "options is"/"in you program", :289 "its as easy", :299 "something line this" (improver 2026-11-15). Docs, low risk. Could fold in finding 100 (README.md:44 Quick Start shows `DebugMe::debug_me(){}`; show `DebugMe.debug_me { :x }`).
+- Docs home literal `**DebugMe**`: docs/index.md:12 → `<strong>DebugMe</strong>` (issue [#83](https://github.com/MadBomber/debug_me/issues/83), finding 96). One line, docs, low risk.
+- Rails install docs: docs/installation.md default-group gem (issue [#82](https://github.com/MadBomber/debug_me/issues/82), finding 91). Docs, low risk.
+- Pin that `file:` output is flushed: deleting `f.flush` (lib/debug_me.rb:172) leaves the suite green (finding 99, mutation-proven 2026-11-15). Test only, ~10 lines.
 
 ## Open bomberbot PRs
 
@@ -70,6 +73,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - [#76](https://github.com/MadBomber/debug_me/issues/76) CI matrix does not test Ruby 4.1 / head (findings #79). Filed 2026-11-15; workflow file, Dewayne pushes.
 - [#80](https://github.com/MadBomber/debug_me/issues/80) A String block value that is not valid Ruby raises SyntaxError instead of printing `<undefined>` (finding 82). Filed 2026-11-15; asks Dewayne which placeholder. Lib behaviour change.
 - [#81](https://github.com/MadBomber/debug_me/issues/81) No test checks that `:backtrace` prints the whole call stack (improver C1). Filed 2026-11-15; Backlog item.
+- [#82](https://github.com/MadBomber/debug_me/issues/82) docs/installation.md Rails setup fails to boot when production skips the development group (finding 91). Filed 2026-11-15; Backlog item.
+- [#83](https://github.com/MadBomber/debug_me/issues/83) Docs home page shows literal `**DebugMe**` (finding 96). Filed 2026-11-15; Backlog item.
+- [#84](https://github.com/MadBomber/debug_me/issues/84) A block returning `[]` or `[nil]` dumps every variable in scope (finding 98). Filed 2026-11-15; lib behaviour change, small fix proposed in the issue.
 
 ### Closed by Dewayne on 2026-11-13 (second batch)
 

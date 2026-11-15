@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 09:15 debug_me
+
+Visit by madbot (last 2026-11-15 07:20). `develop` already existed (3aebfa5, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.
+
+- **skipped: review queue full.** #71, #72, #77, #78 open, green, MERGEABLE, no reviews or comments; tender found nothing to do.
+- **Merged:** none (none approved, none low risk).
+- **Audit:** adoption (fourth run, develop 3aebfa5): findings 90-97. Improver: 98-100, S-101 (duplicate of S-36/S-32, held locally).
+- **Issues answered:** none needed (no outside comments on #73-#76, #80, #81; all still reproduce at 3aebfa5).
+- **Issues filed:** [#82](https://github.com/MadBomber/debug_me/issues/82) Rails install docs break a production boot (finding 91), [#83](https://github.com/MadBomber/debug_me/issues/83) literal `**DebugMe**` on docs home (finding 96), [#84](https://github.com/MadBomber/debug_me/issues/84) `{ [] }`/`{ [nil] }` dumps scope (finding 98). Repros re-run by the main session before filing.
+- **Inbox:** findings 90, 92, 94, 95, 97; explicit dump-all option; top-level built-in constants in discovery.
+
 ## 2026-11-15 09:05 gem-skill
 
 Visit by madbot (last 2026-11-15 05:20). `develop` already existed (f23b7fb, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.
