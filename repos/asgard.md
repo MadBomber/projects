@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-15 (fifth visit)._ No approvals since the fourth visit; #37/#39 rebased and green. This visit merged #42 as low risk (develop d87e1e2), opened #40 (Fixes #38, stacked on #39) and #41 (docs), and filed #43.
+_Updated 2026-11-15 (sixth visit)._ Queue full (4 PRs, no approvals); tender rebased #37/#39/#40/#41 onto d87e1e2, all green. Dependencies audit ran; filed #44, #45, #46. No new PRs.
 
 ## Backlog
 
@@ -21,6 +21,11 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-46: `asgard --debug=true build` prints usage and exits 0 without running. Issue [#38](https://github.com/MadBomber/asgard/issues/38). **PR open** ([#40](https://github.com/MadBomber/asgard/pull/40), stacked on #39; also hidden and dashed task names after a leading flag)
 - F-49: `current_task` missing from docs/reference.md's task-body table. **PR open** ([#41](https://github.com/MadBomber/asgard/pull/41))
 - F-50: `asgard TASK --help` runs the task. Issue [#43](https://github.com/MadBomber/asgard/issues/43); Dewayne usually fixes filed issues himself, check first.
+- F-60: README `[!INFO]` callout renders as literal text. Issue [#45](https://github.com/MadBomber/asgard/issues/45); one line.
+- F-56: Ractor experimental warning opens every watcher.log. Issue [#44](https://github.com/MadBomber/asgard/issues/44).
+- F-61: `schedule every:` error suggests `3.minutes` and hides the value. Issue [#46](https://github.com/MadBomber/asgard/issues/46).
+- F-62: `tree` header/footer untested (test-only, low risk).
+- F-53: `dep_results` doc comment names a `target` argument it doesn't take (comment only).
 - F-47: develop lacks main's released 0.6.1 CHANGELOG text (`61a1111`). Needs Dewayne (dewayne.md).
 
 ## Open bomberbot PRs
