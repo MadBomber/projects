@@ -16,7 +16,7 @@ system today. Named for Agent 99 from *Get Smart*.
 
 ## Status
 
-_Updated 2026-11-15 02:10 (eighteenth visit)._ Merged #102 as low risk (develop b0a8bf9, Fixes #99), opened #103 (Fixes #98) and #104 (F-60/F-129), filed #105–#107; #97 and #101 rebased and still await review.
+_Updated 2026-11-15 03:25 (nineteenth visit)._ Skipped new PRs (review queue full: #97, #101, #103, #104 open, green, unreviewed; all rebased onto b0a8bf9); quality audit ran; filed #108–#110.
 
 ## Backlog
 
@@ -33,24 +33,27 @@ else in this repo.
 - [#100](https://github.com/MadBomber/agent99/issues/100) F-134: agent stays registered when `init` exits or raises (lib 2 lines + test; after #88).
 - F-60 + F-129: **PR open** [#104](https://github.com/MadBomber/agent99/pull/104). Follow-up: `MockRegistryServer` `:server` reader and `MockQueue#clear` are unused too.
 - [#105](https://github.com/MadBomber/agent99/issues/105) F-160: Ctrl-C/TERM restarts `examples/registry.rb` (delete 4 lines + a TERM test).
-- F-161 (`discover_agent` `all:`/`how_many:` untested, tests ~15 lines), F-162 (unreferenced `rake test_stats`, removal).
+- [#110](https://github.com/MadBomber/agent99/issues/110) F-161 (`discover_agent` `all:`/`how_many:` untested, tests ~15 lines), F-162 (unreferenced `rake test_stats`, removal).
 - F-115 + F-118 + F-103: redundant `simple_json_schema_builder` requires (`base.rb:5`, `amqp_message_client.rb:5`; keep `agent99.rb:4`), stale FIXME (`amqp_message_client.rb:90`), `.envrc` header, unused `lib/agent99/.irbrc` (small lib removal).
 - F-1: `AgentDiscovery#add_agent` has zero callers (unblocked; but it is the only writer of `@agents` behind public `Base#agents`, which is a decision).
 - F-13 + F-8: gemspec `require_paths` → `["lib"]`, de-dupe homepage/source URIs (gemspec, never low risk; also clears S-10).
+- [#108](https://github.com/MadBomber/agent99/issues/108) F-171: `send_response` mutates the caller's hash, `FrozenError` on a frozen one (lib 1 line + test).
+- [#109](https://github.com/MadBomber/agent99/issues/109) F-166: `validate_info_keys` message depends on trailing whitespace (lib ~6 lines + test; after #88).
+- F-170 + F-136: CHANGELOG lines for #102 and #54 (ride with the next CHANGELOG-touching docs PR).
 - F-133: lifecycle/control docs don't say shutdown and failed registration exit the process (docs-only, ~6 lines).
 - [#107](https://github.com/MadBomber/agent99/issues/107) F-135: `brew install rabbitmq-server` (the formula is `rabbitmq`) in 6 places; DEMO.md says Ruby 3.0+ (docs/examples ~7 lines).
 - F-136 (no CHANGELOG line for #54's CI), F-137 (`Base#run` dispatcher untested), F-138 (method-redefinition warnings in client tests), F-46/F-47/F-50: small tests/docs cleanups; F-46 waits on #88.
 - [#106](https://github.com/MadBomber/agent99/issues/106) F-6/F-34: README dead links (`README.md:181,231-233,266`), docs-only.
 - S-6 + F-120: docs-config fix in `mkdocs.yml` (neutral title; never low risk).
 - S-13, S-14, S-15, S-20, S-22: security findings, details held locally; small neutral-titled fixes.
-- **Needs Dewayne's decision:** F-26 (docs describe an API that does not exist), F-41, F-45, F-48, F-52, F-56/F-70 (bunny 3 / json 3 majors), F-68, F-73, F-76, F-78 (`rackup` for the example registry), F-79, F-91, F-94, F-102, F-113, F-121, F-123, F-126, F-127, F-163 (`send_error`), F-164, `Base#agents`, gemspec floors for sinatra/rack; S-19, S-21.
+- **Needs Dewayne's decision:** F-26 (docs describe an API that does not exist), F-41, F-45, F-48, F-52, F-56/F-70 (bunny 3 / json 3 majors), F-68, F-73, F-76, F-78 (`rackup` for the example registry), F-79, F-91, F-94, F-102, F-113, F-121, F-123, F-126, F-127, F-163 (`send_error`), F-164, F-165 (`update_config` semantics), `Base#agents`, gemspec floors for sinatra/rack; S-19, S-21.
 
 ## Open bomberbot PRs
 
-- [#97](https://github.com/MadBomber/agent99/pull/97) `bomberbot/relock-web-deps` → develop. Conservative `--minor` re-lock of rack, rack-session, rack-protection, sinatra, json (stays 2.x), uri; lock + 1 CHANGELOG line (end of Fixed). Rebased onto 7d79e63 2026-11-15 (f244e6d), suite 113/0, CI green. Not low risk (Gemfile.lock).
-- [#101](https://github.com/MadBomber/agent99/pull/101) `bomberbot/registry-http-errors` → develop. F-53/F-51/F-40/F-128: logs `Registry returned <code> <reason>[: error]`. Rebased onto 7d79e63 (4d4ae59), suite 117/0, CI green. Review hit its 3-round cap. Not low risk (lib).
-- [#103](https://github.com/MadBomber/agent99/pull/103) `madbot/control-skip-self` → develop. Fixes #98 (F-132): `examples/control.rb` skips itself, single `fini`, drops unused `statuses =`; new child-process test fails on develop, passes on branch; suite 115/0; CI green; review clean in 1 round. +66/−3. Not low risk (deletes code).
-- [#104](https://github.com/MadBomber/agent99/pull/104) `madbot/drop-unused-test-helpers` → develop. F-60 + F-129: seven unused test-mock members removed, grep evidence in body; suite 113/0 before and after; rubocop no new offenses; CI green; review clean in 1 round. +5/−20. Not low risk (deletes code).
+- [#97](https://github.com/MadBomber/agent99/pull/97) `bomberbot/relock-web-deps` → develop. Conservative `--minor` re-lock of rack, rack-session, rack-protection, sinatra, json (stays 2.x), uri; lock + 1 CHANGELOG line (end of Fixed). Rebased onto b0a8bf9 2026-11-15 03:15 (31fe027), suite 113/0, CI green. Not low risk (Gemfile.lock).
+- [#101](https://github.com/MadBomber/agent99/pull/101) `bomberbot/registry-http-errors` → develop. F-53/F-51/F-40/F-128: logs `Registry returned <code> <reason>[: error]`. Rebased onto b0a8bf9 (fb9a1e1), suite 117/0, CI green. Review hit its 3-round cap. Not low risk (lib).
+- [#103](https://github.com/MadBomber/agent99/pull/103) `madbot/control-skip-self` → develop. Fixes #98 (F-132): `examples/control.rb` skips itself, single `fini`, drops unused `statuses =`; new child-process test fails on develop, passes on branch; suite 115/0; CI green; review clean in 1 round. +66/−3. Rebased onto b0a8bf9 (8a23dd0), suite 115/0, CI green. Not low risk (deletes code).
+- [#104](https://github.com/MadBomber/agent99/pull/104) `madbot/drop-unused-test-helpers` → develop. F-60 + F-129: seven unused test-mock members removed, grep evidence in body; suite 113/0 before and after; rubocop no new offenses; CI green; review clean in 1 round. +5/−20. Rebased onto b0a8bf9 (aece53b), suite 113/0, CI green. Not low risk (deletes code).
 - CHANGELOG: #97, #103 and #104 each append at the end of `[Unreleased]` → Fixed, so after one merges the others need a one-line rebase. #101 inserts after the #55 line; #88 at the top.
 
 ## Merged bomberbot PRs
