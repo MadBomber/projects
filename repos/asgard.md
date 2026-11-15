@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-15 (sixth visit)._ Queue full (4 PRs, no approvals); tender rebased #37/#39/#40/#41 onto d87e1e2, all green. Dependencies audit ran; filed #44, #45, #46. No new PRs.
+_Updated 2026-11-15 (seventh visit)._ Queue still full (4 PRs, no reviews, develop unmoved at d87e1e2); quality audit ran (F-64..F-67), improver F-70..F-73; filed #47, #48, #49. No new PRs.
 
 ## Backlog
 
@@ -27,6 +27,12 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-62: `tree` header/footer untested (test-only, low risk).
 - F-53: `dep_results` doc comment names a `target` argument it doesn't take (comment only).
 - F-47: develop lacks main's released 0.6.1 CHANGELOG text (`61a1111`). Needs Dewayne (dewayne.md).
+- F-71: suite fails with `RUBYOPT=-w` or `ASGARD_TRACE` set. Issue [#48](https://github.com/MadBomber/asgard/issues/48); test-only, one line in `test/test_helper.rb`.
+- F-70: `--doctor` says "no desc" for a `hide: true` task. Issue [#47](https://github.com/MadBomber/asgard/issues/47).
+- F-65: three assertion-free tests (test-only, low risk).
+- F-72: stale `Rakefile` excludes in `.rubocop.yml` and a stale Gemfile comment (config-only removal).
+- F-64: duplicated `log_to_truncate?`. Issue [#49](https://github.com/MadBomber/asgard/issues/49).
+- F-73: `asgard jobs --all` aborts outside a project; same line as #37, stack on it.
 
 ## Open bomberbot PRs
 
