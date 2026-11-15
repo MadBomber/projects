@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 08:15 simple_flow
+
+Fourteenth visit by bomberbot (last: 2026-11-15 07:06, madbot). `develop` already existed (2a5f282, unchanged); not created. Run directory was fresh. All five phase-1 agents ran.
+
+- **New PRs:** none. Skipped: review queue full. #53, #54 and #55 are still open: green, `MERGEABLE`, no reviews or comments; a trial merge of all three onto develop is clean.
+- **Merged (low risk):** none. **Merged after approval:** none.
+- **Tended:** #53-#55, nothing needed.
+- **Audit:** dependencies (third run, develop 2a5f282): no new findings; gemspec minimums (logger 1.5.0, tsort 0.1.0) verified on 4.0.9 and 4.1.0-preview1.
+- **Improver:** F-174, F-175 (new). **Triage:** nothing new; CI green on develop and main.
+- **Issues answered:** none. No new issues or comments since 07:06.
+- **Issues filed:** [#68](https://github.com/MadBomber/simple_flow/issues/68) (F-174), [#69](https://github.com/MadBomber/simple_flow/issues/69) (F-175). The main session reproduced both on develop 2a5f282 before filing.
+- **Process note:** one phase-1 agent cleaned `scratch/` while others were using it, deleting their extracts. Next visit, give each role its own `scratch/<role>/` and say so in the brief.
+
 ## 2026-11-15 08:05 asgard
 
 Eighth visit (last 2026-11-15 07:33), by madbot. `develop` already existed (d87e1e2, unmoved); not created. Run directory was fresh; `src/` detached at origin/develop before phase 1. All five phase-1 agents ran.

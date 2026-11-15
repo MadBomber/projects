@@ -11,7 +11,7 @@ Workflow/pipeline orchestration gem: immutable `Result`, steps and middleware, p
 
 ## Status
 
-_Updated 2026-11-15 07:06 (thirteenth visit): #53-#55 still await review (green, no comments), so no new PRs; adoption audit found F-165..F-170; filed #65-#67._ Suite green on Ruby 4.0.9 and 4.1.0-preview1 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
+_Updated 2026-11-15 08:15 (fourteenth visit): #53-#55 still await review, so no new PRs; dependencies audit found nothing new; filed #68, #69._ Suite green on Ruby 4.0.9 and 4.1.0-preview1 (249 runs on develop 2a5f282). develop still has unreleased user-visible fixes (main is 44 commits behind). Dewayne **squash-merges** here. Docs deploy on `docs/**`, `mkdocs.yml` and the workflow on pushes to develop as well as main (README and CHANGELOG don't deploy), so docs PRs are not self-merged. Use `PATH=~/.rbenv/versions/4.0.9/bin:$PATH`; `RBENV_VERSION` alone still picks up 4.1-preview's bundler.
 
 ## Backlog
 
@@ -51,6 +51,9 @@ Well-defined items a single small PR could close.
 - [#66](https://github.com/MadBomber/simple_flow/issues/66) documented middleware order, array `activate`, activation across `parallel`, and two halt checks have no tests (F-171 + F-161). Test-only, low risk.
 - [#67](https://github.com/MadBomber/simple_flow/issues/67) Pipeline-as-a-step works but is undocumented and untested (F-172). README section + test.
 - F-168 + F-126: `testing.md:25` "skips are expected" and `contributing.md:35` pinned counts (docs deploy). F-169 `contributing.md:101` nonexistent test name (rest needs a decision).
+- [#68](https://github.com/MadBomber/simple_flow/issues/68) `call_parallel` ignores steps activated on the input Result (F-174). ~5 lib lines at the top of `execute_with_dependency_graph`; same lines as #59, so one PR closes both (after #54 merges).
+- [#69](https://github.com/MadBomber/simple_flow/issues/69) `step` silently drops a second callable or a block (F-175). ~4 lib lines + tests; pairs with #58.
+- F-152 + F-101: visualizer dead code (`next if group.empty?`, redundant `html =`), 3 lines; a removal to balance recent fix PRs.
 
 ## Open bomberbot PRs
 
