@@ -1514,3 +1514,10 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **"Thread-Safe" in README Features** is untrue above PIPE_BUF for concurrent publishers (F-96). If the framing fix is not near, a one-line docs note is a stopgap; your call alongside F-96.
 - **F-86 also breaks `examples/basic_pubsub.rb`:** Ctrl+C exits 0 silently, so its `rescue Interrupt` branch never runs. Whatever you decide for F-86 should update that example too.
 
+
+## scripts (2026-11-15 seventeenth visit, BomberBot)
+
+- **Mark vendored scripts.** `slugify` (benlinton), `sgi` (Duane Johnson, 2008), `git-wtf` and the postgres pair came from elsewhere. A "Source" column in the README would show when re-syncing with upstream beats patching (#98 is a vendored bug).
+- **One `gem_list_diff.rb v1 v2`** using `rbenv exec` could replace both `compare_gems_from_diff_{rvm,rbenv}_versions.sh` (F-149, F-177) and read the committed `.srt` snapshots.
+- **Shell header convention.** F-130, F-131, F-145, F-150, F-176, F-177 are all "shell script carries on and exits 0 after a failure". Decide once (e.g. `set -euo pipefail`) and BomberBot can apply it file by file.
+- **Decisions waiting:** F-155 (`any2md.py`: revive with `pypdf` + PEP 723/uv header, or retire), F-157 (`phpinfo`/`merge2`/`get_video_frames.sh`: add php/kdiff3/vlc to Brewfile, or retire), F-180 (postgres start/stop scripts: delete or `retirement_home/`), F-182 (`pdf2png.sh` stub vs README row), F-153 (`rss_tracker.rb` add `base64` or retire with F-129(b)).

@@ -10,13 +10,14 @@ Everyday scripts kept in sync across machines. Not a gem: its suite is whatever 
 
 ## Status
 
-_Updated 2026-11-15 (sixteenth run)._ Dewayne merged #69-#71 and fixed every filed issue (#72-#80) himself in #83-#91; the queue was empty, so this visit opened #95 (sync_repo), #96 (cr2lf) and #97 (remadd), ran the full dead-code audit (F-133..F-142), and filed #92-#94. Next PR candidates: F-150 (`lflf2lf`, same fix as #96), F-151 (`remadd -a` with ordinals), F-134/F-136 (pure deletions). main and develop still diverged both ways (`ruler` on main).
+_Updated 2026-11-15 (seventeenth run)._ Review queue full (#95-#97 unreviewed), so no new PRs; dependencies audit (F-153..F-158) and an improver pass (F-175..F-182) ran, and #98 (slugify overwrites files), #99 (lflf2lf, F-150) and #100 (remadd -a, F-151) were filed. Next PR candidates once the queue clears: F-154 (`templates/cli.py` python3 shebang), F-176 (`breakout_git_revisions` via git archive), F-134/F-136 (pure deletions). main and develop still diverged both ways (`ruler` on main).
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- F-150: `lflf2lf` has the same unguarded sed/mv as the old `cr2lf`; same fix shape as #96. (added 2026-11-15)
+- F-150: `lflf2lf` has the same unguarded sed/mv as the old `cr2lf`, and never collapses blank lines; same fix shape as #96. Now issue [#99](https://github.com/MadBomber/scripts/issues/99). (added 2026-11-15)
+- F-154: `templates/cli.py` uses `#!/usr/bin/env python`, missing on macOS; change to `python3`. (added 2026-11-15)
 
 ## Open bomberbot PRs
 

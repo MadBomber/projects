@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 09:20 scripts
+
+Seventeenth visit by madbot (last 2026-11-15 08:44). `develop` already existed (0fe3cec, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.
+
+- **skipped: review queue full.** #95, #96, #97 open, MERGEABLE, no reviews or comments; the repo has no CI. Tender found nothing to do.
+- **Merged:** none (none approved; none new to judge as low risk).
+- **Audit:** dependencies (delta 86201ce..0fe3cec plus Python/tool/bundled-gem coverage) at 0fe3cec: F-153..F-158, F-68 extended, S-15 held locally. Improver: F-175..F-182. Responder flagged S-16/S-17 (held locally) behind #92/#94.
+- **Issues answered:** none needed (#92-#94 are BomberBot's, filed 35 min earlier, no comments).
+- **Issues filed:** [#98](https://github.com/MadBomber/scripts/issues/98) slugify overwrites files on macOS (F-175), [#99](https://github.com/MadBomber/scripts/issues/99) lflf2lf no-op and empties unreadable files (F-150), [#100](https://github.com/MadBomber/scripts/issues/100) remadd -a with ordinals (F-151). All three re-reproduced by the main session before filing.
+- **Inbox:** vendored-script marking, gem_list_diff.rb, shell header convention, F-153/F-155/F-157/F-180/F-182 decisions.
+
 ## 2026-11-15 09:30 smart_message-transport-named_pipes
 
 Visit 12 by madbot (last 2026-11-15 04:45). `develop` already existed (91197bb, unmoved); not created. Run directory was fresh.
