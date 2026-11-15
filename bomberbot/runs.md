@@ -14,6 +14,18 @@ Visit by bomberbot (last: 2026-11-15 03:05, madbot). `develop` already existed (
 - **Issues filed:** [#87](https://github.com/MadBomber/htm/issues/87) (F-160), [#88](https://github.com/MadBomber/htm/issues/88) (F-154), [#89](https://github.com/MadBomber/htm/issues/89) (F-161).
 - Triage: ruby_llm 2.2.2 released 03:54Z (gemspec unpinned); next security pass should re-check S-1 against it.
 
+## 2026-11-15 04:26 kbs
+
+Second kbs visit today, by madbot (last: 2026-11-15 03:33). `develop` existed (70c52ca, unmoved); not created. All five phase-1 agents ran.
+
+- New PR [#57](https://github.com/MadBomber/kbs/pull/57), fix(blackboard): clear_session with a passed-in store (source: brain + issue, Fixes #51, F-82). Memory takes the store's session id; SqliteStore/HybridStore default to a UUID. Three fail-first tests (SQLite always; Redis/Hybrid opt-in); suite 306 to 309, 0F, also 309/0 skips against a throwaway Redis; CI green 3.2-4.0; review 1 round, clean. Not low risk (lib). **PR open**.
+- New PR [#56](https://github.com/MadBomber/kbs/pull/56), fix(decompiler): keep the condition of a ternary (source: brain + issue, Fixes #52, F-61). New `ternary`/`branch_source` helpers replace `extract_value` (deleted, grep shown); unrenderable shapes now print a placeholder instead of wrong code. Fail-first tests; suite 306 to 310, 0F; CI green 3.2-4.0 after a 3.x `nop` fix; review 4 rounds (3 real fixes, final clean). Not low risk (lib). **PR open**.
+- New PR [#61](https://github.com/MadBomber/kbs/pull/61), fix(decompiler): render Ruby 4.1 dupchilledstring (source: brain + issue, Fixes #50, F-60). **Stacks on #56.** One symbol; the test swaps `dupchilledstring` into real bytecode so it fails on every CI Ruby, plus a 4.1.0-preview1 before/after transcript; suite 310 to 311, 0F; CI green; review 1 round, clean. Not low risk (lib, stacked). **PR open**.
+- Merged (low risk): none (all three change lib/). Merged after approval: none.
+- Tended: #53 and #55 rebased onto 70c52ca and force-pushed; green and MERGEABLE, no reviews. Five bot PRs now open (#53, #55, #56, #57, #61).
+- Audit: security (second run, develop 70c52ca). bundle-audit clean; F-84 to F-86 and one new placeholder S-5 (details held locally); S-1 to S-4 re-checked locally. Improver F-90 to F-93; builder F-94/F-95. Dead-code scan reached 70c52ca.
+- Issues answered: none needed (#50-#52 ours with no outside comments; #30 already answered). Issues filed: [#58](https://github.com/MadBomber/kbs/issues/58) (F-90 `print_rules` Procs), [#59](https://github.com/MadBomber/kbs/issues/59) (F-92 docs `?var` prefix, with F-91), [#60](https://github.com/MadBomber/kbs/issues/60) (F-85 queue `consume` race).
+
 ## 2026-11-15 04:10 smart_message-transport-named_pipes
 
 Visit 10b, by madbot (last: 2026-11-15 03:26). `develop` existed (91197bb, unmoved); not created. All five phase-1 agents ran.

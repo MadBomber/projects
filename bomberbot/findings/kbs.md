@@ -110,7 +110,7 @@ Dead-code scan last covered commit: 70c52ca (2026-11-15, security audit; 70c52ca
 
 ### 2026-11-15 (dependencies audit, develop at dee59c1; improver F-80 to F-83)
 
-- **F-60: On Ruby 4.1, `Decompiler` renders every string literal as `/* dupchilledstring */`** (4.1 emits `dupchilledstring`; `decompiler.rb:126` and `extract_value` at `:258` only know `putchilledstring`/`putstring`). Reproduced on 4.1.0-preview1 vs 4.0.9; shows in `Rule#to_s`. Status: issue [#50](https://github.com/MadBomber/kbs/issues/50).
+- **F-60: On Ruby 4.1, `Decompiler` renders every string literal as `/* dupchilledstring */`** (4.1 emits `dupchilledstring`; `decompiler.rb:126` and `extract_value` at `:258` only know `putchilledstring`/`putstring`). Reproduced on 4.1.0-preview1 vs 4.0.9; shows in `Rule#to_s`. Status: PR'd ([#61](https://github.com/MadBomber/kbs/pull/61), stacks on #56, fixes issue #50).
 - **F-61: `Decompiler` renders `->(v) { v ? 1 : 2 }` as `->(v) { 2 }`** on every Ruby: `extract_value` only counts `putobject`/`putstring`, so specialised literals drop silently. Status: PR'd ([#56](https://github.com/MadBomber/kbs/pull/56), fixes issue #52).
 - **F-62: `benchmarks/regex_baseline.rb` fails under `bundle exec` on Ruby >= 4.0** (`benchmark` is a bundled gem). Fix: `gem "benchmark"` in the Gemfile, like the csv line. Status: open (one-line PR candidate; Gemfile, so not low risk).
 - **F-63: Major dev-dependency bumps (minitest 6, redis 6) pass** once `minitest-mock` is added (`test/test_redis_test_support.rb:6`); simplecov 1.x needs Ruby >= 3.3 (blocked on F-12). Status: open (gemspec PR candidate).
@@ -134,5 +134,7 @@ Dead-code scan last covered commit: 70c52ca (2026-11-15, security audit; 70c52ca
 - **F-91: `Fact#to_s` docs predate #3's DSL format:** `docs/api/facts.md:244,250,253` and `docs/guides/dsl.md:261-262,1045-1046` show `temperature(value: 85)`; actual is `fact :temperature, value: 85`. Status: open (docs PR candidate, docs-deploy; noted in issue [#59](https://github.com/MadBomber/kbs/issues/59)).
 - **F-92: docs say variables start with `?`; `fact.rb:28` checks a trailing `?`.** `docs/api/facts.md:167,824`, `docs/advanced/debugging.md:648-649` (a helper that silently finds nothing), `docs/architecture/rete-algorithm.md:455` (#55 touches that file). Status: issue [#59](https://github.com/MadBomber/kbs/issues/59).
 - **F-93: `KBS::Error` (`lib/kbs.rb:21`) is defined but never raised or rescued.** Public API. Status: needs Dewayne's decision (use it as the base for real errors, e.g. F-83, or deprecate it).
+- **F-94: `Decompiler` raises `NoMethodError` in `decompile_child` for a block inside a block** (`xs.map { |x| x.foo { 1 } }`); `@children` holds only top-level blocks. Seen by the #56 builder, also on develop. Status: open (small PR candidate; `Rule#to_s` rescues since #43, so check which callers still crash).
+- **F-95: `a && b ? 1 : 2` renders `a ? /* branchunless */ : 2`** after #56 (placeholder, no longer wrong output). Rendering `&&`/`||` in a ternary condition, and a ternary that isn't the block's last expression, is a bigger decompiler job. Status: open (inbox idea).
 - Re-checked at 70c52ca: F-60/#50, F-61/#52, F-82/#51 reproduce (responder; #52 is broader than filed: any non-literal branch, and `v ? v.foo(:a) : :b` renders `v ? :a : :b`); F-62, F-64, F-66, F-80, F-81 still open (triage).
 

@@ -142,6 +142,7 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] `bomber/knowledge-base-engine` still holds your post-merge commit `c53e503` (trims the #10 CHANGELOG line); it never reached `develop`. Keep it or delete the branch. `bomber/leading-negation` (no PR) is superseded by Copilot #23; delete it when you like. (added 2026-11-12)
 - [ ] Review and merge into `develop` [#53](https://github.com/MadBomber/kbs/pull/53) (dead-code removal, 14 lines from lib/, no API change) and [#55](https://github.com/MadBomber/kbs/pull/55) (priority docs for both engines, `rete_engine.rb` refs, `mkdocs.yml` nav label; review hit the cap with no defects). Independent, any order. Not self-merged: lib/ and docs-deploy files. (added 2026-11-15)
+- [ ] Review and merge into `develop` [#57](https://github.com/MadBomber/kbs/pull/57) (`clear_session` with a passed-in store, Fixes #51) and [#56](https://github.com/MadBomber/kbs/pull/56) (ternary decompile, Fixes #52), then [#61](https://github.com/MadBomber/kbs/pull/61) (Ruby 4.1 string literals, Fixes #50), which stacks on #56: merge #56 first and let GitHub retarget #61 to `develop`, or merge #61 into #56's branch before #56. All lib/, so not self-merged. `Fixes` doesn't fire on `develop`, so close #50-#52 by hand once merged. (added 2026-11-15 04:25)
 
 
 ## prompt_manager (2026-11-14)
