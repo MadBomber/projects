@@ -10,7 +10,7 @@ Knowledge-based system gem, idle since early 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-13._ Dewayne merged #28, #32 and #33 on 2026-11-12, so `main` and `develop` are back in sync. This visit closed out the three open issues: [#38](https://github.com/MadBomber/kbs/pull/38) (README AI example on LM Studio, #30) merged as low risk; [#37](https://github.com/MadBomber/kbs/pull/37) (`rule priority:`, #29) and [#39](https://github.com/MadBomber/kbs/pull/39) (gem file allowlist, #31) are **PR open**. The first quality audit filed #34 (late rule makes earlier rules fire twice), #35 (priority ignored when firing) and #36 (decompiler `&&`/`||`).
+_Updated 2026-11-15._ Dewayne squash-merged #37, #39 and #43 and fixed #34-#36 and #40-#42 himself (#44-#49) on 2026-11-13. This visit merged [#54](https://github.com/MadBomber/kbs/pull/54) (CHANGELOG catch-up) as low risk and opened [#53](https://github.com/MadBomber/kbs/pull/53) (dead-code removal) and [#55](https://github.com/MadBomber/kbs/pull/55) (priority docs); the dependencies audit filed #50 (Ruby 4.1 decompiler strings), #51 (`clear_session` with a passed-in store) and #52 (ternary decompile).
 
 ## Backlog
 
@@ -23,20 +23,29 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Correct the README Testing and Documentation sections (issue #12, F-17). [#18](https://github.com/MadBomber/kbs/pull/18) (merged 2026-11-08)
 - Bring Copilot's `main`-only fixes (#19-#27) to `develop` so the release merge is clean. [#28](https://github.com/MadBomber/kbs/pull/28) (merged 2026-11-12)
 
-- Rule `priority:` keyword (issue #29). [#37](https://github.com/MadBomber/kbs/pull/37) (**PR open**)
-- Ship only lib/ and top-level docs in the gem (issue #31). [#39](https://github.com/MadBomber/kbs/pull/39) (**PR open**)
-- A rule added after facts exist makes earlier rules fire twice (F-41, issue [#34](https://github.com/MadBomber/kbs/issues/34)).
-- Fire rules in priority order (F-42, issue [#35](https://github.com/MadBomber/kbs/issues/35)); also fix `docs/api/rules.md:154-155` and `docs/advanced/testing.md:378-399`.
-- Decompiler `&&`/`||` (F-38, issue [#36](https://github.com/MadBomber/kbs/issues/36)); the improver has a prototype approach in the issue.
-- `Rule#to_s` raises on an undecompilable condition such as `:even?.to_proc` (F-39, first half): rescue it like the action path.
+- Rule `priority:` keyword (issue #29). [#37](https://github.com/MadBomber/kbs/pull/37) (merged 2026-11-13)
+- Ship only lib/ and top-level docs in the gem (issue #31). [#39](https://github.com/MadBomber/kbs/pull/39) (merged 2026-11-13; CHANGELOG line [#54](https://github.com/MadBomber/kbs/pull/54), merged as low risk 2026-11-15)
+- A rule added after facts exist makes earlier rules fire twice (F-41, issue [#34](https://github.com/MadBomber/kbs/issues/34)). Fixed by Dewayne in #44 (2026-11-13).
+- Fire rules in priority order (F-42, issue [#35](https://github.com/MadBomber/kbs/issues/35)); also fix `docs/api/rules.md:154-155` and `docs/advanced/testing.md:378-399`. Code fixed by Dewayne in #45 (2026-11-13); remaining docs [#55](https://github.com/MadBomber/kbs/pull/55) (**PR open**).
+- Decompiler `&&`/`||` (F-38, issue [#36](https://github.com/MadBomber/kbs/issues/36)); the improver has a prototype approach in the issue. Fixed by Dewayne in #46 (2026-11-13).
+- `Rule#to_s` raises on an undecompilable condition such as `:even?.to_proc` (F-39, first half): rescue it like the action path. [#43](https://github.com/MadBomber/kbs/pull/43) (merged 2026-11-13)
+- Drop dead code: `Blackboard::Engine#update` duplicate, `BetaMemory` dead `unlink!`, `@current_condition_group` (F-45, F-52, F-48 first half). [#53](https://github.com/MadBomber/kbs/pull/53) (**PR open**)
+- Ruby 4.1 decompiler renders string literals as placeholders (F-60, issue [#50](https://github.com/MadBomber/kbs/issues/50)).
+- `clear_session` clears nothing with a passed-in store (F-82, issue [#51](https://github.com/MadBomber/kbs/issues/51)).
+- Ternary decompile drops the condition (F-61, issue [#52](https://github.com/MadBomber/kbs/issues/52)).
+- Small PR candidates: `gem "benchmark"` for Ruby 4 (F-62), CSV examples from repo root (F-80), `query_facts` docs pass strings (F-81), `prioritized_production_nodes` private (F-66), `test.yml` action bumps (F-64).
 
 ## Open bomberbot PRs
 
-- [#37](https://github.com/MadBomber/kbs/pull/37) fix(dsl): accept priority: keyword in rule and defrule (**PR open**, Fixes #29)
-- [#39](https://github.com/MadBomber/kbs/pull/39) fix(gemspec): package only lib/ and top-level docs (**PR open**, Fixes #31)
+- [#53](https://github.com/MadBomber/kbs/pull/53) refactor: drop dead code in Blackboard::Engine, BetaMemory, RuleBuilder (**PR open**, F-45/F-52/F-48)
+- [#55](https://github.com/MadBomber/kbs/pull/55) docs: describe priority-ordered firing for both engines (**PR open**, Refs #35)
 
 ## Merged bomberbot PRs
 
+- [#54](https://github.com/MadBomber/kbs/pull/54) docs(changelog): note the gem-contents and decompiler fixes (merged as low risk 2026-11-15, develop 70c52ca)
+- [#43](https://github.com/MadBomber/kbs/pull/43) fix(rule): fall back when a condition proc cannot be decompiled (merged 2026-11-13)
+- [#39](https://github.com/MadBomber/kbs/pull/39) fix(gemspec): package only lib/ and top-level docs (merged 2026-11-13)
+- [#37](https://github.com/MadBomber/kbs/pull/37) fix(dsl): accept priority: keyword in rule and defrule (merged 2026-11-13)
 - [#38](https://github.com/MadBomber/kbs/pull/38) docs(readme): run the AI-Enhanced Reasoning example against LM Studio (merged as low risk 2026-11-13, develop b52b35e)
 - [#33](https://github.com/MadBomber/kbs/pull/33) fix(decompiler): render values captured by condition helpers (merged 2026-11-12)
 - [#32](https://github.com/MadBomber/kbs/pull/32) fix(examples): add csv to Gemfile for Ruby 3.4+ (merged 2026-11-12)

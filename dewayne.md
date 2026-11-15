@@ -137,11 +137,10 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 - [ ] Review and merge into `develop` [dev#48](https://github.com/MadBomber/dev/pull/48) (status_report says the target date, not "today"; F-51), [dev#52](https://github.com/MadBomber/dev/pull/52) (GateGuard rescues only real `*_check` gates, so a mistyped or failing task no longer leaves `<name>_output.txt`) and [dev#53](https://github.com/MadBomber/dev/pull/53) (gem_tasks.loki imports quality.loki itself; F-30). Independent, any order. Not self-merged: each changes a `.loki`. The repo now allows merge commits only. (added 2026-11-15)
 
-## kbs (2026-11-13)
+## kbs (2026-11-15)
 
 - [ ] `bomber/knowledge-base-engine` still holds your post-merge commit `c53e503` (trims the #10 CHANGELOG line); it never reached `develop`. Keep it or delete the branch. `bomber/leading-negation` (no PR) is superseded by Copilot #23; delete it when you like. (added 2026-11-12)
-- [ ] Review and merge [#37](https://github.com/MadBomber/kbs/pull/37) (`rule "x", priority: N` keyword, Fixes #29). Touches `lib/`, so not self-merged. (added 2026-11-13)
-- [ ] Review and merge [#39](https://github.com/MadBomber/kbs/pull/39) (gem ships only lib/ + README/CHANGELOG/LICENSE, 314 KB to 31 KB, Fixes #31). Changes the published package, so not self-merged. At release, add a CHANGELOG line for it (left out to avoid a conflict with #37). (added 2026-11-13)
+- [ ] Review and merge into `develop` [#53](https://github.com/MadBomber/kbs/pull/53) (dead-code removal, 14 lines from lib/, no API change) and [#55](https://github.com/MadBomber/kbs/pull/55) (priority docs for both engines, `rete_engine.rb` refs, `mkdocs.yml` nav label; review hit the cap with no defects). Independent, any order. Not self-merged: lib/ and docs-deploy files. (added 2026-11-15)
 
 
 ## prompt_manager (2026-11-14)

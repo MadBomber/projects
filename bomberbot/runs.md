@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 03:33 kbs
+
+- Merged before this visit: Dewayne squash-merged #37, #39 and #43 unchanged, and fixed #34-#36 and #40-#42 himself in #44-#49 (2026-11-13). No bot PRs were open; develop CI green at dee59c1.
+- New PR [#54](https://github.com/MadBomber/kbs/pull/54), docs(changelog): note the gem-contents and decompiler fixes (source: adoption/CHANGELOG catch-up, F-67). **Merged (low risk)** as develop 70c52ca: CHANGELOG Unreleased only, 3+/1-, CI green 3.2-4.0, review 3 rounds ending clean.
+- New PR [#53](https://github.com/MadBomber/kbs/pull/53), refactor: drop dead code in Blackboard::Engine, BetaMemory, RuleBuilder (source: dead code, F-45/F-52/F-48). 14 lines deleted; every reference searched incl. dynamic and sqa; suite 306/0F/24 skips before and after; CI green; review 1 round, clean. Not low risk (lib). **PR open**.
+- New PR [#55](https://github.com/MadBomber/kbs/pull/55), docs: describe priority-ordered firing for both engines (source: brain, F-42 docs follow-up to #45, Refs #35). 7 files incl. `mkdocs.yml` nav label and a broken `Rule.new(name:)` example; grep 13 hits to 0; `mkdocs build --strict` clean; CI green; review hit the 3-round cap, round 3 no defects (overrun spelled out). Not low risk (docs deploy). **PR open**.
+- Audit: dependencies (second run, develop dee59c1): no vulnerabilities; only major bumps available; Ruby 4.1 decompiler regression found. Findings F-60 to F-67; improver F-80 to F-83. Dead-code delta reached dee59c1.
+- Issues answered: #30 (fixed on develop by #38, unreleased). Issues filed: [#50](https://github.com/MadBomber/kbs/issues/50) (F-60), [#51](https://github.com/MadBomber/kbs/issues/51) (F-82), [#52](https://github.com/MadBomber/kbs/issues/52) (F-61).
+- Tended: nothing open. One security note held locally.
+
 ## 2026-11-15 03:31 agent99
 
 Twentieth visit (last 2026-11-15 03:25), by bomberbot. `develop` already existed (b0a8bf9, unchanged); not created. Run directory was fresh.
