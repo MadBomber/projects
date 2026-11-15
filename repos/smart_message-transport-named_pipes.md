@@ -13,7 +13,9 @@ files: the transport, a committed test stub `transport/base.rb`, and a `version.
 
 ## Status
 
-_Updated 2026-11-15 04:45 (visit 11): **skipped new work: review queue full** (#57/#55/#58 still unreviewed; `develop` unmoved at 91197bb). Dependencies audit found F-101 (upstream) and F-102 (note); F-51 has grown. Filed [#65](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/65) and [#66](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/66)._
+_Updated 2026-11-15 09:30 (visit 12): **skipped new work: review queue full** (#57/#55/#58 still unreviewed, tender commented on #55/#58 that their red CI is #57's test; `develop` unmoved at 91197bb). Adoption audit found F-105 and S-11 (local) and verified F-14's subscribe half; filed [#67](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/67) (F-105) and [#68](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/68) (F-106, CI)._
+
+**Visit 11 (2026-11-15 04:45):** **skipped new work: review queue full** (#57/#55/#58 still unreviewed; `develop` unmoved at 91197bb). Dependencies audit found F-101 (upstream) and F-102 (note); F-51 has grown. Filed [#65](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/65) and [#66](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/66)._
 
 **Visit 10b (2026-11-15 04:10):** skipped (queue full); quality audit F-96…F-100, S-10 (local); filed #62, #63, #64.
 
@@ -117,6 +119,8 @@ Well-defined items a single small PR could close.
 - **F-104 / [#66](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/66):** README:163 "Non-blocking I/O" claim. One-line README fix, low-risk eligible; good next docs PR once #58 merges (same file).
 - **S-10 (local):** neutral "cap reader line length at buffer_size" lib PR after #37 lands.
 - **S-9 (local):** neutral "verify the opened pipe path is a FIFO" lib PR after #37 lands.
+- **F-105 / [#67](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/67):** README timeout docs don't name `PublishError` (framework, DLQ) vs `NamedPipes::Error` (direct). README-only, low-risk eligible; ship with #66 after #58 merges.
+- **F-106 / [#68](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/68):** CI double-runs per PR, checkout@v4 on deprecated Node 20. Workflow → Dewayne (dewayne.md).
 - Next-PR ranking: now (no #37 overlap): F-99/#63, F-93/#60, #59+#64 removal. After #37 lands: F-98/#62, F-87/#56, F-21/F-38 ENXIO removal, F-32 CHANGELOG gaps (#10/#39/#48), F-88, F-89+F-90.
 
 ## Open bomberbot PRs

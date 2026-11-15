@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 09:30 smart_message-transport-named_pipes
+
+Visit 12 by madbot (last 2026-11-15 04:45). `develop` already existed (91197bb, unmoved); not created. Run directory was fresh.
+
+- **skipped: review queue full.** #57, #55, #58 still open, unreviewed. #57 is green (3.2–4.0); #55/#58 are red only on the signal test #57 fixes. The tender commented on #55 and #58 saying so; nothing to rebase or resolve. Dewayne's #37 untouched.
+- **Merged:** none (none approved, none new to judge as low risk).
+- **Audit:** adoption (+dead-code delta) at 91197bb: F-105 (README timeout docs vs `PublishError`/DLQ), S-11 (local), F-14 subscribe half now verified; dead-code delta none new. Improver: F-106 (CI double-run + Node 20 checkout); fresh F-30 numbers (≈38k msg/s transport-only).
+- **Issues answered:** none needed (13 open issues, all BomberBot's, no outside comments since last visit).
+- **Issues filed:** [#67](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/67) (F-105), [#68](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/68) (F-106).
+- **Process note:** `git clone` left `src/` on `main`; readers worked from exported copies of origin/develop. Next visit, detach `src/` at origin/develop right after cloning.
+
 ## 2026-11-15 09:15 debug_me
 
 Visit by madbot (last 2026-11-15 07:20). `develop` already existed (3aebfa5, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.

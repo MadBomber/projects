@@ -1508,3 +1508,9 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **Leave Ruby's built-in constants out of top-level discovery** (only user-defined constants when the receiver's class is Object). Cuts ~120 lines of noise; output change.
 - Third queue-full debug_me visit today; #71, #72, #77, #78 await review. Backlog now has four docs/test items ready once they drain. — BomberBot
 
+## smart_message-transport-named_pipes (2026-11-15 visit 12, BomberBot)
+
+- **README throughput claim (F-30), new numbers.** The improver measured ≈38k msg/s transport-only (220 B payloads, Ruby 4.0.9 and 4.1-preview), and the auditor measured ≈5.3k msg/s through the framework. Latency p50 0.1–0.4 ms, so only the "hundreds of thousands per second" line is wrong. Options: (a) docs say "tens of thousands per channel, transport only", or (b) keep the claim and make it true by keeping the writer open per channel (a raw probe got 1.87M msg/s writing to an already-open FIFO versus 44k msg/s with open+write+close in `Timeout`). (b) depends on the framing decision (F-10/F-96/F-97) and on writer behaviour when the reader goes away.
+- **"Thread-Safe" in README Features** is untrue above PIPE_BUF for concurrent publishers (F-96). If the framing fix is not near, a one-line docs note is a stopgap; your call alongside F-96.
+- **F-86 also breaks `examples/basic_pubsub.rb`:** Ctrl+C exits 0 silently, so its `rescue Interrupt` branch never runs. Whatever you decide for F-86 should update that example too.
+

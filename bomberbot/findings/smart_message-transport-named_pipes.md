@@ -11,7 +11,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 | security (+dead-code) | 2026-11-15 | 91197bb | bundle-audit clean (scratch lock, smart_message 0.0.17); S-9 new (local); S-7 resolved; S-1–S-4, S-6, S-8 still hold (S-3 narrowed); F-35 resolved; no new F-findings from the audit; improver F-92 → #59, F-93 → #60, F-94 → #61; dead-code delta 6725e5c..91197bb: none new (F-2/F-3 hold) |
 | quality | 2026-11-15 | 91197bb | RuboCop 124→131 in 10 files (88 autocorrectable); 52 runs, 1 failure (F-84 → PR #57), 0 skips; -w clean on 4.0.9 and 4.1p1; flog 359.4 (start_pipe_reader 99.5); coverage 136/155 lines, 29/34 branches; F-96/F-97 need Dewayne (framing); F-98 → #62, F-99 → #63, F-100 → #64; S-10 (local); F-41/F-44/F-45 resolved; F-39/F-40/F-42/F-43 hold |
 | dependencies | 2026-11-15 | 91197bb | vs smart_message 0.1.0 (GitHub develop 2bf06e8, +24 since 2aa3dbf; still untagged, not on RubyGems, Ruby ≥ 4.0): suite 51/52 vs real gem (only F-50); framework e2e OK on 4.0.9 and 4.1.0-preview1 runtime-only, -w clean; bundle-audit clean; outdated: minitest (capped, F-20), hashie 6.0 (upstream pin, F-101), redis-client (transitive); F-51 grown; F-14 subscribe half unverified; F-46/F-47/F-52/F-53/F-62 hold; F-102 toolchain note; improver F-103 → #65, F-104 → #66 |
-| adoption (+dead-code delta) | 2026-11-15 | 91197bb | vs real smart_message 0.1.0 (GitHub develop 2aa3dbf), Ruby 4.1.0-preview1: F-84 develop CI red since #52 (signal-test child lacks -Itest) → PR #57, F-85 README Running Tests lists 3/5 files → PR #58, F-86 transport takes over host INT/TERM + exit 0 (Dewayne), F-87 require-time ENV fallback in DEFAULT_CONFIG → #56; F-14/F-24/F-30/F-31/F-47/F-53 hold; F-8/16/27/34/36/45/48/73 resolved; no mkdocs/llms.txt; gem-skill blocked by #6; dead-code delta c143600..91197bb: none new |
+| adoption (+dead-code delta) | 2026-11-15 | 91197bb | visit 12, vs real smart_message 0.1.0 (GitHub develop 2bf06e8), Ruby 4.0.9 runtime-only, packaged-lib sim: F-105 new → #67 (README timeout docs vs `PublishError`/DLQ; verifies the 10b inbox improver item); S-11 new (local); F-14 subscribe half now verified (DLQ `NameError`); F-24/F-26/F-29/F-30/F-31/F-32/F-47/F-53/F-85/F-86/F-104 hold (F-86 also kills basic_pubsub's `rescue Interrupt`); gem build clean except the warning #55 removes; no mkdocs/llms.txt; improver F-106 → #68; dead-code delta at 91197bb: none new |
 
 ## 2026-11-10 — madbot — security + dead-code (first visit) — develop @ 8d0d2af
 
@@ -365,3 +365,29 @@ Improver (critic read, same commit):
 
 - **F-103:** `subscribe` after `disconnect` (without `connect`) creates the FIFO and starts a reader thread that exits immediately. Nothing raises, and publishers then time out. With `cleanup: true` it raises a misleading ENOENT instead. The main session reran the probe: `{subscribe_after_disconnect: Thread, readers_alive: [false], connected: false}`. Fix: guard `@shutdown` in `subscribe` with a test; lib change, after #37. status: issue [#65](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/65).
 - **F-104:** README:163 says the transport uses "Non-blocking I/O"; the reader polls and then calls a blocking `gets`, and the writer does a blocking open under `Timeout`. One-line README fix (low-risk eligible). Overlaps F-21/F-38. status: issue [#66](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/66).
+
+## 2026-11-15 (visit 12) — madbot — adoption audit (+dead-code delta) — develop @ 91197bb
+
+Against real smart_message 0.1.0 (GitHub develop 2bf06e8), Ruby 4.0.9 runtime-only scratch bundle,
+packaged-lib simulation (stub base.rb removed). No mkdocs.yml, no llms.txt. gem-skill not run (sends
+gem sources to an external LLM; gem uninstallable until #6). Dead-code scan reached 91197bb: none new.
+
+- **F-105:** README publish-timeout docs (README.md:154, :244-250 "Pipe Timeout Errors") name no
+  error class. Under 0.1.0, `msg.publish` raises `SmartMessage::Errors::PublishError` (not a
+  `NamedPipes::Error`, no `cause`) and dead-letters; only direct `transport.publish` raises
+  `NamedPipes::Error` (no DLQ). Verifies the visit-10b inbox improver item. README-only fix, after
+  #58, with #66. status: **issue [#67](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/67)**. verified.
+- **F-106 (improver):** CI `on: [push, pull_request]` runs every same-repo PR twice (e.g. #58 runs
+  43694740257/43694718983); `actions/checkout@v4` warns Node 20 deprecated (run 43694588276). Workflow
+  edit → maintainer (bots can't push workflows); folds in F-91. status: **issue [#68](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/68)**. verified.
+- **S-11:** security finding, details held locally. status: open (local-only; verified).
+- Re-verified: **F-14** holds, both halves now verified (`publish(Ping, msg)` ArgumentError;
+  `subscribe(Ping, method(:h))` registers but every delivery dead-letters with `NameError`, handler
+  never runs). **F-24** holds (examples die on `attribute`; rewrite also needs explicit
+  `require "bigdecimal"`). **F-30** holds: framework ≈5.3k msg/s (up from 2.7k), improver measured
+  transport-only ≈38k msg/s for 220 B payloads (Ruby 4.0.9/4.1-preview); latency p50 0.12–0.42 ms,
+  so only the throughput line is wrong. **F-31**, **F-47**, **F-53**, **F-85** (PR #58), **F-104**
+  (#66), **F-29**, **F-26**, **F-32** (`[Unreleased]` lacks #10/#39/#48) hold. **F-86** holds and also
+  breaks `examples/basic_pubsub.rb:55-60` (`rescue Interrupt` never runs, exits 0 silently).
+  F-60/F-74: `gem build` packages 8 files; only warning is the duplicate URI #55 removes.
+
