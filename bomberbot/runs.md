@@ -2,6 +2,19 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 03:12 asgard
+
+Fourth visit (last 2026-11-13 08:45), by madbot. `develop` already existed (eb23a9b); not created. Since the last visit Dewayne merged #20-#24, fixed #25-#29 and #19 himself (#30-#34), and released 0.6.1 from `main` (#35, tag `v0.6.1` at 61a1111, not on develop). Queue and issue list were empty.
+
+- **New PRs:**
+  - [#36](https://github.com/MadBomber/asgard/pull/36) docs: say only tests call Changes.forget. Source: **dead code** finding F-18. Comment-only (2 lines), suite 655 green, CI green, review clean. **Merged (low risk)** → develop 4ee31fe.
+  - [#37](https://github.com/MadBomber/asgard/pull/37) fix(cli): keep list commands machine-wide behind --debug or --verbose. Source: **judgment** (improver, F-44; Refs #27). Test failed on develop, passes; suite 656 green; rubocop/reek clean; review 2 rounds (1 wording fix), clean. Lib → awaits Dewayne.
+  - [#39](https://github.com/MadBomber/asgard/pull/39) fix(cli): name an unknown leading option as an option. Source: **judgment** (improver, F-45). **Stacks on #37.** 2 tests fail-then-pass; suite 659 green; review round 1 caught `--verbose -h` being rejected (fixed), round 2 clean. CHANGELOG under `### Changed` so it stays clear of #37's `### Fixed`.
+- **Merged after approval:** none (nothing was open). **Tended:** none open; no stale bot branches.
+- **Audit:** dead code (second full, develop eb23a9b): no new dead code; F-28 resolved by 9ea4e04. Dead-code scan now covers eb23a9b.
+- **Issues answered:** none (no open issues). **Issues filed:** [#38](https://github.com/MadBomber/asgard/issues/38) a leading `--debug=true` runs nothing (F-46).
+- Findings F-44..F-47. F-47 (develop lacks the released 0.6.1 CHANGELOG) went to dewayne.md. Triage and improver re-verified the open findings: F-27, F-28, F-29 resolved; F-5 moved to dev.
+
 ## 2026-11-15 03:15 debug_me
 
 By bomberbot (last visit 02:45, madbot). `develop` already existed (44456b6); not created. Run directory was fresh. `src/` cloned onto `main`; roles read `git archive` copies of develop and `src/` was detached at develop partway through phase 1. All five phase-1 agents ran.

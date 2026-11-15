@@ -10,29 +10,30 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-13 (third visit)._ develop unchanged at 4f3add1, CI green; #20-#24 all green and unreviewed, so no new PRs (review queue full); dependencies audit (F-37..F-43), issues #27, #28, #29 filed.
+_Updated 2026-11-15 (fourth visit)._ Dewayne merged #20-#24, fixed #25-#29 and #19 himself (#30-#34) and released 0.6.1; this visit merged #36 as low risk (develop 4ee31fe), opened #37 and #39 (stacked on #37), filed #38.
 
 ## Backlog
 
 Well-defined items a single small PR could close. Bomberbot works these before anything else in this repo.
 
-- F-24: the dependency-arity error should name the declaring task, like #14's fix. **PR open** ([#21](https://github.com/MadBomber/asgard/pull/21))
-- `truncate_log` (4f3add1) missing from README, CHANGELOG and `docs/files.md`. **PR open** ([#20](https://github.com/MadBomber/asgard/pull/20))
-- Issue #18 items 1-2 (truncate_log no-log-yet message, watcher help). **PR open** ([#23](https://github.com/MadBomber/asgard/pull/23)); item 3 and `project/NAME` wait on Dewayne (inbox).
-- F-32: reserved helper name reported at task_dsl.rb, not the .loki line. Issue [#25](https://github.com/MadBomber/asgard/issues/25); small lib fix, good next-visit PR.
-- F-36: schedule_root/watch_root duplicate project_root. Issue [#26](https://github.com/MadBomber/asgard/issues/26); do after #23 merges (same files).
-- F-37: `bin/console` / `console` task fail on Ruby 4 (`irb` not in the Gemfile). Issue [#28](https://github.com/MadBomber/asgard/issues/28); one-line Gemfile PR (not low risk: Gemfile).
+- F-44: a leading `--debug`/`--verbose` before `jobs list` / `schedule list` / `watcher list` aborts outside a project. **PR open** ([#37](https://github.com/MadBomber/asgard/pull/37))
+- F-45: `asgard --nope` reports `Could not find command "__nope"`. **PR open** ([#39](https://github.com/MadBomber/asgard/pull/39), stacked on #37)
+- F-46: `asgard --debug=true build` prints usage and exits 0 without running. Issue [#38](https://github.com/MadBomber/asgard/issues/38); Dewayne usually fixes filed issues himself, check first.
+- F-47: develop lacks main's released 0.6.1 CHANGELOG text (`61a1111`). Needs Dewayne (dewayne.md).
 
 ## Open bomberbot PRs
 
-- [#22](https://github.com/MadBomber/asgard/pull/22) feat(load): hint when a DSL word is outside class Tasks (**PR open**, 2026-11-13; F-35)
-- [#23](https://github.com/MadBomber/asgard/pull/23) fix(logs): truncate_log NAME skips an entry with no log yet (**PR open**, 2026-11-13; Fixes #18)
-- [#24](https://github.com/MadBomber/asgard/pull/24) docs: fix reserved helper name, doctor exit, robots example (**PR open**, 2026-11-13; F-31/F-33/F-34)
-- [#20](https://github.com/MadBomber/asgard/pull/20) docs: list truncate_log in README, CHANGELOG and files.md (**PR open**, 2026-11-13)
-- [#21](https://github.com/MadBomber/asgard/pull/21) fix(deps): name declaring tasks in dependency arity errors (**PR open**, 2026-11-13; F-24, Refs #14)
+- [#37](https://github.com/MadBomber/asgard/pull/37) fix(cli): keep list commands machine-wide behind --debug or --verbose (**PR open**, 2026-11-15; F-44, Refs #27)
+- [#39](https://github.com/MadBomber/asgard/pull/39) fix(cli): name an unknown leading option as an option (**PR open**, 2026-11-15; F-45; stacks on #37)
 
 ## Merged bomberbot PRs
 
+- [#36](https://github.com/MadBomber/asgard/pull/36) docs: say only tests call Changes.forget (merged as low risk by madbot 2026-11-15, 4ee31fe; F-18)
+- [#24](https://github.com/MadBomber/asgard/pull/24) docs: fix reserved helper name, doctor exit, robots example (merged 2026-11-13)
+- [#23](https://github.com/MadBomber/asgard/pull/23) fix(logs): truncate_log NAME skips an entry with no log yet (merged 2026-11-13)
+- [#22](https://github.com/MadBomber/asgard/pull/22) feat(load): hint when a DSL word is outside class Tasks (merged 2026-11-13)
+- [#21](https://github.com/MadBomber/asgard/pull/21) fix(deps): name declaring tasks in dependency arity errors (merged 2026-11-13)
+- [#20](https://github.com/MadBomber/asgard/pull/20) docs: list truncate_log in README, CHANGELOG and files.md (merged 2026-11-13)
 - [#16](https://github.com/MadBomber/asgard/pull/16) fix(jobs): restart a job whose trampoline is still exiting (merged 2026-11-10)
 - [#12](https://github.com/MadBomber/asgard/pull/12) fix(doctor): report exit or abort during .loki load (merged 2026-11-10)
 - [#11](https://github.com/MadBomber/asgard/pull/11) docs: add llms.txt index of the docs site (merged 2026-11-10)

@@ -1397,6 +1397,12 @@ Ideas, questions, and recommendations that need Dewayne's decision. Append with 
 - **agent99: four bot PRs (#97, #101, #103, #104) have waited a visit or more, green and unreviewed.** #97, #103 and #104 each append to the end of CHANGELOG `[Unreleased]` → Fixed, so merging one forces a one-line rebase of the other two; merging them in one sitting is easiest. (main session, 2026-11-15)
 - **agent99: the suite takes ~11 s with no single test over 0.3 s.** The time is likely mock registry start/stop and subprocesses; worth a profiling pass before any PR. (improver, 2026-11-15)
 
+## asgard (2026-11-15)
+
+- **Normalize argv in one place.** Leading flags are handled in three spots: `answer_flags` (`leading_flag?`), `boot` (`machine_wide?`) and `run!` (`task_first`). This visit's F-44 PR patches one symptom; F-46 (`--debug=true build` shows usage, exit 0) is another. One `Asgard.normalize_argv` run before `boot` would keep them consistent and is easy to test. Your call on the shape.
+- **A short version flag?** `asgard -v` fails as an unknown command today. A `-V` alias for `--version` (lowercase `-v` reads as verbose) would make it discoverable. Public CLI surface, so yours to decide.
+- **A GitHub Release for v0.6.1?** The tag exists (`61a1111`) and RubyGems has 0.6.1, but there is no Release object; past releases' pattern is yours to keep or not.
+
 ## debug_me (2026-11-15 03:40, BomberBot)
 
 - **Ruby floor before the next release (finding 41).** The unreleased 3.2 floor was EOL on 2026-03-31; 3.3 ends 2027-03-31. Raising to 3.4 would also retire finding 51 (two `:backtrace` frame formats). Gemspec + workflow + docs, so yours to pick.

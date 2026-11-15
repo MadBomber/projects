@@ -5,10 +5,8 @@ Things only Dewayne can do, each tied to a PR or decision. Bomberbot adds entrie
 
 ## asgard
 
-- [ ] Review [asgard#20](https://github.com/MadBomber/asgard/pull/20) (README, CHANGELOG and `docs/files.md` list your new `truncate_log`). Docs only, green, but not merged as low risk: merging deploys the docs site (Pages runs on `docs/**` pushes to `develop`). (added 2026-11-13)
-- [ ] Review [asgard#21](https://github.com/MadBomber/asgard/pull/21) (the dependency-arity error names the declaring task, `(needed by c)`, same wording as your 621df2e for #14). Lib change. Merges cleanly alongside #20. (added 2026-11-13)
-- [ ] Decide [asgard#17](https://github.com/MadBomber/asgard/issues/17): close it as done by `truncate_log --lines`, or keep it open for `--days N` / `changes/*.json` cleanup / `log_retention`? (added 2026-11-13)
-- [ ] Bump `actions/checkout` to its current major in both workflows and `actions/setup-python` in the deploy workflow ([asgard#29](https://github.com/MadBomber/asgard/issues/29)); the bot token cannot edit `.github/workflows/`. (added 2026-11-13)
+- [ ] Review [asgard#37](https://github.com/MadBomber/asgard/pull/37) (a leading `--debug`/`--verbose` no longer stops `jobs list` / `schedule list` / `watcher list` working outside a project; Refs #27). Lib, green. Then [asgard#39](https://github.com/MadBomber/asgard/pull/39), stacked on it (`asgard --nope` says `unknown option '--nope'` instead of `Could not find command "__nope"`); retarget #39 to `develop` once #37 merges, or the next visit will. (added 2026-11-15)
+- [ ] Bring `develop` up to `main`: merge `main` into `develop` so it has the released 0.6.1 CHANGELOG text (`61a1111`, tagged `v0.6.1`); develop's CHANGELOG is missing 26 lines of it (F-47). Bots may not push `develop`; say on a visit if you'd rather a bot PR did it. (added 2026-11-15)
 
 ## aia
 
