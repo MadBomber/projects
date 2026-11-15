@@ -10,7 +10,7 @@ Knowledge-based system gem, idle since early 2026, has open issues.
 
 ## Status
 
-_Updated 2026-11-15._ Dewayne squash-merged #37, #39 and #43 and fixed #34-#36 and #40-#42 himself (#44-#49) on 2026-11-13. This visit merged [#54](https://github.com/MadBomber/kbs/pull/54) (CHANGELOG catch-up) as low risk and opened [#53](https://github.com/MadBomber/kbs/pull/53) (dead-code removal) and [#55](https://github.com/MadBomber/kbs/pull/55) (priority docs); the dependencies audit filed #50 (Ruby 4.1 decompiler strings), #51 (`clear_session` with a passed-in store) and #52 (ternary decompile).
+_Updated 2026-11-15 (second visit)._ No approvals since the first visit; #53 and #55 rebased and green. This visit opened [#56](https://github.com/MadBomber/kbs/pull/56) (ternary decompile, #52) and [#57](https://github.com/MadBomber/kbs/pull/57) (`clear_session`, #51), ran the security audit, and filed #58 (`print_rules` Procs), #59 (docs `?var` prefix) and #60 (queue `consume` race).
 
 ## Backlog
 
@@ -31,14 +31,18 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - `Rule#to_s` raises on an undecompilable condition such as `:even?.to_proc` (F-39, first half): rescue it like the action path. [#43](https://github.com/MadBomber/kbs/pull/43) (merged 2026-11-13)
 - Drop dead code: `Blackboard::Engine#update` duplicate, `BetaMemory` dead `unlink!`, `@current_condition_group` (F-45, F-52, F-48 first half). [#53](https://github.com/MadBomber/kbs/pull/53) (**PR open**)
 - Ruby 4.1 decompiler renders string literals as placeholders (F-60, issue [#50](https://github.com/MadBomber/kbs/issues/50)).
-- `clear_session` clears nothing with a passed-in store (F-82, issue [#51](https://github.com/MadBomber/kbs/issues/51)).
-- Ternary decompile drops the condition (F-61, issue [#52](https://github.com/MadBomber/kbs/issues/52)).
+- `clear_session` clears nothing with a passed-in store (F-82, issue [#51](https://github.com/MadBomber/kbs/issues/51)). [#57](https://github.com/MadBomber/kbs/pull/57) (**PR open**)
+- Ternary decompile drops the condition (F-61, issue [#52](https://github.com/MadBomber/kbs/issues/52)). [#56](https://github.com/MadBomber/kbs/pull/56) (**PR open**)
 - Small PR candidates: `gem "benchmark"` for Ruby 4 (F-62), CSV examples from repo root (F-80), `query_facts` docs pass strings (F-81), `prioritized_production_nodes` private (F-66), `test.yml` action bumps (F-64).
+- `print_rules` shows helper conditions as raw Procs (F-90, issue [#58](https://github.com/MadBomber/kbs/issues/58)).
+- Docs say variables start with `?` (F-92, issue [#59](https://github.com/MadBomber/kbs/issues/59)); hold the `rete-algorithm.md` line until #55 merges.
 
 ## Open bomberbot PRs
 
 - [#53](https://github.com/MadBomber/kbs/pull/53) refactor: drop dead code in Blackboard::Engine, BetaMemory, RuleBuilder (**PR open**, F-45/F-52/F-48)
 - [#55](https://github.com/MadBomber/kbs/pull/55) docs: describe priority-ordered firing for both engines (**PR open**, Refs #35)
+- [#56](https://github.com/MadBomber/kbs/pull/56) fix(decompiler): ternary branches (**PR open**, Fixes #52)
+- [#57](https://github.com/MadBomber/kbs/pull/57) fix(blackboard): clear_session with a passed-in store (**PR open**, Fixes #51)
 
 ## Merged bomberbot PRs
 
