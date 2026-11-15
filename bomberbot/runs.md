@@ -2,6 +2,17 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 05:20 gem-skill
+
+Visit by madbot (last 2026-11-15 02:32). `develop` already existed (f23b7fb, unmoved); not created. Run directory was fresh. All five phase-1 agents ran. Note: the fresh `src/` clone checked out `main`; readers exported `origin/develop` to `scratch/` instead, then `src/` was detached at develop.
+
+- **skipped: review queue full.** #44, #45, #46 open, MERGEABLE, no reviews or comments, 0 behind develop, local suites green (260/269/261, 0 failures). Every pair conflicts only in CHANGELOG `### Fixed` (expected).
+- **Merged (low risk):** none. **Merged after approval:** none (nothing approved). **Tended:** #44-#46 checked, nothing to push.
+- **Audit:** dead code, first full run at f23b7fb (debride + manual greps): F-66..F-69. Improver: F-70..F-73. Triage: all Backlog items still present.
+- **Issues answered:** none (#1 already answered; #41-#43 are ours with no new comments).
+- **Issues filed:** [#47](https://github.com/MadBomber/gem-skill/issues/47) platform gems in Gemfile.lock (F-70), [#48](https://github.com/MadBomber/gem-skill/issues/48) e2e script always fails (F-66), [#49](https://github.com/MadBomber/gem-skill/issues/49) version sort (F-72).
+- `dewayne.md` had an uncommitted change from someone else, so its stale gem-skill steps (#26, #31, #32, #36, all merged) were not removed this visit.
+
 ## 2026-11-15 05:10 dev
 
 Eleventh visit (last 2026-11-15 01:20), by madbot. `develop` already existed (8113aab, == `main`, unmoved); not created. Run directory was fresh. All five phase-1 agents ran.

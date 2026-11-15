@@ -9,12 +9,12 @@ Statuses: open, unverified, PR'd (link), merged, fixed elsewhere, rejected, need
 | Audit | Last run | Notes |
 |---|---|---|
 | security | 2026-11-13 | second run at develop e55bd4d (delta 44a608c..e55bd4d: #10, #12, #13, #19); bundle-audit clean (DB 2026-11-11, 4d71b12) on a fresh lock; S-1 fix (#13) verified at all Cache/Linker/Lockfile boundaries; F-53, F-54; auditor S-5 is S-2 (held locally) |
-| dead code | 2026-11-15 (quick delta) | e55bd4d..f23b7fb (#20-#40): all new methods called; nothing new removable; F-28/F-37/F-56 still open; full audit still never run |
+| dead code | 2026-11-15 (full, first run) | develop f23b7fb; debride 1.15.2 over lib/, plugins.rb, bin/, scripts/ (plus test/), every candidate grepped incl. dynamic calls and docs; F-66..F-69; F-14, F-28, F-37, F-56, F-65 rechecked, still open; no external Ruby API callers |
 | dependencies | 2026-11-15 | second run at develop f23b7fb; fresh lock ruby_llm 2.2.2 + json 3.1.0, lms 0.3.0, apfel 0.2.1, tty-spinner 0.9.3; only ruby_llm 2.0.0 caps json < 3 (F-59; F-23 still stale); bundle outdated: minitest only (F-31); F-30 unchanged; 4.1.0preview1 suite 260/0, runtime-only bundle loads warning-free |
 | adoption | 2026-11-13 | second run at develop 866a510; mkdocs --strict clean; all lib env vars documented; CHANGELOG Unreleased complete (F-51 formatting); F-41..F-52 |
 | quality | 2026-11-12 | first run at develop 741e583; develop red (F-32, #9+#12 interaction); coverage 89.9% (F-34); ruby -w 14 test-only redefinition warnings (F-21); F-33, F-35, F-36 |
 
-Dead-code scan last covered commit: f23b7fb (2026-11-15 auditor delta e55bd4d..f23b7fb; no full dead-code audit yet)
+Dead-code scan last covered commit: f23b7fb (2026-11-15 full dead-code audit, first run)
 
 ## Findings
 
@@ -153,3 +153,18 @@ Since the 2026-11-13 visit Dewayne merged every open PR (#20-#24, #26, #31, #32,
 - **Dead-code delta e55bd4d..f23b7fb:** `Env.integer/float/read`, `exit_for`, `router_skill_source`, `strip_git_bang`, `parse_git_spec_names` and the new `max_tokens:` params all have lib callers. Nothing new to remove. Stale remote branch `bomberbot/ollama-api-base` (#19 merged) has no unique commits.
   - **F-64 (open, small, from #45's review):** `Frontmatter.strip` still mishandles an unclosed block followed by a later `---` rule, a body opening with a `---` horizontal rule, the YAML `...` end marker, a BOM, and an indented closing `---`; its `.lstrip` also eats first-line indentation, and `present?` disagrees with `strip`. A line-based parser would fix the class (inbox).
   - **F-65 (open, from #46's review):** with verify streaming, `Generator#call_llm` (non-streaming) has no production caller; every caller passes an empty block to force streaming. A follow-up could make Generator and Verifier always stream. `Verifier#build_chat` also ignores `--temperature`/`GEMSKILL_TEMPERATURE`. Streaming-path test coverage is thin.
+
+### 2026-11-15 05:00 visit: dead-code audit (first full run, develop at f23b7fb), triage, improver
+
+Queue full (#44-#46 open, unapproved), so no PRs; issues filed instead.
+
+- **F-66 (issue [#48](https://github.com/MadBomber/gem-skill/issues/48)):** `scripts/e2e_test` always aborts "Runner failed": `:53` keeps `err = Runner.install_skill(...)` and `:60-62` aborts `if err`, but since 98bf9aa that returns a truthy `Runner::Result`. Proved with a stubbed Runner (exit 1, `error=nil`). CLAUDE.md:15, :63 recommend the script.
+- **F-67 (open, low):** private `SkillCommand#install_gem(gem_name, version = nil)` (`gem_command.rb:370`): `version` is never passed (only caller `:131`). Fold into F-35 when that is decided.
+- **F-68 (open, low):** unused requires: `json` in `gem_command.rb:11` and `bundle_command.rb:8`, `fileutils` in `bundle_command.rb:7`. Dropping `fileutils` is safe alone; the `json` lines tie to the load-order comments and the F-59/F-23 decision.
+- **F-69 (needs Dewayne's decision, low):** `Runner::Result#ok?` (`runner.rb:12`) is used only by tests; lib checks `result.error`. Public, documented return type. Options: use it in lib, remove it, or keep.
+- **F-70 (issue [#47](https://github.com/MadBomber/gem-skill/issues/47), improver C1):** `Lockfile.parse_specs` (`lockfile.rb:32`) keeps the platform suffix as part of the version: `x86_64`/`musl` entries fail `valid_version?` and are dropped silently, `arm64-darwin` entries are cached under `1.6.1-arm64-darwin` and miss the installed spec. Reproduced: a two-platform `difftastic` lock parses to `{"rake"=>"13.3.0"}`. Affects pg, sqlite3, nokogiri, thruster in Dewayne's own projects. Fix: Bundler's NAME_VERSION split.
+- **F-71 (needs Dewayne's decision, improver C2):** `docs/commands/bundle-skill.md:125-127` says `bundle skill refresh` removes links for gems no longer in Gemfile.lock; the code only prunes links whose cache target is gone (`Linker.prune_dead_links`). Reproduced: a removed gem stays linked. Options: make refresh unlink gems not in the lock (only links pointing into `Cache.root`), and maybe install too; or narrow the docs sentence. Inbox.
+- **F-72 (issue [#49](https://github.com/MadBomber/gem-skill/issues/49), improver C3):** `Cache.versions` (`cache.rb:77`) sorts as strings, so `gem skill list` shows 0.10.0 before 0.9.0.
+- **F-73 (needs Dewayne's decision, improver C4):** `Fetcher#local_file` matches README/CHANGELOG names exactly, which works only on case-insensitive filesystems; across 2,238 installed specs, 67 READMEs and 54 changelogs would be missed on Linux, and `History.*`, `CHANGELOG`, `CHANGES`, `NEWS.md` are never tried. Which names to add is a taste call. Inbox.
+- **Adoption note for next audit:** `docs/how-it-works.md:158` signature lacks `max_tokens:`/`temperature:` (`runner.rb:20-21`).
+- **Triage:** Backlog items F-62/#41, F-53/#42, F-51/F-61/#43, F-21 (9 warnings), F-63 all still present at f23b7fb. Future PRs should add their CHANGELOG line at the end of `### Fixed` to dodge #44-#46's collision at its top.

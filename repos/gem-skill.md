@@ -10,7 +10,7 @@ Generates Claude Code skills from Ruby gem docs.
 
 ## Status
 
-_Updated 2026-11-15 02:45._ Dewayne squash-merged all of #20-#24, #26, #31, #32 and #36 unchanged on 2026-11-13 and fixed issues #30, #33, #34 and #35 himself (#37-#40). This visit opened #44, #45 and #46 (F-49, F-58, verify streaming) and filed #41-#43. `develop` green at f23b7fb (260 runs, 0 failures, 93.5% coverage); no test CI, so PR proof is the local suite.
+_Updated 2026-11-15 05:20._ Queue full (#44-#46 open, unapproved), so no new PRs; first full dead-code audit ran and issues #47-#49 were filed (platform gems in Gemfile.lock, e2e script, version sort). `develop` unchanged at f23b7fb.
 
 ## Backlog
 
@@ -20,6 +20,9 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - Empty `GEMSKILL_MODEL` becomes model `""` (F-62, issue [#41](https://github.com/MadBomber/gem-skill/issues/41)). Two lines in `generator.rb` plus an ENV save/restore test.
 - `Validation.valid_version?` accepts padded versions (F-53, issue [#42](https://github.com/MadBomber/gem-skill/issues/42)).
 - CHANGELOG `[Unreleased]` stale `with_params` line, duplicate `### Changed`, missing `Env`/`max_tokens:` entries (F-51, F-61, issue [#43](https://github.com/MadBomber/gem-skill/issues/43)). Land after this visit's PRs, which each add a `### Fixed` line.
+- Platform-suffixed gems in Gemfile.lock dropped or mis-versioned (F-70, issue [#47](https://github.com/MadBomber/gem-skill/issues/47)). One regex in `lockfile.rb:32` plus tests.
+- `scripts/e2e_test` always aborts "Runner failed" (F-66, issue [#48](https://github.com/MadBomber/gem-skill/issues/48)). One-line script fix.
+- `gem skill list` sorts versions as strings (F-72, issue [#49](https://github.com/MadBomber/gem-skill/issues/49)). One line in `cache.rb` plus a test.
 - Method-redefinition warnings in tests, now 9 (F-21). Test-only.
 - Shadowed exception rescues at `fetcher.rb:113` (safe deletion, F-63) and `gem_command.rb:374` (F-35, narrowing is a call).
 - Docs describe `gem skill setup` as plugin-only in `docs/index.md:34`, `docs/installation.md:18`; README says "once per machine" (:87) and "re-run after upgrading" (:208). Noticed by #44's builder; the upgrade half is F-42 (needs decision).
