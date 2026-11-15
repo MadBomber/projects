@@ -13,6 +13,8 @@ Released 0.6.0 (RubyGems), Ruby `>= 4.0.9` on `main`.
 
 ## Status
 
+_Fourteenth visit (2026-11-15 05:53)._ No approvals; tender rebased #95 (green). Opened [#96](https://github.com/MadBomber/robot_lab/pull/96) (Fixes #90, F-53) and [#97](https://github.com/MadBomber/robot_lab/pull/97) (Fixes #91, F-106), both `lib/` so they wait for Dewayne, plus [#101](https://github.com/MadBomber/robot_lab/pull/101) (Fixes #92, F-107) stacked on #97. Ran the **dead-code** delta to 7394a10 (nothing new). Filed #98 (F-108), #99 (F-109), #100 (F-110). No issue needed a reply. `develop` 7394a10 still 31 behind `main`.
+
 _Thirteenth visit (2026-11-15 02:17, resumed 03:53)._ Dewayne had merged #70, #74, #75 and his own #52–#65, #81–#89, so the queue was empty. Opened [#93](https://github.com/MadBomber/robot_lab/pull/93) (examples 09–11 amazing_print crash, F-103) and [#94](https://github.com/MadBomber/robot_lab/pull/94) (CHANGELOG backfill, F-102), both **merged (low risk)** (develop 7fe3145, 7394a10). Opened [#95](https://github.com/MadBomber/robot_lab/pull/95) (history compression orphans tool results, F-105), `lib/` so it waits for Dewayne. Ran **adoption** v3: the live docs site is now built from develop (F-101, Dewayne). Filed #90 (F-53), #91 (F-106), #92 (F-107). No issue needed a reply. `develop` 7394a10 still 31 behind `main`.
 
 _Twelfth visit (2026-11-13 08:55)._ Skipped building: review queue full (#70, #74, #75 rebased onto develop afd9131 by the tender, green locally, unreviewed). Ran the **dependencies** v4 delta (no new findings; F-26 correction: the dev bundle masks the 4.1 tsort failure). Improver read bus_poller/network/task/tool: filed #78 (BusPoller strands queued messages after a failed delivery, F-94), #79 (ractor scheduler not shut down on failure, F-95), #80 (duplicate `Network#task` name silently dropped, F-96). No issue needed a reply. `develop` afd9131 still 31 behind `main`.
@@ -48,10 +50,13 @@ else in this repo.
 - **Done on develop as of 2026-11-15** (issues close with the sync/release, since `Closes #N` only fires on `main`): F-6 #30, F-9 #31, F-16 #33, F-26 #36, F-43 #37, F-48 #41, F-46 #42, F-60 #44, F-54 #45, F-67 #46, F-68 #47, F-66 #48, F-73 #49, F-74 #50, F-72 #51, F-77 #67, F-78 example half #68, F-82 #69, F-85 #71, F-87 #72, F-90 #76, F-93 #77, F-94 #78, F-95 #79, F-96 #80, F-81, F-56, F-88, F-102, F-103.
 - F-101 live docs site built from develop (pre-0.3.0 install requirements): Dewayne re-deploys from `main` and decides F-10. **Hold every `docs/` PR until then.**
 - F-105 history compression orphans tool results: [#95](https://github.com/MadBomber/robot_lab/pull/95) **PR open**.
-- F-53 async `Robot#delegate` never settles on a non-StandardError: issue [#90](https://github.com/MadBomber/robot_lab/issues/90). Hunk-safe `robot.rb`; ~1 line + new test file. First pick next visit.
-- F-106 `subscribe_pattern` glob leaves regex metacharacters live: issue [#91](https://github.com/MadBomber/robot_lab/issues/91). Hunk-safe `memory.rb`; ~3 lines + test (prototype in improver scratch, gone with run dir).
-- F-107 `Memory#get(:a, :b, wait: N)` waits N per key: issue [#92](https://github.com/MadBomber/robot_lab/issues/92). Keep the change inside `get_multiple` to stay hunk-safe; same file as F-106, stack.
-- F-41 CRLF SKILL.md rejected as "missing 'name'": one-line, hunk-safe, no user report yet.
+- F-53 async `Robot#delegate` never settles on a non-StandardError: issue [#90](https://github.com/MadBomber/robot_lab/issues/90), [#96](https://github.com/MadBomber/robot_lab/pull/96) **PR open**.
+- F-106 `subscribe_pattern` glob leaves regex metacharacters live: issue [#91](https://github.com/MadBomber/robot_lab/issues/91), [#97](https://github.com/MadBomber/robot_lab/pull/97) **PR open**.
+- F-107 `Memory#get(:a, :b, wait: N)` waits N per key: issue [#92](https://github.com/MadBomber/robot_lab/issues/92), [#101](https://github.com/MadBomber/robot_lab/pull/101) **PR open** (stacked on #97).
+- F-108 one raising Memory subscriber drops the rest of the batch: issue [#98](https://github.com/MadBomber/robot_lab/issues/98). `memory.rb` `drain_notification_queue`, ~4 lines + test; stack on the memory PRs. First pick next visit.
+- F-109 `Memory#set` bypasses reserved-key rules of `[]=`: issue [#99](https://github.com/MadBomber/robot_lab/issues/99). ~2 lines + 2 tests, same file.
+- F-110 storing `:timeout` makes a blocking `get` raise `AwaitTimeout`: issue [#100](https://github.com/MadBomber/robot_lab/issues/100). ~3 lines inside `wait_for_key`.
+- F-41 CRLF **or UTF-8 BOM** SKILL.md rejected as "missing 'name'": ~2 lines in `agent_skill.rb:53`, hunk-safe, reproduced 2026-11-15 by triage (LF ok, CRLF/BOM fail). Good independent pick.
 - F-2 `examples/14_rusty_circuit/show.log` still tracked (identical on both branches; easy removal). Writers' Room `.log` files and root planning notes: Dewayne (inbox).
 - F-8 `docs/llms.txt`, after the sync and F-101.
 - F-104 five dead docs anchors (develop-only pages), after the sync and F-101.
@@ -61,7 +66,11 @@ else in this repo.
 
 ## Open bomberbot PRs
 
-- [#95](https://github.com/MadBomber/robot_lab/pull/95) `madbot/compress-keep-tool-calls` → develop. fix: keep assistant tool calls with text during history compression (F-105). **PR open**. lib, not low risk. Fails-before/pass-after, 1341 green, review clean round 1, CI green, MERGEABLE.
+- [#96](https://github.com/MadBomber/robot_lab/pull/96) `madbot/delegate-settle-fatal` → develop. fix(robot): settle async delegate future on non-StandardError (F-53, Fixes #90). **PR open**. lib, not low risk. Fails-before/pass-after, 1341 green, review clean round 1, CI green.
+- [#97](https://github.com/MadBomber/robot_lab/pull/97) `madbot/glob-escape-regex` → develop. fix(memory): treat regex metacharacters in subscribe_pattern globs literally (F-106, Fixes #91). **PR open**. lib, not low risk. Fails-before/pass-after, 1341 green, review clean round 1, CI green.
+- [#101](https://github.com/MadBomber/robot_lab/pull/101) `madbot/get-wait-deadline` → `madbot/glob-escape-regex` (stacked on #97). fix(memory): treat multi-key get wait: as one total deadline (F-107, Fixes #92). **PR open**. Fails-before/pass-after, 1342 green, CI green; self-review only (no full /code-review round). Retarget to develop once #97 merges.
+
+- [#95](https://github.com/MadBomber/robot_lab/pull/95) `madbot/compress-keep-tool-calls` → develop. fix: keep assistant tool calls with text during history compression (F-105). **PR open**. lib, not low risk. Fails-before/pass-after, 1341 green, review clean round 1, CI green, MERGEABLE. Rebased onto 7394a10 by the tender 2026-11-15 05:53 (b546016), CI green.
 
 ## Merged bomberbot PRs
 

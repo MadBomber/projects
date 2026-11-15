@@ -2,6 +2,21 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 05:53 robot_lab
+
+Fourteenth visit (last 2026-11-15 02:17), by madbot. `develop` already existed (7394a10, unmoved); not created. Run directory was fresh. All five phase-1 agents ran; to save time the two independent builders started alongside them, since brain's Backlog had already named #90/#91/#92 as the first picks and the queue held only #95.
+
+- **New PRs** (all `lib/`, so none low risk; each fails-before/passes-after on Ruby 4.0.9, CI green):
+  - [#96](https://github.com/MadBomber/robot_lab/pull/96) fix(robot): settle async delegate future on non-StandardError. Source: brain/issue #90 (F-53). Suite 1341/0, `/code-review` clean round 1.
+  - [#97](https://github.com/MadBomber/robot_lab/pull/97) fix(memory): treat regex metacharacters in subscribe_pattern globs literally. Source: brain/issue #91 (F-106). Suite 1341/0, `/code-review` clean round 1.
+  - [#101](https://github.com/MadBomber/robot_lab/pull/101) fix(memory): treat multi-key get wait: as one total deadline. Source: brain/issue #92 (F-107). **Stacks on #97.** Suite 1342/0; builder ran a self-review round, not the full `/code-review` skill.
+- **Merged (low risk):** none. **Merged after approval:** none (nothing approved).
+- **Tended:** #95 rebased onto 7394a10 (b546016), CI green, no comments.
+- **Audit:** dead code (delta afd9131..7394a10): no new findings; F-82/#69 looks resolved by #81. Improver: F-108..F-112. Triage: F-41 also fails on a UTF-8 BOM.
+- **Issues answered:** none (nothing new on any open issue).
+- **Issues filed:** [#98](https://github.com/MadBomber/robot_lab/issues/98) (F-108), [#99](https://github.com/MadBomber/robot_lab/issues/99) (F-109), [#100](https://github.com/MadBomber/robot_lab/issues/100) (F-110).
+- **Process:** this machine's PATH puts Ruby 4.1.0-preview1 first, where `tokenizers` won't build; builders must put `~/.rbenv/versions/4.0.9/bin` first. Review queue is now 4 (#95, #96, #97, #101).
+
 ## 2026-11-15 05:45 typed_bus
 
 Eighteenth visit (last 2026-11-15 02:10). `develop` already existed (81fc31d, unchanged); not created. Run directory was fresh.
