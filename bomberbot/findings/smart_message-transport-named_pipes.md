@@ -8,7 +8,7 @@ issues (`issue #N`), PRs, or are resolved. Security details are held locally in
 
 | audit | last run | commit | result |
 |-------|----------|--------|--------|
-| security (+dead-code) | 2026-11-12 | 6725e5c | bundle-audit clean; S-7 new (local); S-5 resolved by #4; S-1–S-4, S-6 still hold; F-34 (failing receive drops buffered messages) → #23, F-35 (CI token perms) → #25; dead-code: none new (F-1 resolved #8; F-2/F-3 hold); +F-36 → #24, F-37 → merged #26 |
+| security (+dead-code) | 2026-11-15 | 91197bb | bundle-audit clean (scratch lock, smart_message 0.0.17); S-9 new (local); S-7 resolved; S-1–S-4, S-6, S-8 still hold (S-3 narrowed); F-35 resolved; no new F-findings from the audit; improver F-92 → #59, F-93 → #60, F-94 → #61; dead-code delta 6725e5c..91197bb: none new (F-2/F-3 hold) |
 | quality | 2026-11-12 | 52f8e45 | RuboCop 137→124 (82 autocorrectable); 44 runs/0F/9 skips, -w clean; flog 306.9 (start_pipe_reader 92.9); F-39 shared FIFO deleted under other subscribers → #29, F-40 competing-consumer vs pub/sub (Dewayne), F-41 duplicate test + setup, F-42 no RuboCop baseline, F-43 reader untestable in isolation, F-44 CI lacks Ruby 4.0 → #30; +F-45 (improver) ENV read at require → #28 |
 | dependencies | 2026-11-13 | c143600 | vs smart_message 0.1.0 (GitHub develop 2aa3dbf; not on RubyGems, untagged): framework path works, suite 48/49 vs real gem; 0.1.0 needs Ruby ≥ 4.0 → F-47 settles F-19; F-46 (#6 now = publish upstream), F-48 bare base require NameError → #41, F-49 stub reopens real Base, F-50 stub-coupled test, F-51 not in Transport registry, F-52 do_publish vs raise-on-failure contract, F-53 connected? before connect, F-54 gemspec version + superclass trap → PR #39; F-18 resolved, F-15 fixed (#20), F-14/F-16/F-20/F-24 hold; bundle-audit clean; only minitest outdated; dead-code delta 6725e5c..c143600: none new; S-8 (local) |
 | adoption (+dead-code delta) | 2026-11-15 | 91197bb | vs real smart_message 0.1.0 (GitHub develop 2aa3dbf), Ruby 4.1.0-preview1: F-84 develop CI red since #52 (signal-test child lacks -Itest) → PR #57, F-85 README Running Tests lists 3/5 files → PR #58, F-86 transport takes over host INT/TERM + exit 0 (Dewayne), F-87 require-time ENV fallback in DEFAULT_CONFIG → #56; F-14/F-24/F-30/F-31/F-47/F-53 hold; F-8/16/27/34/36/45/48/73 resolved; no mkdocs/llms.txt; gem-skill blocked by #6; dead-code delta c143600..91197bb: none new |
@@ -313,3 +313,29 @@ Run against real smart_message 0.1.0 (GitHub develop 2aa3dbf), Ruby 4.1.0-previe
 - **F-74 / F-60 metadata:** gemspec RuboCop + missing `bug_tracker_uri`/`documentation_uri`/`rubygems_mfa_required` (lanet#21 pattern, merged 2026-11-13). status: **PR open #55**.
 - **F-90:** (builder, #57 review) `run_child_and_signal` uses block-form `popen3`, which waits for the child on exit; if an assertion or Timeout fires while the child is alive, nothing sends KILL and CI hangs; stderr is read only after exit. Pre-existing from #50. status: open; small test-only follow-up after #57.
 - **F-91:** (builder, #58) CI's per-file loop stops at the first failing file under `bash -e` (so `named_pipes_test.rb` never ran while the signal test was red) and globs only `test/smart_message/transport/` while the Rakefile uses `test/**`. README Development still says "run `bundle install`", which fails until #6. status: open; workflow part → Dewayne (inbox), README line after #6.
+
+## 2026-11-15 (visit 10) — bomberbot — security audit (+dead-code delta) — develop @ 91197bb
+
+Diff 6725e5c..91197bb reviewed (lib: #33 #34 #35 #36 #38 #50 #51 #52; gemspec #39; ci.yml #31 #32).
+`bundle-audit check` (scratch lock, smart_message pinned 0.0.17 because of #6): no vulnerabilities.
+No eval, no YAML/Marshal loads; ENV read only in `DEFAULT_CONFIG`/`default_options` (F-87).
+**Dead-code scan reached develop @ 91197bb.** New private helpers (`subscribers?`, `release_channel`,
+`handle_shutdown_signal`) all have call sites; nothing new dead. F-2 / F-3 hold (needs Dewayne's decision).
+
+- **F-35:** resolved — ci.yml has `permissions: contents: read`.
+- **S-1:** security finding, details held locally. status: open (local-only).
+- **S-2:** security finding, details held locally. status: open (local-only).
+- **S-3:** security finding, details held locally. status: open (local-only; narrowed).
+- **S-4:** security finding, details held locally. status: open (local-only).
+- **S-6:** security finding, details held locally. status: unverified.
+- **S-7:** security finding, details held locally. status: resolved.
+- **S-8:** security finding, details held locally. status: open (local-only; mainly upstream).
+- **S-9:** security finding, details held locally. status: open (local-only; verified; neutral fix after #37 lands).
+- Pre-existing FIFO at the subscriber path is reused but not tracked, so `unsubscribe!`/`disconnect` leave it — the "only the creator tracks it" half of F-39 / #29; waits on F-40.
+
+Improver (critic read, same commit):
+
+- **F-92:** `test_shutdown_flag_thread_visibility` exercises no transport code and `test_special_characters_in_channel_name` asserts a `File.join` tautology (errors_test.rb:162-179, 205-223) — removal, test-only (~−37). status: issue [#59](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/59).
+- **F-93:** test stub `Logger` (lib/.../transport/base.rb:76-81) never yields, so ~30 `logger.x { "…" }` blocks in named_pipes.rb are never evaluated by the suite (probe: ~4,200 block evals, none raise today) — guard. Pairs with F-88. status: issue [#60](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/60).
+- **F-94:** `derive_channel_name` collides (`Billing::Event`/`Billing_Event`, `Order`/`ORDER`) → one pipe, second class's handlers silently never fire (probe-verified). Non-breaking first step: raise in `subscribe` on a channel bound to another class; naming-scheme change → Dewayne. status: issue [#61](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/61).
+- **F-95:** `test_that_it_has_a_version_number` duplicated by `test_version_format` (named_pipes_test.rb:23-29) — trivial, same file as #37; fold into a later test PR. status: open.

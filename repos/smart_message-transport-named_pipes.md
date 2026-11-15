@@ -13,7 +13,9 @@ files: the transport, a committed test stub `transport/base.rb`, and a `version.
 
 ## Status
 
-_Updated 2026-11-15 02:17 (visit 9): `develop` CI was red since #52 (signal-test child lacked `-Itest`); bomberbot opened [#57](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/57) (fix, green on 3.2–4.0), [#55](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/55) (gemspec metadata, lanet#21 pattern) and [#58](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/58) (README Running Tests), none low risk (gemspec / review cap hit); merge #57 first. Adoption audit F-84…F-89; filed [#56](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/56)._
+_Updated 2026-11-15 03:45 (visit 10): **skipped new work — review queue full** (#57/#55/#58 open, unreviewed; `develop` unmoved at 91197bb); security re-audit (S-9 new, local; S-7 resolved); filed [#59](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/59), [#60](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/60), [#61](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/61)._
+
+**Visit 9 (2026-11-15 02:17):** `develop` CI was red since #52 (signal-test child lacked `-Itest`); bomberbot opened [#57](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/57) (fix, green on 3.2–4.0), [#55](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/55) (gemspec metadata, lanet#21 pattern) and [#58](https://github.com/MadBomber/smart_message-transport-named_pipes/pull/58) (README Running Tests), none low risk (gemspec / review cap hit); merge #57 first. Adoption audit F-84…F-89; filed [#56](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/56)._
 
 **Visit 8 (2026-11-13 ~02:50, cut off before writing brain):** opened #47/#48/#49; Dewayne squash-merged them 2026-11-13 21:29 with his #31–#38/#50–#54 and our #39. Run dir moved to `bomberbot-interrupted/` on 2026-11-15.
 
@@ -100,6 +102,10 @@ Well-defined items a single small PR could close.
 - **F-87 / [#56](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/56):** `DEFAULT_CONFIG` still reads env at require — after #37.
 - **F-88:** move `lib/.../transport/base.rb` stub to `test/` (after #57; folds into F-49). **F-89:** shared child-ruby `-I` helper in `test_helper.rb`. **F-90:** signal test's `popen3` can hang if an assertion/Timeout fires with the child alive (kill in `ensure`); drain stderr while it runs.
 - **F-91:** CI loop stops at first failing file under `bash -e` and globs only `test/smart_message/transport/` (Rakefile: `test/**`); workflow → Dewayne. README Development "run `bundle install`" line contradicts #6.
+- **F-92 / [#59](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/59):** two errors tests that can never fail — test-only removal (~−37), not low risk (deletes tests). Ready PR once the queue clears.
+- **F-93 / [#60](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/60):** stub logger never yields log blocks — ~4-line test-stub guard; pair with F-88.
+- **F-94 / [#61](https://github.com/MadBomber/smart_message-transport-named_pipes/issues/61):** class names differing by case or `::` share one pipe and misroute — `subscribe` collision raise is small; naming scheme → Dewayne (inbox).
+- **S-9 (local):** neutral "verify the opened pipe path is a FIFO" lib PR after #37 lands.
 - Next-PR ranking after #37 lands: F-87/#56, F-21/F-38 ENXIO removal, F-32 CHANGELOG gaps (#10/#39/#48), F-88, F-89+F-90.
 
 ## Open bomberbot PRs
