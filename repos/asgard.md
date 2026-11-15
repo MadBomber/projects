@@ -10,7 +10,7 @@ Thor-based task runner driven by .loki files; the other monitored repos, dev, an
 
 ## Status
 
-_Updated 2026-11-15 (seventh visit)._ Queue still full (4 PRs, no reviews, develop unmoved at d87e1e2); quality audit ran (F-64..F-67), improver F-70..F-73; filed #47, #48, #49. No new PRs.
+_Updated 2026-11-15 (eighth visit)._ Queue still full (4 PRs, no reviews, develop unmoved at d87e1e2); adoption audit ran (F-74..F-76), improver F-80..F-86; filed #50, #51, #52. No new PRs.
 
 ## Backlog
 
@@ -33,6 +33,12 @@ Well-defined items a single small PR could close. Bomberbot works these before a
 - F-72: stale `Rakefile` excludes in `.rubocop.yml` and a stale Gemfile comment (config-only removal).
 - F-64: duplicated `log_to_truncate?`. Issue [#49](https://github.com/MadBomber/asgard/issues/49).
 - F-73: `asgard jobs --all` aborts outside a project; same line as #37, stack on it.
+- F-74: `docs/options.md` still says only `--version`/`--doctor` go before a task name (docs only, two passages).
+- F-75: `docs/examples.md` and `docs/task-files.md` excerpts drifted from `.loki` and dev (docs only).
+- F-80: `--doctor` prints colour codes when piped or with `NO_COLOR`. Issue [#50](https://github.com/MadBomber/asgard/issues/50).
+- F-81: a `default_task` naming no task prints `Could not find command ""`. Issue [#51](https://github.com/MadBomber/asgard/issues/51).
+- F-82: a mistyped `jobs` subcommand blames `jobs list`. Issue [#52](https://github.com/MadBomber/asgard/issues/52).
+- F-84: watcher `dropped` log line untested (test-only, low risk).
 
 ## Open bomberbot PRs
 

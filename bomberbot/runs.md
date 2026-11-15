@@ -2,6 +2,16 @@
 
 Newest first. One entry per repo visit, headed `## YYYY-MM-DD HH:MM <repo>`. Entries before 2026-11-08 cover a whole run of every repo.
 
+## 2026-11-15 08:05 asgard
+
+Eighth visit (last 2026-11-15 07:33), by madbot. `develop` already existed (d87e1e2, unmoved); not created. Run directory was fresh; `src/` detached at origin/develop before phase 1. All five phase-1 agents ran.
+
+- **skipped: review queue full.** 4 bomberbot PRs open (#37, #39, #40, #41), none reviewed, all green and MERGEABLE. No new PRs.
+- **Merged (low risk):** none. **Merged after approval:** none. **Tended:** all four checked, nothing to do; nothing pushed.
+- **Audit:** adoption (third, develop d87e1e2, since 4f3add1): F-74..F-76. Improver: F-80..F-86. Triage: nothing new; CI green on develop and main. No security findings.
+- **Issues answered:** none (all eight open issues are BomberBot's, no comments; all still reproduce on d87e1e2).
+- **Issues filed:** [#50](https://github.com/MadBomber/asgard/issues/50) (F-80 doctor colour), [#51](https://github.com/MadBomber/asgard/issues/51) (F-81 bad default_task), [#52](https://github.com/MadBomber/asgard/issues/52) (F-82 jobs typo). All reproduced by the main session.
+
 ## 2026-11-15 07:58 kbs
 
 Fourth kbs visit today, by madbot (last: 2026-11-15 05:05, bomberbot). `develop` existed (70c52ca, unmoved); not created. Run directory was fresh; `src/` was checked out detached at `origin/develop` before the agents started. All five phase-1 agents ran.
